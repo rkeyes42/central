@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alaska Medicaid Eligibility Central</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@1,600;1,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --accent:#1E5FCC;
+    --accent-soft:#E8EFFB;
+    --ink:#1A2233;
+    --ink-2:#4A5568;
+    --ink-3:#8A94A6;
+    --line:#E2E7F0;
+    --paper:#FFFFFF;
+    --wash:#F7F9FC;
+    --good:#1F8A4C;
+    --warn:#B45309;
+    --bad:#B42318;
+    --c10:#1E5FCC; --c20:#0E8A8A; --c30:#7C3AED; --c31:#C026A3;
+    --c40:#B45309; --c41:#92400E; --c50:#475569; --c60:#B42318; --c61:#DC6803;
+    --gap:#E2E7F0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:var(--wash);font-size:14px;line-height:1.55}
+  .mono{font-family:'IBM Plex Mono',monospace}
+
+  header{background:var(--paper);border-bottom:1px solid var(--line);padding:22px 28px 0}
+  .wordmark{font-family:'Source Serif 4',serif;font-style:italic;font-weight:700;font-size:28px;color:var(--accent);letter-spacing:.2px}
+  .wordmark .plain{color:var(--ink)}
+  .tagline{color:var(--ink-2);margin-top:4px;font-size:13.5px}
+  .domainkey{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.6px;color:var(--accent);background:var(--accent-soft);border:1px solid #C9DAF6;border-radius:4px;padding:2px 8px;display:inline-block;margin-top:10px}
+  nav{display:flex;gap:2px;margin-top:16px;flex-wrap:wrap}
+  nav button{appearance:none;border:none;background:none;font:inherit;font-weight:600;color:var(--ink-2);padding:10px 14px;cursor:pointer;border-bottom:3px solid transparent}
+  nav button:hover{color:var(--ink)}
+  nav button.active{color:var(--accent);border-bottom-color:var(--accent)}
+  nav button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;border-radius:4px}
+
+  main{max-width:1160px;margin:0 auto;padding:26px 28px 60px}
+  .panel{display:none}
+  .panel.active{display:block}
+
+  h2{font-size:19px;margin-bottom:12px}
+  h3{font-size:15px;margin:22px 0 8px}
+  p.lede{color:var(--ink-2);max-width:78ch;margin-bottom:18px}
+
+  .plain-english{background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:14px 18px;margin:16px 0;max-width:86ch}
+  .plain-english .pe-label{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:1px;color:var(--accent);text-transform:uppercase;margin-bottom:6px}
+  .plain-english .pe-body{font-family:'Source Serif 4',serif;font-style:italic;font-weight:600;font-size:15px;color:var(--ink);line-height:1.6}
+  .slideover .plain-english{margin:12px 0 14px;padding:12px 15px}
+  .slideover .plain-english .pe-body{font-size:13.5px}
+
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:16px 0 8px}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:14px 16px}
+  .card .big{font-size:26px;font-weight:700;letter-spacing:-.5px}
+  .card .lbl{color:var(--ink-3);font-size:12px;margin-top:2px}
+  .card .sub{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);margin-top:6px}
+
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:14px 0}
+  .toolbar input[type=search],.toolbar select{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink)}
+  .toolbar input[type=search]{min-width:230px}
+  .toolbar input:focus-visible,.toolbar select:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+  .count-note{color:var(--ink-3);font-size:12.5px;margin-left:auto}
+
+  table{width:100%;border-collapse:collapse;background:var(--paper);border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:13px}
+  thead th{text-align:left;font-size:11px;letter-spacing:.6px;text-transform:uppercase;color:var(--ink-3);background:var(--wash);border-bottom:1px solid var(--line);padding:9px 12px;font-weight:600}
+  tbody td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr.rowlink{cursor:pointer}
+  tbody tr.rowlink:hover{background:var(--accent-soft)}
+  .empty{padding:26px;text-align:center;color:var(--ink-3);background:var(--paper);border:1px dashed var(--line);border-radius:8px}
+
+  .badge{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;padding:1px 7px;border-radius:4px;border:1px solid var(--line);background:var(--wash);color:var(--ink-2);white-space:nowrap}
+  .badge.tribal{color:#0E7490;border-color:#A5E3EF;background:#ECFDFF}
+  .badge.dual{color:var(--bad);border-color:#F5C6C2;background:#FEF3F2}
+  .badge.retro{color:var(--warn);border-color:#F2D5A9;background:#FFFAEB}
+  .badge.gap{color:var(--ink-2)}
+  .badge.open{color:var(--good);border-color:#BFE8CF;background:#F0FDF4}
+
+  .catdot{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px;vertical-align:baseline}
+
+  /* member detail slide-over (right-side modal) */
+  .overlay{position:fixed;inset:0;background:rgba(26,34,51,.18);opacity:0;pointer-events:none;transition:opacity .18s ease;z-index:40}
+  .overlay.show{opacity:1;pointer-events:auto}
+  .so-nav{display:flex;align-items:center;gap:6px;flex:none}
+  .so-arrow{appearance:none;border:1px solid var(--line);background:var(--wash);color:var(--ink-2);font:inherit;font-weight:700;font-size:14px;line-height:1;border-radius:6px;padding:5px 10px;cursor:pointer}
+  .so-arrow:hover:not(:disabled){background:var(--accent-soft);color:var(--accent);border-color:#C9DAF6}
+  .so-arrow:disabled{opacity:.35;cursor:default}
+  .so-arrow:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+  .so-counter{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-3);min-width:64px;text-align:center}
+  tbody tr.row-active,tbody tr.row-active:hover{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+
+  /* what-the-file-says (834 view) */
+  .filegrid{background:var(--paper);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-top:12px}
+  .frow{display:grid;grid-template-columns:minmax(320px,46%) 1fr;border-bottom:1px solid var(--line)}
+  .frow:last-child{border-bottom:none}
+  .frow:nth-child(even){background:var(--wash)}
+  .fseg{font-family:'IBM Plex Mono',monospace;font-size:12px;padding:7px 12px;white-space:pre-wrap;word-break:break-all;color:var(--ink)}
+  .fseg b{color:var(--accent);font-weight:600}
+  .fnote{font-size:12.5px;color:var(--ink-2);padding:7px 12px;border-left:1px solid var(--line)}
+  .floop{grid-column:1/-1;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);padding:4px 12px;border-left:none}
+  .rawbox{font-family:'IBM Plex Mono',monospace;font-size:12px;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:14px 16px;white-space:pre-wrap;word-break:break-all;margin-top:12px;color:var(--ink)}
+  .seg-toggle{appearance:none;font:inherit;font-size:12.5px;font-weight:600;color:var(--accent);background:var(--accent-soft);border:1px solid #C9DAF6;border-radius:6px;padding:6px 12px;cursor:pointer}
+  .seg-toggle:hover{background:#DCE8FA}
+  @media (max-width:720px){ .frow{grid-template-columns:1fr} .fnote{border-left:none;border-top:1px dashed var(--line)} }
+  .slideover{position:fixed;top:0;right:0;bottom:0;width:min(520px,94vw);background:var(--paper);border-left:1px solid var(--line);box-shadow:-12px 0 32px rgba(26,34,51,.16);transform:translateX(102%);transition:transform .22s ease;z-index:50;display:flex;flex-direction:column}
+  .slideover.show{transform:translateX(0)}
+  .slideover .so-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:18px 20px 12px;border-bottom:1px solid var(--line)}
+  .slideover .so-head h3{margin:0;font-size:16px}
+  .slideover .so-body{overflow-y:auto;padding:16px 20px 28px}
+  .so-close{appearance:none;border:1px solid var(--line);background:var(--wash);color:var(--ink-2);font:inherit;font-weight:600;font-size:13px;border-radius:6px;padding:5px 11px;cursor:pointer;flex:none}
+  .so-close:hover{background:var(--accent-soft);color:var(--accent);border-color:#C9DAF6}
+  .so-close:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+  @media (prefers-reduced-motion:reduce){ .slideover,.overlay{transition:none} }
+  .kv{display:grid;grid-template-columns:170px 1fr;gap:4px 14px;font-size:13px;max-width:620px;margin:10px 0}
+  .kv dt{color:var(--ink-3)}
+  .kv dd{font-weight:500}
+
+  /* timeline */
+  .tl-wrap{margin-top:14px}
+  .tl-axis{position:relative;height:18px;margin-left:0}
+  .tl-axis span{position:absolute;top:0;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink-3);transform:translateX(-50%)}
+  .tl-track{position:relative;height:22px;background:var(--wash);border:1px solid var(--line);border-radius:5px;margin:4px 0 2px;overflow:hidden}
+  .tl-seg{position:absolute;top:0;bottom:0;border-radius:0}
+  .tl-today{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--ink);opacity:.55}
+  .tl-cap{font-size:11.5px;color:var(--ink-3);margin-bottom:10px}
+  .legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;font-size:12px;color:var(--ink-2)}
+  .legend span{display:inline-flex;align-items:center;gap:5px}
+
+  /* scenarios */
+  .register{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:16px 20px;margin-bottom:14px}
+  .register .reg-key{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:1px}
+  .register h3{margin:4px 0 6px}
+  .register p{color:var(--ink-2);max-width:82ch}
+  .register .biz{margin-top:8px;font-size:13px}
+  .register .biz b{color:var(--ink)}
+  .reg-examples{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .reg-examples button{appearance:none;font:inherit;font-size:12px;font-weight:600;color:var(--accent);background:var(--accent-soft);border:1px solid #C9DAF6;border-radius:5px;padding:4px 10px;cursor:pointer}
+  .reg-examples button:hover{background:#DCE8FA}
+
+  .note{font-size:12px;color:var(--ink-3);max-width:86ch;margin-top:14px}
+  footer{border-top:1px solid var(--line);color:var(--ink-3);font-size:12px;padding:18px 28px;background:var(--paper)}
+  footer b{color:var(--ink-2)}
+  @media (max-width:720px){ .kv{grid-template-columns:1fr} main{padding:20px 14px 50px} header{padding:18px 14px 0} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wordmark">Alaska Medicaid <span class="plain">Eligibility</span> Central</div>
+  <div class="tagline">Fee-for-service eligibility in a state with no managed care plans, a parallel tribal health system, and a travel budget instead of a network.</div>
+  <span class="domainkey">DOMAIN&nbsp;KEY&nbsp;&middot;&nbsp;AK-FFS-ELIG</span>
+  <nav id="nav" role="tablist" aria-label="Sections">
+    <button data-panel="overview" class="active">Overview</button>
+    <button data-panel="members">Members</button>
+    <button data-panel="spans">Eligibility Spans</button>
+    <button data-panel="scenarios">Scenario Registers</button>
+    <button data-panel="file">What the File Says</button>
+    <button data-panel="codes">Reference Codes</button>
+  </nav>
+</header>
+
+<main>
+
+<!-- ============ OVERVIEW ============ -->
+<section class="panel active" id="panel-overview">
+  <h2>The shape of Alaska Medicaid</h2>
+  <p class="lede">Most state Medicaid programs hand their members to capitated managed-care plans and let the plans worry about them. Alaska never did. Nearly every covered Alaskan is straight fee-for-service: the state's fiscal agent pays claims directly, eligibility is the whole ballgame, and there is no plan enrollment file because there are no plans. What Alaska has instead is geography &mdash; and a second, sovereign delivery system, the Alaska Tribal Health System, whose services for IHS-eligible members draw a 100% federal match.</p>
+
+  <div class="plain-english">
+    <div class="pe-label">In plain English</div>
+    <div class="pe-body">In most states the hard question is &ldquo;which plan is this member in?&rdquo; In Alaska the hard questions are &ldquo;is this person eligible right now, under which category, and are they an IHS beneficiary?&rdquo; &mdash; because those three answers decide who pays, how much, and whether the federal government pays all of it.</div>
+  </div>
+
+  <div class="cards" id="ov-cards"></div>
+
+  <h3>Why this app exists</h3>
+  <p class="lede">The app models a synthetic recipient population over a 24-month window (Jan 2025 &ndash; Dec 2026) with the events that actually drive Alaska eligibility work: renewal churn, three-month retroactive grants, children aging out of Denali KidCare, tribal-facility affiliation, and Medicare duals waiting on buy-in accretion. Every member is generated from a fixed seed, so the data is identical on every load &mdash; discuss a member by ID and everyone sees the same story.</p>
+
+  <div class="legend" id="ov-legend"></div>
+
+  <p class="note">All members, identifiers, and category codes are synthetic and illustrative. Program facts reflect publicly known Alaska Medicaid policy of the mid-2020s and should be verified against current Alaska Department of Health publications before any non-demonstration use.</p>
+</section>
+
+<!-- ============ MEMBERS ============ -->
+<section class="panel" id="panel-members">
+  <h2>Recipient roster</h2>
+  <p class="lede">Sixty-four synthetic recipients. Filter by region, category, tribal-health affiliation, or scenario register; select a row to open the member&rsquo;s eligibility timeline.</p>
+
+  <div class="toolbar">
+    <input type="search" id="m-search" placeholder="Search name or recipient ID&hellip;" aria-label="Search members">
+    <select id="m-region" aria-label="Filter by region"><option value="">All regions</option></select>
+    <select id="m-cat" aria-label="Filter by category"><option value="">All categories</option></select>
+    <select id="m-flag" aria-label="Filter by flag">
+      <option value="">All flags</option>
+      <option value="tribal">IHS / Tribal affiliated</option>
+      <option value="dual">Medicare dual</option>
+      <option value="retro">Retro grant</option>
+      <option value="gap">Coverage gap</option>
+    </select>
+    <span class="count-note" id="m-count"></span>
+  </div>
+
+  <table aria-label="Member roster">
+    <thead><tr>
+      <th>Recipient ID</th><th>Name</th><th>DOB</th><th>Sex</th><th>Address</th><th>Region</th><th>Current category</th><th>Tribal health org</th><th>Flags</th>
+    </tr></thead>
+    <tbody id="m-body"></tbody>
+  </table>
+  <div class="empty" id="m-empty" style="display:none">No members match these filters. Clear a filter to widen the net.</div>
+</section>
+
+<!-- ============ SPANS ============ -->
+<section class="panel" id="panel-spans">
+  <h2>Eligibility spans</h2>
+  <p class="lede">Every dated segment of coverage across the population, one row per span. Open-ended spans are eligibility that is still in force as of the July 2026 &ldquo;today&rdquo; line. Retro spans begin before their own application date &mdash; Alaska, like most states, can grant up to three months of retroactive coverage when the person would have been eligible.</p>
+
+  <div class="plain-english">
+    <div class="pe-label">In plain English</div>
+    <div class="pe-body">A span is a promise with dates on it: between this day and that day, the program pays. Fee-for-service means there is no plan downstream to catch a mistake &mdash; if the span is wrong, the claim payment is wrong.</div>
+  </div>
+
+  <div class="toolbar">
+    <select id="s-cat" aria-label="Filter spans by category"><option value="">All categories</option></select>
+    <select id="s-kind" aria-label="Filter spans by kind">
+      <option value="">All spans</option>
+      <option value="open">Open (in force)</option>
+      <option value="closed">Closed</option>
+      <option value="retro">Retro grants</option>
+    </select>
+    <span class="count-note" id="s-count"></span>
+  </div>
+
+  <table aria-label="Eligibility spans">
+    <thead><tr>
+      <th>Recipient ID</th><th>Member</th><th>Category</th><th>Begin</th><th>End</th><th>Months</th><th>Notes</th>
+    </tr></thead>
+    <tbody id="s-body"></tbody>
+  </table>
+  <div class="empty" id="s-empty" style="display:none">No spans match these filters.</div>
+</section>
+
+<!-- ============ SCENARIOS ============ -->
+<section class="panel" id="panel-scenarios">
+  <h2>Scenario registers</h2>
+  <p class="lede">Six registers, each a business question the eligibility data has to answer. Every member in the roster belongs to exactly one register; the example buttons jump straight to a live member.</p>
+  <div id="registers"></div>
+</section>
+
+<!-- ============ WHAT THE FILE SAYS ============ -->
+<section class="panel" id="panel-file">
+  <h2>What the file says</h2>
+  <p class="lede">California mails its counties a proprietary, published flat file and everyone reads from the same layout document. Alaska has no public equivalent &mdash; the state&rsquo;s fiscal agent and its trading partners move eligibility the way the rest of the industry does, on the <b>ASC X12N 834</b> (005010X220A1 Benefit Enrollment and Maintenance). So this tab reads the 834: pick a member and see their eligibility story rendered as the segments a downstream system would actually parse, each one annotated.</p>
+
+  <div class="plain-english">
+    <div class="pe-label">In plain English</div>
+    <div class="pe-body">An 834 is a sentence diagram for coverage: the INS line says &ldquo;here is a person and what to do with them,&rdquo; the REF lines say who they are, the HD lines say what coverage, and the DTP lines say when. Everything the timeline draws in color, the file says in asterisks.</div>
+  </div>
+
+  <div class="toolbar">
+    <select id="f-member" aria-label="Choose a member to render"></select>
+    <button class="seg-toggle" id="f-toggle" aria-pressed="false">View raw transaction</button>
+    <span class="count-note" id="f-count"></span>
+  </div>
+
+  <div class="filegrid" id="f-grid"></div>
+  <div class="rawbox" id="f-raw" style="display:none"></div>
+
+  <p class="note">Teaching rendering, not a companion guide: envelope IDs, qualifier choices (e.g., the mutually-defined <span class="mono">REF*ZZ</span> tribal-affiliation flag and the category code carried in <span class="mono">HD04</span>), maintenance codes, and addresses are illustrative. Real trading-partner implementations pin these down in a companion guide, and the guide always wins. Members render as a single-member verification transaction for readability.</p>
+</section>
+
+<!-- ============ CODES ============ -->
+<section class="panel" id="panel-codes">
+  <h2>Reference codes</h2>
+  <p class="lede">The category codes below are synthetic teaching codes, structured the way state eligibility code tables actually behave: a two-digit code, a program family, and a funding note. Alaska&rsquo;s real code tables are longer and change with policy; these nine are the load-bearing archetypes.</p>
+
+  <h3>Eligibility categories</h3>
+  <table aria-label="Category codes">
+    <thead><tr><th>Code</th><th>Category</th><th>Program family</th><th>Funding note</th></tr></thead>
+    <tbody id="c-body"></tbody>
+  </table>
+
+  <h3>Regions and tribal health organizations</h3>
+  <table aria-label="Regions">
+    <thead><tr><th>Region</th><th>Hub community</th><th>Tribal health organization (illustrative)</th></tr></thead>
+    <tbody id="r-body"></tbody>
+  </table>
+
+  <div class="plain-english">
+    <div class="pe-label">In plain English</div>
+    <div class="pe-body">The category code is the door the person came through, and in Alaska the door also decides the money: services an IHS-eligible member receives &ldquo;through&rdquo; a tribal facility are matched at 100% by the federal government, so a single affiliation flag can move the state&rsquo;s share of a claim from roughly half to zero.</div>
+  </div>
+
+  <p class="note">Denali KidCare is Alaska&rsquo;s branding for children&rsquo;s and pregnancy coverage (Medicaid plus CHIP). The Adult Public Assistance (APA) linkage for aged, blind, and disabled categories, the Group VIII expansion population, and the three-month retroactive window are described at the policy level in the companion Business Explanations document.</p>
+</section>
+
+</main>
+
+<div class="overlay" id="so-overlay"></div>
+<aside class="slideover" id="so-panel" role="dialog" aria-modal="true" aria-labelledby="so-title">
+  <div class="so-head">
+    <h3 id="so-title">Member detail</h3>
+    <div class="so-nav">
+      <button class="so-arrow" id="so-prev" aria-label="Previous member" title="Previous member (←)">&#9664;</button>
+      <span class="so-counter" id="so-counter"></span>
+      <button class="so-arrow" id="so-next" aria-label="Next member" title="Next member (→)">&#9654;</button>
+      <button class="so-close" id="so-close" aria-label="Close member detail">Close ✕</button>
+    </div>
+  </div>
+  <div class="so-body" id="so-content"></div>
+</aside>
+
+<footer>
+  <b>Alaska Medicaid Eligibility Central</b> &middot; part of the Central series &middot; synthetic, seeded data &mdash; identical on every load &middot; built by <b>Robert Thomas Keyes</b>
+</footer>
+
+<script>
+"use strict";
+/* ---------- seeded PRNG (house convention) ---------- */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
+const rng = mulberry32(907001); // Alaska area code seed
+function pick(r,arr){return arr[Math.floor(r()*arr.length)]}
+function irand(r,lo,hi){return lo+Math.floor(r()*(hi-lo+1))}
+
+/* ---------- reference data ---------- */
+const CATS = {
+  "10":{name:"Expansion Adult (Group VIII)", fam:"Adult", color:"var(--c10)", fund:"Enhanced federal match for the expansion group"},
+  "20":{name:"Family Medicaid (Parent/Caretaker)", fam:"Family", color:"var(--c20)", fund:"Regular FMAP"},
+  "30":{name:"Denali KidCare — Child", fam:"Children/CHIP", color:"var(--c30)", fund:"Medicaid or CHIP match by income band"},
+  "31":{name:"Denali KidCare — Pregnant", fam:"Children/CHIP", color:"var(--c31)", fund:"Medicaid or CHIP match by income band"},
+  "40":{name:"Aged (APA-linked)", fam:"ABD", color:"var(--c40)", fund:"Regular FMAP"},
+  "41":{name:"Blind / Disabled (APA-linked)", fam:"ABD", color:"var(--c41)", fund:"Regular FMAP"},
+  "50":{name:"Long-Term Care / Waiver", fam:"LTSS", color:"var(--c50)", fund:"Regular FMAP; post-eligibility income rules"},
+  "60":{name:"QMB (Medicare dual)", fam:"Dual/MSP", color:"var(--c60)", fund:"State pays Medicare premiums & cost sharing"},
+  "61":{name:"SLMB (Medicare dual)", fam:"Dual/MSP", color:"var(--c61)", fund:"State pays Part B premium only"}
+};
+const REGIONS = [
+  {region:"Anchorage / Southcentral", hub:"Anchorage",  tho:"Southcentral Foundation / ANMC", tribalShare:.35, communities:["Anchorage","Eagle River","Girdwood"]},
+  {region:"Mat-Su",                   hub:"Wasilla",    tho:"Southcentral Foundation (Valley)", tribalShare:.2,  communities:["Wasilla","Palmer","Big Lake"]},
+  {region:"Interior",                 hub:"Fairbanks",  tho:"Tanana Chiefs Conference",       tribalShare:.45, communities:["Fairbanks","Nenana","Fort Yukon"]},
+  {region:"Southeast",                hub:"Juneau",     tho:"SEARHC",                          tribalShare:.5,  communities:["Juneau","Sitka","Kake"]},
+  {region:"Yukon-Kuskokwim",          hub:"Bethel",     tho:"Yukon-Kuskokwim Health Corp.",    tribalShare:.9,  communities:["Bethel","Kwethluk","Hooper Bay"]},
+  {region:"Norton Sound",             hub:"Nome",       tho:"Norton Sound Health Corp.",       tribalShare:.85, communities:["Nome","Unalakleet","Savoonga"]},
+  {region:"Northwest Arctic",         hub:"Kotzebue",   tho:"Maniilaq Association",            tribalShare:.85, communities:["Kotzebue","Noorvik","Kiana"]},
+  {region:"Kodiak",                   hub:"Kodiak",     tho:"Kodiak Area Native Assoc.",       tribalShare:.4,  communities:["Kodiak","Old Harbor"]},
+  {region:"Bristol Bay",              hub:"Dillingham", tho:"Bristol Bay Area Health Corp.",   tribalShare:.8,  communities:["Dillingham","Togiak","Naknek"]}
+];
+const FIRST = ["Marie","Daniel","Sophie","Aaron","Grace","Peter","Elena","Carl","Nadia","Thomas","Ruth","Victor","Amy","George","Iris","Sam","Olga","Ben","Clara","Louis","Anna","Paul","Nora","Frank","Lena","Oscar","Tessa","Hank","Vera","Miles","June","Ivan"];
+const LAST  = ["Andrews","Beetus","Carlson","Downey","Evans","Foster","Green","Hoffman","Ivanoff","Johns","Kaplan","Larsen","Morris","Nelson","Okpik","Peterson","Quinn","Reyes","Simmons","Toovak","Ulmer","Vance","Wilson","Yates","Zeller","Active","Brower","Chase","Demir","Erwin"];
+const HUB_ZIP = {"Anchorage":"99501","Eagle River":"99577","Girdwood":"99587","Wasilla":"99654","Palmer":"99645","Big Lake":"99652",
+  "Fairbanks":"99701","Nenana":"99760","Fort Yukon":"99740","Juneau":"99801","Sitka":"99835","Kake":"99830",
+  "Bethel":"99559","Kwethluk":"99621","Hooper Bay":"99604","Nome":"99762","Unalakleet":"99684","Savoonga":"99769",
+  "Kotzebue":"99752","Noorvik":"99763","Kiana":"99749","Kodiak":"99615","Old Harbor":"99643",
+  "Dillingham":"99576","Togiak":"99678","Naknek":"99633"};
+const ROAD_SYSTEM = ["Anchorage","Eagle River","Girdwood","Wasilla","Palmer","Big Lake","Fairbanks","Juneau","Sitka","Kodiak"];
+const STREETS = ["Spruce St","Tundra Way","Ptarmigan Ave","Denali Dr","Kuskokwim Ct","Raven Rd","Salmonberry Ln","Glacier View Dr","Fireweed Ave","Chinook St","Willow Loop","Aurora Blvd"];
+
+/* ---------- time helpers: month index 0 = Jan 2025 ... 23 = Dec 2026 ---------- */
+const M0 = new Date(2025,0,1);
+const TODAY_IDX = 18; // Jul 2026
+function mLabel(i){const d=new Date(2025,i,1);return d.toLocaleString('en-US',{month:'short',year:'2-digit'}).replace(' ',' \u2019')}
+function mDate(i){const d=new Date(2025,i,1);return d.toISOString().slice(0,10)}
+function mEnd(i){const d=new Date(2025,i+1,0);return d.toISOString().slice(0,10)}
+
+/* ---------- registers ---------- */
+const REGISTERS = [
+ {key:"A", title:"Steady state", q:"Is anything actually wrong here?",
+  body:"One category, one unbroken span, renewals processed on time. Most of the file, most months. The register exists so the interesting members can be measured against a baseline — and so nobody mistakes ordinary for easy: an unbroken FFS span is the product of a renewal that worked.",
+  biz:"<b>Business question:</b> what fraction of the population is quiet, and is that fraction shrinking?"},
+ {key:"B", title:"Procedural churn", q:"Who fell off at renewal, and did they come back?",
+  body:"Coverage ends at a renewal month — usually paperwork, not ineligibility — a gap of one to three months follows, then a new span opens. In a fee-for-service state the gap is not an abstraction: claims incurred in the hole simply deny, and providers in hub communities carry the exposure.",
+  biz:"<b>Business question:</b> how long is the average gap, and how many gap months later become retro grants (register C) — paperwork the program paid twice to process?"},
+ {key:"C", title:"Retroactive grant", q:"Why does this span start before anyone applied?",
+  body:"Alaska can grant up to three months of retroactive eligibility when the person would have qualified. The span's begin date precedes the application month, and claims from those months get re-adjudicated after the fact. Retro is the system admitting, with money, that eligibility existed before the paperwork did.",
+  biz:"<b>Business question:</b> retro months per grant, and how much previously denied billing gets resurrected when the span backdates?"},
+ {key:"D", title:"Aging out of Denali KidCare", q:"What happens at the nineteenth birthday?",
+  body:"A Denali KidCare child span closes at the birthday month and — in the good version of the story — an Expansion Adult (Group VIII) span opens the next day. The category flips, the funding stream flips, and if the handoff misses, a teenager with a care routine becomes register B.",
+  biz:"<b>Business question:</b> what share of age-outs transition seamlessly versus opening with a gap?"},
+ {key:"E", title:"Tribal wrap (IHS-eligible)", q:"Who pays — and does the state pay at all?",
+  body:"The member is affiliated with a tribal health organization. Services received through the tribal system for an IHS-eligible member draw 100% federal match, so the affiliation flag is a funding switch, not demographic trivia. The eligibility record has to carry it correctly for the claim to be classified correctly.",
+  biz:"<b>Business question:</b> what share of paid months carry the tribal flag, and does the flag's presence in the eligibility data match where care was actually delivered?"},
+ {key:"F", title:"Buy-in limbo (Medicare dual)", q:"Is Medicare primary yet, and who is paying the premium?",
+  body:"A QMB or SLMB member with Medicare. The state's buy-in accretion — taking over the Part B premium — runs on federal exchange cycles that lag the eligibility decision by a month or more, so there is a window where the member is a dual on paper and not yet a dual in the premium file.",
+  biz:"<b>Business question:</b> how long is the accretion lag, and are crossover claims coordinating correctly during the window?"}
+];
+
+/* ---------- generate members ---------- */
+const SCENARIO_PLAN = [].concat(
+  Array(26).fill("A"), Array(10).fill("B"), Array(8).fill("C"),
+  Array(6).fill("D"), Array(8).fill("E"), Array(6).fill("F"));
+
+const members = [];
+(function gen(){
+  const usedNames = new Set();
+  for(let i=0;i<SCENARIO_PLAN.length;i++){
+    const sc = SCENARIO_PLAN[i];
+    let name;
+    do{ name = pick(rng,FIRST)+" "+pick(rng,LAST); }while(usedNames.has(name));
+    usedNames.add(name);
+    const region = pick(rng,REGIONS);
+    const community = pick(rng,region.communities);
+    const rid = "06" + String(100000000 + Math.floor(rng()*899999999)).slice(0,8); // synthetic 10-digit
+    let tribal = rng() < region.tribalShare;
+    if(sc==="E") tribal = true;
+
+    // category and DOB by scenario
+    let cat, dobYear;
+    if(sc==="D"){ cat="30"; dobYear=2007; }
+    else if(sc==="F"){ cat = rng()<.6?"60":"61"; dobYear=irand(rng,1942,1958); }
+    else{
+      cat = pick(rng,["10","10","10","20","30","31","40","41","50"]);
+      dobYear = cat==="30" ? irand(rng,2010,2022) : cat==="31" ? irand(rng,1992,2004)
+              : (cat==="40")? irand(rng,1940,1958) : (cat==="41"||cat==="50")? irand(rng,1950,1990)
+              : irand(rng,1965,2000);
+    }
+    const dob = `${dobYear}-${String(irand(rng,1,12)).padStart(2,"0")}-${String(irand(rng,1,28)).padStart(2,"0")}`;
+
+    // demographics (all seeded)
+    const gender = pick(rng,["F","M","F","M","F","M","U"]);
+    const zip = HUB_ZIP[community]||"99501";
+    const street = ROAD_SYSTEM.includes(community)
+      ? irand(rng,100,9899)+" "+pick(rng,STREETS)
+      : "PO Box "+irand(rng,100,2999);
+    const phone = "(907) "+irand(rng,200,899)+"-"+String(irand(rng,0,9999)).padStart(4,"0");
+    let lang = "English";
+    if(tribal && rng()<0.4){
+      lang = ({"Yukon-Kuskokwim":"Yup'ik","Norton Sound":"Yup'ik","Bristol Bay":"Yup'ik","Northwest Arctic":"I\u00f1upiaq"})[region.region]||"English";
+    }
+
+    // spans
+    const spans = [];
+    if(sc==="A"||sc==="E"||sc==="F"){
+      spans.push({cat, b:0, e:null, notes: sc==="F" ? "Buy-in accretion effective one cycle after grant" : sc==="E" ? "IHS-eligible; services via "+region.tho : "Renewals current"});
+    } else if(sc==="B"){
+      const drop = irand(rng,5,11);            // renewal miss in 2025
+      const gap  = irand(rng,1,3);
+      spans.push({cat, b:0, e:drop, notes:"Closed at renewal — returned paperwork not received"});
+      spans.push({cat, b:drop+gap+1, e:null, notes:"Re-enrolled after "+gap+"-month gap"});
+    } else if(sc==="C"){
+      const appMonth = irand(rng,4,15);
+      const retro = irand(rng,1,3);
+      spans.push({cat, b:appMonth-retro, e:null, retro:true, app:appMonth, retroN:retro,
+        notes:"Application "+mLabel(appMonth)+"; granted "+retro+" retro month"+(retro>1?"s":"")});
+    } else if(sc==="D"){
+      const bday = irand(rng,7,16);            // ages out mid-window
+      const clean = rng()<.65;
+      spans.push({cat:"30", b:0, e:bday, notes:"Denali KidCare ends at 19th birthday month"});
+      if(clean) spans.push({cat:"10", b:bday+1, e:null, notes:"Seamless transition to Group VIII"});
+      else{ const g=irand(rng,1,2); spans.push({cat:"10", b:bday+1+g, e:null, notes:"Transition missed; "+g+"-month gap before Group VIII"}); }
+    }
+    // current category = category of last span
+    const curCat = spans[spans.length-1].cat;
+    const hasGap = spans.length>1 && spans[1].b > (spans[0].e+1);
+    const hasRetro = spans.some(s=>s.retro);
+    members.push({rid,name,dob,gender,street,zip,phone,lang,region:region.region,community,tho:tribal?region.tho:null,tribal,sc,cat:curCat,spans,hasGap,hasRetro,
+      dual: sc==="F"});
+  }
+  members.sort((a,b)=>a.name.localeCompare(b.name));
+})();
+
+/* ---------- overview cards ---------- */
+(function overview(){
+  const openSpans = members.reduce((n,m)=>n+m.spans.filter(s=>s.e===null).length,0);
+  const tribalPct = Math.round(100*members.filter(m=>m.tribal).length/members.length);
+  const retroN = members.filter(m=>m.hasRetro).length;
+  const gapN = members.filter(m=>m.hasGap).length;
+  const dualN = members.filter(m=>m.dual).length;
+  const cards = [
+    {big:members.length, lbl:"Synthetic recipients", sub:"seed-stable roster"},
+    {big:openSpans, lbl:"Spans in force (Jul 2026)", sub:"pure fee-for-service"},
+    {big:tribalPct+"%", lbl:"IHS / tribal affiliated", sub:"100% FMAP when served via THO"},
+    {big:gapN, lbl:"Members with a coverage gap", sub:"register B & missed age-outs"},
+    {big:retroN, lbl:"Retroactive grants", sub:"up to 3 months back"},
+    {big:dualN, lbl:"Medicare duals (QMB/SLMB)", sub:"buy-in accretion lag"}
+  ];
+  document.getElementById("ov-cards").innerHTML = cards.map(c=>
+    `<div class="card"><div class="big">${c.big}</div><div class="lbl">${c.lbl}</div><div class="sub mono">${c.sub}</div></div>`).join("");
+  document.getElementById("ov-legend").innerHTML = Object.entries(CATS).map(([k,c])=>
+    `<span><i class="catdot" style="background:${c.color}"></i>${k} ${c.name}</span>`).join("");
+})();
+
+/* ---------- nav ---------- */
+const nav = document.getElementById("nav");
+nav.addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  showPanel(b.dataset.panel);
+});
+function showPanel(id){
+  document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("active",x.dataset.panel===id));
+  document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id==="panel-"+id));
+}
+
+/* ---------- members table ---------- */
+const mSearch=document.getElementById("m-search"), mRegion=document.getElementById("m-region"),
+      mCat=document.getElementById("m-cat"), mFlag=document.getElementById("m-flag");
+REGIONS.forEach(r=>mRegion.insertAdjacentHTML("beforeend",`<option>${r.region}</option>`));
+Object.entries(CATS).forEach(([k,c])=>{
+  mCat.insertAdjacentHTML("beforeend",`<option value="${k}">${k} — ${c.name}</option>`);
+  document.getElementById("s-cat").insertAdjacentHTML("beforeend",`<option value="${k}">${k} — ${c.name}</option>`);
+});
+[mSearch,mRegion,mCat,mFlag].forEach(el=>el.addEventListener("input",renderMembers));
+
+function memberFlags(m){
+  const f=[];
+  if(m.tribal) f.push('<span class="badge tribal">IHS/Tribal</span>');
+  if(m.dual)   f.push('<span class="badge dual">Dual</span>');
+  if(m.hasRetro) f.push('<span class="badge retro">Retro</span>');
+  if(m.hasGap) f.push('<span class="badge gap">Gap</span>');
+  return f.join(" ")||"—";
+}
+let currentMemberRids=[];
+function renderMembers(){
+  const q=mSearch.value.trim().toLowerCase(), rg=mRegion.value, ct=mCat.value, fl=mFlag.value;
+  const rows = members.filter(m=>{
+    if(q && !(m.name.toLowerCase().includes(q)||m.rid.includes(q)||m.community.toLowerCase().includes(q)||m.street.toLowerCase().includes(q))) return false;
+    if(rg && m.region!==rg) return false;
+    if(ct && m.cat!==ct) return false;
+    if(fl==="tribal"&&!m.tribal) return false;
+    if(fl==="dual"&&!m.dual) return false;
+    if(fl==="retro"&&!m.hasRetro) return false;
+    if(fl==="gap"&&!m.hasGap) return false;
+    return true;
+  });
+  currentMemberRids = rows.map(m=>m.rid);
+  document.getElementById("m-count").textContent = rows.length+" of "+members.length+" members";
+  document.getElementById("m-empty").style.display = rows.length? "none":"block";
+  document.getElementById("m-body").innerHTML = rows.map(m=>
+    `<tr class="rowlink" data-rid="${m.rid}" tabindex="0">
+      <td class="mono">${m.rid}</td><td><b>${m.name}</b></td><td class="mono">${m.dob}</td>
+      <td class="mono">${m.gender}</td>
+      <td>${m.street}<br><span style="color:var(--ink-3)">${m.community}, AK ${m.zip}</span></td>
+      <td>${m.region}</td>
+      <td><i class="catdot" style="background:${CATS[m.cat].color}"></i><span class="mono">${m.cat}</span> ${CATS[m.cat].name}</td>
+      <td>${m.tho||"<span style='color:var(--ink-3)'>—</span>"}</td>
+      <td>${memberFlags(m)}</td></tr>`).join("");
+}
+document.getElementById("m-body").addEventListener("click",e=>{
+  const tr=e.target.closest("tr[data-rid]"); if(tr) openMember(tr.dataset.rid, tr.closest("#s-body")? currentSpanRids : currentMemberRids);
+});
+document.getElementById("m-body").addEventListener("keydown",e=>{
+  if(e.key==="Enter"){const tr=e.target.closest("tr[data-rid]"); if(tr) openMember(tr.dataset.rid, tr.closest("#s-body")? currentSpanRids : currentMemberRids);}
+});
+
+/* ---------- member slide-over + timeline ---------- */
+const soOverlay=document.getElementById("so-overlay"),
+      soPanel=document.getElementById("so-panel"),
+      soContent=document.getElementById("so-content"),
+      soTitle=document.getElementById("so-title");
+let soReturnFocus=null;
+let navList=[], navIdx=-1;           // rids in the order of whatever list the member was opened from
+const soPrev=document.getElementById("so-prev"),
+      soNext=document.getElementById("so-next"),
+      soCounter=document.getElementById("so-counter");
+function highlightRow(rid){
+  document.querySelectorAll("tr.row-active").forEach(tr=>tr.classList.remove("row-active"));
+  if(!rid) return;
+  document.querySelectorAll(`tr[data-rid="${rid}"]`).forEach(tr=>tr.classList.add("row-active"));
+  const activePanel=document.querySelector(".panel.active");
+  const tr=activePanel? activePanel.querySelector(`tr[data-rid="${rid}"]`):null;
+  if(tr) tr.scrollIntoView({block:"nearest",behavior:"smooth"});
+}
+function navTo(step){
+  if(navIdx<0) return;
+  const i=navIdx+step;
+  if(i<0||i>=navList.length) return;
+  openMember(navList[i]);
+}
+soPrev.addEventListener("click",()=>navTo(-1));
+soNext.addEventListener("click",()=>navTo(1));
+function closeMember(){
+  soOverlay.classList.remove("show");
+  soPanel.classList.remove("show");
+  highlightRow(null);
+  navList=[]; navIdx=-1;
+  if(soReturnFocus && document.contains(soReturnFocus)) soReturnFocus.focus();
+  soReturnFocus=null;
+}
+document.getElementById("so-close").addEventListener("click",closeMember);
+soOverlay.addEventListener("click",closeMember);
+document.addEventListener("keydown",e=>{
+  if(!soPanel.classList.contains("show")) return;
+  if(e.key==="Escape") closeMember();
+  else if(e.key==="ArrowLeft"){e.preventDefault();navTo(-1);}
+  else if(e.key==="ArrowRight"){e.preventDefault();navTo(1);}
+});
+
+function monthFull(i){return new Date(2025,i,1).toLocaleString('en-US',{month:'long',year:'numeric'})}
+function peNarrative(m){
+  const first=m.name.split(" ")[0];
+  const s0=m.spans[0], s1=m.spans[1];
+  let story="";
+  if(m.sc==="A"){
+    story=`${first} has held one unbroken span of ${CATS[s0.cat].name} coverage since ${monthFull(s0.b)} — renewals processed on time, nothing to reconcile. Quiet is the product working.`;
+  } else if(m.sc==="B"){
+    const gap=s1.b-s0.e-1;
+    story=`Coverage closed at renewal in ${monthFull(s0.e)} — paperwork, not ineligibility. For ${gap} month${gap>1?"s":""} there was no span, so any claims from that hole simply denied. ${first} re-enrolled in ${monthFull(s1.b)} under the same category, as if nothing happened — except the bills.`;
+  } else if(m.sc==="C"){
+    story=`${first} applied in ${monthFull(s0.app)}, but coverage was granted back to ${monthFull(s0.b)} — ${s0.retroN} retroactive month${s0.retroN>1?"s":""}. The span starts before the paperwork did, on purpose, and claims from those months come back from the dead to re-adjudicate.`;
+  } else if(m.sc==="D"){
+    const gap=s1? s1.b-s0.e-1 : 0;
+    story = gap===0
+      ? `${first}'s Denali KidCare coverage ended at the 19th-birthday month (${monthFull(s0.e)}) and a Group VIII expansion span opened the very next day — the handoff connected, and the funding stream flipped underneath without a seam.`
+      : `${first}'s Denali KidCare coverage ended at the 19th-birthday month (${monthFull(s0.e)}), but the Group VIII span didn't open until ${monthFull(s1.b)} — a ${gap}-month hole at exactly the age when a care routine is easiest to lose.`;
+  } else if(m.sc==="E"){
+    story=`${first} is IHS-eligible and served through ${m.tho.replace(/\.$/,'')}. Every Medicaid service delivered through the tribal system draws the 100% federal match — the state's share is zero as long as the flag on this record and the routing on the claim both tell the truth.`;
+  } else if(m.sc==="F"){
+    story=`${first} is a ${CATS[m.cat].name.replace(' (Medicare dual)','')} dual: Medicare pays first, and the state ${m.cat==="60"?"picks up premiums and cost sharing":"picks up the Part B premium"}. The catch is timing — the buy-in accretion posts a cycle behind the decision, and crossover claims can miscoordinate in that window.`;
+  }
+  if(m.tribal && m.sc!=="E"){
+    story += ` (${first} is also IHS-eligible via ${m.tho.replace(/\.$/,'')}, so the 100%-match rule from register E applies here too.)`;
+  }
+  return story;
+}
+
+function openMember(rid, list){
+  const m = members.find(x=>x.rid===rid); if(!m) return;
+  if(list) navList=list.slice();
+  else if(!navList.includes(rid)) navList=currentMemberRids.slice();
+  navIdx=navList.indexOf(rid);
+  const reg = REGISTERS.find(r=>r.key===m.sc);
+  const total=24;
+  const axis = [0,6,12,18,23].map(i=>`<span style="left:${(i/total)*100}%">${mLabel(i)}</span>`).join("");
+  const segs = m.spans.map(s=>{
+    const b=s.b, e=(s.e===null? total : s.e+1);
+    return `<div class="tl-seg" title="${s.cat} ${CATS[s.cat].name}: ${mDate(s.b)} → ${s.e===null?'open':mEnd(s.e)}"
+      style="left:${(b/total)*100}%;width:${((e-b)/total)*100}%;background:${CATS[s.cat].color};opacity:.85"></div>`;
+  }).join("");
+  const spanRows = m.spans.map(s=>
+    `<tr><td><i class="catdot" style="background:${CATS[s.cat].color}"></i><span class="mono">${s.cat}</span> ${CATS[s.cat].name}</td>
+     <td class="mono">${mDate(s.b)}</td>
+     <td class="mono">${s.e===null? '<span class="badge open">open</span>' : mEnd(s.e)}</td>
+     <td>${s.retro?'<span class="badge retro">retro</span> ':''}${s.notes}</td></tr>`).join("");
+  if(!soPanel.classList.contains("show")) soReturnFocus = document.activeElement;
+  soPrev.disabled = navIdx<=0;
+  soNext.disabled = navIdx<0 || navIdx>=navList.length-1;
+  soCounter.textContent = navIdx>=0 ? (navIdx+1)+" of "+navList.length : "";
+  highlightRow(rid);
+  soTitle.innerHTML = `${m.name} <span class="mono" style="color:var(--ink-3);font-size:12px">${m.rid}</span>`;
+  soContent.innerHTML = `
+    <dl class="kv">
+      <dt>Date of birth</dt><dd class="mono">${m.dob}</dd>
+      <dt>Sex</dt><dd class="mono">${m.gender}</dd>
+      <dt>Address</dt><dd>${m.street}<br>${m.community}, AK ${m.zip}</dd>
+      <dt>Phone</dt><dd class="mono">${m.phone}</dd>
+      <dt>Preferred language</dt><dd>${m.lang}</dd>
+      <dt>Region / community</dt><dd>${m.region} — ${m.community}</dd>
+      <dt>Tribal health org</dt><dd>${m.tho||"Not IHS-affiliated"}</dd>
+      <dt>Scenario register</dt><dd><span class="mono">${m.sc}</span> — ${reg.title}</dd>
+      <dt>Flags</dt><dd>${memberFlags(m)}</dd>
+    </dl>
+    <div class="plain-english">
+      <div class="pe-label">In plain English</div>
+      <div class="pe-body">${peNarrative(m)}</div>
+    </div>
+    <div class="tl-wrap">
+      <div class="tl-axis">${axis}</div>
+      <div class="tl-track">${segs}<div class="tl-today" style="left:${((TODAY_IDX+0.3)/total)*100}%" title="Today — Jul 2026"></div></div>
+      <div class="tl-cap">Jan 2025 – Dec 2026 &middot; dark rule = today (Jul 2026) &middot; grey = no coverage</div>
+    </div>
+    <table aria-label="Member spans"><thead><tr><th>Category</th><th>Begin</th><th>End</th><th>Notes</th></tr></thead>
+    <tbody>${spanRows}</tbody></table>`;
+  soContent.scrollTop = 0;
+  const wasOpen = soPanel.classList.contains("show");
+  soOverlay.classList.add("show");
+  soPanel.classList.add("show");
+  if(!wasOpen) document.getElementById("so-close").focus();
+}
+
+/* ---------- spans table ---------- */
+const sCat=document.getElementById("s-cat"), sKind=document.getElementById("s-kind");
+[sCat,sKind].forEach(el=>el.addEventListener("input",renderSpans));
+let currentSpanRids=[];
+function renderSpans(){
+  const ct=sCat.value, kind=sKind.value;
+  const rows=[];
+  members.forEach(m=>m.spans.forEach(s=>{
+    if(ct && s.cat!==ct) return;
+    if(kind==="open" && s.e!==null) return;
+    if(kind==="closed" && s.e===null) return;
+    if(kind==="retro" && !s.retro) return;
+    rows.push({m,s});
+  }));
+  rows.sort((a,b)=>a.m.name.localeCompare(b.m.name)||a.s.b-b.s.b);
+  currentSpanRids = [...new Set(rows.map(r=>r.m.rid))];
+  document.getElementById("s-count").textContent = rows.length+" spans";
+  document.getElementById("s-empty").style.display = rows.length? "none":"block";
+  document.getElementById("s-body").innerHTML = rows.map(({m,s})=>{
+    const months = (s.e===null? 24 : s.e+1) - s.b;
+    return `<tr class="rowlink" data-rid="${m.rid}">
+      <td class="mono">${m.rid}</td><td><b>${m.name}</b></td>
+      <td><i class="catdot" style="background:${CATS[s.cat].color}"></i><span class="mono">${s.cat}</span> ${CATS[s.cat].name}</td>
+      <td class="mono">${mDate(s.b)}</td>
+      <td class="mono">${s.e===null? '<span class="badge open">open</span>' : mEnd(s.e)}</td>
+      <td class="mono">${months}${s.e===null?"+":""}</td>
+      <td>${s.retro?'<span class="badge retro">retro</span> ':''}${s.notes}</td></tr>`;
+  }).join("");
+}
+document.getElementById("s-body").addEventListener("click",e=>{
+  const tr=e.target.closest("tr[data-rid]"); if(tr) openMember(tr.dataset.rid, tr.closest("#s-body")? currentSpanRids : currentMemberRids);
+});
+
+/* ---------- scenario registers ---------- */
+(function regs(){
+  const host=document.getElementById("registers");
+  host.innerHTML = REGISTERS.map(r=>{
+    const ex = members.filter(m=>m.sc===r.key).slice(0,3);
+    return `<div class="register">
+      <span class="reg-key">REGISTER ${r.key}</span>
+      <h3>${r.title} — <span style="color:var(--ink-2);font-weight:500">&ldquo;${r.q}&rdquo;</span></h3>
+      <p>${r.body}</p>
+      <p class="biz">${r.biz}</p>
+      <div class="reg-examples">${ex.map(m=>`<button data-rid="${m.rid}">${m.name} · ${m.rid}</button>`).join("")}</div>
+    </div>`;
+  }).join("");
+  host.addEventListener("click",e=>{
+    const b=e.target.closest("button[data-rid]"); if(b){const m=members.find(x=>x.rid===b.dataset.rid); openMember(b.dataset.rid, members.filter(x=>x.sc===m.sc).map(x=>x.rid));}
+  });
+})();
+
+/* ---------- codes tables ---------- */
+document.getElementById("c-body").innerHTML = Object.entries(CATS).map(([k,c])=>
+  `<tr><td class="mono"><i class="catdot" style="background:${c.color}"></i>${k}</td><td><b>${c.name}</b></td><td>${c.fam}</td><td>${c.fund}</td></tr>`).join("");
+document.getElementById("r-body").innerHTML = REGIONS.map(r=>
+  `<tr><td><b>${r.region}</b></td><td>${r.hub}</td><td>${r.tho}</td></tr>`).join("");
+
+/* ---------- what the file says: synthetic 834 ---------- */
+function d8(iso){return iso.replace(/-/g,"")}
+function build834(m){
+  const rows=[]; // {loop, seg, note}
+  const push=(loop,seg,note)=>rows.push({loop,seg,note});
+  const [last,first]=[m.name.split(" ")[1], m.name.split(" ")[0]];
+  push("ENVELOPE","ISA*00*          *00*          *ZZ*AKMEDDEMO      *ZZ*CENTRALSERIES  *260701*0800*^*00501*000000907*0*T*:~","Interchange envelope: demo sender/receiver IDs, control number 000000907, usage T = test. Fixed-width fields are why the padding is real.");
+  push("ENVELOPE","GS*BE*AKMEDDEMO*CENTRALSERIES*20260701*0800*907*X*005010X220A1~","Functional group: BE = Benefit Enrollment, version 005010X220A1 — the 834 implementation guide.");
+  push("ENVELOPE","ST*834*0001*005010X220A1~","Transaction set header: this is an 834, control number 0001.");
+  push("HEADER","BGN*00*ELIGVER-20260701*20260701*0800****4~","Beginning segment: 00 = original, reference ELIGVER-20260701, action code 4 = verify — an audit-style statement of current truth, the file-shaped cousin of a full-state reconciliation.");
+  push("HEADER","REF*38*AKFFSDEMO~","Master policy number (illustrative): fee-for-service Medicaid has no plan, so this identifies the program itself.");
+  push("HEADER","N1*P5*ALASKA MEDICAID DEMO*FI*920000001~","Plan sponsor loop: the state program as sponsor (synthetic tax ID).");
+  push("HEADER","N1*IN*CENTRAL SERIES DEMO*FI*910000001~","Insurer loop: in a no-MCO state the 'insurer' is the program's fiscal agent side — annotated here as the demo receiver.");
+  // member level
+  push("2000 MEMBER LEVEL",`INS*Y*18*030*XN*A***FT~`,"Member level detail: Y = subscriber (Medicaid members are their own subscriber), 18 = self, maintenance 030 = audit/compare (matches BGN action 4), XN = notification, benefit status A = active, FT = full-time n/a filler shown for shape.");
+  push("2000 MEMBER LEVEL",`REF*0F*${m.rid}~`,"Subscriber identifier: the state recipient ID — the one hook every span in this app hangs on.");
+  push("2000 MEMBER LEVEL",`REF*17*REGISTER-${m.sc}~`,"Client reporting category (illustrative): carrying the app's scenario register the way real feeds carry rate codes or program tags.");
+  if(m.tribal) push("2000 MEMBER LEVEL",`REF*ZZ*IHS-ELIGIBLE~`,"Mutually defined qualifier (illustrative): the tribal-affiliation flag. One optional-looking REF that moves the state share of a tribal-system claim from ~50% to 0% — the most expensive 'ZZ' in the file.");
+  push("2100A MEMBER NAME",`NM1*IL*1*${last.toUpperCase()}*${first.toUpperCase()}~`,"Member name: IL = insured/subscriber, entity type 1 = person.");
+  push("2100A MEMBER NAME",`PER*IP**TE*${m.phone.replace(/\D/g,"")}~`,"Member communications: IP = insured party, TE = telephone. Digits only — the parentheses live in the UI, never in the file.");
+  push("2100A MEMBER NAME",`DMG*D8*${d8(m.dob)}*${m.gender}~`,`Demographics: date of birth (CCYYMMDD), gender code ${m.gender}${m.gender==="U"? " — unknown; the file states what it knows and admits what it doesn't":""}.`);
+  if(m.lang!=="English") push("2100A MEMBER NAME",`LUI*LD*${m.lang.toUpperCase().replace(/[^A-Z]/g,"").slice(0,3)}***5~`,`Language use: preferred spoken language ${m.lang} (illustrative code). In the YK Delta and the Arctic this segment is member service, not metadata — notices and interpreters hang off it.`);
+  push("2100A MEMBER NAME",`N3*${m.street.toUpperCase()}~`,"Street address."+(m.street.startsWith("PO Box")? " A PO box — the norm off the road system, where there is no carrier route to have an address on.":""));
+  push("2100A MEMBER NAME",`N4*${m.community.toUpperCase()}*AK*${m.zip}~`,"City/state/ZIP: the community drives everything downstream — tribal service area, travel distance, provider access.");
+  // coverage loops per span
+  m.spans.forEach((s,i)=>{
+    const label=`2300 HEALTH COVERAGE ${m.spans.length>1? "· SPAN "+(i+1):""}`;
+    push(label,`HD*030**HLT*AK-CAT-${s.cat}~`,`Health coverage: HLT = health line; HD04 carries the eligibility category — ${s.cat} ${CATS[s.cat].name}. The category is the door, and the door decides the match rate.`);
+    push(label,`DTP*348*D8*${d8(mDate(s.b))}~`,"Benefit begin date."+(s.retro? " Begins before the application month — a retroactive grant; downstream systems must tolerate coverage that starts in the past.":""));
+    if(s.e!==null) push(label,`DTP*349*D8*${d8(mEnd(s.e))}~`,"Benefit end date. "+(s.notes||""));
+    else push(label,`DTP*303*D8*20260701~`,"Maintenance effective date shown in place of an end date: the span is open — no DTP*349 means coverage is in force.");
+  });
+  // trailers with real counts
+  const stIdx = rows.findIndex(r=>r.seg.startsWith("ST*"));
+  const segCount = rows.length - stIdx + 1; // ST..SE inclusive
+  push("ENVELOPE",`SE*${segCount}*0001~`,`Transaction trailer: ${segCount} segments from ST through SE — the count is computed, because a trailer that lies is worse than no trailer.`);
+  push("ENVELOPE","GE*1*907~","Functional group trailer: one transaction.");
+  push("ENVELOPE","IEA*1*000000907~","Interchange trailer: one functional group, control number matches the ISA.");
+  return rows;
+}
+function boldSegId(seg){ return seg.replace(/^([A-Z0-9]{2,3})\*/, "<b>$1</b>*"); }
+const fMember=document.getElementById("f-member"), fGrid=document.getElementById("f-grid"),
+      fRaw=document.getElementById("f-raw"), fToggle=document.getElementById("f-toggle");
+members.forEach(m=>fMember.insertAdjacentHTML("beforeend",`<option value="${m.rid}">${m.name} · ${m.rid} · reg ${m.sc}</option>`));
+function renderFile(){
+  const m=members.find(x=>x.rid===fMember.value)||members[0];
+  const rows=build834(m);
+  let lastLoop=null, html="";
+  rows.forEach(r=>{
+    if(r.loop!==lastLoop){ html+=`<div class="frow"><div class="floop">${r.loop}</div></div>`; lastLoop=r.loop; }
+    html+=`<div class="frow"><div class="fseg">${boldSegId(r.seg)}</div><div class="fnote">${r.note}</div></div>`;
+  });
+  fGrid.innerHTML=html;
+  fRaw.textContent=rows.map(r=>r.seg).join("\n");
+  document.getElementById("f-count").textContent=rows.length+" segments · "+m.spans.length+" coverage span"+(m.spans.length>1?"s":"");
+}
+fMember.addEventListener("input",renderFile);
+fToggle.addEventListener("click",()=>{
+  const raw = fRaw.style.display==="none";
+  fRaw.style.display = raw? "block":"none";
+  fGrid.style.display = raw? "none":"block";
+  fToggle.textContent = raw? "View annotated segments":"View raw transaction";
+  fToggle.setAttribute("aria-pressed", raw? "true":"false");
+});
+
+/* ---------- initial render ---------- */
+renderMembers();
+renderSpans();
+renderFile();
+</script>
+</body>
+</html>

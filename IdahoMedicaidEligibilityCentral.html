@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Idaho Medicaid Eligibility Central</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@1,8..60,400;1,8..60,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#1E5FCC;
+  --accent-soft:#E8EFFB;
+  --ink:#1b2430;
+  --ink-soft:#4a5568;
+  --ink-faint:#8a94a3;
+  --line:#dde3ea;
+  --line-soft:#eceff3;
+  --bg:#f7f8fa;
+  --card:#ffffff;
+  --serif:'Source Serif 4', Georgia, serif;
+  --sans:'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono:'IBM Plex Mono', 'Consolas', monospace;
+  --g-FC01:#2E7D5B; --g-PG02:#B0568C; --g-CH19:#C98A2B; --g-EA02:#1E5FCC;
+  --g-SI02:#6A4FB6; --g-MN98:#5B8AA6; --g-FF26:#C25B4A; --g-WD02:#3E9C9C; --g-LT01:#7A7A52;
+  --d-mco:#4a7fd6; --d-ffs:#9aa3ad; --d-bh:#8a5fc0; --d-den:#2e8f8f; --d-pcp:#5d9e52;
+  --ok:#2E7D5B; --warn:#C98A2B; --bad:#C0392B;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+
+/* ---------- header ---------- */
+header{background:var(--card);border-bottom:1px solid var(--line);padding:18px 28px 0}
+.brandrow{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.wordmark{font-family:var(--serif);font-style:italic;font-weight:600;font-size:1.65rem;color:var(--accent);letter-spacing:.01em}
+.wordmark .st{color:var(--ink)}
+.tagline{color:var(--ink-faint);font-size:.85rem}
+.credit{margin-left:auto;color:var(--ink-faint);font-size:.78rem}
+nav{display:flex;gap:2px;margin-top:14px;flex-wrap:wrap}
+nav button{appearance:none;border:none;background:none;font:inherit;font-size:.86rem;font-weight:500;color:var(--ink-soft);padding:9px 14px;cursor:pointer;border-bottom:3px solid transparent;border-radius:6px 6px 0 0}
+nav button:hover{background:var(--line-soft)}
+nav button.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+nav button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+/* ---------- layout ---------- */
+main{max-width:1280px;margin:0 auto;padding:24px 28px 80px}
+.page{display:none}
+.page.on{display:block}
+h2{font-size:1.22rem;font-weight:700;margin:4px 0 4px}
+h3{font-size:.98rem;font-weight:600;margin:22px 0 8px}
+.sub{color:var(--ink-soft);font-size:.88rem;margin-bottom:16px;max-width:70ch}
+
+/* ---------- plain english callout ---------- */
+.plain{font-family:var(--serif);font-style:italic;font-size:1.02rem;line-height:1.65;color:#2c3a4d;background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:14px 18px;margin:14px 0 20px;max-width:86ch}
+.plain b{font-style:italic;font-weight:600}
+.plain .pe-label{display:block;font-family:var(--sans);font-style:normal;font-weight:700;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:5px}
+
+/* ---------- cards / stats ---------- */
+.statrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.stat .n{font-family:var(--mono);font-size:1.55rem;font-weight:600;color:var(--ink)}
+.stat .l{font-size:.74rem;color:var(--ink-soft);margin-top:2px;line-height:1.35}
+.stat.acc .n{color:var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:14px 0}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:900px){.twocol{grid-template-columns:1fr}}
+
+/* ---------- legend / bars ---------- */
+.leg{display:flex;flex-direction:column;gap:7px}
+.legrow{display:grid;grid-template-columns:16px 64px 1fr 46px;gap:10px;align-items:center;font-size:.84rem}
+.legrow .swatch{width:14px;height:14px;border-radius:4px}
+.legrow .code{font-family:var(--mono);font-size:.8rem;font-weight:600}
+.legrow .cnt{font-family:var(--mono);text-align:right;color:var(--ink-soft)}
+.barlist{display:flex;flex-direction:column;gap:8px}
+.barrow{display:grid;grid-template-columns:210px 1fr 40px;gap:10px;align-items:center;font-size:.83rem}
+.barrow .track{background:var(--line-soft);border-radius:5px;height:14px;overflow:hidden}
+.barrow .fill{display:block;height:100%;background:var(--d-mco);border-radius:5px;transition:width .8s ease}
+.barrow .bn{font-family:var(--mono);text-align:right;color:var(--ink-soft)}
+@media(max-width:700px){.barrow{grid-template-columns:130px 1fr 36px}}
+
+/* ---------- controls ---------- */
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;align-items:center}
+.controls input[type=search],.controls select{font:inherit;font-size:.85rem;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
+.controls input[type=search]{min-width:220px}
+.controls select:focus,.controls input:focus{outline:2px solid var(--accent);outline-offset:0}
+.hint{font-size:.76rem;color:var(--ink-faint)}
+
+/* ---------- tables ---------- */
+.tblwrap{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:auto;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:.83rem}
+th{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);background:#fbfcfd;white-space:nowrap;position:sticky;top:0}
+th.sortable{cursor:pointer;user-select:none}
+th.sortable:hover{color:var(--accent)}
+th .arr{font-size:.72rem;color:var(--accent)}
+.pager{display:flex;align-items:center;justify-content:center;gap:14px;margin:12px 0 2px}
+.pager button.pg{appearance:none;font:inherit;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:5px 13px;cursor:pointer;font-size:.82rem;color:var(--ink-soft)}
+.pager button.pg:hover:not(:disabled){background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.pager button.pg:disabled{opacity:.35;cursor:default}
+.pager .pgpos{font-size:.78rem;color:var(--ink-faint)}
+td{padding:9px 12px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tbody tr.rowlink{cursor:pointer}
+tbody tr.rowlink:hover{background:var(--accent-soft)}
+tbody tr.hl{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+.mono{font-family:var(--mono);font-size:.8rem}
+.nowrap{white-space:nowrap}
+
+/* ---------- chips ---------- */
+.chip{display:inline-block;font-family:var(--mono);font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:20px;color:#fff;white-space:nowrap}
+.chip.outl{background:none;border:1.5px solid currentColor}
+.dchip{display:inline-block;font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:5px;white-space:nowrap}
+.d-mco{background:#e5edfa;color:#2456a8}
+.d-ffs{background:#eceff2;color:#5c6672}
+.d-bh{background:#efe7f8;color:#6a3fa0}
+.d-den{background:#e2f2f2;color:#1f6f6f}
+.d-pcp{background:#e7f2e4;color:#3c6e33}
+.st-act{color:var(--ok);font-weight:600}
+.st-gap{color:var(--warn);font-weight:600}
+.st-cls{color:var(--ink-faint);font-weight:600}
+.flag{display:inline-block;font-size:.7rem;font-weight:600;background:#fdf1e0;color:#96660f;border:1px solid #f0d9ae;border-radius:5px;padding:1px 7px;white-space:nowrap}
+
+/* ---------- registers ---------- */
+.reg{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin:12px 0}
+.reg h3{margin:0 0 4px;display:flex;align-items:center;gap:10px}
+.reg .rl{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;background:var(--accent);color:#fff;font-family:var(--mono);font-weight:600;font-size:.85rem;flex:none}
+.reg .q{font-family:var(--serif);font-style:italic;color:#2c3a4d;font-size:.95rem;margin:4px 0 10px}
+.reg .meta{font-size:.78rem;color:var(--ink-faint);margin-bottom:8px}
+
+/* ---------- 834 ---------- */
+.ediwrap{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:12px 0;overflow:hidden}
+.edihead{padding:12px 18px;border-bottom:1px solid var(--line);display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;background:#fbfcfd}
+.edihead .fn{font-family:var(--mono);font-size:.82rem;font-weight:600}
+.edirow{display:grid;grid-template-columns:minmax(300px,46%) 1fr;border-bottom:1px solid var(--line-soft)}
+.edirow:last-child{border-bottom:none}
+.edirow .seg{font-family:var(--mono);font-size:.78rem;padding:8px 16px;background:#f4f7fb;color:#1b3a66;overflow-wrap:anywhere;border-right:1px solid var(--line-soft)}
+.edirow .note{font-size:.8rem;padding:8px 16px;color:var(--ink-soft)}
+.edirow.loop .seg{background:#e8effb;font-weight:600}
+@media(max-width:780px){.edirow{grid-template-columns:1fr}.edirow .seg{border-right:none}}
+
+/* ---------- modal ---------- */
+.overlay{position:fixed;inset:0;background:rgba(20,28,40,.42);opacity:0;pointer-events:none;transition:opacity .22s;z-index:40}
+.overlay.on{opacity:1;pointer-events:auto}
+.slideover{position:fixed;top:0;right:0;bottom:0;width:640px;max-width:94vw;background:var(--card);box-shadow:-12px 0 40px rgba(15,25,45,.22);transform:translateX(102%);transition:transform .26s ease;z-index:50;display:flex;flex-direction:column}
+.slideover.on{transform:translateX(0)}
+.mo-head{padding:16px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+.mo-head .who{min-width:0}
+.mo-head .nm{font-weight:700;font-size:1.05rem}
+.mo-head .idz{font-family:var(--mono);font-size:.76rem;color:var(--ink-soft)}
+.mo-x{margin-left:auto;appearance:none;border:1px solid var(--line);background:none;border-radius:8px;width:32px;height:32px;font-size:1rem;cursor:pointer;color:var(--ink-soft);flex:none}
+.mo-x:hover{background:var(--line-soft)}
+.mo-body{overflow-y:auto;padding:18px 22px;flex:1}
+.mo-foot{border-top:1px solid var(--line);padding:10px 22px;display:flex;align-items:center;gap:12px}
+.mo-foot button{appearance:none;font:inherit;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:.9rem}
+.mo-foot button:hover:not(:disabled){background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.mo-foot button:disabled{opacity:.35;cursor:default}
+.mo-foot .pos{font-family:var(--mono);font-size:.78rem;color:var(--ink-faint);margin-left:auto}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:4px 12px;font-size:.85rem;margin:8px 0 14px}
+.kv .k{color:var(--ink-faint)}
+.kv .v{color:var(--ink)}
+.mo-body h4{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);margin:16px 0 8px}
+.mo-body .plain{font-size:.93rem;padding:12px 15px}
+
+/* ---------- mini timeline ---------- */
+.tl{margin:6px 0 4px}
+.tl .band{display:grid;grid-template-columns:78px 1fr;gap:8px;align-items:center;margin:5px 0}
+.tl .bl{font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-faint);text-align:right}
+.tl .lane{position:relative;height:18px;background:var(--line-soft);border-radius:4px}
+.tl .bar{position:absolute;top:0;bottom:0;border-radius:4px;min-width:3px}
+.tl .bar.striped{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.28) 0 5px,transparent 5px 10px)}
+.tl .axis{display:grid;grid-template-columns:78px 1fr;gap:8px;margin-top:3px}
+.tl .ax{position:relative;height:14px;font-size:.62rem;color:var(--ink-faint);font-family:var(--mono)}
+.tl .ax span{position:absolute;transform:translateX(-50%)}
+.tl .todayline{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--bad);opacity:.7}
+.tl-note{font-size:.7rem;color:var(--ink-faint);margin-top:6px}
+
+/* ---------- reference ---------- */
+.refgrid{display:grid;grid-template-columns:1fr;gap:4px}
+dl.gloss{display:grid;grid-template-columns:200px 1fr;gap:8px 16px;font-size:.85rem}
+dl.gloss dt{font-weight:600}
+dl.gloss dd{color:var(--ink-soft)}
+@media(max-width:700px){dl.gloss{grid-template-columns:1fr}dl.gloss dd{margin-bottom:8px}}
+footer{max-width:1280px;margin:0 auto;padding:0 28px 40px;color:var(--ink-faint);font-size:.75rem;line-height:1.6}
+@media(max-width:700px){header{padding:14px 16px 0}main{padding:18px 14px 60px}.kv{grid-template-columns:120px 1fr}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brandrow">
+    <div class="wordmark">Idaho Medicaid Eligibility <span class="st">Central</span></div>
+    <div class="tagline">Healthy Connections, the benefit-lane carve-ins, and the 834 &mdash; a synthetic demonstration</div>
+    <div class="credit">Robert Thomas Keyes</div>
+  </div>
+  <nav id="nav" aria-label="Sections">
+    <button data-pg="overview" class="on">Overview</button>
+    <button data-pg="members">Members</button>
+    <button data-pg="spans">Eligibility Spans</button>
+    <button data-pg="delivery">Benefit Lanes</button>
+    <button data-pg="registers">Scenario Registers</button>
+    <button data-pg="file">What the File Says</button>
+    <button data-pg="reference">Reference Codes</button>
+  </nav>
+</header>
+<main>
+  <section class="page on" id="pg-overview">
+    <h2>Overview</h2>
+    <p class="sub">A synthetic Idaho Medicaid population across a 24-month window (January 2025 &ndash; December 2026), viewed as of <b>July 2026</b>. Every value is deterministic &mdash; seeded PRNG, identical on every load.</p>
+    <div class="plain" id="ov-plain"></div>
+    <div class="statrow" id="ov-stats"></div>
+    <div class="twocol">
+      <div class="card">
+        <h3 style="margin-top:0">Coverage groups in the population</h3>
+        <div class="leg" id="ov-groups"></div>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Where members get their care today</h3>
+        <div class="barlist" id="ov-mcos"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="pg-members">
+    <h2>Members</h2>
+    <p class="sub">The full synthetic roster. Click any row for the member record; click a column header to sort.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>Every person here has a seven-digit <b>MID</b> &mdash; the Medicaid ID &mdash; that never changes: it survives gaps, medical-home switches, and county moves. The roster shows two different facts side by side: <b>why</b> the state covers someone (the coverage group) and what the <b>medical lane</b> looks like today &mdash; fee-for-service for nearly everyone, because Idaho has no mainstream medical MCO; the managed care in this state lives in the <i>other</i> lanes. Open any member to see all four.</div>
+    <div class="controls">
+      <input type="search" id="m-search" placeholder="Search name, MID, city&hellip;" aria-label="Search members">
+      <select id="m-group" aria-label="Filter by coverage group"></select>
+      <select id="m-del" aria-label="Filter by delivery system"></select>
+      <select id="m-reg" aria-label="Filter by register"></select>
+      <select id="m-status" aria-label="Filter by status">
+        <option value="">Status today: all</option>
+        <option value="Active">Active</option>
+        <option value="Gap">In gap</option>
+        <option value="Closed">Closed</option>
+      </select>
+      <span class="hint" id="m-count"></span>
+    </div>
+    <div class="tblwrap"><table id="m-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">MID</th>
+        <th class="sortable" data-k="name">Name</th>
+        <th class="sortable" data-k="age">Age</th>
+        <th class="sortable" data-k="sex">Sex</th>
+        <th class="sortable" data-k="grp">Coverage Group</th>
+        <th class="sortable" data-k="del">Delivery Today</th>
+        <th class="sortable" data-k="county">Jurisdiction</th>
+        <th class="sortable" data-k="reg">Register</th>
+        <th class="sortable" data-k="status">Status Today</th>
+      </tr></thead>
+      <tbody id="m-body"></tbody>
+    </table></div>
+    <div class="pager" id="m-pager"></div>
+  </section>
+
+  <section class="page" id="pg-spans">
+    <h2>Eligibility Spans</h2>
+    <p class="sub">One row per coverage-group span &mdash; the state's answer to <i>&ldquo;from when to when, and under which door did this person enter?&rdquo;</i> Click a row to open the member.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>A span is a promise with dates on it. It opens when a determination says yes, and it closes for a <b>reason</b> &mdash; a reevaluation that didn't come back, an eighteenth birthday on a Katie Beckett case, a move out of state. An open end date means the promise is still standing. Idaho's spans carry the coverage group, because the group decides everything downstream: the benefit package, the premium (CHIP, the buy-in), and which rules end it.</div>
+    <div class="controls">
+      <select id="s-group" aria-label="Filter spans by coverage group"></select>
+      <select id="s-open" aria-label="Filter by open or closed">
+        <option value="">Open + closed</option><option value="open">Open only</option><option value="closed">Closed only</option>
+      </select>
+      <span class="hint" id="s-count"></span>
+    </div>
+    <div class="tblwrap"><table id="s-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">MID</th>
+        <th class="sortable" data-k="name">Member</th>
+        <th class="sortable" data-k="grp">Group</th>
+        <th class="sortable" data-k="start">Begin</th>
+        <th class="sortable" data-k="end">End</th>
+        <th class="sortable" data-k="months">Months</th>
+        <th>End Reason</th>
+      </tr></thead>
+      <tbody id="s-body"></tbody>
+    </table></div>
+    <div class="pager" id="s-pager"></div>
+  </section>
+
+  <section class="page" id="pg-delivery">
+    <h2>Benefit Lanes</h2>
+    <p class="sub">One row per delivery span, per <b>lane</b>: medical, Healthy Connections (the PCCM medical home), behavioral health, and dental. In Idaho these run <b>concurrently</b> &mdash; one member holds several at once. Click a row to open the member.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>In Maryland or New York, delivery spans take turns &mdash; one at a time, on one timeline. Idaho splits the axis <b>by benefit</b>: the same member simultaneously holds a <b>medical</b> lane (fee-for-service &mdash; there is no mainstream medical MCO), a <b>Healthy Connections</b> lane (an assigned medical home paid a small monthly case-management fee &mdash; an assignment, not a capitation), a <b>behavioral health</b> lane (one statewide plan everyone rides in), and a <b>dental</b> lane (Idaho Smiles). Managed care <i>&agrave; la carte</i>. The lanes move independently: a reevaluation gap closes all four; Medicare arriving ends only the Healthy Connections assignment; a dual entering Idaho Medicaid Plus or an MMCP changes the medical lane while dental never blinks. Four small clocks instead of one big one.</div>
+    <div class="controls">
+      <select id="d-lane" aria-label="Filter by lane"></select>
+      <select id="d-sys" aria-label="Filter by delivery system"></select>
+      <span class="hint" id="d-count"></span>
+    </div>
+    <div class="tblwrap"><table id="d-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">MID</th>
+        <th class="sortable" data-k="name">Member</th>
+        <th class="sortable" data-k="lane">Lane</th>
+        <th class="sortable" data-k="sys">Delivery</th>
+        <th class="sortable" data-k="start">Begin</th>
+        <th class="sortable" data-k="end">End</th>
+        <th class="sortable" data-k="months">Months</th>
+        <th>Begin / End Reason</th>
+      </tr></thead>
+      <tbody id="d-body"></tbody>
+    </table></div>
+    <div class="pager" id="d-pager"></div>
+  </section>
+
+  <section class="page" id="pg-registers">
+    <h2>Scenario Registers</h2>
+    <p class="sub">Six business questions, each answered by a register of members whose data was planted to demonstrate exactly that scenario. Click any member to inspect the record behind the answer.</p>
+    <div id="reg-list"></div>
+  </section>
+
+  <section class="page" id="pg-file">
+    <h2>What the File Says</h2>
+    <p class="sub">Idaho really does speak X12N 834 &mdash; the state's roster file to its benefit-plan contractors: the behavioral health plan, the dental plan, and the dual plans. Pick a member and read the transaction the plan would receive for that member's most recent enrollment event, segment by segment, with a plain-language note on every line.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>An 834 is the state telling a health plan: <b>this person is yours now</b> (or isn't anymore). It carries who the person is, where they live, when coverage starts or stops, and the coverage group that explains why. In Idaho the receiving plan is almost never a medical plan &mdash; it is the behavioral health contractor, the dental contractor, or a dual plan &mdash; so every transaction hands over <i>one lane</i> of the member, not the person. Reading an Idaho 834 as whole-person enrollment is the classic mistake this tab exists to prevent.</div>
+    <div class="controls">
+      <select id="f-member" aria-label="Choose member for 834"></select>
+      <span class="hint">Members are grouped by register; the transaction is rebuilt live from the member's actual spans.</span>
+    </div>
+    <div id="f-out"></div>
+  </section>
+
+  <section class="page" id="pg-reference">
+    <h2>Reference Codes</h2>
+    <p class="sub">The teaching code sets used throughout the app. Codes are patterned on Idaho's conventions; verify against current Idaho Department of Health and Welfare publications before any non-demonstration use.</p>
+    <div id="ref-out"></div>
+  </section>
+</main>
+
+<footer>
+  <p><b>Idaho Medicaid Eligibility Central</b> &mdash; a single-file demonstration app in the Central series. All members, identifiers, addresses, phone numbers, and dates are synthetic and deterministic (seeded PRNG, seed 208001); any resemblance to real persons is coincidental. Program facts reflect public Idaho Medicaid policy of the mid-2020s and change year to year; verify against current Idaho Department of Health and Welfare and CMS publications before any non-demonstration use. The 834 rendering is a teaching aid, not an implementation guide. &copy; Robert Thomas Keyes.</p>
+</footer>
+
+<div class="overlay" id="overlay"></div>
+<aside class="slideover" id="modal" role="dialog" aria-modal="true" aria-labelledby="mo-nm">
+  <div class="mo-head">
+    <div class="who">
+      <div class="nm" id="mo-nm"></div>
+      <div class="idz" id="mo-id"></div>
+    </div>
+    <button class="mo-x" id="mo-x" aria-label="Close">&#10005;</button>
+  </div>
+  <div class="mo-body" id="mo-body"></div>
+  <div class="mo-foot">
+    <button id="mo-prev" aria-label="Previous member">&#9664;</button>
+    <button id="mo-next" aria-label="Next member">&#9654;</button>
+    <span class="pos" id="mo-pos"></span>
+  </div>
+</aside>
+<script>
+'use strict';
+/* ============ Idaho Medicaid Eligibility Central ============
+   Central series -- Robert Thomas Keyes
+   Deterministic synthetic data. Seed 208001 (Idaho's statewide area code).
+   Window: Jan 2025 (idx 0) .. Dec 2026 (idx 23). "Today" = Jul 2026 (idx 18).
+================================================================= */
+
+/* ---------- seeded PRNG (mulberry32) ---------- */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+var R = mulberry32(208001);
+function ri(lo,hi){return lo+Math.floor(R()*(hi-lo+1))}
+function pick(arr){return arr[Math.floor(R()*arr.length)]}
+function wpick(pairs){var tot=0,i;for(i=0;i<pairs.length;i++)tot+=pairs[i][1];var x=R()*tot;for(i=0;i<pairs.length;i++){x-=pairs[i][1];if(x<0)return pairs[i][0]}return pairs[pairs.length-1][0]}
+
+/* ---------- window ---------- */
+var WIN_START_Y=2025, WIN_MONTHS=24, TODAY_IDX=18; /* Jul 2026 */
+var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function mLabel(idx){ if(idx===null||idx===undefined)return '&mdash;';
+  var y=WIN_START_Y+Math.floor(idx/12), m=((idx%12)+12)%12;
+  return MONTHS[m]+' '+y }
+function mFirstD8(idx){var y=WIN_START_Y+Math.floor(idx/12),m=((idx%12)+12)%12;return ''+y+String(m+1).padStart(2,'0')+'01'}
+function mLastD8(idx){var y=WIN_START_Y+Math.floor(idx/12),m=((idx%12)+12)%12;var last=new Date(y,m+1,0).getDate();return ''+y+String(m+1).padStart(2,'0')+String(last).padStart(2,'0')}
+function spanMonths(s,e){var last=(e===null?TODAY_IDX:e);return Math.max(1,last-Math.max(s,-990)+1)}
+
+/* ---------- coverage groups (teaching set, patterned on Idaho's eligibility categories) ---------- */
+var GROUPS={
+ FM01:{name:'Family Medicaid',            magi:true,  color:'--g-FC01', blurb:'Parents, caretaker relatives, and their households under MAGI budgeting.'},
+ CH19:{name:'Child Under 19',             magi:true,  color:'--g-CH19', blurb:'Medicaid children in MAGI households.'},
+ CP06:{name:'CHIP Child (premium tier)',  magi:true,  color:'--g-PG02', blurb:'Higher-income children in Idaho\u2019s CHIP tier; small monthly premiums apply.'},
+ PW02:{name:'Pregnant Women',             magi:true,  color:'--g-EA02', blurb:'Pregnancy coverage plus twelve months postpartum.'},
+ AE02:{name:'Adult Expansion',            magi:true,  color:'--g-SI02', blurb:'The Proposition 2 group \u2014 adults 19\u201364 to 138% FPL, effective January 2020.'},
+ AB03:{name:'Aged / Blind / Disabled',    magi:false, color:'--g-MN98', blurb:'SSI recipients and SSI-related budgeting; the classic non-MAGI door.'},
+ KB04:{name:'Katie Beckett Child',        magi:false, color:'--g-FF26', blurb:'Children with disabilities eligible on their own income under TEFRA \u2014 parents\u2019 income disregarded when institutional level of care is met at home.'},
+ WD05:{name:'Workers with Disabilities',  magi:false, color:'--g-WD02', blurb:'Idaho\u2019s Medicaid buy-in for working people with disabilities; sliding premium.'},
+ LT01:{name:'Long-Term Care / A&D Waiver',magi:false, color:'--g-LT01', blurb:'Nursing facility coverage and the Aged & Disabled waiver; a different budgeting world.'}
+};
+var GROUP_KEYS=Object.keys(GROUPS);
+
+/* ---------- benefit lanes ---------- */
+var LANES={
+ MED:{name:'Medical',    order:1, blurb:'Physical health. Fee-for-service for nearly everyone \u2014 Idaho has no mainstream medical MCO. Duals may enroll in an integrated plan (MMCP) or, in participating counties, Idaho Medicaid Plus.'},
+ PCP:{name:'Healthy Connections', order:2, blurb:'Primary care case management (PCCM): an assigned patient-centered medical home paid a per-member-per-month care management fee. An assignment, not a capitated plan.'},
+ BH: {name:'Behavioral Health', order:3, blurb:'The Idaho Behavioral Health Plan \u2014 one statewide managed care contract for outpatient mental health and SUD services. Everyone rides in it.'},
+ DEN:{name:'Dental',     order:4, blurb:'Idaho Smiles \u2014 the statewide dental benefit under a single dental plan contract.'}
+};
+var LANE_KEYS=['MED','PCP','BH','DEN'];
+
+/* ---------- plans / systems ---------- */
+var PLANS={
+ MAGELLAN:{code:'MAGELLAN', name:'Magellan of Idaho (IBHP)',            lane:'BH',  kind:'BH'},
+ SMILES:  {code:'SMILES',   name:'Idaho Smiles (MCNA Dental)',          lane:'DEN', kind:'DEN'},
+ MOLPLUS: {code:'MOLPLUS',  name:'Molina \u2014 Idaho Medicaid Plus',   lane:'MED', kind:'IMPLUS'},
+ BCIPLUS: {code:'BCIPLUS',  name:'Blue Cross of Idaho \u2014 Idaho Medicaid Plus', lane:'MED', kind:'IMPLUS'},
+ TRUEBLUE:{code:'TRUEBLUE', name:'True Blue Special Needs Plan (MMCP)', lane:'MED', kind:'MMCP'},
+ MOLMMCP: {code:'MOLMMCP',  name:'Molina Medicare\u2013Medicaid Plan (MMCP)', lane:'MED', kind:'MMCP'}
+};
+function planByCode(c){return PLANS[c]||null}
+function sysLabel(code){var p=planByCode(code);return p?p.name:(code==='FFS'?'Fee-for-Service':code)}
+function laneChipClass(lane,sys){ if(sys==='FFS')return 'd-ffs'; return lane==='BH'?'d-bh':(lane==='DEN'?'d-den':(lane==='PCP'?'d-pcp':'d-mco')) }
+
+/* ---------- Healthy Connections clinics (teaching roster) ---------- */
+var CLINICS=[
+ 'Terry Reilly Health Services','Full Circle Health','Primary Health Medical Group',
+ 'Family Medicine Health Center','Saltzer Health','St. Luke\u2019s Clinic \u2014 Family Medicine',
+ 'Kootenai Clinic Family Medicine','CHAS Lewis & Clark Health Center','Grand Peaks Medical',
+ 'Portneuf Family Medicine','Valor Health Clinic','Rexburg Medical Center Family Practice'
+];
+
+/* ---------- jurisdictions ---------- */
+var COUNTIES=[
+ {name:'Ada',        w:16, zips:['83704','83705','83709'], city:'Boise',
+  streets:['Overland Rd','Fairview Ave','State St','Vista Ave','Ustick Rd','Franklin Rd']},
+ {name:'Canyon',     w:13, zips:['83651','83686','83605'], city:null, cities:['Nampa','Nampa','Caldwell'],
+  streets:['Caldwell Blvd','12th Ave Rd','Karcher Rd','Cleveland Blvd','Middleton Rd']},
+ {name:'Kootenai',   w:9,  zips:['83814','83815'], city:'Coeur d\u2019Alene',
+  streets:['Sherman Ave','Government Way','Appleway Ave','Ironwood Dr']},
+ {name:'Bonneville', w:8,  zips:['83401','83402'], city:'Idaho Falls',
+  streets:['Broadway St','Yellowstone Hwy','Woodruff Ave','Holmes Ave']},
+ {name:'Twin Falls', w:7,  zips:['83301'], city:'Twin Falls',
+  streets:['Blue Lakes Blvd','Addison Ave','Kimberly Rd','Washington St']},
+ {name:'Bannock',    w:7,  zips:['83201','83204'], city:'Pocatello',
+  streets:['Yellowstone Ave','Pole Line Rd','Center St','Alameda Rd']},
+ {name:'Bingham',    w:5,  zips:['83221'], city:'Blackfoot',
+  streets:['W Bridge St','Parkway Dr','Shilling Ave']},
+ {name:'Madison',    w:5,  zips:['83440'], city:'Rexburg',
+  streets:['S Yellowstone Hwy','Main St','2nd E']},
+ {name:'Nez Perce',  w:4,  zips:['83501'], city:'Lewiston',
+  streets:['Main St','Thain Rd','21st St','Snake River Ave']},
+ {name:'Elmore',     w:3,  zips:['83647'], city:'Mountain Home',
+  streets:['American Legion Blvd','Airbase Rd','N Main St']},
+ {name:'Latah',      w:3,  zips:['83843'], city:'Moscow',
+  streets:['W Pullman Rd','S Main St','Troy Rd']}
+];
+function pickCounty(){return wpick(COUNTIES.map(function(c){return [c,c.w]}))}
+var AREA=['208','208','208','986']; /* statewide 208 with 986 overlay */
+
+/* ---------- names & languages ---------- */
+var FIRST_F=['Emily','Sarah','Jessica','Ashley','Amanda','Brittany','Megan','Hannah','Lauren','Kayla','Maria','Guadalupe','Rosa','Carmen','Alejandra','Yesenia','Heather','Amber','Tiffany','Crystal','Shelby','Cheyenne','Katherine','Rachel','Rebecca','Fatuma','Amina','Olena','Svitlana','Dawn','Tonya','Misty'];
+var FIRST_M=['Jacob','Tyler','Austin','Cody','Dustin','Hunter','Logan','Wyatt','Caleb','Ethan','Jose','Luis','Miguel','Juan','Carlos','Brandon','Justin','Kyle','Shane','Travis','Colton','Bryce','Nathan','Samuel','Gage','Abdi','Mohamed','Dmytro','Trevor','Garrett','Ramon','Wade'];
+var LAST=['Smith','Johnson','Anderson','Miller','Nelson','Peterson','Olsen','Hansen','Christensen','Jensen','Larsen','Thompson','Clark','Walker','Young','Allen','Wright','Hill','Baker','Adams','Campbell','Mitchell','Carter','Garcia','Martinez','Hernandez','Lopez','Gonzalez','Ramirez','Torres','Sanchez','Vasquez','Mendoza','Cardenas','Hussein','Mohamed','Abdullahi','Shevchenko','Kovalenko','Bowen','Tucker','Meyer','Hoffman','Schmidt','Wood','Reed','Bailey','Bell','Cox','Ward','Foster','Bennett','Gray','Hunt','Rasmussen'];
+var LANGS=[['English',87],['Spanish',10],['Swahili',1],['Arabic',1],['Ukrainian',1]];
+
+/* ---------- end reasons ---------- */
+var ELIG_END={
+ REDET:'Renewal not completed \u2014 case closed at reevaluation',
+ INCOME:'Over income at reevaluation',
+ MOVED:'Moved out of state'
+};
+</script>
+<script>
+'use strict';
+/* ================= population generator ================= */
+var MEMBERS=[];
+var usedIds={};
+function genId(){ /* MID: seven digits, deterministic, zero-padded */
+  var s; do{ s=String(ri(1000000,7999999)) }while(usedIds[s]); usedIds[s]=1; return s }
+function genPhone(){ return '('+pick(AREA)+') '+ri(200,989)+'-'+String(ri(0,9999)).padStart(4,'0') }
+function genAddr(c){ var city=c.city||pick(c.cities); return {street:ri(100,7999)+' '+pick(c.streets), city:city, zip:pick(c.zips)} }
+function genName(sex){ return {first:(sex==='F'?pick(FIRST_F):pick(FIRST_M)), last:pick(LAST)} }
+function dobForAge(age){ var y=2026-age; var m=ri(0,11); if(m>6)y--; return {y:y,m:m,d:ri(1,28)} }
+function dobD8(d){return ''+d.y+String(d.m+1).padStart(2,'0')+String(d.d).padStart(2,'0')}
+function dobLabel(d){return MONTHS[d.m]+' '+d.d+', '+d.y}
+
+function baseMember(reg){
+  var sex=pick(['F','F','F','M','M']);
+  var nm=genName(sex), c=pickCounty(), a=genAddr(c);
+  return { id:genId(), first:nm.first, last:nm.last, sex:sex, county:c.name,
+    street:a.street, city:a.city, zip:a.zip, phone:genPhone(),
+    lang:wpick(LANGS), reg:reg, eligSpans:[], delSpans:[], flags:[], kbNote:null };
+}
+function addElig(m,grp,s,e,reason){m.eligSpans.push({grp:grp,start:s,end:e,reason:reason||null})}
+function addDel(m,lane,sys,s,e,note){m.delSpans.push({lane:lane,sys:sys,start:s,end:e,note:note||null})}
+
+/* standard lanes for an eligibility run [s..e] with plan pickup at pickup (>=s) */
+function addLanes(m,s,e,pickup,clinic,clinicAt){
+  /* MED: FFS for the whole run (Idaho has no mainstream medical MCO) */
+  addDel(m,'MED','FFS',s,e,null);
+  /* BH + DEN: statewide carve-ins; FFS tail if pickup>s */
+  if(pickup>s){
+    addDel(m,'BH','FFS',s,pickup-1,'Retro/processing tail \u2014 paid FFS before plan pickup');
+    addDel(m,'DEN','FFS',s,pickup-1,'Retro/processing tail \u2014 paid FFS before plan pickup');
+  }
+  addDel(m,'BH','MAGELLAN',pickup,e,null);
+  addDel(m,'DEN','SMILES',pickup,e,null);
+  /* PCP: Healthy Connections assignment */
+  if(clinic){
+    var at=(clinicAt===undefined||clinicAt===null)?pickup:clinicAt;
+    if(at!==null)addDel(m,'PCP',clinic,at,e,'Healthy Connections medical home assignment');
+  }
+}
+
+/* ----- Register A: steady state (1100) ----- */
+(function(){
+  var grpsA=[['FM01',6],['AE02',7],['CH19',5],['CP06',2],['AB03',2],['WD05',1],['PW02',1]];
+  for(var i=0;i<1100;i++){
+    var grp=wpick(grpsA);
+    var m=baseMember('A');
+    var age = grp==='CH19'?ri(1,17) : grp==='CP06'?ri(2,17) : grp==='AB03'?ri(30,62) : grp==='WD05'?ri(28,58) : grp==='PW02'?ri(19,38) : grp==='FM01'?ri(20,48) : ri(19,62);
+    m.age=age; m.dob=dobForAge(age); if(grp==='PW02')m.sex='F';
+    var s=ri(-14,2);
+    addElig(m,grp,s,null,null);
+    var clinic=R()<0.85?pick(CLINICS):null;
+    if(clinic&&R()<0.12){ /* one PCP change */
+      var sw=ri(Math.max(s+2,4),15);
+      addDel(m,'MED','FFS',s,null,null);
+      addDel(m,'BH','MAGELLAN',s,null,null);
+      addDel(m,'DEN','SMILES',s,null,null);
+      addDel(m,'PCP',clinic,s,sw-1,'Healthy Connections medical home assignment');
+      var c2=pick(CLINICS); while(c2===clinic)c2=pick(CLINICS);
+      addDel(m,'PCP',c2,sw,null,'Member-elected medical home change');
+      m.flags.push('Healthy Connections change '+mLabel(sw));
+    } else {
+      addLanes(m,s,null,s,clinic,clinic?s:null);
+      if(!clinic)m.flags.push('No Healthy Connections assignment on file');
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register B: reevaluation churn (500) ----- */
+(function(){
+  for(var i=0;i<500;i++){
+    var grp=wpick([['FM01',5],['AE02',5],['CH19',2]]);
+    var m=baseMember('B');
+    m.age = grp==='CH19'?ri(3,15):ri(20,55); m.dob=dobForAge(m.age);
+    var s=ri(-18,-2);
+    var inGapNow=(i<125);         /* a quarter of the register sits in the gap as of today */
+    var term=inGapNow?ri(15,16):ri(4,12);
+    var gap=inGapNow?ri(3,4):ri(1,4);
+    var regain=term+gap+1;
+    addElig(m,grp,s,term,ELIG_END.REDET);
+    addElig(m,grp,regain,null,null);
+    var clinic=pick(CLINICS);
+    addLanes(m,s,term,s,clinic,s);
+    var lag=R()<0.5?1:0;          /* plan pickup lag on the way back */
+    var sameClin=R()<0.6;
+    var c2=sameClin?clinic:pick(CLINICS); if(!sameClin){while(c2===clinic)c2=pick(CLINICS)}
+    addLanes(m,regain,null,regain+lag,c2,regain+lag);
+    m.flags.push('Gap '+mLabel(term+1)+'\u2013'+mLabel(regain-1)+' ('+gap+' mo)'+(sameClin?'':' \u00b7 new medical home on return'));
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register C: retroactive grant (375) ----- */
+(function(){
+  for(var i=0;i<375;i++){
+    var grp=wpick([['FM01',4],['AE02',3],['PW02',2]]);
+    var m=baseMember('C');
+    if(grp==='PW02')m.sex='F';
+    m.age = grp==='PW02'?ri(19,36):ri(19,52);
+    if(grp==='FM01'&&R()<0.4)m.age=ri(2,15);
+    m.dob=dobForAge(m.age);
+    var app=ri(6,15);
+    var retro=ri(1,3);
+    var s=app-retro;
+    addElig(m,grp,s,null,null);
+    addLanes(m,s,null,app+1,pick(CLINICS),app+1);
+    m.flags.push('Retro grant: '+retro+' month'+(retro>1?'s':'')+' back to '+mLabel(s));
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register D: Katie Beckett (375) ----- */
+(function(){
+  for(var i=0;i<375;i++){
+    var m=baseMember('D');
+    var agesOut=(i<95);           /* ~25%: turns 18 in the window */
+    if(agesOut){
+      /* 18th birthday lands mid-window */
+      var bday=ri(6,16);
+      m.age=18;
+      m.dob={y:WIN_START_Y+Math.floor(bday/12)-18, m:bday%12, d:ri(1,28)};
+      var s=ri(-20,-4);
+      var toAB=R()<0.6;
+      addElig(m,'KB04',s,bday,'Katie Beckett ends at the 18th birthday');
+      addElig(m,toAB?'AB03':'AE02',bday+1,null,null);
+      addLanes(m,s,null,s,pick(CLINICS),s); /* lanes continue across the group change */
+      m.kbNote='Aged out at 18 \u2014 transitioned to '+(toAB?'AB03 (SSI-related)':'AE02 (adult expansion)');
+      m.flags.push('KB 18th birthday '+mLabel(bday)+' \u2192 '+(toAB?'AB03':'AE02')+' \u2014 lanes never blinked');
+    } else {
+      var age=ri(2,16); m.age=age; m.dob=dobForAge(age);
+      var grant=ri(2,14);
+      addElig(m,'KB04',grant,null,null);
+      addLanes(m,grant,null,grant+ (R()<0.3?1:0),pick(CLINICS),grant);
+      m.kbNote='Level-of-care met at home; parents\u2019 income disregarded (TEFRA)';
+      m.flags.push('Katie Beckett grant '+mLabel(grant)+' \u2014 child\u2019s own income only');
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register E: dual a la carte -- IMPlus / MMCP (325) ----- */
+(function(){
+  for(var i=0;i<325;i++){
+    var grp=wpick([['AB03',6],['LT01',2],['WD05',1]]);
+    var m=baseMember('E');
+    m.age = R()<0.75?ri(66,90):ri(52,64);
+    m.dob=dobForAge(m.age);
+    var s=ri(-24,-6);
+    addElig(m,grp,s,null,null);
+    var at=ri(4,16);
+    var mandatory=R()<0.55;       /* IMPlus counties: mandatory unless MMCP elected */
+    var plan=mandatory?(R()<0.6?'MOLPLUS':'BCIPLUS'):(R()<0.5?'TRUEBLUE':'MOLMMCP');
+    addDel(m,'MED','FFS',s,at-1,'Dual \u2014 Medicare primary; Medicaid FFS wrap');
+    addDel(m,'MED',plan,at,null,mandatory?'Idaho Medicaid Plus \u2014 mandatory in participating counties for duals not electing MMCP (Medicaid benefits only)':'MMCP \u2014 voluntary integrated Medicare+Medicaid plan');
+    addDel(m,'BH','MAGELLAN',s,at-1,null);
+    addDel(m,'BH',plan,at,null,'Behavioral health carves into the dual plan');
+    addDel(m,'DEN','SMILES',s,null,null);
+    m.medicareIdx=-99;
+    m.dualKind=mandatory?'IMPLUS':'MMCP';
+    m.flags.push((mandatory?'Idaho Medicaid Plus (mandatory county) ':'MMCP (voluntary, integrated) ')+'from '+mLabel(at));
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register F: Medicare arrives -- nothing terminates (325) ----- */
+(function(){
+  for(var i=0;i<325;i++){
+    var grp=wpick([['AB03',4],['WD05',2],['LT01',1]]);
+    var m=baseMember('F');
+    m.age = R()<0.5?ri(63,66):ri(45,60);
+    m.dob=dobForAge(m.age);
+    var s=ri(-24,-6);
+    addElig(m,grp,s,null,null);
+    var medi=ri(5,16);
+    var lag=ri(1,3);
+    /* the Idaho twist: the medical lane was FFS before Medicare and stays FFS after */
+    addDel(m,'MED','FFS',s,null,'FFS before Medicare, FFS after \u2014 only the payer order changed');
+    addDel(m,'BH','MAGELLAN',s,null,null);
+    addDel(m,'DEN','SMILES',s,null,null);
+    addDel(m,'PCP',pick(CLINICS),s,medi-1,'Healthy Connections ends at Medicare \u2014 PCCM is for Medicaid-primary members');
+    m.medicareIdx=medi; m.buyinIdx=medi+lag;
+    m.flags.push('Medicare from '+mLabel(medi)+'; Part B buy-in effective '+mLabel(medi+lag)+' \u2014 '+lag+'-month limbo. No plan disenrollment: there was no plan to leave.');
+    MEMBERS.push(m);
+  }
+})();
+
+/* ---------- derived member state ---------- */
+function eligToday(m){ for(var i=0;i<m.eligSpans.length;i++){var s=m.eligSpans[i]; if(s.start<=TODAY_IDX&&(s.end===null||s.end>=TODAY_IDX))return s} return null }
+function laneToday(m,lane){ for(var i=0;i<m.delSpans.length;i++){var s=m.delSpans[i]; if(s.lane===lane&&s.start<=TODAY_IDX&&(s.end===null||s.end>=TODAY_IDX))return s} return null }
+function lastElig(m){ return m.eligSpans[m.eligSpans.length-1] }
+function statusToday(m){
+  if(eligToday(m))return 'Active';
+  var le=lastElig(m);
+  if(le.end!==null&&le.end<TODAY_IDX){
+    for(var i=0;i<m.eligSpans.length;i++){ if(m.eligSpans[i].start>TODAY_IDX)return 'Gap' }
+    return 'Closed';
+  }
+  return 'Gap';
+}
+MEMBERS.forEach(function(m,ix){
+  m.ix=ix;
+  /* name/sex coherence: registers that force sex after baseMember (e.g. postpartum)
+     must not keep an opposite-list first name. Deterministic, PRNG-free remap. */
+  if(m.sex==='F'&&FIRST_F.indexOf(m.first)<0)m.first=FIRST_F[(m.first.length*7+m.last.length)%FIRST_F.length];
+  if(m.sex==='M'&&FIRST_M.indexOf(m.first)<0)m.first=FIRST_M[(m.first.length*7+m.last.length)%FIRST_M.length];
+  m.name=m.last+', '+m.first;
+  var et=eligToday(m), le=lastElig(m);
+  m.grpToday = et?et.grp:le.grp;
+  var med=laneToday(m,'MED');
+  m.delTodayCode = med?med.sys:'\u2014';
+  var pcp=laneToday(m,'PCP');
+  m.pcpToday = pcp?pcp.sys:null;
+  m.status=statusToday(m);
+});
+</script>
+<script>
+'use strict';
+/* ================= shared render helpers ================= */
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function grpChip(g){ if(!GROUPS[g])return esc(g);
+  return '<span class="chip" style="background:var('+GROUPS[g].color+')" title="'+esc(GROUPS[g].name)+'">'+g+'</span>' }
+function laneChip(lane,code){ if(!code||code==='\u2014')return '<span class="st-cls">\u2014</span>';
+  var cls=laneChipClass(lane,code);
+  var lbl=(lane==='PCP'&&code!=='FFS')?'HC':code;
+  return '<span class="dchip '+cls+'" title="'+esc(lane==='PCP'?code:sysLabel(code))+'">'+esc(lbl)+'</span>' }
+function delChip(code){ return laneChip('MED',code) }
+function statusHtml(st){ return st==='Active'?'<span class="st-act">Active</span>':(st==='Gap'?'<span class="st-gap">In gap</span>':'<span class="st-cls">Closed</span>') }
+function regBadge(r){return '<span class="mono" style="font-weight:600;color:var(--accent)">'+r+'</span>'}
+
+/* ================= overview ================= */
+function renderOverview(){
+  var n=MEMBERS.length, act=0, ffsMed=0, dualPlan=0, hc=0, bh=0, gaps=0, duals=0;
+  MEMBERS.forEach(function(m){
+    if(m.status==='Active')act++;
+    if(m.status==='Gap')gaps++;
+    var d=m.delTodayCode;
+    if(d!=='\u2014'){ if(d==='FFS')ffsMed++; else dualPlan++; }
+    if(m.pcpToday)hc++;
+    var b=laneToday(m,'BH'); if(b&&b.sys!=='FFS')bh++;
+    if((m.reg==='F'&&m.medicareIdx<=TODAY_IDX)||m.reg==='E')duals++;
+  });
+  var st=document.getElementById('ov-stats');
+  st.innerHTML =
+    stat(n,'Synthetic members',true)+
+    stat(act,'Eligible today (Jul 2026)')+
+    stat(ffsMed,'Medical lane: fee-for-service today')+
+    stat(dualPlan,'Medical lane: dual plan (IMPlus / MMCP)')+
+    stat(hc,'Healthy Connections assignment today')+
+    stat(bh,'In the behavioral health plan today')+
+    stat(duals,'Dual Medicare/Medicaid today')+
+    stat(gaps,'In an eligibility gap today');
+  function stat(nv,l,acc){return '<div class="stat'+(acc?' acc':'')+'"><div class="n">'+(typeof nv==='number'?nv.toLocaleString():nv)+'</div><div class="l">'+l+'</div></div>'}
+
+  /* group legend with counts (by current/last group) */
+  var gc={}; MEMBERS.forEach(function(m){gc[m.grpToday]=(gc[m.grpToday]||0)+1});
+  var lg=document.getElementById('ov-groups'); lg.innerHTML='';
+  GROUP_KEYS.forEach(function(g){
+    var c=gc[g]||0;
+    lg.innerHTML+='<div class="legrow"><span class="swatch" style="background:var('+GROUPS[g].color+')"></span>'+
+      '<span class="code">'+g+'</span><span>'+esc(GROUPS[g].name)+'</span>'+
+      '<span class="cnt">'+c+'</span></div>';
+  });
+
+  /* delivery distribution today */
+  var dc={}; MEMBERS.forEach(function(m){
+    var med=laneToday(m,'MED');
+    if(med){ if(med.sys==='FFS')dc.MEDFFS=(dc.MEDFFS||0)+1;
+      else { var k=planByCode(med.sys).kind; dc[k]=(dc[k]||0)+1 } }
+    if(m.pcpToday)dc.HC=(dc.HC||0)+1;
+    var b=laneToday(m,'BH'); if(b&&b.sys!=='FFS')dc.BH=(dc.BH||0)+1;
+    var dn=laneToday(m,'DEN'); if(dn&&dn.sys!=='FFS')dc.DEN=(dc.DEN||0)+1;
+  });
+  var rows=[
+    {label:'Medical \u2014 fee-for-service', code:'FFS', n:dc.MEDFFS||0, cls:'var(--d-ffs)'},
+    {label:'Medical \u2014 Idaho Medicaid Plus', code:'IMPLUS', n:dc.IMPLUS||0, cls:'var(--d-mco)'},
+    {label:'Medical \u2014 MMCP (integrated dual)', code:'MMCP', n:dc.MMCP||0, cls:'var(--d-mco)'},
+    {label:'Healthy Connections medical home', code:'HC', n:dc.HC||0, cls:'var(--d-pcp)'},
+    {label:'Behavioral health \u2014 Magellan of Idaho', code:'MAGELLAN', n:dc.BH||0, cls:'var(--d-bh)'},
+    {label:'Dental \u2014 Idaho Smiles', code:'SMILES', n:dc.DEN||0, cls:'var(--d-den)'}
+  ];
+  rows.sort(function(a,b){return b.n-a.n});
+  var mx=rows.reduce(function(a,r){return Math.max(a,r.n)},1);
+  var bl=document.getElementById('ov-mcos'); bl.innerHTML='';
+  rows.forEach(function(r){
+    bl.innerHTML+='<div class="barrow"><span title="'+esc(r.label)+'">'+esc(r.label)+'</span>'+
+      '<span class="track"><span class="fill" style="width:0;background:'+r.cls+'" data-w="'+(100*r.n/mx)+'"></span></span>'+
+      '<span class="bn">'+r.n+'</span></div>';
+  });
+  requestAnimationFrame(function(){ setTimeout(function(){
+    bl.querySelectorAll('.fill').forEach(function(f){f.style.width=f.getAttribute('data-w')+'%'}) },60) });
+
+  document.getElementById('ov-plain').innerHTML='<span class="pe-label">In plain English</span>'+
+    'Idaho is the counter-example to everything east of it: a state that expanded Medicaid by ballot initiative (Proposition 2, effective 2020) and still runs <b>no mainstream medical managed care</b>. The medical lane is fee-for-service for nearly everyone. The managed care Idaho does buy is <i>\u00e0 la carte</i>, one benefit at a time: a statewide <b>behavioral health</b> plan everyone rides in, a statewide <b>dental</b> plan (Idaho Smiles), <b>Healthy Connections</b> \u2014 an assigned primary care medical home paid a small monthly fee, an assignment rather than a capitation \u2014 and, for duals only, whole-person plans (MMCP, Idaho Medicaid Plus). '+
+    'So the delivery axis here does not take turns; it <b>splits into concurrent lanes</b>, and every lane keeps its own clock. This population plants the events that move each lane separately: reevaluation churn that closes all four at once, retroactive grants whose tails are FFS in every lane, Katie Beckett children whose eligibility door is their own disability rather than household income, duals picking between two dual products \u2014 and Medicare arriving to find <i>no plan to disenroll anyone from</i>.';
+}
+
+/* ================= reference ================= */
+function renderReference(){
+  var h='';
+  h+='<div class="card"><h3 style="margin-top:0">Coverage groups (teaching set)</h3>'+
+     '<p class="sub" style="margin-bottom:8px">Patterned on Idaho\u2019s eligibility categories (family, children, CHIP, pregnancy, the Proposition 2 expansion group, SSI-related, Katie Beckett, the buy-in, long-term care). Real category tables run far longer.</p>'+
+     '<div class="tblwrap"><table><thead><tr><th>Code</th><th>Name</th><th>Determination</th><th>What it means</th></tr></thead><tbody>';
+  GROUP_KEYS.forEach(function(g){var G=GROUPS[g];
+    h+='<tr><td>'+grpChip(g)+'</td><td>'+esc(G.name)+'</td><td>'+(G.magi?'MAGI (idalink / DHW Self-Reliance)':'Non-MAGI (DHW)')+'</td><td>'+esc(G.blurb)+'</td></tr>'});
+  h+='</tbody></table></div></div>';
+
+  h+='<div class="card"><h3 style="margin-top:0">The four benefit lanes</h3>'+
+     '<p class="sub" style="margin-bottom:8px">Idaho\u2019s managed care is bought one benefit at a time. Contractors change with procurement cycles; this is the mid-2020s teaching roster.</p>'+
+     '<div class="tblwrap"><table><thead><tr><th>Lane</th><th>What rides in it</th><th>System(s)</th><th>Payment</th></tr></thead><tbody>'+
+     '<tr><td><span class="dchip d-ffs">MED</span></td><td>Physical health for nearly everyone</td><td>Fee-for-service (no mainstream MCO)</td><td>FFS claims via the MMIS</td></tr>'+
+     '<tr><td><span class="dchip d-mco">MED</span></td><td>Duals \u2014 whole-person options</td><td>'+esc(PLANS.TRUEBLUE.name)+', '+esc(PLANS.MOLMMCP.name)+' (voluntary); '+esc(PLANS.MOLPLUS.name)+', '+esc(PLANS.BCIPLUS.name)+' (mandatory in participating counties)</td><td>Capitation</td></tr>'+
+     '<tr><td><span class="dchip d-pcp">PCP</span></td><td>Healthy Connections \u2014 the PCCM medical home</td><td>Assigned primary care practice</td><td>Per-member-per-month care management fee; services stay FFS</td></tr>'+
+     '<tr><td><span class="dchip d-bh">BH</span></td><td>Outpatient mental health &amp; SUD</td><td>'+esc(PLANS.MAGELLAN.name)+' \u2014 one statewide contract (Optum Idaho before mid-2024)</td><td>Capitation</td></tr>'+
+     '<tr><td><span class="dchip d-den">DEN</span></td><td>Dental</td><td>'+esc(PLANS.SMILES.name)+' \u2014 one statewide contract</td><td>Capitation</td></tr>'+
+     '</tbody></table></div></div>';
+
+  h+='<div class="card"><h3 style="margin-top:0">834 maintenance codes used in this app</h3>'+
+     '<div class="tblwrap"><table><thead><tr><th>INS03</th><th>Meaning</th><th>Where you\u2019ll see it</th></tr></thead><tbody>'+
+     '<tr><td class="mono">021</td><td>Addition</td><td>New enrollment to a lane plan \u2014 registers A, B (re-enrollment), C, D, E</td></tr>'+
+     '<tr><td class="mono">001</td><td>Change</td><td>Facts changing under a continuing enrollment \u2014 Medicare arriving (F), Katie Beckett age-out group change (D)</td></tr>'+
+     '<tr><td class="mono">024</td><td>Cancellation / termination</td><td>Eligibility closure in the gap (B)</td></tr>'+
+     '</tbody></table></div></div>';
+
+  h+='<div class="card"><h3 style="margin-top:0">Healthy Connections clinics (teaching roster)</h3><p class="sub" style="margin-bottom:8px">Assignment is to a practice, not a plan. The clinic rides the roster so every lane contractor knows the member\u2019s medical home.</p><p style="font-size:.85rem;line-height:1.9">'+CLINICS.map(esc).join(' \u00b7 ')+'</p></div>';
+
+  h+='<div class="card"><h3 style="margin-top:0">Glossary</h3><dl class="gloss">'+
+    gl('MID','The seven-digit Medicaid ID \u2014 the person, permanently; every span in every lane hangs off it.')+
+    gl('DHW','The Idaho Department of Health and Welfare \u2014 the single state agency; the Division of Medicaid runs the program.')+
+    gl('idalink','Idaho\u2019s online benefits portal for applications and renewals; MAGI determinations feed Medicaid from here and from Your Health Idaho referrals.')+
+    gl('Healthy Connections','Primary care case management (PCCM): every participating member is assigned a primary care medical home paid a per-member-per-month fee to coordinate care. An assignment, not a capitated plan \u2014 the services themselves stay fee-for-service.')+
+    gl('IBHP','The Idaho Behavioral Health Plan \u2014 the single statewide managed care contract for outpatient behavioral health (Magellan of Idaho from mid-2024; Optum Idaho before it).')+
+    gl('Idaho Smiles','The statewide dental program under a single dental plan contract (MCNA).')+
+    gl('MMCP','The Medicare Medicaid Coordinated Plan \u2014 a voluntary integrated product for duals aligning Medicare and Medicaid in one plan.')+
+    gl('Idaho Medicaid Plus','The mandatory companion for duals in participating counties who do not elect MMCP: a plan managing the Medicaid wrap benefits only.')+
+    gl('Katie Beckett','The TEFRA pathway: a child with a disability meeting institutional level of care at home is eligible on the child\u2019s own income \u2014 the parents\u2019 income is disregarded. Ends at the 18th birthday.')+
+    gl('Proposition 2','The 2018 ballot initiative that expanded Idaho Medicaid to adults at 138% FPL, effective January 2020 \u2014 the AE02 group here.')+
+    gl('Buy-in','The state paying a dual member\u2019s Medicare Part B premium. Accretion runs one to three months behind entitlement \u2014 the limbo in register F.')+
+    gl('Reevaluation','Idaho\u2019s word for the annual renewal. The single largest driver of churn: cases close for paperwork, not ineligibility, and reopen weeks later.')+
+    gl('834','The X12N benefit enrollment and maintenance transaction \u2014 the roster Idaho exchanges with its lane contractors. Each 834 hands a plan one lane of the member, never the whole person.')+
+    gl('Capitation','The per-member-per-month payment to a plan. In Idaho it exists only lane by lane \u2014 and it only runs forward, which is why retroactive months are FFS in every lane.')+
+    '</dl></div>';
+  function gl(t,d){return '<dt>'+t+'</dt><dd>'+d+'</dd>'}
+
+  h+='<div class="card"><h3 style="margin-top:0">Jurisdictions in this population</h3><p class="sub" style="margin-bottom:8px">Idaho has 44 counties; DHW administers eligibility statewide (no county administration). This roster draws from eleven, weighted roughly like the caseload \u2014 the Treasure Valley heaviest, with the Panhandle, the Magic Valley, and eastern Idaho represented.</p><p style="font-size:.85rem">'+COUNTIES.map(function(c){return esc(c.name)}).join(' \u00b7 ')+'</p></div>';
+
+  document.getElementById('ref-out').innerHTML=h;
+}
+</script>
+<script>
+'use strict';
+/* ================= generic sortable table state ================= */
+var SORT={};
+function bindSort(tblId, renderFn){
+  document.querySelectorAll('#'+tblId+' th.sortable').forEach(function(th){
+    th.addEventListener('click',function(){
+      var k=th.getAttribute('data-k');
+      var cur=SORT[tblId]||{};
+      SORT[tblId]={k:k, dir:(cur.k===k&&cur.dir==='asc')?'desc':'asc'};
+      renderFn();
+    });
+  });
+}
+function sortRows(tblId, rows){
+  var s=SORT[tblId]; if(!s)return rows;
+  var dir=s.dir==='asc'?1:-1;
+  rows.sort(function(a,b){
+    var x=a[s.k],y=b[s.k];
+    if(x===null||x===undefined)x=-Infinity; if(y===null||y===undefined)y=-Infinity;
+    if(typeof x==='string'){x=x.toLowerCase();y=String(y).toLowerCase();return x<y?-dir:(x>y?dir:0)}
+    return (x-y)*dir;
+  });
+  return rows;
+}
+function sortMarks(tblId){
+  var s=SORT[tblId];
+  document.querySelectorAll('#'+tblId+' th.sortable').forEach(function(th){
+    var base=th.textContent.replace(/[\u25b2\u25bc]\s*$/,'').trim();
+    th.innerHTML=esc(base)+(s&&s.k===th.getAttribute('data-k')?' <span class="arr">'+(s.dir==='asc'?'\u25b2':'\u25bc')+'</span>':'');
+  });
+}
+
+/* ================= pagination ================= */
+var PAGE={}, PAGE_SIZE=50;
+function pager(tblId, total, renderFn, pagerId){
+  var pages=Math.max(1,Math.ceil(total/PAGE_SIZE));
+  var p=Math.min(PAGE[tblId]||1,pages); if(p<1)p=1; PAGE[tblId]=p;
+  var el=document.getElementById(pagerId);
+  if(el){
+    if(pages===1){ el.innerHTML=''; }
+    else{
+      el.innerHTML='<button class="pg"'+(p<=1?' disabled':'')+' data-d="-1">\u25c0 Prev</button>'+
+        '<span class="mono pgpos">page '+p+' of '+pages.toLocaleString()+'</span>'+
+        '<button class="pg"'+(p>=pages?' disabled':'')+' data-d="1">Next \u25b6</button>';
+      el.querySelectorAll('button.pg').forEach(function(b){
+        b.addEventListener('click',function(){ PAGE[tblId]=p+parseInt(b.getAttribute('data-d'),10); renderFn(); });
+      });
+    }
+  }
+  return {from:(p-1)*PAGE_SIZE, to:Math.min(total,p*PAGE_SIZE)};
+}
+function resetPage(tblId){ PAGE[tblId]=1 }
+
+/* ================= members roster ================= */
+var ROSTER_VIEW=[]; /* current filtered order (all pages), for modal nav */
+function fillSelect(id, opts, allLabel){
+  var el=document.getElementById(id);
+  el.innerHTML='<option value="">'+allLabel+'</option>'+opts.map(function(o){return '<option value="'+o[0]+'">'+o[1]+'</option>'}).join('');
+}
+function initRosterControls(){
+  fillSelect('m-group',GROUP_KEYS.map(function(g){return[g,g+' \u2014 '+GROUPS[g].name]}),'Coverage group: all');
+  var dopts=[['FFS','Fee-for-Service'],['MOLPLUS',PLANS.MOLPLUS.name],['BCIPLUS',PLANS.BCIPLUS.name],['TRUEBLUE',PLANS.TRUEBLUE.name],['MOLMMCP',PLANS.MOLMMCP.name]];
+  fillSelect('m-del',dopts,'Medical lane today: all');
+  fillSelect('m-reg',['A','B','C','D','E','F'].map(function(r){return[r,'Register '+r]}),'Register: all');
+  ['m-search','m-group','m-del','m-reg','m-status'].forEach(function(id){
+    document.getElementById(id).addEventListener('input',function(){resetPage('m-tbl');renderRoster()});
+  });
+  bindSort('m-tbl',renderRoster);
+}
+function renderRoster(){
+  var q=document.getElementById('m-search').value.trim().toLowerCase();
+  var fg=document.getElementById('m-group').value, fd=document.getElementById('m-del').value,
+      fr=document.getElementById('m-reg').value, fs=document.getElementById('m-status').value;
+  var rows=MEMBERS.filter(function(m){
+    if(fg&&m.grpToday!==fg)return false;
+    if(fd&&m.delTodayCode!==fd)return false;
+    if(fr&&m.reg!==fr)return false;
+    if(fs&&m.status!==fs)return false;
+    if(q){ var hay=(m.name+' '+m.id+' '+m.city+' '+m.county).toLowerCase(); if(hay.indexOf(q)<0)return false }
+    return true;
+  }).map(function(m){return {ix:m.ix,id:m.id,name:m.name,age:m.age,sex:m.sex,grp:m.grpToday,del:m.delTodayCode,county:m.county,reg:m.reg,status:m.status}});
+  rows=sortRows('m-tbl',rows); sortMarks('m-tbl');
+  ROSTER_VIEW=rows.map(function(r){return r.ix});
+  var pg=pager('m-tbl',rows.length,renderRoster,'m-pager');
+  var tb=document.getElementById('m-body'); tb.innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+r.age+'</td><td>'+r.sex+'</td>'+
+    '<td>'+grpChip(r.grp)+'</td><td>'+delChip(r.del)+'</td><td class="nowrap">'+esc(r.county)+'</td><td>'+regBadge(r.reg)+'</td><td>'+statusHtml(r.status)+'</td></tr>'}).join('');
+  document.getElementById('m-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' matching (population '+MEMBERS.length.toLocaleString()+')';
+  tb.querySelectorAll('tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'roster')})});
+}
+
+/* ================= eligibility spans ================= */
+var SPAN_VIEW=[];
+function initSpanControls(){
+  fillSelect('s-group',GROUP_KEYS.map(function(g){return[g,g+' \u2014 '+GROUPS[g].name]}),'Coverage group: all');
+  ['s-group','s-open'].forEach(function(id){document.getElementById(id).addEventListener('input',function(){resetPage('s-tbl');renderSpans()})});
+  bindSort('s-tbl',renderSpans);
+}
+function renderSpans(){
+  var fg=document.getElementById('s-group').value, fo=document.getElementById('s-open').value;
+  var rows=[];
+  MEMBERS.forEach(function(m){ m.eligSpans.forEach(function(s){
+    if(fg&&s.grp!==fg)return;
+    if(fo==='open'&&s.end!==null)return;
+    if(fo==='closed'&&s.end===null)return;
+    rows.push({ix:m.ix,id:m.id,name:m.name,grp:s.grp,start:s.start,end:(s.end===null?9999:s.end),endRaw:s.end,
+      months:spanMonths(s.start,s.end),reason:s.reason});
+  })});
+  rows=sortRows('s-tbl',rows); sortMarks('s-tbl');
+  SPAN_VIEW=[]; var seenS={}; rows.forEach(function(r){ if(!seenS[r.ix]){seenS[r.ix]=1;SPAN_VIEW.push(r.ix)} });
+  var pg=pager('s-tbl',rows.length,renderSpans,'s-pager');
+  document.getElementById('s-body').innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+grpChip(r.grp)+'</td>'+
+    '<td class="nowrap">'+startLabel(r.start)+'</td><td class="nowrap">'+(r.endRaw===null?'<span class="st-act">open</span>':mLabel(r.endRaw))+'</td>'+
+    '<td class="mono">'+r.months+(r.start<0?'+':'')+'</td><td>'+(r.reason?esc(r.reason):'\u2014')+'</td></tr>'}).join('');
+  document.getElementById('s-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' spans';
+  document.querySelectorAll('#s-body tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'spans')})});
+}
+function startLabel(s){ return s<0 ? mLabel(s)+' <span class="hint">(pre-window)</span>' : mLabel(s) }
+
+/* ================= delivery spans ================= */
+var DEL_VIEW=[];
+function initDelControls(){
+  fillSelect('d-lane',LANE_KEYS.map(function(k){return[k,LANES[k].name]}),'Lane: all');
+  var dopts=[['FFS','Fee-for-Service']].concat(Object.keys(PLANS).map(function(c){return[c,PLANS[c].name]}));
+  fillSelect('d-sys',dopts.concat([['HC','Healthy Connections (any clinic)']]),'Delivery system: all');
+  ['d-lane','d-sys'].forEach(function(id){document.getElementById(id).addEventListener('input',function(){resetPage('d-tbl');renderDel()})});
+  bindSort('d-tbl',renderDel);
+}
+function renderDel(){
+  var fd=document.getElementById('d-sys').value, fl=document.getElementById('d-lane').value;
+  var rows=[];
+  MEMBERS.forEach(function(m){ m.delSpans.forEach(function(s){
+    if(fl&&s.lane!==fl)return;
+    if(fd==='HC'){ if(s.lane!=='PCP')return }
+    else if(fd&&s.sys!==fd)return;
+    rows.push({ix:m.ix,id:m.id,name:m.name,lane:s.lane,sys:s.sys,start:s.start,end:(s.end===null?9999:s.end),endRaw:s.end,
+      months:spanMonths(s.start,s.end),note:s.note});
+  })});
+  rows=sortRows('d-tbl',rows); sortMarks('d-tbl');
+  DEL_VIEW=[]; var seenD={}; rows.forEach(function(r){ if(!seenD[r.ix]){seenD[r.ix]=1;DEL_VIEW.push(r.ix)} });
+  var pg=pager('d-tbl',rows.length,renderDel,'d-pager');
+  document.getElementById('d-body').innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td class="nowrap">'+LANES[r.lane].name+'</td><td>'+laneChip(r.lane,r.sys)+'</td>'+
+    '<td class="nowrap">'+startLabel(r.start)+'</td><td class="nowrap">'+(r.endRaw===null?'<span class="st-act">open</span>':mLabel(r.endRaw))+'</td>'+
+    '<td class="mono">'+r.months+(r.start<0?'+':'')+'</td><td>'+(r.note?esc(r.note):'\u2014')+'</td></tr>'}).join('');
+  document.getElementById('d-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' delivery spans';
+  document.querySelectorAll('#d-body tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'delivery')})});
+}
+</script>
+<script>
+'use strict';
+/* ================= scenario registers ================= */
+var REGDEFS={
+ A:{title:'Steady state', q:'Who is simply covered \u2014 eligible all window, four lanes humming, nothing to reconcile?',
+    body:'The baseline the other five registers are measured against. The medical lane is fee-for-service the whole way; the behavioral health and dental plans carry the member statewide; most have a Healthy Connections medical home, and a share changed medical homes once \u2014 a lane event that touches nothing else.'},
+ B:{title:'Reevaluation churn', q:'Who lost coverage at renewal for paperwork \u2014 and what happened to all four lanes when they came back?',
+    body:'Cases close at the reevaluation anniversary, sit in a gap, and reopen. The Idaho twist: one eligibility closure terminates <i>every</i> lane at once \u2014 behavioral health, dental, and the medical home all get the same goodbye \u2014 and on return some members land at a different medical home, and some lanes show a one-month FFS sliver while plan pickup catches up. A quarter of this register \u2014 125 members \u2014 is in the gap right now.'},
+ C:{title:'Retroactive grant', q:'Whose eligibility begins before their application \u2014 and why is the tail FFS in every lane?',
+    body:'Medicaid can pay up to three months backward from application. Capitation cannot \u2014 in any lane. Every member here has an FFS tail in the behavioral health and dental lanes before the statewide plans pick up prospectively, and the Healthy Connections assignment starts with processing, never before. Two clocks, four lanes.'},
+ D:{title:'Katie Beckett', q:'Which children are eligible on their own income \u2014 and what happens on the eighteenth birthday?',
+    body:'The TEFRA pathway: a child with a disability who meets institutional level of care at home is eligible counting only the child\u2019s own income \u2014 the parents\u2019 income is disregarded entirely. It ends by rule at eighteen. About a quarter of this register hits that birthday in the window: eligibility rolls to an adult group (SSI-related or expansion) while every lane keeps running \u2014 a group change the lane contractors see as a change, not a goodbye.'},
+ E:{title:'Dual \u00e0 la carte', q:'Which duals moved their medical lane into a plan \u2014 and which of Idaho\u2019s two dual products did they land in?',
+    body:'Idaho offers duals two doors: the <b>MMCP</b> \u2014 a voluntary integrated plan aligning Medicare and Medicaid \u2014 and <b>Idaho Medicaid Plus</b>, mandatory in participating counties for duals who don\u2019t elect MMCP, managing only the Medicaid wrap. Either way the medical lane moves FFS \u2192 plan and behavioral health carves into the plan with it \u2014 while the dental lane never blinks. Lanes move one at a time; that is the whole Idaho lesson.'},
+ F:{title:'Medicare arrives \u2014 nothing terminates', q:'Who aged onto Medicare \u2014 and why did no plan receive a disenrollment?',
+    body:'In Maryland or New York, Medicare\u2019s arrival ends a mainstream enrollment. In Idaho there is no mainstream enrollment to end: the medical lane was FFS before Medicare and stays FFS after \u2014 only the payer order changes. What does end is the Healthy Connections assignment (PCCM is for Medicaid-primary members), and what lags is the Part B <b>buy-in</b>, accreting one to three months behind entitlement \u2014 the limbo where premiums come out of the Social Security check until accretion lands and they come back.'}
+};
+function renderRegisters(){
+  var out=document.getElementById('reg-list'); var h='';
+  ['A','B','C','D','E','F'].forEach(function(r){
+    var d=REGDEFS[r], list=MEMBERS.filter(function(m){return m.reg===r});
+    var sample=list.slice(0,12);
+    h+='<div class="reg"><h3><span class="rl">'+r+'</span>'+esc(d.title)+'<span class="meta" style="margin-left:auto">'+list.length.toLocaleString()+' members</span></h3>'+
+       '<div class="q">'+d.q+'</div><p class="sub" style="margin-bottom:10px">'+d.body+'</p>'+
+       '<div class="tblwrap"><table><thead><tr><th>MID</th><th>Member</th><th>Group</th><th>Medical lane today</th><th>The planted story</th></tr></thead><tbody>';
+    sample.forEach(function(m){
+      h+='<tr class="rowlink" data-ix="'+m.ix+'"><td class="mono">'+m.id+'</td><td class="nowrap">'+esc(m.name)+'</td><td>'+grpChip(m.grpToday)+'</td><td>'+delChip(m.delTodayCode)+'</td>'+
+         '<td>'+(m.flags.length?esc(m.flags[0]):'Clean spans \u2014 the control group')+'</td></tr>';
+    });
+    h+='</tbody></table></div>';
+    if(list.length>sample.length){
+      h+='<div class="hint" style="margin-top:8px">Showing the first '+sample.length+' of '+list.length.toLocaleString()+'. Open any row \u2014 the \u25c0 \u25b6 arrows walk the entire register \u2014 or filter the Members tab by register for the full list.</div>';
+    }
+    h+='</div>';
+  });
+  out.innerHTML=h;
+  out.querySelectorAll('tr.rowlink').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'register')})});
+}
+
+/* ================= 834 builder ================= */
+function lastDelEvent(m){
+  /* the most recent lane-plan event: {kind, del, lane, why} */
+  var planSpans=m.delSpans.filter(function(s){return !!planByCode(s.sys)});
+  if(!planSpans.length)return null;
+  if(m.reg==='F'){
+    var bh=null; m.delSpans.forEach(function(s){if(s.lane==='BH'&&planByCode(s.sys))bh=s});
+    return {kind:'001',del:bh,lane:'BH',why:'Medicare arrived \u2014 a change, not a termination. The behavioral health plan keeps the member; only the coordination-of-benefits facts move.'};
+  }
+  if(m.reg==='E'){
+    var med=null; m.delSpans.forEach(function(s){if(s.lane==='MED'&&planByCode(s.sys))med=s});
+    return {kind:'021',del:med,lane:'MED',why:(m.dualKind==='IMPLUS'?'Idaho Medicaid Plus \u2014 mandatory in participating counties for duals not electing MMCP. The plan receives the Medicaid wrap only.':'MMCP \u2014 the member elected the voluntary integrated dual plan.')};
+  }
+  if(m.reg==='D'&&m.eligSpans.length>1){
+    var bh2=null; m.delSpans.forEach(function(s){if(s.lane==='BH'&&planByCode(s.sys))bh2=s});
+    return {kind:'001',del:bh2,lane:'BH',why:'Katie Beckett ended at the eighteenth birthday and the coverage group changed underneath a continuing enrollment \u2014 a change, not a goodbye.'};
+  }
+  var last=planSpans[planSpans.length-1];
+  if(m.reg==='B'&&last.start>TODAY_IDX){
+    var first=planSpans[0];
+    return {kind:'024',del:first,lane:first.lane,why:'Eligibility closed at reevaluation; every lane received the same termination. The member is in the gap today.'};
+  }
+  /* default: BH enrollment (the lane everyone has) */
+  var bh3=null; m.delSpans.forEach(function(s){if(s.lane==='BH'&&planByCode(s.sys))bh3=s});
+  var d=bh3||last;
+  return {kind:'021',del:d,lane:d.lane,why:(m.reg==='C'?'Enrollment following a retroactive grant \u2014 note the two begin dates below.':(m.reg==='B'?'Re-enrollment after the reevaluation gap \u2014 all lanes restored together.':(m.reg==='D'?'Katie Beckett grant \u2014 the child is eligible on the child\u2019s own income.':'Enrollment addition \u2014 the statewide behavioral health carve-in follows eligibility.')))};
+}
+function ediRow(seg,note,loop){return '<div class="edirow'+(loop?' loop':'')+'"><div class="seg">'+esc(seg)+'</div><div class="note">'+note+'</div></div>'}
+function build834(m){
+  var ev=lastDelEvent(m);
+  var out='';
+  if(!ev){
+    return '<div class="card">This member has no lane-plan enrollment history \u2014 no 834 ever left the building for them.</div>';
+  }
+  var plan=planByCode(ev.del.sys);
+  var eligSpan = m.eligSpans[m.eligSpans.length-1];
+  var eligBegin = m.eligSpans[0].start;
+  var d8=mFirstD8(Math.max(ev.del.start,0));
+  var kindLabel={ '021':'Addition','001':'Change','024':'Termination' }[ev.kind];
+  var ctl=String(300000+m.ix*7);
+  out+='<div class="ediwrap"><div class="edihead"><span class="fn">834 \u2014 '+kindLabel+' <span class="hint" style="font-weight:400">('+esc(LANES[ev.lane].name)+' lane)</span></span><span class="hint">'+esc(ev.why)+'</span></div>';
+  out+=ediRow('ISA*00*          *00*          *ZZ*IDDHW          *ZZ*'+(plan.code+'          ').slice(0,10)+'    *260701*0800*^*00501*'+ctl.padStart(9,'0')+'*0*P*:~','Interchange envelope: Idaho Department of Health and Welfare to <b>'+esc(plan.name)+'</b>. Production flag, repetition separator, control number.');
+  out+=ediRow('GS*BE*IDDHW*'+plan.code+'*20260701*0800*'+ctl+'*X*005010X220A1~','Functional group: <b>BE</b> = benefit enrollment. The version tells the plan which implementation guide to read this against.');
+  out+=ediRow('ST*834*'+ctl.slice(-4)+'*005010X220A1~','Transaction set header. One ST/SE per batch; this rendering shows a single member for teaching.');
+  out+=ediRow('BGN*00*'+m.id+'-'+ctl.slice(-3)+'*20260701*0800****4~','Beginning segment. Purpose 00 = original. Action 4 = verify/full audit in the monthly roster; dailies carry changes.');
+  out+=ediRow('N1*P5*IDAHO DEPT OF HEALTH AND WELFARE*FI*826000952~','Loop 1000A \u2014 plan sponsor: the state.', true);
+  out+=ediRow('N1*IN*'+plan.name.toUpperCase().replace(/\u2014/g,'-')+'*FI*'+String(820000000+m.ix*13)+'~','Loop 1000B \u2014 insurer: the lane contractor receiving the member. <b>One lane of the member</b> \u2014 never the whole person.', true);
+  out+=ediRow('INS*Y*18*'+ev.kind+'*'+(ev.kind==='024'?'07':(ev.kind==='001'?'25':'28'))+'*A***FT~','Loop 2000. Subscriber (Y/18 \u2014 Medicaid members are always the subscriber). Maintenance <b>'+ev.kind+'</b> = '+kindLabel.toLowerCase()+'; the reason code tells the plan why.', true);
+  out+=ediRow('REF*0F*'+m.id+'~','The <b>MID</b> \u2014 seven digits. The identifier everything else hangs off. It never changes.');
+  out+=ediRow('REF*17*'+m.id.slice(0,5)+'-'+m.reg+'~','Case reference (teaching value). Real rosters carry case linkage here.');
+  out+=ediRow('DTP*356*D8*'+mFirstD8(Math.max(eligBegin,-24))+'~','<b>Eligibility</b> begin date'+(m.reg==='C'?' \u2014 note it precedes the plan begin date below by the retroactive months. Two clocks.':'.'));
+  if(ev.kind==='024'&&ev.del.end!==null) out+=ediRow('DTP*357*D8*'+mLastD8(ev.del.end)+'~','End date for this lane relationship \u2014 the eligibility closure reached every lane at once.');
+  out+=ediRow('NM1*IL*1*'+m.last.toUpperCase()+'*'+m.first.toUpperCase()+'****34*'+String(510000000+m.ix*311)+'~','Member name. The 34 qualifier carries an SSN in real files; synthetic here.');
+  out+=ediRow('PER*IP**TE*'+m.phone.replace(/\D/g,'')+'~','Contact telephone.');
+  out+=ediRow('N3*'+m.street.toUpperCase()+'~','Street address \u2014 residence drives county programs like Idaho Medicaid Plus participation.');
+  out+=ediRow('N4*'+m.city.toUpperCase()+'*ID*'+m.zip+'~','City/state/ZIP: '+esc(m.city)+', '+esc(m.county)+' County.');
+  out+=ediRow('DMG*D8*'+dobD8(m.dob)+'*'+m.sex+'~','Date of birth and sex.'+(m.reg==='D'?' On a Katie Beckett case the eighteenth birthday is a term date printed here in advance.':''));
+  if(m.lang!=='English') out+=ediRow('LUI*LD*'+({Spanish:'SPA',Swahili:'SWA',Arabic:'ARA',Ukrainian:'UKR'}[m.lang]||'ENG')+'**6~','Preferred language: '+esc(m.lang)+'. Drives member materials and interpreter services.');
+  out+=ediRow('HD*'+ev.kind+'**'+(ev.lane==='DEN'?'DEN':'HLT')+'*'+plan.code+'~','Loop 2300 \u2014 health coverage. The plan code names the lane contract'+(ev.lane==='MED'?' \u2014 a dual product: '+(m.dualKind==='IMPLUS'?'Medicaid wrap benefits only.':'an integrated Medicare+Medicaid plan.'):'.'), true);
+  out+=ediRow('DTP*348*D8*'+d8+'~','<b>Plan</b> begin date \u2014 first of the month, always prospective. '+(m.reg==='C'?'Compare with DTP*356 above: the retro tail between them was fee-for-service in every lane.':''));
+  if(ev.del.end!==null&&ev.kind!=='024') out+=ediRow('DTP*349*D8*'+mLastD8(ev.del.end)+'~','Plan end date \u2014 last day of the final capitated month.');
+  out+=ediRow('LS*2700~','Open the member-reporting loop Idaho uses for state-specific facts.', true);
+  out+=ediRow('LX*1~ N1*75*COVERAGE GROUP~ REF*ZZ*'+eligSpan.grp+'~','The <b>coverage group</b> \u2014 why the state covers this person ('+esc(GROUPS[eligSpan.grp]?GROUPS[eligSpan.grp].name:eligSpan.grp)+'). Lane contractors need it: it shapes benefits and cost sharing.');
+  if(m.pcpToday) out+=ediRow('LX*2~ N1*75*HEALTHY CONNECTIONS~ REF*ZZ*'+m.pcpToday.toUpperCase().slice(0,30)+'~','The assigned <b>medical home</b> rides the roster so every lane contractor knows where primary care lives. An assignment, not a plan.');
+  if(m.reg==='D') out+=ediRow('LX*3~ N1*75*KATIE BECKETT~ REF*ZZ*TEFRA-LOC~','The eligibility door: institutional level of care met at home; the child\u2019s own income only. '+(m.eligSpans.length>1?'Ended at eighteen \u2014 see the group change above.':''));
+  if(m.reg==='E'||m.reg==='F') out+=ediRow('LX*3~ N1*75*MEDICARE STATUS~ REF*ZZ*AB~','Medicare A+B on file'+(m.reg==='F'?' from '+mLabel(m.medicareIdx)+'. In Idaho this terminates nothing \u2014 it re-orders the payers.':' (predates the window).'));
+  out+=ediRow('LE*2700~','Close the reporting loop.', true);
+  out+=ediRow('SE*'+ri(18,24)+'*'+ctl.slice(-4)+'~ GE*1*'+ctl+'~ IEA*1*'+ctl.padStart(9,'0')+'~','Trailers: segment count, group close, interchange close. Counts must reconcile or the whole file bounces.');
+  out+='</div>';
+  if(m.reg==='F'){
+    out+='<div class="plain" style="margin-top:14px"><span class="pe-label">Worth noticing</span>No termination went anywhere when Medicare arrived \u2014 there was no mainstream plan to leave. The medical lane was FFS before and FFS after; the 834 above is a <b>change</b> carrying the new Medicare facts to a lane contractor that keeps the member. The thing that did end \u2014 the Healthy Connections assignment \u2014 is a PCCM fact, not a plan enrollment.</div>';
+  }
+  if(m.reg==='E'){
+    out+='<div class="plain" style="margin-top:14px"><span class="pe-label">Worth noticing</span>This 834 hands the plan '+(m.dualKind==='IMPLUS'?'the <b>Medicaid wrap only</b> \u2014 Medicare stays wherever the member\u2019s Medicare is':'the member\u2019s <b>aligned</b> Medicare and Medicaid together')+'. Meanwhile the dental lane never blinked: Idaho Smiles has held this member the whole time, on its own clock.</div>';
+  }
+  return out;
+}
+function initFileTab(){
+  var sel=document.getElementById('f-member');
+  var h='';
+  ['A','B','C','D','E','F'].forEach(function(r){
+    h+='<optgroup label="Register '+r+' \u2014 '+esc(REGDEFS[r].title)+'">';
+    MEMBERS.filter(function(m){return m.reg===r}).slice().sort(function(a,b){return a.name.localeCompare(b.name)}).forEach(function(m){
+      h+='<option value="'+m.ix+'">'+esc(m.name)+' \u2014 '+m.id+'</option>';
+    });
+    h+='</optgroup>';
+  });
+  sel.innerHTML=h;
+  sel.addEventListener('input',function(){renderFile(+sel.value)});
+  renderFile(+sel.value);
+}
+function renderFile(ix){
+  document.getElementById('f-out').innerHTML=build834(MEMBERS[ix]);
+}
+</script>
+<script>
+'use strict';
+/* ================= modal ================= */
+var MODAL={ix:null, ctx:'roster'};
+function navList(){
+  if(MODAL.ctx==='spans'&&SPAN_VIEW.length)return SPAN_VIEW;
+  if(MODAL.ctx==='delivery'&&DEL_VIEW.length)return DEL_VIEW;
+  if(MODAL.ctx==='register'&&MODAL.ix!==null){
+    var r=MEMBERS[MODAL.ix].reg;
+    return MEMBERS.filter(function(m){return m.reg===r}).map(function(m){return m.ix});
+  }
+  return ROSTER_VIEW.length?ROSTER_VIEW:MEMBERS.map(function(m){return m.ix});
+}
+function openModal(ix,ctx){
+  MODAL.ix=ix; if(ctx)MODAL.ctx=ctx;
+  var m=MEMBERS[ix];
+  document.getElementById('mo-nm').textContent=m.first+' '+m.last;
+  document.getElementById('mo-id').textContent='MID '+m.id+'  \u00b7  Register '+m.reg;
+  document.getElementById('mo-body').innerHTML=modalBody(m);
+  var list=navList(), pos=list.indexOf(ix);
+  document.getElementById('mo-pos').textContent=(pos+1)+' / '+list.length+' ('+MODAL.ctx+')';
+  document.getElementById('mo-prev').disabled=pos<=0;
+  document.getElementById('mo-next').disabled=pos<0||pos>=list.length-1;
+  document.getElementById('overlay').classList.add('on');
+  document.getElementById('modal').classList.add('on');
+  highlightRow(ix);
+  document.getElementById('mo-x').focus();
+}
+function closeModal(){
+  document.getElementById('overlay').classList.remove('on');
+  document.getElementById('modal').classList.remove('on');
+  highlightRow(null);
+  MODAL.ix=null;
+}
+function stepModal(d){
+  var list=navList(), pos=list.indexOf(MODAL.ix), np=pos+d;
+  if(np<0||np>=list.length)return;
+  openModal(list[np]);
+}
+function highlightRow(ix){
+  document.querySelectorAll('tr.hl').forEach(function(tr){tr.classList.remove('hl')});
+  if(ix===null)return;
+  document.querySelectorAll('tr.rowlink[data-ix="'+ix+'"]').forEach(function(tr){tr.classList.add('hl')});
+}
+
+/* ---------- mini two-band timeline ---------- */
+function tlBar(startIdx,endIdx,color,striped,title){
+  var s=Math.max(startIdx,0), e=(endIdx===null?WIN_MONTHS-1:Math.min(endIdx,WIN_MONTHS-1));
+  if(e<0||s>WIN_MONTHS-1)return '';
+  var l=100*s/WIN_MONTHS, w=100*(e-s+1)/WIN_MONTHS;
+  return '<span class="bar'+(striped?' striped':'')+'" style="left:'+l+'%;width:'+w+'%;background:'+color+'" title="'+esc(title)+'"></span>';
+}
+function timeline(m){
+  var h='<div class="tl">';
+  h+='<div class="band"><span class="bl">Eligibility</span><span class="lane">';
+  m.eligSpans.forEach(function(s){
+    h+=tlBar(s.start,s.end,'var('+GROUPS[s.grp].color+')',false,s.grp+' '+mLabel(s.start)+' \u2013 '+(s.end===null?'open':mLabel(s.end)));
+  });
+  h+='<span class="todayline" style="left:'+(100*(TODAY_IDX+0.5)/WIN_MONTHS)+'%"></span></span></div>';
+  var laneCol={MED:'var(--d-mco)',PCP:'var(--d-pcp)',BH:'var(--d-bh)',DEN:'var(--d-den)'};
+  var laneLbl={MED:'Medical',PCP:'Healthy Conn.',BH:'Behavioral',DEN:'Dental'};
+  LANE_KEYS.forEach(function(L){
+    h+='<div class="band"><span class="bl">'+laneLbl[L]+'</span><span class="lane">';
+    m.delSpans.forEach(function(s){
+      if(s.lane!==L)return;
+      var col = s.sys==='FFS'?'var(--d-ffs)':laneCol[L];
+      var lbl = (L==='PCP'?s.sys:sysLabel(s.sys))+' '+mLabel(s.start)+' \u2013 '+(s.end===null?'open':mLabel(s.end));
+      h+=tlBar(s.start,s.end,col,s.sys!=='FFS',lbl);
+    });
+    h+='<span class="todayline" style="left:'+(100*(TODAY_IDX+0.5)/WIN_MONTHS)+'%"></span></span></div>';
+  });
+  h+='<div class="axis"><span></span><span class="ax">'+
+     '<span style="left:2%">Jan 25</span><span style="left:27%">Jul 25</span><span style="left:52%">Jan 26</span><span style="left:77%">Jul 26</span></span></div>';
+  h+='<div class="tl-note">One band per lane \u2014 blue = dual medical plan \u00b7 green = Healthy Connections medical home \u00b7 purple = behavioral health plan \u00b7 teal = dental plan \u00b7 solid gray = fee-for-service \u00b7 red line = today (Jul 2026). The lanes run concurrently and keep separate clocks. Bars clamp to the 24-month window; pre-window starts are noted in the span tables.</div></div>';
+  return h;
+}
+
+/* ---------- per-member plain english ---------- */
+function plainFor(m){
+  var p='';
+  var first=m.first;
+  function medPlan(){var r=null;m.delSpans.forEach(function(s){if(s.lane==='MED'&&s.sys!=='FFS')r=s});return r}
+  function pcpSpans(){return m.delSpans.filter(function(s){return s.lane==='PCP'})}
+  if(m.reg==='A'){
+    var pcs=pcpSpans();
+    p=first+' is the case that never pages anyone: eligible under <b>'+m.grpToday+' ('+esc(GROUPS[m.grpToday].name)+')</b> for the whole window, medical lane fee-for-service the entire time \u2014 in Idaho that <i>is</i> the mainstream \u2014 with the statewide behavioral health and dental plans riding alongside. '+
+      (pcs.length>1?'One thing did move: the Healthy Connections medical home changed from '+esc(pcs[0].sys)+' to <b>'+esc(pcs[1].sys)+'</b> in '+mLabel(pcs[1].start)+' \u2014 a lane event that touched nothing else.':(pcs.length===1?'The medical home has been '+esc(pcs[0].sys)+' throughout.':'No Healthy Connections assignment is on file \u2014 the one lane sitting empty.'));
+  } else if(m.reg==='B'){
+    var t2=m.eligSpans[0].end, rg=m.eligSpans[1].start, gap=rg-t2-1;
+    if(rg>TODAY_IDX){
+      p=first+'\u2019s renewal did not come back and the case closed after '+mLabel(t2)+'. As of today \u2014 July 2026 \u2014 '+first+' is <b>in the gap</b>, '+(TODAY_IDX-t2)+' month'+(TODAY_IDX-t2>1?'s':'')+' uncovered; the data shows the case reopening in '+mLabel(rg)+'. One closure, four goodbyes: the behavioral health plan, the dental plan, and the medical home all lost '+first+' on the same day, for a paperwork reason none of them can see.';
+    } else {
+      var pcs2=pcpSpans();
+      var sameClin=pcs2.length>1&&pcs2[0].sys===pcs2[pcs2.length-1].sys;
+      p=first+' churned: closed at reevaluation after '+mLabel(t2)+', '+gap+' month'+(gap>1?'s':'')+' in the gap, back on in '+mLabel(rg)+'. All four lanes died together and came back together'+
+        (sameClin?' \u2014 same medical home on return \u2014':' \u2014 but the Healthy Connections assignment came back <b>different</b>: '+esc(pcs2[pcs2.length-1].sys)+' now \u2014')+
+        ' and the identity that carried through all of it is the MID.';
+    }
+  } else if(m.reg==='C'){
+    var s=m.eligSpans[0].start, planStart=null;
+    m.delSpans.forEach(function(sp){if(sp.lane==='BH'&&sp.sys!=='FFS'&&planStart===null)planStart=sp.start});
+    var retro=planStart-1-s;
+    p=first+' applied and the grant reached <b>'+retro+' month'+(retro>1?'s':'')+' backward</b> to '+mLabel(s)+'. Those backward months were fee-for-service <b>in every lane</b> \u2014 capitation only runs forward, whichever benefit it is buying \u2014 and the statewide plans picked '+first+' up together on '+mLabel(planStart)+', when the medical home was assigned too. Two begin dates, four lanes, all true.';
+  } else if(m.reg==='D'){
+    if(m.eligSpans.length>1){
+      var bday=m.eligSpans[0].end, toGrp=m.eligSpans[1].grp;
+      p=first+' was a <b>Katie Beckett</b> child \u2014 eligible on '+(m.sex==='F'?'her':'his')+' own income under TEFRA, parents\u2019 income disregarded, because institutional level of care was met at home. That door closes by rule at eighteen: in '+mLabel(bday)+' the birthday arrived and eligibility rolled to <b>'+toGrp+' ('+esc(GROUPS[toGrp].name)+')</b> the next month. Look at the lanes: nothing blinked. The plans saw a group change ride the roster \u2014 a change, not a goodbye \u2014 for a birthday the file had printed in advance since the day the case opened.';
+    } else {
+      var g=m.eligSpans[0].start;
+      p=first+' is a <b>Katie Beckett</b> child: '+(m.sex==='F'?'her':'his')+' disability meets institutional level of care, cared for at home, so eligibility counts only the child\u2019s own income \u2014 the parents\u2019 income is disregarded entirely. The grant landed '+mLabel(g)+' and every lane opened with it. The quiet clock on this record is the eighteenth birthday: the one end date that was known the day the span began.';
+    }
+  } else if(m.reg==='E'){
+    var mp=medPlan();
+    p=first+' is a dual \u2014 Medicare has been primary since before this window \u2014 and in '+mLabel(mp.start)+' the medical lane moved from FFS wrap into <b>'+esc(sysLabel(mp.sys))+'</b>'+
+      (m.dualKind==='IMPLUS'?' \u2014 <b>Idaho Medicaid Plus</b>, mandatory in participating counties for duals who don\u2019t elect the MMCP. The plan manages the Medicaid wrap only; Medicare stays exactly where it was.':' \u2014 the <b>MMCP</b>, the voluntary integrated plan, aligning Medicare and Medicaid under one roof.')+
+      ' Behavioral health carved into the plan with the move. The dental lane never blinked \u2014 Idaho Smiles has held '+first+' the whole time, on its own clock. Lanes move one at a time; that is the Idaho lesson.';
+  } else {
+    var mi=m.medicareIdx, bi=m.buyinIdx, lag=bi-mi;
+    p='Medicare arrived for '+first+' in '+mLabel(mi)+' \u2014 and <b>nothing terminated</b>, because in Idaho there was no mainstream plan to leave. The medical lane was FFS before and FFS after; only the payer order changed. What did end is the Healthy Connections assignment (PCCM is for Medicaid-primary members), and what lagged is the Part B <b>buy-in</b>: not effective until '+mLabel(bi)+', a '+lag+'-month limbo where the premium came out of '+first+'\u2019s Social Security check before accretion landed and the money came back. Eligibility ('+m.grpToday+') never changed; the quietest Medicare transition in the series.';
+  }
+  return '<div class="plain"><span class="pe-label">In plain English</span>'+p+'</div>';
+}
+
+/* ---------- modal body ---------- */
+function modalBody(m){
+  var h='';
+  var et=eligToday(m);
+  h+='<div class="kv">'+
+    kv('Status today',statusHtml(m.status))+
+    kv('Coverage group',grpChip(m.grpToday)+' <span style="font-size:.8rem;color:var(--ink-soft)">'+esc(GROUPS[m.grpToday].name)+'</span>')+
+    kv('Medical lane today',delChip(m.delTodayCode)+(m.delTodayCode!=='\u2014'?' <span style="font-size:.8rem;color:var(--ink-soft)">'+esc(sysLabel(m.delTodayCode))+'</span>':''))+
+    kv('Healthy Connections',m.pcpToday?esc(m.pcpToday):'<span class="st-cls">none</span>')+
+    kv('Date of birth',dobLabel(m.dob)+' <span class="hint">(age '+m.age+')</span>')+
+    kv('Sex',m.sex)+
+    kv('Address',esc(m.street)+', '+esc(m.city)+', ID '+m.zip)+
+    kv('Jurisdiction',esc(m.county))+
+    kv('Phone','<span class="mono">'+m.phone+'</span>')+
+    kv('Preferred language',esc(m.lang))+
+    (m.kbNote?kv('Katie Beckett',esc(m.kbNote)):'')+
+    '</div>';
+  function kv(k,v){return '<div class="k">'+k+'</div><div class="v">'+v+'</div>'}
+  h+='<h4>24-month picture</h4>'+timeline(m);
+  h+=plainFor(m);
+  h+='<h4>Eligibility spans</h4><div class="tblwrap"><table><thead><tr><th>Group</th><th>Begin</th><th>End</th><th>Reason</th></tr></thead><tbody>';
+  m.eligSpans.forEach(function(s){
+    h+='<tr><td>'+grpChip(s.grp)+'</td><td class="nowrap">'+startLabel(s.start)+'</td><td class="nowrap">'+(s.end===null?'<span class="st-act">open</span>':mLabel(s.end))+'</td><td>'+(s.reason?esc(s.reason):'\u2014')+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  h+='<h4>Benefit lanes</h4><div class="tblwrap"><table><thead><tr><th>Lane</th><th>System</th><th>Begin</th><th>End</th><th>Note</th></tr></thead><tbody>';
+  var laneSorted=m.delSpans.slice().sort(function(a,b){return (LANES[a.lane].order-LANES[b.lane].order)||(a.start-b.start)});
+  laneSorted.forEach(function(s){
+    var sysCell=(s.lane==='PCP')?('<span class="dchip d-pcp" title="Healthy Connections">HC</span> <span style="font-size:.8rem">'+esc(s.sys)+'</span>'):laneChip(s.lane,s.sys)+' <span style="font-size:.8rem;color:var(--ink-soft)">'+esc(s.sys==='FFS'?'':sysLabel(s.sys))+'</span>';
+    h+='<tr><td class="nowrap">'+LANES[s.lane].name+'</td><td>'+sysCell+'</td><td class="nowrap">'+startLabel(s.start)+'</td><td class="nowrap">'+(s.end===null?'<span class="st-act">open</span>':mLabel(s.end))+'</td><td>'+(s.note?esc(s.note):'\u2014')+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  if(m.flags.length){
+    h+='<h4>Flags</h4><p>'+m.flags.map(function(f){return '<span class="flag">'+esc(f)+'</span>'}).join(' ')+'</p>';
+  }
+  h+='<h4>See the file</h4><p style="font-size:.84rem;color:var(--ink-soft)">Open <b>What the File Says</b> and choose '+esc(m.first+' '+m.last)+' to read the 834 the plan received for this member\u2019s most recent enrollment event.</p>';
+  return h;
+}
+
+/* ================= navigation & boot ================= */
+function showPage(pg){
+  document.querySelectorAll('nav button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-pg')===pg)});
+  document.querySelectorAll('.page').forEach(function(p){p.classList.toggle('on',p.id==='pg-'+pg)});
+  if(pg==='overview')renderOverview();
+}
+document.getElementById('nav').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b)return; showPage(b.getAttribute('data-pg'));
+});
+document.getElementById('mo-x').addEventListener('click',closeModal);
+document.getElementById('overlay').addEventListener('click',closeModal);
+document.getElementById('mo-prev').addEventListener('click',function(){stepModal(-1)});
+document.getElementById('mo-next').addEventListener('click',function(){stepModal(1)});
+document.addEventListener('keydown',function(e){
+  if(MODAL.ix===null)return;
+  if(e.key==='Escape')closeModal();
+  else if(e.key==='ArrowLeft')stepModal(-1);
+  else if(e.key==='ArrowRight')stepModal(1);
+});
+
+/* boot */
+renderOverview();
+initRosterControls(); renderRoster();
+initSpanControls();  renderSpans();
+initDelControls();   renderDel();
+renderRegisters();
+initFileTab();
+renderReference();
+</script>
+</body>
+</html>

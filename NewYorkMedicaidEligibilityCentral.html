@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>New York Medicaid Eligibility Central</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@1,8..60,400;1,8..60,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#1E5FCC;
+  --accent-soft:#E8EFFB;
+  --ink:#1b2430;
+  --ink-soft:#4a5568;
+  --ink-faint:#8a94a3;
+  --line:#dde3ea;
+  --line-soft:#eceff3;
+  --bg:#f7f8fa;
+  --card:#ffffff;
+  --serif:'Source Serif 4', Georgia, serif;
+  --sans:'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono:'IBM Plex Mono', 'Consolas', monospace;
+  --g-FC01:#2E7D5B; --g-PG02:#B0568C; --g-CH19:#C98A2B; --g-EA02:#1E5FCC;
+  --g-SI02:#6A4FB6; --g-MN98:#5B8AA6; --g-FF26:#C25B4A; --g-WD02:#3E9C9C; --g-LT01:#7A7A52;
+  --d-mco:#4a7fd6; --d-ffs:#9aa3ad; --d-harp:#8a5fc0; --d-mltc:#2e8f8f;
+  --ok:#2E7D5B; --warn:#C98A2B; --bad:#C0392B;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+
+/* ---------- header ---------- */
+header{background:var(--card);border-bottom:1px solid var(--line);padding:18px 28px 0}
+.brandrow{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.wordmark{font-family:var(--serif);font-style:italic;font-weight:600;font-size:1.65rem;color:var(--accent);letter-spacing:.01em}
+.wordmark .st{color:var(--ink)}
+.tagline{color:var(--ink-faint);font-size:.85rem}
+.credit{margin-left:auto;color:var(--ink-faint);font-size:.78rem}
+nav{display:flex;gap:2px;margin-top:14px;flex-wrap:wrap}
+nav button{appearance:none;border:none;background:none;font:inherit;font-size:.86rem;font-weight:500;color:var(--ink-soft);padding:9px 14px;cursor:pointer;border-bottom:3px solid transparent;border-radius:6px 6px 0 0}
+nav button:hover{background:var(--line-soft)}
+nav button.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+nav button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+/* ---------- layout ---------- */
+main{max-width:1280px;margin:0 auto;padding:24px 28px 80px}
+.page{display:none}
+.page.on{display:block}
+h2{font-size:1.22rem;font-weight:700;margin:4px 0 4px}
+h3{font-size:.98rem;font-weight:600;margin:22px 0 8px}
+.sub{color:var(--ink-soft);font-size:.88rem;margin-bottom:16px;max-width:70ch}
+
+/* ---------- plain english callout ---------- */
+.plain{font-family:var(--serif);font-style:italic;font-size:1.02rem;line-height:1.65;color:#2c3a4d;background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:14px 18px;margin:14px 0 20px;max-width:86ch}
+.plain b{font-style:italic;font-weight:600}
+.plain .pe-label{display:block;font-family:var(--sans);font-style:normal;font-weight:700;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:5px}
+
+/* ---------- cards / stats ---------- */
+.statrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.stat .n{font-family:var(--mono);font-size:1.55rem;font-weight:600;color:var(--ink)}
+.stat .l{font-size:.74rem;color:var(--ink-soft);margin-top:2px;line-height:1.35}
+.stat.acc .n{color:var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:14px 0}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:900px){.twocol{grid-template-columns:1fr}}
+
+/* ---------- legend / bars ---------- */
+.leg{display:flex;flex-direction:column;gap:7px}
+.legrow{display:grid;grid-template-columns:16px 64px 1fr 46px;gap:10px;align-items:center;font-size:.84rem}
+.legrow .swatch{width:14px;height:14px;border-radius:4px}
+.legrow .code{font-family:var(--mono);font-size:.8rem;font-weight:600}
+.legrow .cnt{font-family:var(--mono);text-align:right;color:var(--ink-soft)}
+.barlist{display:flex;flex-direction:column;gap:8px}
+.barrow{display:grid;grid-template-columns:210px 1fr 40px;gap:10px;align-items:center;font-size:.83rem}
+.barrow .track{background:var(--line-soft);border-radius:5px;height:14px;overflow:hidden}
+.barrow .fill{display:block;height:100%;background:var(--d-mco);border-radius:5px;transition:width .8s ease}
+.barrow .bn{font-family:var(--mono);text-align:right;color:var(--ink-soft)}
+@media(max-width:700px){.barrow{grid-template-columns:130px 1fr 36px}}
+
+/* ---------- controls ---------- */
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;align-items:center}
+.controls input[type=search],.controls select{font:inherit;font-size:.85rem;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
+.controls input[type=search]{min-width:220px}
+.controls select:focus,.controls input:focus{outline:2px solid var(--accent);outline-offset:0}
+.hint{font-size:.76rem;color:var(--ink-faint)}
+
+/* ---------- tables ---------- */
+.tblwrap{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:auto;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:.83rem}
+th{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);background:#fbfcfd;white-space:nowrap;position:sticky;top:0}
+th.sortable{cursor:pointer;user-select:none}
+th.sortable:hover{color:var(--accent)}
+th .arr{font-size:.72rem;color:var(--accent)}
+.pager{display:flex;align-items:center;justify-content:center;gap:14px;margin:12px 0 2px}
+.pager button.pg{appearance:none;font:inherit;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:5px 13px;cursor:pointer;font-size:.82rem;color:var(--ink-soft)}
+.pager button.pg:hover:not(:disabled){background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.pager button.pg:disabled{opacity:.35;cursor:default}
+.pager .pgpos{font-size:.78rem;color:var(--ink-faint)}
+td{padding:9px 12px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tbody tr.rowlink{cursor:pointer}
+tbody tr.rowlink:hover{background:var(--accent-soft)}
+tbody tr.hl{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+.mono{font-family:var(--mono);font-size:.8rem}
+.nowrap{white-space:nowrap}
+
+/* ---------- chips ---------- */
+.chip{display:inline-block;font-family:var(--mono);font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:20px;color:#fff;white-space:nowrap}
+.chip.outl{background:none;border:1.5px solid currentColor}
+.dchip{display:inline-block;font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:5px;white-space:nowrap}
+.d-mco{background:#e5edfa;color:#2456a8}
+.d-ffs{background:#eceff2;color:#5c6672}
+.d-harp{background:#efe7f8;color:#6a3fa0}
+.d-mltc{background:#e2f2f2;color:#1f6f6f}
+.st-act{color:var(--ok);font-weight:600}
+.st-gap{color:var(--warn);font-weight:600}
+.st-cls{color:var(--ink-faint);font-weight:600}
+.flag{display:inline-block;font-size:.7rem;font-weight:600;background:#fdf1e0;color:#96660f;border:1px solid #f0d9ae;border-radius:5px;padding:1px 7px;white-space:nowrap}
+
+/* ---------- registers ---------- */
+.reg{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin:12px 0}
+.reg h3{margin:0 0 4px;display:flex;align-items:center;gap:10px}
+.reg .rl{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;background:var(--accent);color:#fff;font-family:var(--mono);font-weight:600;font-size:.85rem;flex:none}
+.reg .q{font-family:var(--serif);font-style:italic;color:#2c3a4d;font-size:.95rem;margin:4px 0 10px}
+.reg .meta{font-size:.78rem;color:var(--ink-faint);margin-bottom:8px}
+
+/* ---------- 834 ---------- */
+.ediwrap{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:12px 0;overflow:hidden}
+.edihead{padding:12px 18px;border-bottom:1px solid var(--line);display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;background:#fbfcfd}
+.edihead .fn{font-family:var(--mono);font-size:.82rem;font-weight:600}
+.edirow{display:grid;grid-template-columns:minmax(300px,46%) 1fr;border-bottom:1px solid var(--line-soft)}
+.edirow:last-child{border-bottom:none}
+.edirow .seg{font-family:var(--mono);font-size:.78rem;padding:8px 16px;background:#f4f7fb;color:#1b3a66;overflow-wrap:anywhere;border-right:1px solid var(--line-soft)}
+.edirow .note{font-size:.8rem;padding:8px 16px;color:var(--ink-soft)}
+.edirow.loop .seg{background:#e8effb;font-weight:600}
+@media(max-width:780px){.edirow{grid-template-columns:1fr}.edirow .seg{border-right:none}}
+
+/* ---------- modal ---------- */
+.overlay{position:fixed;inset:0;background:rgba(20,28,40,.42);opacity:0;pointer-events:none;transition:opacity .22s;z-index:40}
+.overlay.on{opacity:1;pointer-events:auto}
+.slideover{position:fixed;top:0;right:0;bottom:0;width:640px;max-width:94vw;background:var(--card);box-shadow:-12px 0 40px rgba(15,25,45,.22);transform:translateX(102%);transition:transform .26s ease;z-index:50;display:flex;flex-direction:column}
+.slideover.on{transform:translateX(0)}
+.mo-head{padding:16px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+.mo-head .who{min-width:0}
+.mo-head .nm{font-weight:700;font-size:1.05rem}
+.mo-head .idz{font-family:var(--mono);font-size:.76rem;color:var(--ink-soft)}
+.mo-x{margin-left:auto;appearance:none;border:1px solid var(--line);background:none;border-radius:8px;width:32px;height:32px;font-size:1rem;cursor:pointer;color:var(--ink-soft);flex:none}
+.mo-x:hover{background:var(--line-soft)}
+.mo-body{overflow-y:auto;padding:18px 22px;flex:1}
+.mo-foot{border-top:1px solid var(--line);padding:10px 22px;display:flex;align-items:center;gap:12px}
+.mo-foot button{appearance:none;font:inherit;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:.9rem}
+.mo-foot button:hover:not(:disabled){background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.mo-foot button:disabled{opacity:.35;cursor:default}
+.mo-foot .pos{font-family:var(--mono);font-size:.78rem;color:var(--ink-faint);margin-left:auto}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:4px 12px;font-size:.85rem;margin:8px 0 14px}
+.kv .k{color:var(--ink-faint)}
+.kv .v{color:var(--ink)}
+.mo-body h4{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);margin:16px 0 8px}
+.mo-body .plain{font-size:.93rem;padding:12px 15px}
+
+/* ---------- mini timeline ---------- */
+.tl{margin:6px 0 4px}
+.tl .band{display:grid;grid-template-columns:78px 1fr;gap:8px;align-items:center;margin:5px 0}
+.tl .bl{font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-faint);text-align:right}
+.tl .lane{position:relative;height:18px;background:var(--line-soft);border-radius:4px}
+.tl .bar{position:absolute;top:0;bottom:0;border-radius:4px;min-width:3px}
+.tl .bar.striped{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.28) 0 5px,transparent 5px 10px)}
+.tl .axis{display:grid;grid-template-columns:78px 1fr;gap:8px;margin-top:3px}
+.tl .ax{position:relative;height:14px;font-size:.62rem;color:var(--ink-faint);font-family:var(--mono)}
+.tl .ax span{position:absolute;transform:translateX(-50%)}
+.tl .todayline{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--bad);opacity:.7}
+.tl-note{font-size:.7rem;color:var(--ink-faint);margin-top:6px}
+
+/* ---------- reference ---------- */
+.refgrid{display:grid;grid-template-columns:1fr;gap:4px}
+dl.gloss{display:grid;grid-template-columns:200px 1fr;gap:8px 16px;font-size:.85rem}
+dl.gloss dt{font-weight:600}
+dl.gloss dd{color:var(--ink-soft)}
+@media(max-width:700px){dl.gloss{grid-template-columns:1fr}dl.gloss dd{margin-bottom:8px}}
+footer{max-width:1280px;margin:0 auto;padding:0 28px 40px;color:var(--ink-faint);font-size:.75rem;line-height:1.6}
+@media(max-width:700px){header{padding:14px 16px 0}main{padding:18px 14px 60px}.kv{grid-template-columns:120px 1fr}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brandrow">
+    <div class="wordmark">New York Medicaid Eligibility <span class="st">Central</span></div>
+    <div class="tagline">Mainstream, HARP, MLTC, and the 834 &mdash; a synthetic demonstration</div>
+    <div class="credit">Robert Thomas Keyes</div>
+  </div>
+  <nav id="nav" aria-label="Sections">
+    <button data-pg="overview" class="on">Overview</button>
+    <button data-pg="members">Members</button>
+    <button data-pg="spans">Eligibility Spans</button>
+    <button data-pg="delivery">Managed Care Enrollment</button>
+    <button data-pg="registers">Scenario Registers</button>
+    <button data-pg="file">What the File Says</button>
+    <button data-pg="reference">Reference Codes</button>
+  </nav>
+</header>
+<main>
+  <section class="page on" id="pg-overview">
+    <h2>Overview</h2>
+    <p class="sub">A synthetic New York Medicaid population across a 24-month window (January 2025 &ndash; December 2026), viewed as of <b>July 2026</b>. Every value is deterministic &mdash; seeded PRNG, identical on every load.</p>
+    <div class="plain" id="ov-plain"></div>
+    <div class="statrow" id="ov-stats"></div>
+    <div class="twocol">
+      <div class="card">
+        <h3 style="margin-top:0">Coverage groups in the population</h3>
+        <div class="leg" id="ov-groups"></div>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Where members get their care today</h3>
+        <div class="barlist" id="ov-mcos"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="pg-members">
+    <h2>Members</h2>
+    <p class="sub">The full synthetic roster. Click any row for the member record; click a column header to sort.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>Every person here has a <b>CIN</b> &mdash; the Client Identification Number, two letters, five digits, one letter &mdash; that never changes: it survives gaps, plan switches, borough moves, and product-line changes. The roster shows two different facts side by side: <b>why</b> the state covers someone (the coverage group) and <b>who</b> delivers the care today &mdash; a mainstream plan, a HARP, an MLTC plan, or fee-for-service. Those are separate columns because they are separate systems.</div>
+    <div class="controls">
+      <input type="search" id="m-search" placeholder="Search name, CIN, city&hellip;" aria-label="Search members">
+      <select id="m-group" aria-label="Filter by coverage group"></select>
+      <select id="m-del" aria-label="Filter by delivery system"></select>
+      <select id="m-reg" aria-label="Filter by register"></select>
+      <select id="m-status" aria-label="Filter by status">
+        <option value="">Status today: all</option>
+        <option value="Active">Active</option>
+        <option value="Gap">In gap</option>
+        <option value="Closed">Closed</option>
+      </select>
+      <span class="hint" id="m-count"></span>
+    </div>
+    <div class="tblwrap"><table id="m-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">CIN</th>
+        <th class="sortable" data-k="name">Name</th>
+        <th class="sortable" data-k="age">Age</th>
+        <th class="sortable" data-k="sex">Sex</th>
+        <th class="sortable" data-k="grp">Coverage Group</th>
+        <th class="sortable" data-k="del">Delivery Today</th>
+        <th class="sortable" data-k="county">Jurisdiction</th>
+        <th class="sortable" data-k="reg">Register</th>
+        <th class="sortable" data-k="status">Status Today</th>
+      </tr></thead>
+      <tbody id="m-body"></tbody>
+    </table></div>
+    <div class="pager" id="m-pager"></div>
+  </section>
+
+  <section class="page" id="pg-spans">
+    <h2>Eligibility Spans</h2>
+    <p class="sub">One row per coverage-group span &mdash; the state's answer to <i>&ldquo;from when to when, and under which door did this person enter?&rdquo;</i> Click a row to open the member.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>A span is a promise with dates on it. It opens when a determination says yes, and it closes for a <b>reason</b> &mdash; a recertification that didn't come back, a move onto Medicare, a move out of state. An open end date means the promise is still standing. New York's spans carry the coverage group, because the group decides everything downstream: which managed care products the member can (or must) enroll in, what the benefit package looks like, and which rules end it.</div>
+    <div class="controls">
+      <select id="s-group" aria-label="Filter spans by coverage group"></select>
+      <select id="s-open" aria-label="Filter by open or closed">
+        <option value="">Open + closed</option><option value="open">Open only</option><option value="closed">Closed only</option>
+      </select>
+      <span class="hint" id="s-count"></span>
+    </div>
+    <div class="tblwrap"><table id="s-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">CIN</th>
+        <th class="sortable" data-k="name">Member</th>
+        <th class="sortable" data-k="grp">Group</th>
+        <th class="sortable" data-k="start">Begin</th>
+        <th class="sortable" data-k="end">End</th>
+        <th class="sortable" data-k="months">Months</th>
+        <th>End Reason</th>
+      </tr></thead>
+      <tbody id="s-body"></tbody>
+    </table></div>
+    <div class="pager" id="s-pager"></div>
+  </section>
+
+  <section class="page" id="pg-delivery">
+    <h2>Managed Care Enrollment</h2>
+    <p class="sub">One row per delivery-system span: which plan held the member &mdash; and under which <b>product line</b> (mainstream, HARP, MLTC) &mdash; or whether the member sat in fee-for-service. Click a row to open the member.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>A delivery span is not just a plan name &mdash; the plan is the <b>value</b>; the span is that value held over a date range, with a reason it began and ended. In New York the value comes in four kinds: a <b>mainstream</b> plan (full capitation), a <b>HARP</b> (a mainstream plan's enhanced behavioral-health product line), an <b>MLTC</b> plan (<i>partial</i> capitation &mdash; the plan is paid for long-term services and supports only, while Medicare stays primary for medical), or <b>FFS</b> (no plan; the state paying claims directly &mdash; a positive fact with its own dates, not a gap). Eligibility and delivery run on two different clocks: eligibility can be granted <b>backward</b>, but plan enrollment only runs <b>forward</b>, from the first of a month. That is why a member's history can honestly read plan &rarr; FFS &rarr; plan &mdash; and why a dual entering MLTC shows a <i>new</i> plan span while the eligibility span never blinks.</div>
+    <div class="controls">
+      <select id="d-sys" aria-label="Filter by delivery system"></select>
+      <span class="hint" id="d-count"></span>
+    </div>
+    <div class="tblwrap"><table id="d-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">CIN</th>
+        <th class="sortable" data-k="name">Member</th>
+        <th class="sortable" data-k="sys">Delivery</th>
+        <th class="sortable" data-k="start">Begin</th>
+        <th class="sortable" data-k="end">End</th>
+        <th class="sortable" data-k="months">Months</th>
+        <th>Begin / End Reason</th>
+      </tr></thead>
+      <tbody id="d-body"></tbody>
+    </table></div>
+    <div class="pager" id="d-pager"></div>
+  </section>
+
+  <section class="page" id="pg-registers">
+    <h2>Scenario Registers</h2>
+    <p class="sub">Six business questions, each answered by a register of members whose data was planted to demonstrate exactly that scenario. Click any member to inspect the record behind the answer.</p>
+    <div id="reg-list"></div>
+  </section>
+
+  <section class="page" id="pg-file">
+    <h2>What the File Says</h2>
+    <p class="sub">New York really does speak X12N 834 &mdash; the state's roster file to its managed care plans, mainstream and MLTC alike. Pick a member and read the transaction the plan would receive for that member's most recent enrollment event, segment by segment, with a plain-language note on every line.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>An 834 is the state telling a health plan: <b>this person is yours now</b> (or isn't anymore). It carries who the person is, where they live, when coverage starts or stops, and &mdash; in New York's file &mdash; the coverage group and restriction/exception facts that explain why. For an MLTC plan the same transaction means something narrower: <i>yours for long-term services and supports only</i>. Fee-for-service members generate no plan 834 at all: for them, the file below is the enrollment record the state keeps for itself, shown in the same shape for teaching.</div>
+    <div class="controls">
+      <select id="f-member" aria-label="Choose member for 834"></select>
+      <span class="hint">Members are grouped by register; the transaction is rebuilt live from the member's actual spans.</span>
+    </div>
+    <div id="f-out"></div>
+  </section>
+
+  <section class="page" id="pg-reference">
+    <h2>Reference Codes</h2>
+    <p class="sub">The teaching code sets used throughout the app. Codes are patterned on New York's conventions; verify against current New York State Department of Health publications before any non-demonstration use.</p>
+    <div id="ref-out"></div>
+  </section>
+</main>
+
+<footer>
+  <p><b>New York Medicaid Eligibility Central</b> &mdash; a single-file demonstration app in the Central series. All members, identifiers, addresses, phone numbers, and dates are synthetic and deterministic (seeded PRNG, seed 212001); any resemblance to real persons is coincidental. Program facts reflect public New York State Medicaid policy of the mid-2020s and change year to year; verify against current New York State Department of Health and CMS publications before any non-demonstration use. The 834 rendering is a teaching aid, not an implementation guide. &copy; Robert Thomas Keyes.</p>
+</footer>
+
+<div class="overlay" id="overlay"></div>
+<aside class="slideover" id="modal" role="dialog" aria-modal="true" aria-labelledby="mo-nm">
+  <div class="mo-head">
+    <div class="who">
+      <div class="nm" id="mo-nm"></div>
+      <div class="idz" id="mo-id"></div>
+    </div>
+    <button class="mo-x" id="mo-x" aria-label="Close">&#10005;</button>
+  </div>
+  <div class="mo-body" id="mo-body"></div>
+  <div class="mo-foot">
+    <button id="mo-prev" aria-label="Previous member">&#9664;</button>
+    <button id="mo-next" aria-label="Next member">&#9654;</button>
+    <span class="pos" id="mo-pos"></span>
+  </div>
+</aside>
+<script>
+'use strict';
+/* ============ New York Medicaid Eligibility Central ============
+   Central series -- Robert Thomas Keyes
+   Deterministic synthetic data. Seed 212001 (the Manhattan area code).
+   Window: Jan 2025 (idx 0) .. Dec 2026 (idx 23). "Today" = Jul 2026 (idx 18).
+================================================================= */
+
+/* ---------- seeded PRNG (mulberry32) ---------- */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+var R = mulberry32(212001);
+function ri(lo,hi){return lo+Math.floor(R()*(hi-lo+1))}
+function pick(arr){return arr[Math.floor(R()*arr.length)]}
+function wpick(pairs){var tot=0,i;for(i=0;i<pairs.length;i++)tot+=pairs[i][1];var x=R()*tot;for(i=0;i<pairs.length;i++){x-=pairs[i][1];if(x<0)return pairs[i][0]}return pairs[pairs.length-1][0]}
+
+/* ---------- window ---------- */
+var WIN_START_Y=2025, WIN_MONTHS=24, TODAY_IDX=18; /* Jul 2026 */
+var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function mLabel(idx){ if(idx===null||idx===undefined)return '&mdash;';
+  var y=WIN_START_Y+Math.floor(idx/12), m=((idx%12)+12)%12; if(idx<0){y=WIN_START_Y+Math.floor(idx/12);}
+  return MONTHS[m]+' '+y }
+function mFirstD8(idx){var y=WIN_START_Y+Math.floor(idx/12),m=((idx%12)+12)%12;return ''+y+String(m+1).padStart(2,'0')+'01'}
+function mLastD8(idx){var y=WIN_START_Y+Math.floor(idx/12),m=((idx%12)+12)%12;var last=new Date(y,m+1,0).getDate();return ''+y+String(m+1).padStart(2,'0')+String(last).padStart(2,'0')}
+function spanMonths(s,e){var last=(e===null?TODAY_IDX:e);return Math.max(1,last-Math.max(s,-990)+1)}
+
+/* ---------- coverage groups (teaching set, patterned on New York's categories of assistance) ---------- */
+var GROUPS={
+ FC01:{name:'Families & Children',        magi:true,  color:'--g-FC01', blurb:'Parents, caretaker relatives, and children in MAGI households.'},
+ PG02:{name:'Pregnant & Postpartum',      magi:true,  color:'--g-PG02', blurb:'Pregnancy coverage plus twelve months postpartum.'},
+ CH19:{name:'Child Under 19',             magi:true,  color:'--g-CH19', blurb:'Medicaid children (Child Health Plus is the separate CHIP program for higher incomes).'},
+ EA02:{name:'Expansion Adult',            magi:true,  color:'--g-EA02', blurb:'ACA adult group, 19\u201364, income to 138% FPL.'},
+ SI02:{name:'SSI-Related Aged/Blind/Disabled', magi:false, color:'--g-SI02', blurb:'SSI recipients and SSI-related budgeting; the classic non-MAGI door.'},
+ MN98:{name:'Medically Needy / Surplus',  magi:false, color:'--g-MN98', blurb:'Over-income individuals who spend down excess income \u2014 the "surplus" or pay-in program.'},
+ FF26:{name:'Former Foster Care',         magi:true,  color:'--g-FF26', blurb:'Aged out of New York foster care; covered to 26 regardless of income.'},
+ WD02:{name:'Medicaid Buy-In (MBI-WPD)',  magi:false, color:'--g-WD02', blurb:'Working people with disabilities buying in with a premium.'},
+ LT01:{name:'Long-Term Care / Waiver',    magi:false, color:'--g-LT01', blurb:'Institutional coverage and 1915(c) waivers; a different budgeting world.'}
+};
+var GROUP_KEYS=Object.keys(GROUPS);
+
+/* ---------- delivery systems: three product lines plus FFS ---------- */
+var MAINSTREAM=[
+ {code:'FID',  name:'Fidelis Care',                    w:24},
+ {code:'HF',   name:'Healthfirst',                     w:22},
+ {code:'UHC',  name:'UnitedHealthcare Community Plan', w:12},
+ {code:'MP',   name:'MetroPlus Health',                w:10},
+ {code:'MOL',  name:'Molina Healthcare of New York',   w:9},
+ {code:'MVP',  name:'MVP Health Care',                 w:8},
+ {code:'EXC',  name:'Excellus BlueCross BlueShield',   w:8},
+ {code:'CDPHP',name:'CDPHP',                           w:7}
+];
+var HARP=[ /* HARP product lines of mainstream parents */
+ {code:'FID-H', name:'Fidelis Care HealthierLife (HARP)', parent:'FID'},
+ {code:'HF-H',  name:'Healthfirst Personal Wellness Plan (HARP)', parent:'HF'},
+ {code:'UHC-H', name:'UnitedHealthcare Wellness4Me (HARP)', parent:'UHC'},
+ {code:'MP-H',  name:'MetroPlus Enhanced (HARP)', parent:'MP'},
+ {code:'MOL-H', name:'Molina Healthcare HARP', parent:'MOL'}
+];
+var MLTC=[
+ {code:'VNS',  name:'VNS Health MLTC',                     w:30},
+ {code:'CPHL', name:'Centers Plan for Healthy Living MLTC',w:22},
+ {code:'EHF',  name:'Elderplan HomeFirst MLTC',            w:18},
+ {code:'RSH',  name:'RiverSpring at Home MLTC',            w:16},
+ {code:'SWH',  name:'Senior Whole Health MLTC',            w:14}
+];
+var PLANS={};
+MAINSTREAM.forEach(function(p){p.kind='MMC';  PLANS[p.code]=p});
+HARP.forEach(function(p){p.kind='HARP';PLANS[p.code]=p});
+MLTC.forEach(function(p){p.kind='MLTC';PLANS[p.code]=p});
+function planByCode(c){return PLANS[c]||null}
+function pickMainstream(){return wpick(MAINSTREAM.map(function(m){return [m.code,m.w]}))}
+function pickMLTC(){return wpick(MLTC.map(function(m){return [m.code,m.w]}))}
+function harpFor(parent){for(var i=0;i<HARP.length;i++)if(HARP[i].parent===parent)return HARP[i].code;return null}
+var SYS_LABEL={FFS:'Fee-for-Service'};
+function sysLabel(code){var p=planByCode(code);return p?p.name:(SYS_LABEL[code]||code)}
+function sysClass(code){var p=planByCode(code);if(!p)return 'd-ffs';return p.kind==='HARP'?'d-harp':(p.kind==='MLTC'?'d-mltc':'d-mco')}
+function sysKind(code){var p=planByCode(code);return p?p.kind:'FFS'}
+
+/* ---------- HARP-qualifying conditions (teaching sample) ---------- */
+var HARP_CONDS=['Major depressive disorder, recurrent','Schizophrenia','Bipolar I disorder','Post-traumatic stress disorder','Opioid use disorder','Alcohol use disorder','Schizoaffective disorder'];
+
+/* ---------- jurisdictions ---------- */
+var COUNTIES=[
+ {name:'Kings (Brooklyn)',   w:16, zips:['11212','11226','11207','11233'], area:['718','347','929'], city:'Brooklyn',
+  streets:['Flatbush Ave','Nostrand Ave','Pitkin Ave','Utica Ave','Church Ave','Rockaway Ave','Fulton St','Kings Hwy']},
+ {name:'Bronx',              w:14, zips:['10456','10467','10453','10462'], area:['718','347','929'], city:'Bronx',
+  streets:['Grand Concourse','Fordham Rd','Westchester Ave','E Tremont Ave','Southern Blvd','White Plains Rd','Jerome Ave']},
+ {name:'Queens',             w:13, zips:['11368','11373','11432','11691'], area:['718','347','929'], city:null,
+  cities:['Corona','Elmhurst','Jamaica','Far Rockaway'], streets:['Roosevelt Ave','Northern Blvd','Hillside Ave','Jamaica Ave','Queens Blvd','Liberty Ave']},
+ {name:'New York (Manhattan)',w:8, zips:['10029','10032','10027'], area:['212','646','332'], city:'New York',
+  streets:['E 116th St','Amsterdam Ave','W 145th St','Lexington Ave','St Nicholas Ave','Broadway']},
+ {name:'Richmond (Staten Island)',w:3, zips:['10301','10314'], area:['718','347'], city:'Staten Island',
+  streets:['Victory Blvd','Hylan Blvd','Forest Ave','Richmond Ave']},
+ {name:'Erie',               w:9,  zips:['14215','14211','14213'], area:['716'], city:'Buffalo',
+  streets:['Bailey Ave','Genesee St','Grant St','Broadway','Fillmore Ave']},
+ {name:'Monroe',             w:7,  zips:['14621','14609','14611'], area:['585'], city:'Rochester',
+  streets:['N Clinton Ave','Hudson Ave','Lyell Ave','Joseph Ave','Portland Ave']},
+ {name:'Suffolk',            w:7,  zips:['11717','11701','11550'], area:['631'], city:null,
+  cities:['Brentwood','Amityville','Central Islip'], streets:['Suffolk Ave','Sunrise Hwy','Fifth Ave','Carleton Ave','Montauk Hwy']},
+ {name:'Nassau',             w:6,  zips:['11550','11553','11003'], area:['516'], city:null,
+  cities:['Hempstead','Uniondale','Elmont'], streets:['Hempstead Tpke','Fulton Ave','Front St','Dutch Broadway','Peninsula Blvd']},
+ {name:'Westchester',        w:6,  zips:['10701','10550','10801'], area:['914'], city:null,
+  cities:['Yonkers','Mount Vernon','New Rochelle'], streets:['S Broadway','Gramatan Ave','North Ave','Yonkers Ave','Main St']},
+ {name:'Onondaga',           w:5,  zips:['13205','13204','13208'], area:['315'], city:'Syracuse',
+  streets:['S Salina St','Butternut St','Grant Blvd','James St','Geddes St']}
+];
+function pickCounty(){return wpick(COUNTIES.map(function(c){return [c,c.w]}))}
+
+/* ---------- names & languages ---------- */
+var FIRST_F=['Tamika','Keisha','Maria','Angela','Denise','Rosa','Yolanda','Altagracia','Jasmine','Amanda','Fatima','Aisha','Guadalupe','Carmen','Nadege','Mireille','Sofia','Mei','Xiu','Grace','Latoya','Svetlana','Olga','Fatema','Nasrin','Esther','Rivka','Brittany','Kimberly','Vanessa','Alejandra','Sun-Hi','Marisol'];
+var FIRST_M=['Darnell','Marcus','James','Robert','Tyrone','Jose','Luis','Kevin','Anthony','William','Andre','Miguel','Samuel','Daniel','Jamal','Carlos','Frantz','Wei','Ming','Jian','Dmitri','Sergei','Mohammed','Rahim','Moshe','Min-Jun','Hector','Emmanuel','Patrick','Owen','Ramon','Wilson'];
+var LAST=['Johnson','Williams','Brown','Jones','Davis','Miller','Wilson','Rodriguez','Garcia','Martinez','Hernandez','Lopez','Gonzalez','Perez','Sanchez','Rivera','Torres','Ramirez','Reyes','Rosario','Pena','Chen','Wang','Li','Zhang','Lin','Liu','Wu','Kim','Park','Ivanov','Petrova','Volkov','Rahman','Islam','Ahmed','Begum','Hossain','Pierre','Jean-Baptiste','Cohen','Friedman','Washington','Coleman','Brooks','Jackson','Thompson','White','Harris','Lewis','Walker','Young','King','Scott','Green','Adams','Baker','Diaz'];
+var LANGS=[['English',55],['Spanish',22],['Chinese',8],['Russian',4],['Bengali',3],['Haitian Creole',3],['Korean',2],['Yiddish',1.5],['Arabic',1.5]];
+
+/* ---------- end reasons ---------- */
+var ELIG_END={
+ REDET:'Renewal not completed \u2014 case closed at recertification',
+ INCOME:'Over income at recertification',
+ MOVED:'Moved out of state'
+};
+</script>
+<script>
+'use strict';
+/* ================= population generator ================= */
+var MEMBERS=[];
+var usedIds={};
+var CIN_ALPHA='ABCDEFGHJKLMNPRSTUVWXYZ'; /* no I,O,Q per convention */
+function genId(){ /* CIN: two letters + five digits + one letter, deterministic */
+  var s; do{
+    s=CIN_ALPHA[ri(0,CIN_ALPHA.length-1)]+CIN_ALPHA[ri(0,CIN_ALPHA.length-1)];
+    for(var i=0;i<5;i++)s+=String(ri(0,9));
+    s+=CIN_ALPHA[ri(0,CIN_ALPHA.length-1)];
+  }while(usedIds[s]); usedIds[s]=1; return s }
+function genPhone(c){ return '('+pick(c.area)+') '+ri(200,989)+'-'+String(ri(0,9999)).padStart(4,'0') }
+function genAddr(c){ var city=c.city||pick(c.cities); return {street:ri(100,7999)+' '+pick(c.streets), city:city, zip:pick(c.zips)} }
+function genName(sex){ return {first:(sex==='F'?pick(FIRST_F):pick(FIRST_M)), last:pick(LAST)} }
+function dobForAge(age){ /* as of Jul 2026 */ var y=2026-age; var m=ri(0,11); if(m>6)y--; return {y:y,m:m,d:ri(1,28)} }
+function dobD8(d){return ''+d.y+String(d.m+1).padStart(2,'0')+String(d.d).padStart(2,'0')}
+function dobLabel(d){return MONTHS[d.m]+' '+d.d+', '+d.y}
+
+function baseMember(reg){
+  var sex=pick(['F','F','F','M','M']); /* Medicaid adult skew */
+  var nm=genName(sex), c=pickCounty(), a=genAddr(c);
+  return { id:genId(), first:nm.first, last:nm.last, sex:sex, county:c.name,
+    street:a.street, city:a.city, zip:a.zip, phone:genPhone(c),
+    lang:wpick(LANGS), reg:reg, eligSpans:[], delSpans:[], flags:[], harpCond:null };
+}
+function addElig(m,grp,s,e,reason){m.eligSpans.push({grp:grp,start:s,end:e,reason:reason||null})}
+function addDel(m,sys,s,e,note){m.delSpans.push({sys:sys,start:s,end:e,note:note||null})}
+
+/* ----- Register A: steady state (1100) ----- */
+(function(){
+  var grpsA=[['FC01',9],['EA02',7],['CH19',4],['SI02',2],['FF26',2],['WD02',1],['PG02',1]];
+  for(var i=0;i<1100;i++){
+    var grp=wpick(grpsA);
+    var m=baseMember('A');
+    var age = grp==='CH19'?ri(3,17) : grp==='FF26'?ri(19,24) : grp==='SI02'?ri(30,60) : grp==='WD02'?ri(28,58) : grp==='PG02'?ri(20,38) : grp==='FC01'?ri(1,49) : ri(21,60);
+    if(grp==='FC01'&&age<19&&R()<0.5)age=ri(22,44);
+    m.age=age; m.dob=dobForAge(age); if(grp==='PG02')m.sex='F';
+    var s=ri(-14,2); addElig(m,grp,s,null,null);
+    var mco=pickMainstream();
+    if(R()<0.14){ /* one voluntary plan switch */
+      var sw=ri(6,15); addDel(m,mco,s,sw-1,'Member-elected plan change');
+      var mco2=pickMainstream(); while(mco2===mco)mco2=pickMainstream();
+      addDel(m,mco2,sw,null,'Member-elected plan change effective');
+      m.flags.push('Plan switch '+mLabel(sw));
+    } else addDel(m,mco,s,null,null);
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register B: recertification churn (500) ----- */
+(function(){
+  for(var i=0;i<500;i++){
+    var grp=wpick([['FC01',6],['EA02',5],['CH19',1]]);
+    var m=baseMember('B');
+    m.age = grp==='CH19'?ri(4,15):ri(20,55); m.dob=dobForAge(m.age);
+    var s=ri(-18,-2);
+    var inGapNow=(i<125);         /* a quarter of the register sits in the gap as of today */
+    var term=inGapNow?ri(15,16):ri(4,12);
+    var gap=inGapNow?ri(3,4):ri(1,4);
+    var regain=term+gap+1;    /* in-gap members regain at idx 19..21, after "today" */
+    addElig(m,grp,s,term,ELIG_END.REDET);
+    addElig(m,grp,regain,null,null);
+    var mco=pickMainstream();
+    addDel(m,mco,s,term,'Disenrolled with eligibility closure');
+    var sameMco=R()<0.6;
+    var mco2=sameMco?mco:pickMainstream(); if(!sameMco){while(mco2===mco)mco2=pickMainstream()}
+    var lag=R()<0.5?1:0;          /* processing lag -> FFS sliver */
+    if(lag)addDel(m,'FFS',regain,regain,'Eligibility restored; plan effective first of next month');
+    addDel(m,mco2,regain+lag,null,sameMco?'Reassigned to prior plan':'Auto-assigned \u2014 prior plan not restored');
+    m.flags.push('Gap '+mLabel(term+1)+'\u2013'+mLabel(regain-1)+' ('+gap+' mo)');
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register C: retroactive grant (375) ----- */
+(function(){
+  for(var i=0;i<375;i++){
+    var grp=wpick([['FC01',4],['EA02',3],['PG02',2]]);
+    var m=baseMember('C');
+    if(grp==='PG02')m.sex='F';
+    m.age = grp==='PG02'?ri(19,36):ri(19,52);
+    if(grp==='FC01'&&R()<0.4)m.age=ri(2,15);
+    m.dob=dobForAge(m.age);
+    var app=ri(6,15);             /* application month */
+    var retro=ri(1,3);
+    var s=app-retro;
+    addElig(m,grp,s,null,null);
+    addDel(m,'FFS',s,app,'Retroactive + application months \u2014 FFS by rule (capitation runs forward only)');
+    addDel(m,pickMainstream(),app+1,null,'Plan enrollment effective first of month after processing');
+    m.flags.push('Retro grant: '+retro+' month'+(retro>1?'s':'')+' back to '+mLabel(s));
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register D: HARP transition (375) ----- */
+(function(){
+  for(var i=0;i<375;i++){
+    var grp=wpick([['EA02',5],['SI02',3],['FC01',2]]);
+    var m=baseMember('D');
+    m.age=ri(21,60); m.dob=dobForAge(m.age);
+    m.harpCond=HARP_CONDS[i%HARP_CONDS.length];
+    var s=ri(-16,0);
+    addElig(m,grp,s,null,null);
+    var mco=pickMainstream();
+    var at=ri(5,15);              /* HARP enrollment month */
+    var sameParent=R()<0.7 && harpFor(mco)!==null;
+    var hcode=sameParent?harpFor(mco):pick(HARP.map(function(h){return h.code}));
+    if(sameParent){
+      addDel(m,mco,s,at-1,'Mainstream product ends \u2014 HARP enrollment within same plan');
+      addDel(m,hcode,at,null,'HARP \u2014 enhanced behavioral health benefit incl. BH HCBS');
+      m.sameParentHarp=true;
+    } else {
+      addDel(m,mco,s,at-1,'Disenrolled \u2014 member elected a different plan\u2019s HARP');
+      addDel(m,hcode,at,null,'HARP \u2014 enhanced behavioral health benefit incl. BH HCBS');
+      m.sameParentHarp=false;
+    }
+    m.harpIdx=at;
+    m.flags.push('HARP from '+mLabel(at)+': '+m.harpCond+(sameParent?' (same parent plan)':' (cross-plan)'));
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register E: MLTC entry (325) ----- */
+(function(){
+  for(var i=0;i<325;i++){
+    var grp=wpick([['SI02',6],['MN98',3],['LT01',1]]);
+    var m=baseMember('E');
+    m.age = R()<0.75?ri(66,92):ri(50,64); /* mostly aged duals; some disabled */
+    m.dob=dobForAge(m.age);
+    var s=ri(-24,-6);
+    addElig(m,grp,s,null,null);
+    var at=ri(4,16);              /* MLTC enrollment month */
+    addDel(m,'FFS',s,at-1,'Dual \u2014 Medicare primary; Medicaid FFS wrap (excluded from mainstream)');
+    addDel(m,pickMLTC(),at,null,'Mandatory MLTC \u2014 120+ days of community-based long-term care; partial capitation (LTSS only)');
+    m.medicareIdx=-99;            /* Medicare predates the window */
+    m.mltcIdx=at;
+    m.flags.push('MLTC from '+mLabel(at)+' \u2014 Medicare stays primary for medical; the plan capitation covers LTSS only');
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register F: Medicare arrives / buy-in limbo (325) ----- */
+(function(){
+  for(var i=0;i<325;i++){
+    var grp=wpick([['SI02',4],['WD02',2],['MN98',2]]);
+    var m=baseMember('F');
+    m.age = R()<0.5?ri(63,66):ri(45,60); /* aging in vs SSDI 24-month */
+    m.dob=dobForAge(m.age);
+    var s=ri(-24,-6);
+    addElig(m,grp,s,null,null);
+    var medi=ri(5,16);
+    var lag=ri(1,3);
+    addDel(m,pickMainstream(),s,medi-1,'Disenrolled \u2014 Medicare entitlement excludes member from mainstream managed care');
+    addDel(m,'FFS',medi,null,'Dual coverage \u2014 Medicare primary, Medicaid wraps as FFS');
+    m.medicareIdx=medi; m.buyinIdx=medi+lag;
+    m.flags.push('Medicare from '+mLabel(medi)+'; Part B buy-in effective '+mLabel(medi+lag)+' \u2014 '+lag+'-month limbo');
+    MEMBERS.push(m);
+  }
+})();
+
+/* ---------- derived member state ---------- */
+function eligToday(m){ for(var i=0;i<m.eligSpans.length;i++){var s=m.eligSpans[i]; if(s.start<=TODAY_IDX&&(s.end===null||s.end>=TODAY_IDX))return s} return null }
+function delToday(m){ for(var i=0;i<m.delSpans.length;i++){var s=m.delSpans[i]; if(s.start<=TODAY_IDX&&(s.end===null||s.end>=TODAY_IDX))return s} return null }
+function lastElig(m){ return m.eligSpans[m.eligSpans.length-1] }
+function statusToday(m){
+  if(eligToday(m))return 'Active';
+  var le=lastElig(m);
+  if(le.end!==null&&le.end<TODAY_IDX){
+    for(var i=0;i<m.eligSpans.length;i++){ if(m.eligSpans[i].start>TODAY_IDX)return 'Gap' }
+    return 'Closed';
+  }
+  return 'Gap';
+}
+MEMBERS.forEach(function(m,ix){
+  m.ix=ix;
+  /* name/sex coherence: registers that force sex after baseMember (e.g. postpartum)
+     must not keep an opposite-list first name. Deterministic, PRNG-free remap. */
+  if(m.sex==='F'&&FIRST_F.indexOf(m.first)<0)m.first=FIRST_F[(m.first.length*7+m.last.length)%FIRST_F.length];
+  if(m.sex==='M'&&FIRST_M.indexOf(m.first)<0)m.first=FIRST_M[(m.first.length*7+m.last.length)%FIRST_M.length];
+  m.name=m.last+', '+m.first;
+  var et=eligToday(m), le=lastElig(m);
+  m.grpToday = et?et.grp:le.grp;
+  var dt=delToday(m);
+  m.delTodayCode = dt?dt.sys:'\u2014';
+  m.status=statusToday(m);
+});
+</script>
+<script>
+'use strict';
+/* ================= shared render helpers ================= */
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function grpChip(g){ if(!GROUPS[g])return esc(g);
+  return '<span class="chip" style="background:var('+GROUPS[g].color+')" title="'+esc(GROUPS[g].name)+'">'+g+'</span>' }
+function delChip(code){ if(code==='\u2014')return '<span class="st-cls">\u2014</span>';
+  var cls=sysClass(code), lbl=code;
+  return '<span class="dchip '+cls+'" title="'+esc(sysLabel(code))+'">'+esc(lbl)+'</span>' }
+function statusHtml(st){ return st==='Active'?'<span class="st-act">Active</span>':(st==='Gap'?'<span class="st-gap">In gap</span>':'<span class="st-cls">Closed</span>') }
+function regBadge(r){return '<span class="mono" style="font-weight:600;color:var(--accent)">'+r+'</span>'}
+
+/* ================= overview ================= */
+function renderOverview(){
+  var n=MEMBERS.length, act=0, mmc=0, harp=0, mltc=0, ffs=0, gaps=0, duals=0;
+  MEMBERS.forEach(function(m){
+    if(m.status==='Active')act++;
+    if(m.status==='Gap')gaps++;
+    var d=m.delTodayCode;
+    if(d!=='\u2014'){ var k=sysKind(d); if(k==='MMC')mmc++; else if(k==='HARP')harp++; else if(k==='MLTC')mltc++; else ffs++; }
+    if((m.reg==='F'&&m.medicareIdx<=TODAY_IDX)||m.reg==='E')duals++;
+  });
+  var st=document.getElementById('ov-stats');
+  st.innerHTML =
+    stat(n,'Synthetic members',true)+
+    stat(act,'Eligible today (Jul 2026)')+
+    stat(mmc,'In mainstream managed care today')+
+    stat(harp,'In a HARP today')+
+    stat(mltc,'In MLTC today <span class="mono">(partial cap)</span>')+
+    stat(ffs,'Fee-for-service today')+
+    stat(duals,'Dual Medicare/Medicaid today')+
+    stat(gaps,'In an eligibility gap today');
+  function stat(nv,l,acc){return '<div class="stat'+(acc?' acc':'')+'"><div class="n">'+(typeof nv==='number'?nv.toLocaleString():nv)+'</div><div class="l">'+l+'</div></div>'}
+
+  /* group legend with counts (by current/last group) */
+  var gc={}; MEMBERS.forEach(function(m){gc[m.grpToday]=(gc[m.grpToday]||0)+1});
+  var lg=document.getElementById('ov-groups'); lg.innerHTML='';
+  GROUP_KEYS.forEach(function(g){
+    var c=gc[g]||0;
+    lg.innerHTML+='<div class="legrow"><span class="swatch" style="background:var('+GROUPS[g].color+')"></span>'+
+      '<span class="code">'+g+'</span><span>'+esc(GROUPS[g].name)+'</span>'+
+      '<span class="cnt">'+c+'</span></div>';
+  });
+
+  /* delivery distribution today */
+  var dc={}; MEMBERS.forEach(function(m){ if(m.delTodayCode!=='\u2014') dc[m.delTodayCode]=(dc[m.delTodayCode]||0)+1 });
+  var rows=MAINSTREAM.map(function(m){return {label:m.name, code:m.code, n:dc[m.code]||0, cls:'var(--d-mco)'}});
+  HARP.forEach(function(p){ if(dc[p.code]) rows.push({label:p.name, code:p.code, n:dc[p.code], cls:'var(--d-harp)'}) });
+  MLTC.forEach(function(p){ if(dc[p.code]) rows.push({label:p.name, code:p.code, n:dc[p.code], cls:'var(--d-mltc)'}) });
+  rows.push({label:'Fee-for-Service (incl. duals)', code:'FFS', n:dc.FFS||0, cls:'var(--d-ffs)'});
+  rows.sort(function(a,b){return b.n-a.n});
+  var mx=rows.reduce(function(a,r){return Math.max(a,r.n)},1);
+  var bl=document.getElementById('ov-mcos'); bl.innerHTML='';
+  rows.forEach(function(r){
+    bl.innerHTML+='<div class="barrow"><span title="'+esc(r.label)+'">'+esc(r.label)+'</span>'+
+      '<span class="track"><span class="fill" style="width:0;background:'+r.cls+'" data-w="'+(100*r.n/mx)+'"></span></span>'+
+      '<span class="bn">'+r.n+'</span></div>';
+  });
+  requestAnimationFrame(function(){ setTimeout(function(){
+    bl.querySelectorAll('.fill').forEach(function(f){f.style.width=f.getAttribute('data-w')+'%'}) },60) });
+
+  document.getElementById('ov-plain').innerHTML='<span class="pe-label">In plain English</span>'+
+    'New York runs the largest and most layered Medicaid program in the country &mdash; not one managed-care program but a <b>family of product lines</b>. Most members are in a <b>mainstream</b> plan; adults with serious mental illness or substance use disorder can move to a <b>HARP</b>, the enhanced behavioral-health line; duals needing months of community long-term care are enrolled in <b>MLTC</b>, where the plan is paid a <i>partial</i> capitation covering long-term services and supports while Medicare stays primary. '+
+    'So the interesting data problem is not just <i>whether</i> someone is eligible, or even <i>which plan</i> holds them, but <b>which door</b> they are standing in this month &mdash; and every door change is an 834 someone has to read correctly. '+
+    'This population plants the events that move people between doors: recertification churn, retroactive grants that begin as fee-for-service, HARP transitions, MLTC entries, and the day Medicare arrives and quietly removes a member from mainstream managed care altogether.';
+}
+
+/* ================= reference ================= */
+function renderReference(){
+  var h='';
+  h+='<div class="card"><h3 style="margin-top:0">Coverage groups (teaching set)</h3>'+
+     '<p class="sub" style="margin-bottom:8px">Patterned on New York\u2019s categories of assistance (families, pregnancy, children, expansion adults, SSI-related, medically needy/surplus, foster, buy-in, long-term care). Real coverage-code tables in WMS/eMedNY run far longer.</p>'+
+     '<div class="tblwrap"><table><thead><tr><th>Code</th><th>Name</th><th>Determination</th><th>What it means</th></tr></thead><tbody>';
+  GROUP_KEYS.forEach(function(g){var G=GROUPS[g];
+    h+='<tr><td>'+grpChip(g)+'</td><td>'+esc(G.name)+'</td><td>'+(G.magi?'MAGI (NY State of Health)':'Non-MAGI (LDSS / HRA in NYC)')+'</td><td>'+esc(G.blurb)+'</td></tr>'});
+  h+='</tbody></table></div></div>';
+
+  h+='<div class="card"><h3 style="margin-top:0">Delivery systems: the four doors</h3>'+
+     '<p class="sub" style="margin-bottom:8px">Plan participation changes constantly; the rosters below are representative of the mid-2020s and are used as the teaching set for HD segment plan codes.</p>'+
+     '<div class="tblwrap"><table><thead><tr><th>Code</th><th>Plan / product</th><th>Line</th><th>Capitation</th></tr></thead><tbody>';
+  MAINSTREAM.forEach(function(m){h+='<tr><td class="mono">'+m.code+'</td><td>'+esc(m.name)+'</td><td><span class="dchip d-mco">Mainstream</span></td><td>Full</td></tr>'});
+  HARP.forEach(function(m){h+='<tr><td class="mono">'+m.code+'</td><td>'+esc(m.name)+'</td><td><span class="dchip d-harp">HARP</span></td><td>Full + BH HCBS</td></tr>'});
+  MLTC.forEach(function(m){h+='<tr><td class="mono">'+m.code+'</td><td>'+esc(m.name)+'</td><td><span class="dchip d-mltc">MLTC</span></td><td><b>Partial</b> \u2014 LTSS only; Medicare primary for medical</td></tr>'});
+  h+='<tr><td class="mono">FFS</td><td>Fee-for-service</td><td><span class="dchip d-ffs">FFS</span></td><td>None \u2014 the state pays claims directly (duals, retro months, excluded/exempt groups)</td></tr>';
+  h+='</tbody></table></div></div>';
+
+  h+='<div class="card"><h3 style="margin-top:0">834 maintenance codes used in this app</h3>'+
+     '<div class="tblwrap"><table><thead><tr><th>INS03</th><th>Meaning</th><th>Where you\u2019ll see it</th></tr></thead><tbody>'+
+     '<tr><td class="mono">021</td><td>Addition</td><td>New plan enrollment \u2014 registers A, B (re-enrollment), C, cross-plan HARP moves (D), MLTC entry (E)</td></tr>'+
+     '<tr><td class="mono">001</td><td>Change</td><td>Product-line change within the same parent plan \u2014 same-parent HARP transitions (D)</td></tr>'+
+     '<tr><td class="mono">024</td><td>Cancellation / termination</td><td>Medicare exclusion from mainstream (F), eligibility closure in the gap (B)</td></tr>'+
+     '</tbody></table></div></div>';
+
+  h+='<div class="card"><h3 style="margin-top:0">HARP-qualifying conditions (sample)</h3><p class="sub" style="margin-bottom:8px">HARP eligibility is flagged by the state from claims and assessment history for adults with serious mental illness or substance use disorder; the plan sees it as a restriction/exception code on the roster. Sample used here:</p><p class="mono" style="font-size:.82rem;line-height:1.9">'+HARP_CONDS.map(esc).join(' &nbsp;\u00b7&nbsp; ')+'</p></div>';
+
+  h+='<div class="card"><h3 style="margin-top:0">Glossary</h3><dl class="gloss">'+
+    gl('CIN','The Client Identification Number \u2014 two letters, five digits, one letter. It is the person, permanently; spans, plans, and product lines all hang off it.')+
+    gl('Mainstream MMC','New York\u2019s core mandatory Medicaid managed care: a full-capitation plan responsible for the member\u2019s medical care.')+
+    gl('HARP','Health and Recovery Plan \u2014 an enhanced product line of a mainstream plan for adults with significant behavioral health needs, adding Behavioral Health Home and Community Based Services (BH HCBS).')+
+    gl('MLTC','Managed Long-Term Care \u2014 partially capitated plans for (mostly dual) members needing 120+ days of community-based long-term care. The plan is paid for LTSS only; Medicare remains primary for medical.')+
+    gl('NYIA','The New York Independent Assessor \u2014 conducts the community health assessments that gate MLTC and personal-care eligibility.')+
+    gl('NY State of Health','The state-based marketplace; performs MAGI determinations that feed Medicaid.')+
+    gl('WMS / eMedNY','The legacy Welfare Management System (eligibility, with separate NYC and upstate instances) and the MMIS that pays claims and issues the plan rosters.')+
+    gl('HRA','The NYC Human Resources Administration \u2014 the local district administering Medicaid in the five boroughs; LDSS elsewhere.')+
+    gl('Surplus / spend-down','Medically needy budgeting: excess income is offset by incurred medical bills (or paid in) to reach eligibility (group MN98).')+
+    gl('NYRx','The pharmacy carve-out: since April 2023 the pharmacy benefit for managed care members is paid FFS by the state, not by the plans \u2014 one benefit removed from every capitation at once.')+
+    gl('Buy-in','The state paying a dual member\u2019s Medicare Part B premium. Accretion runs one to three months behind entitlement \u2014 the limbo in register F.')+
+    gl('Recertification','The annual renewal. The single largest driver of churn: cases close for paperwork, not for ineligibility, and reopen weeks later.')+
+    gl('834','The X12N benefit enrollment and maintenance transaction \u2014 the roster file New York exchanges with its plans, mainstream and MLTC alike.')+
+    gl('Capitation','The per-member-per-month payment to a plan. Full for mainstream and HARP, partial (LTSS-only) for MLTC \u2014 and it only runs forward, which is why retroactive months are always FFS.')+
+    '</dl></div>';
+  function gl(t,d){return '<dt>'+t+'</dt><dd>'+d+'</dd>'}
+
+  h+='<div class="card"><h3 style="margin-top:0">Jurisdictions in this population</h3><p class="sub" style="margin-bottom:8px">New York has 62 counties; the local district administers eligibility (HRA in the five boroughs, LDSS elsewhere). This roster draws from eleven, weighted roughly like the program itself \u2014 the boroughs carry the caseload, with Erie and Monroe anchoring upstate.</p><p style="font-size:.85rem">'+COUNTIES.map(function(c){return esc(c.name)}).join(' \u00b7 ')+'</p></div>';
+
+  document.getElementById('ref-out').innerHTML=h;
+}
+</script>
+<script>
+'use strict';
+/* ================= generic sortable table state ================= */
+var SORT={};
+function bindSort(tblId, renderFn){
+  document.querySelectorAll('#'+tblId+' th.sortable').forEach(function(th){
+    th.addEventListener('click',function(){
+      var k=th.getAttribute('data-k');
+      var cur=SORT[tblId]||{};
+      SORT[tblId]={k:k, dir:(cur.k===k&&cur.dir==='asc')?'desc':'asc'};
+      renderFn();
+    });
+  });
+}
+function sortRows(tblId, rows){
+  var s=SORT[tblId]; if(!s)return rows;
+  var dir=s.dir==='asc'?1:-1;
+  rows.sort(function(a,b){
+    var x=a[s.k],y=b[s.k];
+    if(x===null||x===undefined)x=-Infinity; if(y===null||y===undefined)y=-Infinity;
+    if(typeof x==='string'){x=x.toLowerCase();y=String(y).toLowerCase();return x<y?-dir:(x>y?dir:0)}
+    return (x-y)*dir;
+  });
+  return rows;
+}
+function sortMarks(tblId){
+  var s=SORT[tblId];
+  document.querySelectorAll('#'+tblId+' th.sortable').forEach(function(th){
+    var base=th.textContent.replace(/[\u25b2\u25bc]\s*$/,'').trim();
+    th.innerHTML=esc(base)+(s&&s.k===th.getAttribute('data-k')?' <span class="arr">'+(s.dir==='asc'?'\u25b2':'\u25bc')+'</span>':'');
+  });
+}
+
+/* ================= pagination ================= */
+var PAGE={}, PAGE_SIZE=50;
+function pager(tblId, total, renderFn, pagerId){
+  var pages=Math.max(1,Math.ceil(total/PAGE_SIZE));
+  var p=Math.min(PAGE[tblId]||1,pages); if(p<1)p=1; PAGE[tblId]=p;
+  var el=document.getElementById(pagerId);
+  if(el){
+    if(pages===1){ el.innerHTML=''; }
+    else{
+      el.innerHTML='<button class="pg"'+(p<=1?' disabled':'')+' data-d="-1">\u25c0 Prev</button>'+
+        '<span class="mono pgpos">page '+p+' of '+pages.toLocaleString()+'</span>'+
+        '<button class="pg"'+(p>=pages?' disabled':'')+' data-d="1">Next \u25b6</button>';
+      el.querySelectorAll('button.pg').forEach(function(b){
+        b.addEventListener('click',function(){ PAGE[tblId]=p+parseInt(b.getAttribute('data-d'),10); renderFn(); });
+      });
+    }
+  }
+  return {from:(p-1)*PAGE_SIZE, to:Math.min(total,p*PAGE_SIZE)};
+}
+function resetPage(tblId){ PAGE[tblId]=1 }
+
+/* ================= members roster ================= */
+var ROSTER_VIEW=[]; /* current filtered order (all pages), for modal nav */
+function fillSelect(id, opts, allLabel){
+  var el=document.getElementById(id);
+  el.innerHTML='<option value="">'+allLabel+'</option>'+opts.map(function(o){return '<option value="'+o[0]+'">'+o[1]+'</option>'}).join('');
+}
+function initRosterControls(){
+  fillSelect('m-group',GROUP_KEYS.map(function(g){return[g,g+' \u2014 '+GROUPS[g].name]}),'Coverage group: all');
+  var dopts=MAINSTREAM.map(function(m){return[m.code,m.name]})
+    .concat(HARP.map(function(m){return[m.code,m.name]}))
+    .concat(MLTC.map(function(m){return[m.code,m.name]}));
+  dopts.push(['FFS','Fee-for-Service']);
+  fillSelect('m-del',dopts,'Delivery today: all');
+  fillSelect('m-reg',['A','B','C','D','E','F'].map(function(r){return[r,'Register '+r]}),'Register: all');
+  ['m-search','m-group','m-del','m-reg','m-status'].forEach(function(id){
+    document.getElementById(id).addEventListener('input',function(){resetPage('m-tbl');renderRoster()});
+  });
+  bindSort('m-tbl',renderRoster);
+}
+function renderRoster(){
+  var q=document.getElementById('m-search').value.trim().toLowerCase();
+  var fg=document.getElementById('m-group').value, fd=document.getElementById('m-del').value,
+      fr=document.getElementById('m-reg').value, fs=document.getElementById('m-status').value;
+  var rows=MEMBERS.filter(function(m){
+    if(fg&&m.grpToday!==fg)return false;
+    if(fd&&m.delTodayCode!==fd)return false;
+    if(fr&&m.reg!==fr)return false;
+    if(fs&&m.status!==fs)return false;
+    if(q){ var hay=(m.name+' '+m.id+' '+m.city+' '+m.county).toLowerCase(); if(hay.indexOf(q)<0)return false }
+    return true;
+  }).map(function(m){return {ix:m.ix,id:m.id,name:m.name,age:m.age,sex:m.sex,grp:m.grpToday,del:m.delTodayCode,county:m.county,reg:m.reg,status:m.status}});
+  rows=sortRows('m-tbl',rows); sortMarks('m-tbl');
+  ROSTER_VIEW=rows.map(function(r){return r.ix});
+  var pg=pager('m-tbl',rows.length,renderRoster,'m-pager');
+  var tb=document.getElementById('m-body'); tb.innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+r.age+'</td><td>'+r.sex+'</td>'+
+    '<td>'+grpChip(r.grp)+'</td><td>'+delChip(r.del)+'</td><td class="nowrap">'+esc(r.county)+'</td><td>'+regBadge(r.reg)+'</td><td>'+statusHtml(r.status)+'</td></tr>'}).join('');
+  document.getElementById('m-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' matching (population '+MEMBERS.length.toLocaleString()+')';
+  tb.querySelectorAll('tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'roster')})});
+}
+
+/* ================= eligibility spans ================= */
+var SPAN_VIEW=[];
+function initSpanControls(){
+  fillSelect('s-group',GROUP_KEYS.map(function(g){return[g,g+' \u2014 '+GROUPS[g].name]}),'Coverage group: all');
+  ['s-group','s-open'].forEach(function(id){document.getElementById(id).addEventListener('input',function(){resetPage('s-tbl');renderSpans()})});
+  bindSort('s-tbl',renderSpans);
+}
+function renderSpans(){
+  var fg=document.getElementById('s-group').value, fo=document.getElementById('s-open').value;
+  var rows=[];
+  MEMBERS.forEach(function(m){ m.eligSpans.forEach(function(s){
+    if(fg&&s.grp!==fg)return;
+    if(fo==='open'&&s.end!==null)return;
+    if(fo==='closed'&&s.end===null)return;
+    rows.push({ix:m.ix,id:m.id,name:m.name,grp:s.grp,start:s.start,end:(s.end===null?9999:s.end),endRaw:s.end,
+      months:spanMonths(s.start,s.end),reason:s.reason});
+  })});
+  rows=sortRows('s-tbl',rows); sortMarks('s-tbl');
+  SPAN_VIEW=[]; var seenS={}; rows.forEach(function(r){ if(!seenS[r.ix]){seenS[r.ix]=1;SPAN_VIEW.push(r.ix)} });
+  var pg=pager('s-tbl',rows.length,renderSpans,'s-pager');
+  document.getElementById('s-body').innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+grpChip(r.grp)+'</td>'+
+    '<td class="nowrap">'+startLabel(r.start)+'</td><td class="nowrap">'+(r.endRaw===null?'<span class="st-act">open</span>':mLabel(r.endRaw))+'</td>'+
+    '<td class="mono">'+r.months+(r.start<0?'+':'')+'</td><td>'+(r.reason?esc(r.reason):'\u2014')+'</td></tr>'}).join('');
+  document.getElementById('s-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' spans';
+  document.querySelectorAll('#s-body tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'spans')})});
+}
+function startLabel(s){ return s<0 ? mLabel(s)+' <span class="hint">(pre-window)</span>' : mLabel(s) }
+
+/* ================= delivery spans ================= */
+var DEL_VIEW=[];
+function initDelControls(){
+  var dopts=MAINSTREAM.map(function(m){return[m.code,m.name]})
+    .concat(HARP.map(function(m){return[m.code,m.name]}))
+    .concat(MLTC.map(function(m){return[m.code,m.name]}));
+  dopts.push(['FFS','Fee-for-Service']);
+  fillSelect('d-sys',dopts,'Delivery system: all');
+  document.getElementById('d-sys').addEventListener('input',function(){resetPage('d-tbl');renderDel()});
+  bindSort('d-tbl',renderDel);
+}
+function renderDel(){
+  var fd=document.getElementById('d-sys').value;
+  var rows=[];
+  MEMBERS.forEach(function(m){ m.delSpans.forEach(function(s){
+    if(fd&&s.sys!==fd)return;
+    rows.push({ix:m.ix,id:m.id,name:m.name,sys:s.sys,start:s.start,end:(s.end===null?9999:s.end),endRaw:s.end,
+      months:spanMonths(s.start,s.end),note:s.note});
+  })});
+  rows=sortRows('d-tbl',rows); sortMarks('d-tbl');
+  DEL_VIEW=[]; var seenD={}; rows.forEach(function(r){ if(!seenD[r.ix]){seenD[r.ix]=1;DEL_VIEW.push(r.ix)} });
+  var pg=pager('d-tbl',rows.length,renderDel,'d-pager');
+  document.getElementById('d-body').innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+delChip(r.sys)+'</td>'+
+    '<td class="nowrap">'+startLabel(r.start)+'</td><td class="nowrap">'+(r.endRaw===null?'<span class="st-act">open</span>':mLabel(r.endRaw))+'</td>'+
+    '<td class="mono">'+r.months+(r.start<0?'+':'')+'</td><td>'+(r.note?esc(r.note):'\u2014')+'</td></tr>'}).join('');
+  document.getElementById('d-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' delivery spans';
+  document.querySelectorAll('#d-body tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'delivery')})});
+}
+</script>
+<script>
+'use strict';
+/* ================= scenario registers ================= */
+var REGDEFS={
+ A:{title:'Steady state', q:'Who is simply covered \u2014 eligible all window, one mainstream plan, nothing to reconcile?',
+    body:'The baseline the other five registers are measured against. A share of these members exercised the right to switch plans; the eligibility span never blinks while the delivery span changes underneath it.'},
+ B:{title:'Recertification churn', q:'Who lost coverage at renewal for paperwork \u2014 and what happened to their plan when they came back?',
+    body:'Cases close at the recertification anniversary, sit in a gap, and reopen. Watch the delivery column: some members are reassigned to the prior plan, some are auto-assigned somewhere new, and some show a one-month FFS sliver while the plan effective date catches up to the eligibility date. A quarter of this register \u2014 125 members \u2014 is in the gap right now.'},
+ C:{title:'Retroactive grant', q:'Whose eligibility begins before their application \u2014 and why is that tail always fee-for-service?',
+    body:'Medicaid can pay up to three months backward from application. Capitation cannot: plan enrollment starts the first of a month, prospectively. Every member here has an FFS tail before the plan span begins \u2014 two clocks, deliberately out of step.'},
+ D:{title:'HARP transition', q:'Which adults moved to the enhanced behavioral-health product line \u2014 and did they stay with the same parent plan?',
+    body:'New York flags adults with serious mental illness or substance use disorder as HARP-eligible from claims and assessment history. Most transition into their own plan\u2019s HARP product \u2014 a product-line change, not a disenrollment \u2014 while some elect a different plan\u2019s HARP. Eligibility never changes; the delivery span changes shape. Same member, richer benefit, new roster line.'},
+ E:{title:'MLTC entry', q:'Which duals entered Managed Long-Term Care \u2014 and why does the plan\u2019s capitation cover only part of their world?',
+    body:'A dual needing 120+ days of community-based long-term care is enrolled in a partially capitated MLTC plan. The plan is paid for long-term services and supports only \u2014 Medicare stays primary for hospitals and physicians. Delivery moves from FFS to a plan, but the plan holds a slice, not the person. The eligibility span sails on untouched.'},
+ F:{title:'Medicare arrives \u2014 buy-in limbo', q:'Who aged (or SSDI\u2019d) onto Medicare, fell out of mainstream managed care, and waited for the Part B buy-in to catch up?',
+    body:'Medicare entitlement excludes a member from mainstream managed care: the plan span ends, delivery reverts to FFS with Medicare primary. But the state\u2019s Part B buy-in accretes one to three months behind entitlement \u2014 the limbo window where premiums are the member\u2019s problem until accretion lands and premiums are refunded.'}
+};
+function renderRegisters(){
+  var out=document.getElementById('reg-list'); var h='';
+  ['A','B','C','D','E','F'].forEach(function(r){
+    var d=REGDEFS[r], list=MEMBERS.filter(function(m){return m.reg===r});
+    var sample=list.slice(0,12);
+    h+='<div class="reg"><h3><span class="rl">'+r+'</span>'+esc(d.title)+'<span class="meta" style="margin-left:auto">'+list.length.toLocaleString()+' members</span></h3>'+
+       '<div class="q">'+d.q+'</div><p class="sub" style="margin-bottom:10px">'+d.body+'</p>'+
+       '<div class="tblwrap"><table><thead><tr><th>CIN</th><th>Member</th><th>Group</th><th>Delivery today</th><th>The planted story</th></tr></thead><tbody>';
+    sample.forEach(function(m){
+      h+='<tr class="rowlink" data-ix="'+m.ix+'"><td class="mono">'+m.id+'</td><td class="nowrap">'+esc(m.name)+'</td><td>'+grpChip(m.grpToday)+'</td><td>'+delChip(m.delTodayCode)+'</td>'+
+         '<td>'+(m.flags.length?esc(m.flags[0]):'Clean spans \u2014 the control group')+'</td></tr>';
+    });
+    h+='</tbody></table></div>';
+    if(list.length>sample.length){
+      h+='<div class="hint" style="margin-top:8px">Showing the first '+sample.length+' of '+list.length.toLocaleString()+'. Open any row \u2014 the \u25c0 \u25b6 arrows walk the entire register \u2014 or filter the Members tab by register for the full list.</div>';
+    }
+    h+='</div>';
+  });
+  out.innerHTML=h;
+  out.querySelectorAll('tr.rowlink').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'register')})});
+}
+
+/* ================= 834 builder ================= */
+function lastDelEvent(m){
+  /* returns {kind:'021'|'001'|'024', del:span, why} for the most recent plan enrollment event */
+  var planSpans=m.delSpans.filter(function(s){return !!planByCode(s.sys)});
+  if(!planSpans.length)return null;
+  var last=planSpans[planSpans.length-1];
+  if(m.reg==='D'){
+    if(m.sameParentHarp)return {kind:'001',del:last,why:'Product-line change within the same parent plan \u2014 mainstream to HARP. Enrollment continues; the benefit package grows.'};
+    return {kind:'021',del:last,why:'Member elected a different plan\u2019s HARP \u2014 an addition to the receiving plan (the prior plan received the matching termination).'};
+  }
+  if(m.reg==='E')return {kind:'021',del:last,why:'Mandatory MLTC enrollment \u2014 120+ days of community-based long-term care. The receiving plan\u2019s capitation covers LTSS only.'};
+  if(m.reg==='F')return {kind:'024',del:last,why:'Medicare entitlement excludes the member from mainstream managed care.'};
+  if(m.reg==='B'&&last.start>TODAY_IDX)return {kind:'024',del:planSpans[0],why:'Eligibility closed at recertification; member is in the gap today.'};
+  return {kind:'021',del:last,why:(m.reg==='C'?'New enrollment following a retroactive grant \u2014 note the two begin dates below.':(m.reg==='B'?'Re-enrollment after the recertification gap.':'Enrollment addition.'))};
+}
+function ediRow(seg,note,loop){return '<div class="edirow'+(loop?' loop':'')+'"><div class="seg">'+esc(seg)+'</div><div class="note">'+note+'</div></div>'}
+function build834(m){
+  var ev=lastDelEvent(m);
+  var out='';
+  if(!ev){
+    return '<div class="card">This member has no plan enrollment history \u2014 no 834 ever left the building for them. Their record lives only in the state\u2019s eligibility system.</div>';
+  }
+  var plan=planByCode(ev.del.sys);
+  var isMltc=plan.kind==='MLTC', isHarp=plan.kind==='HARP';
+  var eligSpan = m.eligSpans[m.eligSpans.length-1];
+  var eligBegin = m.eligSpans[0].start;
+  var d8=mFirstD8(Math.max(ev.del.start,0));
+  var kindLabel={ '021':'Addition','001':'Change','024':'Termination' }[ev.kind];
+  var ctl=String(300000+m.ix*7);
+  out+='<div class="ediwrap"><div class="edihead"><span class="fn">834 \u2014 '+kindLabel+'</span><span class="hint">'+esc(ev.why)+'</span></div>';
+  out+=ediRow('ISA*00*          *00*          *ZZ*NYSDOH         *ZZ*'+(plan.code.replace('-','')+'          ').slice(0,10)+'    *260701*0800*^*00501*'+ctl.padStart(9,'0')+'*0*P*:~','Interchange envelope: New York State Department of Health to <b>'+esc(plan.name)+'</b>. Production flag, repetition separator, control number.');
+  out+=ediRow('GS*BE*NYSDOH*'+plan.code.replace('-','')+'*20260701*0800*'+ctl+'*X*005010X220A1~','Functional group: <b>BE</b> = benefit enrollment. The version tells the plan which implementation guide to read this against.');
+  out+=ediRow('ST*834*'+ctl.slice(-4)+'*005010X220A1~','Transaction set header. One ST/SE per batch; this rendering shows a single member for teaching.');
+  out+=ediRow('BGN*00*'+m.id+'-'+ctl.slice(-3)+'*20260701*0800****4~','Beginning segment. Purpose 00 = original. Action 4 = verify/full audit in the monthly roster; dailies carry changes.');
+  out+=ediRow('N1*P5*NYS DEPT OF HEALTH*FI*141797357~','Loop 1000A \u2014 plan sponsor: the state.', true);
+  out+=ediRow('N1*IN*'+plan.name.toUpperCase().replace(/\(HARP\)/,'').trim()+'*FI*'+String(130000000+m.ix*13)+'~','Loop 1000B \u2014 insurer: the plan receiving the member.', true);
+  out+=ediRow('INS*Y*18*'+ev.kind+'*'+(ev.kind==='024'?'07':(ev.kind==='001'?'25':'28'))+'*A***FT~','Loop 2000. Subscriber (Y/18 \u2014 Medicaid members are always the subscriber). Maintenance <b>'+ev.kind+'</b> = '+kindLabel.toLowerCase()+'; the reason code tells the plan why.', true);
+  out+=ediRow('REF*0F*'+m.id+'~','The <b>CIN</b> \u2014 two letters, five digits, one letter. The identifier everything else hangs off. It never changes.');
+  out+=ediRow('REF*17*'+m.id.slice(2,7)+'-'+m.reg+'~','Client/case reference (teaching value). Real rosters carry case and district linkage here.');
+  out+=ediRow('DTP*356*D8*'+mFirstD8(Math.max(eligBegin,-24))+'~','<b>Eligibility</b> begin date'+(m.reg==='C'?' \u2014 note it precedes the plan begin date below by the retroactive months. Two clocks.':'.'));
+  if(ev.kind==='024'&&ev.del.end!==null) out+=ediRow('DTP*357*D8*'+mLastD8(ev.del.end)+'~','Eligibility/enrollment end for this plan relationship. '+(m.reg==='F'?'<b>The member is still eligible</b> \u2014 only the mainstream plan relationship ends.':''));
+  out+=ediRow('NM1*IL*1*'+m.last.toUpperCase()+'*'+m.first.toUpperCase()+'****34*'+String(110000000+m.ix*311)+'~','Member name. The 34 qualifier carries an SSN in real files; synthetic here.');
+  out+=ediRow('PER*IP**TE*'+m.phone.replace(/\D/g,'')+'~','Contact telephone.');
+  out+=ediRow('N3*'+m.street.toUpperCase()+'~','Street address \u2014 residence drives the local district and, for some products, plan availability.');
+  out+=ediRow('N4*'+m.city.toUpperCase()+'*NY*'+m.zip+'~','City/state/ZIP: '+esc(m.city)+', '+esc(m.county)+'.');
+  out+=ediRow('DMG*D8*'+dobD8(m.dob)+'*'+m.sex+'~','Date of birth and sex.');
+  if(m.lang!=='English') out+=ediRow('LUI*LD*'+({Spanish:'SPA',Chinese:'CHI',Russian:'RUS',Bengali:'BEN','Haitian Creole':'HAT',Korean:'KOR',Yiddish:'YID',Arabic:'ARA'}[m.lang]||'ENG')+'**6~','Preferred language: '+esc(m.lang)+'. Drives member materials and interpreter services.');
+  out+=ediRow('HD*'+ev.kind+'**HLT*'+plan.code+'~','Loop 2300 \u2014 health coverage. The plan code is the assignment itself'+(isHarp?' \u2014 note the <b>-H</b>: same parent company, different product line, different benefit package.':(isMltc?' \u2014 an MLTC product: the capitation behind this line is <b>partial</b>.':'.')), true);
+  out+=ediRow('DTP*348*D8*'+d8+'~','<b>Plan</b> begin date \u2014 first of the month, always prospective. '+(m.reg==='C'?'Compare with DTP*356 above: the retro tail between them was fee-for-service.':''));
+  if(ev.del.end!==null) out+=ediRow('DTP*349*D8*'+mLastD8(ev.del.end)+'~','Plan end date \u2014 last day of the final capitated month.');
+  out+=ediRow('LS*2700~','Open the member-reporting loop New York uses for state-specific facts.', true);
+  out+=ediRow('LX*1~ N1*75*COVERAGE GROUP~ REF*ZZ*'+ (m.grpToday!=='\u2014'?m.grpToday:eligSpan.grp) +'~','The <b>coverage group</b> \u2014 why the state covers this person ('+esc(GROUPS[eligSpan.grp]?GROUPS[eligSpan.grp].name:eligSpan.grp)+'). The plan needs it: it drives benefit package and rate cell.');
+  if(m.reg==='D') out+=ediRow('LX*2~ N1*75*RE CODE~ REF*ZZ*H1~','Restriction/exception code (teaching value): <b>HARP-eligible, enrolled</b>. New York flags behavioral-health eligibility as RE codes on the roster \u2014 '+esc(m.harpCond)+'.');
+  if(m.reg==='E') out+=ediRow('LX*2~ N1*75*MEDICARE STATUS~ REF*ZZ*AB~ LX*3~ N1*75*PLAN TYPE~ REF*ZZ*MLTC PARTIAL~','Medicare A+B on file (predates the window) plus the plan-type flag: this enrollment is <b>partial capitation</b> \u2014 LTSS only.');
+  if(m.reg==='F') out+=ediRow('LX*2~ N1*75*MEDICARE STATUS~ REF*ZZ*AB~','Medicare A+B on file from '+mLabel(m.medicareIdx)+'. This is the fact that ends mainstream enrollment.');
+  out+=ediRow('LE*2700~','Close the reporting loop.', true);
+  out+=ediRow('SE*'+ri(18,24)+'*'+ctl.slice(-4)+'~ GE*1*'+ctl+'~ IEA*1*'+ctl.padStart(9,'0')+'~','Trailers: segment count, group close, interchange close. Counts must reconcile or the whole file bounces.');
+  out+='</div>';
+  if(m.delTodayCode==='FFS'){
+    out+='<div class="plain" style="margin-top:14px"><span class="pe-label">Worth noticing</span>Today this member is <b>fee-for-service</b> \u2014 so no plan 834 flows for them anymore. The transaction above is the last one their plan received: the goodbye.</div>';
+  }
+  if(m.delTodayCode!=='\u2014'&&sysKind(m.delTodayCode)==='MLTC'){
+    out+='<div class="plain" style="margin-top:14px"><span class="pe-label">Worth noticing</span>This 834 hands the plan a <b>slice</b> of the member, not the member: the MLTC capitation covers long-term services and supports only, while Medicare stays primary for hospitals and physicians. Reading this transaction as full-benefit enrollment is the classic MLTC data mistake.</div>';
+  }
+  return out;
+}
+function initFileTab(){
+  var sel=document.getElementById('f-member');
+  var h='';
+  ['A','B','C','D','E','F'].forEach(function(r){
+    h+='<optgroup label="Register '+r+' \u2014 '+esc(REGDEFS[r].title)+'">';
+    MEMBERS.filter(function(m){return m.reg===r}).slice().sort(function(a,b){return a.name.localeCompare(b.name)}).forEach(function(m){
+      h+='<option value="'+m.ix+'">'+esc(m.name)+' \u2014 '+m.id+'</option>';
+    });
+    h+='</optgroup>';
+  });
+  sel.innerHTML=h;
+  sel.addEventListener('input',function(){renderFile(+sel.value)});
+  renderFile(+sel.value);
+}
+function renderFile(ix){
+  document.getElementById('f-out').innerHTML=build834(MEMBERS[ix]);
+}
+</script>
+<script>
+'use strict';
+/* ================= modal ================= */
+var MODAL={ix:null, ctx:'roster'};
+function navList(){
+  if(MODAL.ctx==='spans'&&SPAN_VIEW.length)return SPAN_VIEW;
+  if(MODAL.ctx==='delivery'&&DEL_VIEW.length)return DEL_VIEW;
+  if(MODAL.ctx==='register'&&MODAL.ix!==null){
+    var r=MEMBERS[MODAL.ix].reg;
+    return MEMBERS.filter(function(m){return m.reg===r}).map(function(m){return m.ix});
+  }
+  return ROSTER_VIEW.length?ROSTER_VIEW:MEMBERS.map(function(m){return m.ix});
+}
+function openModal(ix,ctx){
+  MODAL.ix=ix; if(ctx)MODAL.ctx=ctx;
+  var m=MEMBERS[ix];
+  document.getElementById('mo-nm').textContent=m.first+' '+m.last;
+  document.getElementById('mo-id').textContent='CIN '+m.id+'  \u00b7  Register '+m.reg;
+  document.getElementById('mo-body').innerHTML=modalBody(m);
+  var list=navList(), pos=list.indexOf(ix);
+  document.getElementById('mo-pos').textContent=(pos+1)+' / '+list.length+' ('+MODAL.ctx+')';
+  document.getElementById('mo-prev').disabled=pos<=0;
+  document.getElementById('mo-next').disabled=pos<0||pos>=list.length-1;
+  document.getElementById('overlay').classList.add('on');
+  document.getElementById('modal').classList.add('on');
+  highlightRow(ix);
+  document.getElementById('mo-x').focus();
+}
+function closeModal(){
+  document.getElementById('overlay').classList.remove('on');
+  document.getElementById('modal').classList.remove('on');
+  highlightRow(null);
+  MODAL.ix=null;
+}
+function stepModal(d){
+  var list=navList(), pos=list.indexOf(MODAL.ix), np=pos+d;
+  if(np<0||np>=list.length)return;
+  openModal(list[np]);
+}
+function highlightRow(ix){
+  document.querySelectorAll('tr.hl').forEach(function(tr){tr.classList.remove('hl')});
+  if(ix===null)return;
+  document.querySelectorAll('tr.rowlink[data-ix="'+ix+'"]').forEach(function(tr){tr.classList.add('hl')});
+}
+
+/* ---------- mini two-band timeline ---------- */
+function tlBar(startIdx,endIdx,color,striped,title){
+  var s=Math.max(startIdx,0), e=(endIdx===null?WIN_MONTHS-1:Math.min(endIdx,WIN_MONTHS-1));
+  if(e<0||s>WIN_MONTHS-1)return '';
+  var l=100*s/WIN_MONTHS, w=100*(e-s+1)/WIN_MONTHS;
+  return '<span class="bar'+(striped?' striped':'')+'" style="left:'+l+'%;width:'+w+'%;background:'+color+'" title="'+esc(title)+'"></span>';
+}
+function timeline(m){
+  var h='<div class="tl">';
+  h+='<div class="band"><span class="bl">Eligibility</span><span class="lane">';
+  m.eligSpans.forEach(function(s){
+    h+=tlBar(s.start,s.end,'var('+GROUPS[s.grp].color+')',false,s.grp+' '+mLabel(s.start)+' \u2013 '+(s.end===null?'open':mLabel(s.end)));
+  });
+  h+='<span class="todayline" style="left:'+(100*(TODAY_IDX+0.5)/WIN_MONTHS)+'%"></span></span></div>';
+  h+='<div class="band"><span class="bl">Delivery</span><span class="lane">';
+  m.delSpans.forEach(function(s){
+    var k=sysKind(s.sys);
+    var col = k==='FFS'?'var(--d-ffs)':(k==='HARP'?'var(--d-harp)':(k==='MLTC'?'var(--d-mltc)':'var(--d-mco)'));
+    h+=tlBar(s.start,s.end,col,k!=='FFS',sysLabel(s.sys)+' '+mLabel(s.start)+' \u2013 '+(s.end===null?'open':mLabel(s.end)));
+  });
+  h+='<span class="todayline" style="left:'+(100*(TODAY_IDX+0.5)/WIN_MONTHS)+'%"></span></span></div>';
+  h+='<div class="axis"><span></span><span class="ax">'+
+     '<span style="left:2%">Jan 25</span><span style="left:27%">Jul 25</span><span style="left:52%">Jan 26</span><span style="left:77%">Jul 26</span></span></div>';
+  h+='<div class="tl-note">Striped blue = mainstream \u00b7 striped purple = HARP \u00b7 striped teal = MLTC (partial cap) \u00b7 solid gray = fee-for-service \u00b7 red line = today (Jul 2026). Bars clamp to the 24-month window; pre-window starts are noted in the span tables.</div></div>';
+  return h;
+}
+
+/* ---------- per-member plain english ---------- */
+function plainFor(m){
+  var p='';
+  var first=m.first;
+  if(m.reg==='A'){
+    var sw=m.delSpans.length>1;
+    p=first+' is the case that never pages anyone: eligible under <b>'+m.grpToday+' ('+esc(GROUPS[m.grpToday].name)+')</b> for the whole window'+
+      (sw?', with one voluntary plan change \u2014 from '+esc(sysLabel(m.delSpans[0].sys))+' to '+esc(sysLabel(m.delSpans[1].sys))+' in '+mLabel(m.delSpans[1].start)+'. The eligibility span never noticed.':', enrolled with '+esc(sysLabel(m.delSpans[0].sys))+' the entire time.');
+  } else if(m.reg==='B'){
+    var t=m.eligSpans[0].end, rg=m.eligSpans[1].start, gap=rg-t-1;
+    if(rg>TODAY_IDX){
+      p=first+'\u2019s renewal did not come back and the case closed after '+mLabel(t)+'. As of today \u2014 July 2026 \u2014 '+first+' is <b>in the gap</b>, '+ (TODAY_IDX-t)+' month'+(TODAY_IDX-t>1?'s':'')+' uncovered; the data shows the case reopening in '+mLabel(rg)+'. From the plan\u2019s side this was a clean termination; from the state\u2019s side it is the same person, briefly missing.';
+    } else {
+      p=first+' churned: closed at renewal after '+mLabel(t)+', '+gap+' month'+(gap>1?'s':'')+' in the gap, back on in '+mLabel(rg)+'. '+
+        (m.delSpans[m.delSpans.length-1].sys===m.delSpans[0].sys?'The prior plan was restored on return \u2014':'Auto-assignment landed '+first+' in a <b>different plan</b> on return \u2014')+' the identity that carried through all of it is the CIN.';
+    }
+  } else if(m.reg==='C'){
+    var s=m.eligSpans[0].start, app=m.delSpans[1].start-1, retro=app-s;
+    p=first+' applied around '+mLabel(app)+' and the grant reached <b>'+retro+' month'+(retro>1?'s':'')+' backward</b> to '+mLabel(s)+'. Those backward months \u2014 and the processing month \u2014 were fee-for-service, because capitation only runs forward; '+esc(sysLabel(m.delSpans[1].sys))+' picked '+first+' up on '+mLabel(m.delSpans[1].start)+'. Two begin dates, both true.';
+  } else if(m.reg==='D'){
+    var ha=m.harpIdx;
+    p='The state flagged '+first+' as HARP-eligible \u2014 <b>'+esc(m.harpCond)+'</b> \u2014 and in '+mLabel(ha)+' the delivery span changed shape: '+
+      (m.sameParentHarp?'from '+esc(sysLabel(m.delSpans[0].sys))+' to its own HARP product, <b>'+esc(sysLabel(m.delSpans[1].sys))+'</b>. Same parent company, same card in the wallet, richer benefit \u2014 the roster shows a product-line change, not a goodbye.':'out of '+esc(sysLabel(m.delSpans[0].sys))+' and into a <b>different plan\u2019s HARP</b>, '+esc(sysLabel(m.delSpans[1].sys))+'. The old plan received a termination, the new one an addition \u2014 for a member whose eligibility never moved.')+
+      ' What HARP adds is the behavioral-health home-and-community-based services layer; what never changed is the eligibility span underneath.';
+  } else if(m.reg==='E'){
+    var ms=m.delSpans[1].start;
+    p=first+' is a dual \u2014 Medicare has been primary since before this window \u2014 and by '+mLabel(ms)+' needed more than 120 days of community-based long-term care, which makes MLTC enrollment mandatory. <b>'+esc(sysLabel(m.delSpans[1].sys))+'</b> took the enrollment, but the capitation behind it is <b>partial</b>: the plan is paid for long-term services and supports only, while Medicare keeps paying the hospitals and physicians. The 834 hands the plan a slice of '+first+', not the whole person \u2014 and the eligibility span never flickered.';
+  } else {
+    var mi=m.medicareIdx, bi=m.buyinIdx, lag=bi-mi;
+    p='Medicare arrived for '+first+' in '+mLabel(mi)+', and mainstream enrollment ended with it \u2014 duals are excluded from New York\u2019s mainstream managed care by design. The Part B <b>buy-in</b> did not accrete until '+mLabel(bi)+': a '+lag+'-month limbo where the premium was billed to '+first+' before the state\u2019s accretion landed and the premiums came back. Eligibility ('+m.grpToday+') never changed; everything around it did.';
+  }
+  return '<div class="plain"><span class="pe-label">In plain English</span>'+p+'</div>';
+}
+
+/* ---------- modal body ---------- */
+function modalBody(m){
+  var h='';
+  var et=eligToday(m);
+  h+='<div class="kv">'+
+    kv('Status today',statusHtml(m.status))+
+    kv('Coverage group',grpChip(m.grpToday)+' <span style="font-size:.8rem;color:var(--ink-soft)">'+esc(GROUPS[m.grpToday].name)+'</span>')+
+    kv('Delivery today',delChip(m.delTodayCode)+(m.delTodayCode!=='\u2014'?' <span style="font-size:.8rem;color:var(--ink-soft)">'+esc(sysLabel(m.delTodayCode))+'</span>':''))+
+    kv('Date of birth',dobLabel(m.dob)+' <span class="hint">(age '+m.age+')</span>')+
+    kv('Sex',m.sex)+
+    kv('Address',esc(m.street)+', '+esc(m.city)+', NY '+m.zip)+
+    kv('Jurisdiction',esc(m.county))+
+    kv('Phone','<span class="mono">'+m.phone+'</span>')+
+    kv('Preferred language',esc(m.lang))+
+    (m.harpCond?kv('HARP condition',esc(m.harpCond)):'')+
+    '</div>';
+  function kv(k,v){return '<div class="k">'+k+'</div><div class="v">'+v+'</div>'}
+  h+='<h4>24-month picture</h4>'+timeline(m);
+  h+=plainFor(m);
+  h+='<h4>Eligibility spans</h4><div class="tblwrap"><table><thead><tr><th>Group</th><th>Begin</th><th>End</th><th>Reason</th></tr></thead><tbody>';
+  m.eligSpans.forEach(function(s){
+    h+='<tr><td>'+grpChip(s.grp)+'</td><td class="nowrap">'+startLabel(s.start)+'</td><td class="nowrap">'+(s.end===null?'<span class="st-act">open</span>':mLabel(s.end))+'</td><td>'+(s.reason?esc(s.reason):'\u2014')+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  h+='<h4>Delivery spans</h4><div class="tblwrap"><table><thead><tr><th>System</th><th>Begin</th><th>End</th><th>Note</th></tr></thead><tbody>';
+  m.delSpans.forEach(function(s){
+    h+='<tr><td>'+delChip(s.sys)+'</td><td class="nowrap">'+startLabel(s.start)+'</td><td class="nowrap">'+(s.end===null?'<span class="st-act">open</span>':mLabel(s.end))+'</td><td>'+(s.note?esc(s.note):'\u2014')+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  if(m.flags.length){
+    h+='<h4>Flags</h4><p>'+m.flags.map(function(f){return '<span class="flag">'+esc(f)+'</span>'}).join(' ')+'</p>';
+  }
+  h+='<h4>See the file</h4><p style="font-size:.84rem;color:var(--ink-soft)">Open <b>What the File Says</b> and choose '+esc(m.first+' '+m.last)+' to read the 834 the plan received for this member\u2019s most recent enrollment event.</p>';
+  return h;
+}
+
+/* ================= navigation & boot ================= */
+function showPage(pg){
+  document.querySelectorAll('nav button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-pg')===pg)});
+  document.querySelectorAll('.page').forEach(function(p){p.classList.toggle('on',p.id==='pg-'+pg)});
+  if(pg==='overview')renderOverview();
+}
+document.getElementById('nav').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b)return; showPage(b.getAttribute('data-pg'));
+});
+document.getElementById('mo-x').addEventListener('click',closeModal);
+document.getElementById('overlay').addEventListener('click',closeModal);
+document.getElementById('mo-prev').addEventListener('click',function(){stepModal(-1)});
+document.getElementById('mo-next').addEventListener('click',function(){stepModal(1)});
+document.addEventListener('keydown',function(e){
+  if(MODAL.ix===null)return;
+  if(e.key==='Escape')closeModal();
+  else if(e.key==='ArrowLeft')stepModal(-1);
+  else if(e.key==='ArrowRight')stepModal(1);
+});
+
+/* boot */
+renderOverview();
+initRosterControls(); renderRoster();
+initSpanControls();  renderSpans();
+initDelControls();   renderDel();
+renderRegisters();
+initFileTab();
+renderReference();
+</script>
+</body>
+</html>

@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HealthChoices (Pennsylvania Medicaid) Eligibility Central</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@1,8..60,400;1,8..60,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#1E5FCC;
+  --accent-soft:#E8EFFB;
+  --ink:#1b2430;
+  --ink-soft:#4a5568;
+  --ink-faint:#8a94a3;
+  --line:#dde3ea;
+  --line-soft:#eceff3;
+  --bg:#f7f8fa;
+  --card:#ffffff;
+  --serif:'Source Serif 4', Georgia, serif;
+  --sans:'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono:'IBM Plex Mono', 'Consolas', monospace;
+  --g-FC01:#2E7D5B; --g-PG02:#B0568C; --g-CH19:#C98A2B; --g-EA02:#1E5FCC;
+  --g-SI02:#6A4FB6; --g-MN98:#5B8AA6; --g-FF26:#C25B4A; --g-WD02:#3E9C9C; --g-LT01:#7A7A52;
+  --d-mco:#4a7fd6; --d-ffs:#9aa3ad; --d-harp:#8a5fc0; --d-mltc:#2e8f8f;
+  --ok:#2E7D5B; --warn:#C98A2B; --bad:#C0392B;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+
+/* ---------- header ---------- */
+header{background:var(--card);border-bottom:1px solid var(--line);padding:18px 28px 0}
+.brandrow{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.wordmark{font-family:var(--serif);font-style:italic;font-weight:600;font-size:1.65rem;color:var(--accent);letter-spacing:.01em}
+.wordmark .st{color:var(--ink)}
+.tagline{color:var(--ink-faint);font-size:.85rem}
+.credit{margin-left:auto;color:var(--ink-faint);font-size:.78rem}
+nav{display:flex;gap:2px;margin-top:14px;flex-wrap:wrap}
+nav button{appearance:none;border:none;background:none;font:inherit;font-size:.86rem;font-weight:500;color:var(--ink-soft);padding:9px 14px;cursor:pointer;border-bottom:3px solid transparent;border-radius:6px 6px 0 0}
+nav button:hover{background:var(--line-soft)}
+nav button.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+nav button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+/* ---------- layout ---------- */
+main{max-width:1280px;margin:0 auto;padding:24px 28px 80px}
+.page{display:none}
+.page.on{display:block}
+h2{font-size:1.22rem;font-weight:700;margin:4px 0 4px}
+h3{font-size:.98rem;font-weight:600;margin:22px 0 8px}
+.sub{color:var(--ink-soft);font-size:.88rem;margin-bottom:16px;max-width:70ch}
+
+/* ---------- plain english callout ---------- */
+.plain{font-family:var(--serif);font-style:italic;font-size:1.02rem;line-height:1.65;color:#2c3a4d;background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:14px 18px;margin:14px 0 20px;max-width:86ch}
+.plain b{font-style:italic;font-weight:600}
+.plain .pe-label{display:block;font-family:var(--sans);font-style:normal;font-weight:700;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:5px}
+
+/* ---------- cards / stats ---------- */
+.statrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.stat .n{font-family:var(--mono);font-size:1.55rem;font-weight:600;color:var(--ink)}
+.stat .l{font-size:.74rem;color:var(--ink-soft);margin-top:2px;line-height:1.35}
+.stat.acc .n{color:var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:14px 0}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:900px){.twocol{grid-template-columns:1fr}}
+
+/* ---------- legend / bars ---------- */
+.leg{display:flex;flex-direction:column;gap:7px}
+.legrow{display:grid;grid-template-columns:16px 64px 1fr 46px;gap:10px;align-items:center;font-size:.84rem}
+.legrow .swatch{width:14px;height:14px;border-radius:4px}
+.legrow .code{font-family:var(--mono);font-size:.8rem;font-weight:600}
+.legrow .cnt{font-family:var(--mono);text-align:right;color:var(--ink-soft)}
+.barlist{display:flex;flex-direction:column;gap:8px}
+.barrow{display:grid;grid-template-columns:210px 1fr 40px;gap:10px;align-items:center;font-size:.83rem}
+.barrow .track{background:var(--line-soft);border-radius:5px;height:14px;overflow:hidden}
+.barrow .fill{display:block;height:100%;background:var(--d-mco);border-radius:5px;transition:width .8s ease}
+.barrow .bn{font-family:var(--mono);text-align:right;color:var(--ink-soft)}
+@media(max-width:700px){.barrow{grid-template-columns:130px 1fr 36px}}
+
+/* ---------- controls ---------- */
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;align-items:center}
+.controls input[type=search],.controls select{font:inherit;font-size:.85rem;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
+.controls input[type=search]{min-width:220px}
+.controls select:focus,.controls input:focus{outline:2px solid var(--accent);outline-offset:0}
+.hint{font-size:.76rem;color:var(--ink-faint)}
+
+/* ---------- tables ---------- */
+.tblwrap{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:auto;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:.83rem}
+th{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);background:#fbfcfd;white-space:nowrap;position:sticky;top:0}
+th.sortable{cursor:pointer;user-select:none}
+th.sortable:hover{color:var(--accent)}
+th .arr{font-size:.72rem;color:var(--accent)}
+.pager{display:flex;align-items:center;justify-content:center;gap:14px;margin:12px 0 2px}
+.pager button.pg{appearance:none;font:inherit;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:5px 13px;cursor:pointer;font-size:.82rem;color:var(--ink-soft)}
+.pager button.pg:hover:not(:disabled){background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.pager button.pg:disabled{opacity:.35;cursor:default}
+.pager .pgpos{font-size:.78rem;color:var(--ink-faint)}
+td{padding:9px 12px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tbody tr.rowlink{cursor:pointer}
+tbody tr.rowlink:hover{background:var(--accent-soft)}
+tbody tr.hl{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+.mono{font-family:var(--mono);font-size:.8rem}
+.nowrap{white-space:nowrap}
+
+/* ---------- chips ---------- */
+.chip{display:inline-block;font-family:var(--mono);font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:20px;color:#fff;white-space:nowrap}
+.chip.outl{background:none;border:1.5px solid currentColor}
+.dchip{display:inline-block;font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:5px;white-space:nowrap}
+.d-mco{background:#e5edfa;color:#2456a8}
+.d-ffs{background:#eceff2;color:#5c6672}
+.d-harp{background:#efe7f8;color:#6a3fa0}
+.d-mltc{background:#e2f2f2;color:#1f6f6f}
+.st-act{color:var(--ok);font-weight:600}
+.st-gap{color:var(--warn);font-weight:600}
+.st-cls{color:var(--ink-faint);font-weight:600}
+.flag{display:inline-block;font-size:.7rem;font-weight:600;background:#fdf1e0;color:#96660f;border:1px solid #f0d9ae;border-radius:5px;padding:1px 7px;white-space:nowrap}
+
+/* ---------- registers ---------- */
+.reg{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin:12px 0}
+.reg h3{margin:0 0 4px;display:flex;align-items:center;gap:10px}
+.reg .rl{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;background:var(--accent);color:#fff;font-family:var(--mono);font-weight:600;font-size:.85rem;flex:none}
+.reg .q{font-family:var(--serif);font-style:italic;color:#2c3a4d;font-size:.95rem;margin:4px 0 10px}
+.reg .meta{font-size:.78rem;color:var(--ink-faint);margin-bottom:8px}
+
+/* ---------- 834 ---------- */
+.ediwrap{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:12px 0;overflow:hidden}
+.edihead{padding:12px 18px;border-bottom:1px solid var(--line);display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;background:#fbfcfd}
+.edihead .fn{font-family:var(--mono);font-size:.82rem;font-weight:600}
+.edirow{display:grid;grid-template-columns:minmax(300px,46%) 1fr;border-bottom:1px solid var(--line-soft)}
+.edirow:last-child{border-bottom:none}
+.edirow .seg{font-family:var(--mono);font-size:.78rem;padding:8px 16px;background:#f4f7fb;color:#1b3a66;overflow-wrap:anywhere;border-right:1px solid var(--line-soft)}
+.edirow .note{font-size:.8rem;padding:8px 16px;color:var(--ink-soft)}
+.edirow.loop .seg{background:#e8effb;font-weight:600}
+@media(max-width:780px){.edirow{grid-template-columns:1fr}.edirow .seg{border-right:none}}
+
+/* ---------- modal ---------- */
+.overlay{position:fixed;inset:0;background:rgba(20,28,40,.42);opacity:0;pointer-events:none;transition:opacity .22s;z-index:40}
+.overlay.on{opacity:1;pointer-events:auto}
+.slideover{position:fixed;top:0;right:0;bottom:0;width:640px;max-width:94vw;background:var(--card);box-shadow:-12px 0 40px rgba(15,25,45,.22);transform:translateX(102%);transition:transform .26s ease;z-index:50;display:flex;flex-direction:column}
+.slideover.on{transform:translateX(0)}
+.mo-head{padding:16px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+.mo-head .who{min-width:0}
+.mo-head .nm{font-weight:700;font-size:1.05rem}
+.mo-head .idz{font-family:var(--mono);font-size:.76rem;color:var(--ink-soft)}
+.mo-x{margin-left:auto;appearance:none;border:1px solid var(--line);background:none;border-radius:8px;width:32px;height:32px;font-size:1rem;cursor:pointer;color:var(--ink-soft);flex:none}
+.mo-x:hover{background:var(--line-soft)}
+.mo-body{overflow-y:auto;padding:18px 22px;flex:1}
+.mo-foot{border-top:1px solid var(--line);padding:10px 22px;display:flex;align-items:center;gap:12px}
+.mo-foot button{appearance:none;font:inherit;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:.9rem}
+.mo-foot button:hover:not(:disabled){background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.mo-foot button:disabled{opacity:.35;cursor:default}
+.mo-foot .pos{font-family:var(--mono);font-size:.78rem;color:var(--ink-faint);margin-left:auto}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:4px 12px;font-size:.85rem;margin:8px 0 14px}
+.kv .k{color:var(--ink-faint)}
+.kv .v{color:var(--ink)}
+.mo-body h4{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);margin:16px 0 8px}
+.mo-body .plain{font-size:.93rem;padding:12px 15px}
+
+/* ---------- mini timeline ---------- */
+.tl{margin:6px 0 4px}
+.tl .band{display:grid;grid-template-columns:78px 1fr;gap:8px;align-items:center;margin:5px 0}
+.tl .bl{font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-faint);text-align:right}
+.tl .lane{position:relative;height:18px;background:var(--line-soft);border-radius:4px}
+.tl .bar{position:absolute;top:0;bottom:0;border-radius:4px;min-width:3px}
+.tl .bar.striped{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.28) 0 5px,transparent 5px 10px)}
+.tl .axis{display:grid;grid-template-columns:78px 1fr;gap:8px;margin-top:3px}
+.tl .ax{position:relative;height:14px;font-size:.62rem;color:var(--ink-faint);font-family:var(--mono)}
+.tl .ax span{position:absolute;transform:translateX(-50%)}
+.tl .todayline{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--bad);opacity:.7}
+.tl-note{font-size:.7rem;color:var(--ink-faint);margin-top:6px}
+
+/* ---------- reference ---------- */
+.refgrid{display:grid;grid-template-columns:1fr;gap:4px}
+dl.gloss{display:grid;grid-template-columns:200px 1fr;gap:8px 16px;font-size:.85rem}
+dl.gloss dt{font-weight:600}
+dl.gloss dd{color:var(--ink-soft)}
+@media(max-width:700px){dl.gloss{grid-template-columns:1fr}dl.gloss dd{margin-bottom:8px}}
+footer{max-width:1280px;margin:0 auto;padding:0 28px 40px;color:var(--ink-faint);font-size:.75rem;line-height:1.6}
+@media(max-width:700px){header{padding:14px 16px 0}main{padding:18px 14px 60px}.kv{grid-template-columns:120px 1fr}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brandrow">
+    <div class="wordmark">HealthChoices Eligibility <span class="st">Central</span></div>
+    <div class="tagline">Pennsylvania Medicaid: two capitations, two governments, and the 834 &mdash; a synthetic demonstration</div>
+    <div class="credit">Robert Thomas Keyes</div>
+  </div>
+  <nav id="nav" aria-label="Sections">
+    <button data-pg="overview" class="on">Overview</button>
+    <button data-pg="members">Members</button>
+    <button data-pg="spans">Eligibility Spans</button>
+    <button data-pg="delivery">The Carve</button>
+    <button data-pg="registers">Scenario Registers</button>
+    <button data-pg="file">What the File Says</button>
+    <button data-pg="reference">Reference Codes</button>
+  </nav>
+</header>
+<main>
+  <section class="page on" id="pg-overview">
+    <h2>Overview</h2>
+    <p class="sub">A synthetic Pennsylvania Medical Assistance population across a 24-month window (January 2025 &ndash; December 2026), viewed as of <b>July 2026</b>. Every value is deterministic &mdash; seeded PRNG, identical on every load.</p>
+    <div class="plain" id="ov-plain"></div>
+    <div class="statrow" id="ov-stats"></div>
+    <div class="twocol">
+      <div class="card">
+        <h3 style="margin-top:0">Coverage groups in the population</h3>
+        <div class="leg" id="ov-groups"></div>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Where members get their care today</h3>
+        <div class="barlist" id="ov-mcos"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="pg-members">
+    <h2>Members</h2>
+    <p class="sub">The full synthetic roster. Click any row for the member record; click a column header to sort.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>Every person here has a <b>ten-digit recipient ID</b> that never changes — and every person here is split between <b>two governments</b>. Physical health rides a zone-based plan the <b>state</b> procured; behavioral health rides a capitation the member’s <b>county</b> holds — in Philadelphia, a plan that is literally a city department. The delivery column shows the physical half; the county behavioral contractor rides along in each member’s detail, constant as long as the county is. Pennsylvania is the only state in this series that splits one member between two levels of government — and this app is about reading that seam.</div>
+    <div class="controls">
+      <input type="search" id="m-search" placeholder="Search name, recipient ID, city&hellip;" aria-label="Search members">
+      <select id="m-group" aria-label="Filter by coverage group"></select>
+      <select id="m-del" aria-label="Filter by delivery system"></select>
+      <select id="m-reg" aria-label="Filter by register"></select>
+      <select id="m-status" aria-label="Filter by status">
+        <option value="">Status today: all</option>
+        <option value="Active">Active</option>
+        <option value="Gap">In gap</option>
+        <option value="Closed">Closed</option>
+      </select>
+      <span class="hint" id="m-count"></span>
+    </div>
+    <div class="tblwrap"><table id="m-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">Recipient ID</th>
+        <th class="sortable" data-k="name">Name</th>
+        <th class="sortable" data-k="age">Age</th>
+        <th class="sortable" data-k="sex">Sex</th>
+        <th class="sortable" data-k="grp">Coverage Group</th>
+        <th class="sortable" data-k="del">Delivery Today</th>
+        <th class="sortable" data-k="county">County</th>
+        <th class="sortable" data-k="reg">Register</th>
+        <th class="sortable" data-k="status">Status Today</th>
+      </tr></thead>
+      <tbody id="m-body"></tbody>
+    </table></div>
+    <div class="pager" id="m-pager"></div>
+  </section>
+
+  <section class="page" id="pg-spans">
+    <h2>Eligibility Spans</h2>
+    <p class="sub">One row per coverage-group span &mdash; the state's answer to <i>&ldquo;from when to when, and under which door did this person enter?&rdquo;</i> Click a row to open the member.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>A span is a promise with dates on it — and in Pennsylvania one eligibility span feeds <b>two</b> capitations at once: the state’s zone plan and the county’s behavioral contractor draw on the same determination, so when register B’s renewals fail, both halves pause together. Register C carries the other signature: Community HealthChoices launched in <b>waves</b> — Southwest 2018, Southeast 2019, everywhere else 2020 — so its start dates form a gradient across the map rather than a single wall.</div>
+    <div class="controls">
+      <select id="s-group" aria-label="Filter spans by coverage group"></select>
+      <select id="s-open" aria-label="Filter by open or closed">
+        <option value="">Open + closed</option><option value="open">Open only</option><option value="closed">Closed only</option>
+      </select>
+      <span class="hint" id="s-count"></span>
+    </div>
+    <div class="tblwrap"><table id="s-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">Recipient ID</th>
+        <th class="sortable" data-k="name">Member</th>
+        <th class="sortable" data-k="grp">Group</th>
+        <th class="sortable" data-k="start">Begin</th>
+        <th class="sortable" data-k="end">End</th>
+        <th class="sortable" data-k="months">Months</th>
+        <th>End Reason</th>
+      </tr></thead>
+      <tbody id="s-body"></tbody>
+    </table></div>
+    <div class="pager" id="s-pager"></div>
+  </section>
+
+  <section class="page" id="pg-delivery">
+    <h2>The Carve</h2>
+    <p class="sub">One row per <b>physical-health</b> delivery span — zone plans and Community HealthChoices. The behavioral half is a second, county-held capitation shown in each member’s detail: constant while the county is, indifferent to everything that moves these rows. Click a row to open the member.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>Pennsylvania runs <b>the carve</b>: in the 1990s, when HealthChoices was built, the behavioral-health dollar was carved out of the physical capitation and offered to <b>county governments</b> first — the right of first opportunity — and the counties took it, everywhere. So every member carries two capitations held by two levels of government: a state-procured zone plan for physical health, and a county-held behavioral contractor — Philadelphia’s is CBH, an actual city department. The county side keeps its savings and must <b>reinvest</b> them locally (register E’s housing programs and crisis teams), and it is indifferent to Medicare (register F’s third answer). Register D shows the seam in motion: a county move can switch half the member while the other half never blinks.</div>
+    <div class="controls">
+      <select id="d-sys" aria-label="Filter by delivery system"></select>
+      <span class="hint" id="d-count"></span>
+    </div>
+    <div class="tblwrap"><table id="d-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">Recipient ID</th>
+        <th class="sortable" data-k="name">Member</th>
+        <th class="sortable" data-k="sys">Delivery</th>
+        <th class="sortable" data-k="start">Begin</th>
+        <th class="sortable" data-k="end">End</th>
+        <th class="sortable" data-k="months">Months</th>
+        <th>Begin / End Reason</th>
+      </tr></thead>
+      <tbody id="d-body"></tbody>
+    </table></div>
+    <div class="pager" id="d-pager"></div>
+  </section>
+
+  <section class="page" id="pg-registers">
+    <h2>Scenario Registers</h2>
+    <p class="sub">Six business questions, each answered by a register of members whose data was planted to demonstrate exactly that scenario. Click any member to inspect the record behind the answer.</p>
+    <div id="reg-list"></div>
+  </section>
+
+  <section class="page" id="pg-file">
+    <h2>What the File Says</h2>
+    <p class="sub">Pennsylvania really does speak X12N 834 — to its zone plans, its CHC plans, and the county behavioral contractors alike. Pick a member and read the transaction, segment by segment, with a plain-language note on every line.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>An 834 is a government telling a health plan: <b>this person is yours now</b> — and in Pennsylvania two governments say it about the same person. The state’s stream feeds the zone plans and CHC; the county side maintains its own roster of the same members for the behavioral capitation, carried here as an LX loop on every file. Register F’s birthday generates the fullest single month in the series: a 024 to one plan, a 021 to another, and — on the county side — nothing at all, which is itself the lesson.</div>
+    <div class="controls">
+      <select id="f-member" aria-label="Choose member for 834"></select>
+      <span class="hint">Members are grouped by register; the transaction is rebuilt live from the member's actual spans.</span>
+    </div>
+    <div id="f-out"></div>
+  </section>
+
+  <section class="page" id="pg-reference">
+    <h2>Reference Codes</h2>
+    <p class="sub">The teaching code sets used throughout the app. Codes are patterned on Pennsylvania conventions; verify against current PA Department of Human Services publications before any non-demonstration use.</p>
+    <div id="ref-out"></div>
+  </section>
+</main>
+
+<footer>
+  <p><b>HealthChoices (Pennsylvania Medicaid) Eligibility Central</b> &mdash; a single-file demonstration app in the Central series. All members, identifiers, addresses, phone numbers, and dates are synthetic and deterministic (seeded PRNG, seed 215001); any resemblance to real persons is coincidental. Program facts reflect public Pennsylvania Medical Assistance policy of the mid-2020s and change year to year — the zone map, county BH assignments, and CHC mechanics are teaching simplifications; verify against current PA DHS and CMS publications before any non-demonstration use. The 834 rendering is a teaching aid, not an implementation guide. &copy; Robert Thomas Keyes.</p>
+</footer>
+
+<div class="overlay" id="overlay"></div>
+<aside class="slideover" id="modal" role="dialog" aria-modal="true" aria-labelledby="mo-nm">
+  <div class="mo-head">
+    <div class="who">
+      <div class="nm" id="mo-nm"></div>
+      <div class="idz" id="mo-id"></div>
+    </div>
+    <button class="mo-x" id="mo-x" aria-label="Close">&#10005;</button>
+  </div>
+  <div class="mo-body" id="mo-body"></div>
+  <div class="mo-foot">
+    <button id="mo-prev" aria-label="Previous member">&#9664;</button>
+    <button id="mo-next" aria-label="Next member">&#9654;</button>
+    <span class="pos" id="mo-pos"></span>
+  </div>
+</aside>
+<script>
+'use strict';
+/* ============ HealthChoices (Pennsylvania Medicaid) Eligibility Central ============
+   Central series -- Robert Thomas Keyes
+   Deterministic synthetic data. Seed 215001 (Philadelphia's area code).
+   Window: Jan 2025 (idx 0) .. Dec 2026 (idx 23). "Today" = Jul 2026 (idx 18).
+================================================================= */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+var R = mulberry32(215001);
+function ri(lo,hi){return lo+Math.floor(R()*(hi-lo+1))}
+function pick(arr){return arr[Math.floor(R()*arr.length)]}
+function wpick(pairs){var tot=0,i;for(i=0;i<pairs.length;i++)tot+=pairs[i][1];var x=R()*tot;for(i=0;i<pairs.length;i++){x-=pairs[i][1];if(x<0)return pairs[i][0]}return pairs[pairs.length-1][0]}
+
+var WIN_START_Y=2025, WIN_MONTHS=24, TODAY_IDX=18; /* Jul 2026 */
+var CHC_SW=-84, CHC_SE=-72, CHC_P3=-60; /* the rollout that moved across the map: Jan 2018 / Jan 2019 / Jan 2020 */
+var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function mLabel(idx){ if(idx===null||idx===undefined)return '&mdash;';
+  var y=WIN_START_Y+Math.floor(idx/12), m=((idx%12)+12)%12;
+  return MONTHS[m]+' '+y }
+function mFirstD8(idx){var y=WIN_START_Y+Math.floor(idx/12),m=((idx%12)+12)%12;return ''+y+String(m+1).padStart(2,'0')+'01'}
+function mLastD8(idx){var y=WIN_START_Y+Math.floor(idx/12),m=((idx%12)+12)%12;var last=new Date(y,m+1,0).getDate();return ''+y+String(m+1).padStart(2,'0')+String(last).padStart(2,'0')}
+function spanMonths(s,e){var last=(e===null?TODAY_IDX:e);return Math.max(1,last-Math.max(s,-990)+1)}
+
+var GROUPS={
+ CH19:{name:'Children',                magi:true,  color:'--g-CH19', blurb:'Children through 18 \u2014 CHIP wraps above.'},
+ AEG:{name:'MA Adults (expansion, 2015)', magi:true, color:'--g-SI02', blurb:'Adults 19\u201364 to 138% FPL \u2014 Pennsylvania expanded January 2015, folding a short-lived \u201cHealthy PA\u201d variant into standard expansion within months.'},
+ PW02:{name:'Pregnant & Postpartum',   magi:true,  color:'--g-EA02', blurb:'Pregnancy coverage plus twelve months postpartum.'},
+ FM01:{name:'Parents & Caretakers',    magi:true,  color:'--g-FC01', blurb:'Parents and caretaker relatives.'},
+ AB03:{name:'Aged / Blind / Disabled', magi:false, color:'--g-MN98', blurb:'SSI-related budgeting \u2014 and, for those needing LTSS, the population Community HealthChoices capitates.'},
+ FF26:{name:'Former Foster Care',      magi:true,  color:'--g-FF26', blurb:'Young adults formerly in foster care, covered to 26.'}
+};
+var GROUP_KEYS=Object.keys(GROUPS);
+
+/* ---------- physical health: HealthChoices zones ---------- */
+var PAPLANS=[
+ {code:'KF',  name:'Keystone First'},
+ {code:'HP',  name:'Health Partners Plans'},
+ {code:'UPMC',name:'UPMC for You'},
+ {code:'HW',  name:'Highmark Wholecare'},
+ {code:'ACP', name:'AmeriHealth Caritas Pennsylvania'},
+ {code:'GHP', name:'Geisinger Health Plan'}
+];
+/* ---------- Community HealthChoices (LTSS/duals) ---------- */
+var CHCPLANS=[
+ {code:'ACC', name:'AmeriHealth Caritas CHC'},
+ {code:'PHW', name:'PA Health & Wellness (CHC)'},
+ {code:'UPMCC',name:'UPMC Community HealthChoices'}
+];
+/* ---------- behavioral health: the county side ---------- */
+var BHPLANS=[
+ {code:'CBH',  name:'Community Behavioral Health (City of Philadelphia)', gov:'a department of city government'},
+ {code:'CCBH', name:'Community Care Behavioral Health (county-contracted)', gov:'contracted by county government'},
+ {code:'MAGL', name:'Magellan Behavioral Health of PA (county-contracted)', gov:'contracted by county government'},
+ {code:'PERF', name:'PerformCare (county-contracted)', gov:'contracted by county government'}
+];
+var PLANBY={}; PAPLANS.concat(CHCPLANS).forEach(function(p){PLANBY[p.code]=p});
+var BHBY={}; BHPLANS.forEach(function(p){BHBY[p.code]=p});
+function sysLabel(code){ return code==='FFS'?'Fee-for-Service (tails and exemptions)':(PLANBY[code]?PLANBY[code].name:code) }
+function sysKind(code){ return code==='FFS'?'FFS':'MCO' }
+function sysClass(code){ return code==='FFS'?'d-ffs':'d-mco' }
+function zoneFor(county){
+  var map={'Philadelphia':'Southeast','Montgomery':'Southeast','Bucks':'Southeast','Delaware':'Southeast','Allegheny':'Southwest','Westmoreland':'Southwest','Lancaster':'Lehigh/Capital','Dauphin':'Lehigh/Capital','Berks':'Lehigh/Capital','Luzerne':'Northeast','Lackawanna':'Northeast','Erie':'Northwest'};
+  return map[county]||'Southeast';
+}
+function phPlansFor(zone){
+  return {'Southeast':['KF','HP'],'Southwest':['UPMC','HW'],'Lehigh/Capital':['ACP','GHP'],'Northeast':['ACP','GHP'],'Northwest':['ACP','UPMC']}[zone];
+}
+function bhFor(county){
+  var map={'Philadelphia':'CBH','Allegheny':'CCBH','Montgomery':'MAGL','Bucks':'MAGL','Delaware':'MAGL','Lancaster':'PERF','Dauphin':'PERF','Berks':'CCBH','Luzerne':'CCBH','Lackawanna':'CCBH','Erie':'CCBH','Westmoreland':'CCBH'};
+  return map[county]||'CCBH';
+}
+function chcWaveFor(county){
+  var z=zoneFor(county);
+  return z==='Southwest'?CHC_SW:(z==='Southeast'?CHC_SE:CHC_P3);
+}
+
+var COUNTIES=[
+ {name:'Philadelphia',w:6, zips:['19134','19140'], city:'Philadelphia', streets:['Kensington Ave','N Broad St','Frankford Ave','W Allegheny Ave']},
+ {name:'Allegheny',  w:4, zips:['15210'], city:'Pittsburgh', streets:['Brownsville Rd','E Carson St','Warrington Ave']},
+ {name:'Montgomery', w:1.5,zips:['19401'], city:'Norristown', streets:['W Main St','Dekalb St','Markley St']},
+ {name:'Bucks',      w:1.5,zips:['19007'], city:'Bristol', streets:['Mill St','Pond St','Bath Rd']},
+ {name:'Delaware',   w:1.5,zips:['19013'], city:'Chester', streets:['W 9th St','Edgmont Ave','Providence Ave']},
+ {name:'Lancaster',  w:1.5,zips:['17602'], city:'Lancaster', streets:['S Duke St','E King St','Church St']},
+ {name:'Dauphin',    w:1.5,zips:['17104'], city:'Harrisburg', streets:['Derry St','S 13th St','Market St']},
+ {name:'Berks',      w:1.5,zips:['19601'], city:'Reading', streets:['N 5th St','Penn St','Schuylkill Ave']},
+ {name:'Luzerne',    w:1.5,zips:['18702'], city:'Wilkes-Barre', streets:['S Main St','Hazle Ave','Coal St']},
+ {name:'Lackawanna', w:1, zips:['18505'], city:'Scranton', streets:['Pittston Ave','Cedar Ave','Prospect Ave']},
+ {name:'Erie',       w:1, zips:['16503'], city:'Erie', streets:['Parade St','E 12th St','Buffalo Rd']},
+ {name:'Westmoreland',w:1,zips:['15601'], city:'Greensburg', streets:['E Pittsburgh St','S Main St','Mt Pleasant Rd']}
+];
+var COUNTYBY={}; COUNTIES.forEach(function(c){COUNTYBY[c.name]=c});
+function pickCounty(){return wpick(COUNTIES.map(function(c){return [c,c.w]}))}
+var AREA=['215','267','412','717','570','814'];
+
+var FIRST_F=['Emma','Olivia','Madison','Kaylee','Brittany','Amber','Dawn','Crystal','Karen','Linda','Darlene','Maria','Carmen','Rosa','Iris','Yolanda','Nadia','Fatima','Linh','Oksana','Hazel','June','Twyla','Bernice','Peggy','Sharon','Marlys','Destiny','Renae','Kathleen','Colleen','Angela'],
+    FIRST_M=['Gary','Dennis','Larry','Duane','Wayne','Dale','Travis','Hunter','Cody','Tyler','Jose','Luis','Miguel','Juan','Angel','Hector','Ahmed','Dmitri','Minh','Vernon','Merle','Clifford','Emil','Delbert','Leland','Frank','Patrick','Sean','Anthony','Vincent','Stanley','Walter'];
+var LAST=['Kowalski','Wisniewski','Nowicki','Zielinski','Russo','Marino','Esposito','DiSanto','Gallagher','Murphy','Kelly','Sullivan','Rivera','Santiago','Rodriguez','Cruz','Colon','Ortiz','Vazquez','Washington','Jackson','Brooks','Johnson','Smith','Miller','Brown','Davis','Nguyen','Kim','Petrenko','Kovac','Yoder','Stoltzfus','Weaver','Hoover','Schneider','Wagner','OBrien','McCarthy','Haddad'],
+    LANGS=[['English',84],['Spanish',10],['Russian',1],['Ukrainian',1],['Vietnamese',1],['Arabic',1],['Pennsylvania Dutch',1],['Mandarin',1]];
+
+var ELIG_END={
+ REDET:'Renewal not completed \u2014 case closed at renewal',
+ INCOME:'Over income at renewal',
+ MOVED:'Moved out of state',
+ MEDI:'Medicare entitlement \u2014 physical health MCO ends; CHC evaluates'
+};
+</script>
+<script>
+'use strict';
+/* ================= population generator ================= */
+var MEMBERS=[];
+var usedIds={};
+function genId(){ var s; do{ s=String(ri(1000000000,8999999999)) }while(usedIds[s]); usedIds[s]=1; return s } /* 10 digits */
+function genPhone(){ return '('+pick(AREA)+') '+ri(200,989)+'-'+String(ri(0,9999)).padStart(4,'0') }
+function genAddr(c){ return {street:ri(100,9999)+' '+pick(c.streets), city:c.city, zip:pick(c.zips)} }
+function genName(sex){ return {first:(sex==='F'?pick(FIRST_F):pick(FIRST_M)), last:pick(LAST)} }
+function dobForAge(age){ var y=2026-age; var m=ri(0,11); if(m>6)y--; return {y:y,m:m,d:ri(1,28)} }
+function dobD8(d){return ''+d.y+String(d.m+1).padStart(2,'0')+String(d.d).padStart(2,'0')}
+function dobLabel(d){return MONTHS[d.m]+' '+d.d+', '+d.y}
+
+function baseMember(reg){
+  var sex=pick(['F','F','F','M','M']);
+  var nm=genName(sex), c=pickCounty(), a=genAddr(c);
+  return { id:genId(), first:nm.first, last:nm.last, sex:sex, county:c.name, zone:zoneFor(c.name),
+    street:a.street, city:a.city, zip:a.zip, phone:genPhone(),
+    lang:wpick(LANGS), reg:reg, eligSpans:[], delSpans:[], flags:[],
+    bh:bhFor(c.name), bhOld:null, countyOld:null, moveIdx:null,
+    chcWave:null, bhStory:null };
+}
+function addElig(m,grp,s,e,reason){m.eligSpans.push({grp:grp,start:s,end:e,reason:reason||null})}
+function addDel(m,sys,s,e,note){m.delSpans.push({sys:sys,start:s,end:e,note:note||null})}
+function enrollPA(m,s,e,note){
+  var plan=pick(phPlansFor(m.zone));
+  addDel(m,plan,s,(e===undefined?null:e),note||('A '+m.zone+' zone plan \u2014 the physical half; the behavioral half is '+BHBY[m.bh].name.split(' (')[0]+', run by county government'));
+  return plan;
+}
+
+/* ----- Register A: steady state -- two capitations, two governments (1100) ----- */
+(function(){
+  var grpsA=[['CH19',6],['AEG',5.5],['FM01',1],['PW02',1],['AB03',2],['FF26',1]];
+  for(var i=0;i<1100;i++){
+    var grp=wpick(grpsA);
+    var m=baseMember('A');
+    var age = grp==='CH19'?ri(0,18) : grp==='FF26'?ri(18,25) : grp==='AB03'?ri(28,62) : grp==='PW02'?ri(19,38) : ri(19,60);
+    m.age=age; m.dob=dobForAge(age); if(grp==='PW02')m.sex='F';
+    var s=ri(-20,2);
+    addElig(m,grp,s,null,null);
+    enrollPA(m,s);
+    if(R()<0.22){
+      m.flags.push('<b>Two capitations, two governments</b> \u2014 physical health with '+sysLabel(m.delSpans[0].sys)+' (a state-procured zone plan) and behavioral health with '+BHBY[m.bh].name.split(' (')[0]+', '+BHBY[m.bh].gov+': Pennsylvania carved the behavioral dollar out and handed it to its <b>counties</b>, the only state to split one member between two levels of government');
+    } else if(R()<0.1&&m.county==='Philadelphia'){
+      m.flags.push('Behavioral health through <b>CBH</b> \u2014 a plan that is literally a department of Philadelphia city government: the deepest public option in this series');
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register B: renewal churn (500) ----- */
+(function(){
+  for(var i=0;i<500;i++){
+    var grp=wpick([['CH19',3],['AEG',5],['FM01',1]]);
+    var m=baseMember('B');
+    m.age = grp==='CH19'?ri(1,17):ri(19,60); m.dob=dobForAge(m.age);
+    var s=ri(-18,-2);
+    var inGapNow=(i<125);
+    var term=inGapNow?ri(15,16):ri(4,12);
+    var gap=inGapNow?ri(3,4):ri(1,4);
+    var regain=term+gap+1;
+    addElig(m,grp,s,term,ELIG_END.REDET);
+    addElig(m,grp,regain,null,null);
+    enrollPA(m,s,term);
+    enrollPA(m,regain);
+    m.flags.push('Gap '+mLabel(term+1)+'\u2013'+mLabel(regain-1)+' ('+gap+' mo) \u2014 and note that <b>both</b> capitations paused together: one eligibility determination feeds the state\u2019s plan and the county\u2019s alike');
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register C: Community HealthChoices -- the launch that moved across the map (375) ----- */
+(function(){
+  for(var i=0;i<375;i++){
+    var m=baseMember('C');
+    var kind = i<140?'SW' : (i<260?'SE':'P3');
+    var counties = kind==='SW'?['Allegheny','Westmoreland'] : (kind==='SE'?['Philadelphia','Montgomery','Bucks','Delaware']:['Lancaster','Dauphin','Berks','Luzerne','Lackawanna','Erie']);
+    var c=COUNTYBY[pick(counties)];
+    m.county=c.name; m.zone=zoneFor(c.name); m.bh=bhFor(c.name);
+    var a=genAddr(c); m.street=a.street; m.city=a.city; m.zip=a.zip;
+    m.age=ri(45,80); m.dob=dobForAge(m.age);
+    var wave=chcWaveFor(m.county);
+    m.chcWave=wave;
+    var s=wave-ri(24,60); /* eligibility long predates CHC */
+    addElig(m,'AB03',s,null,null);
+    addDel(m,'FFS',s,wave-1,'Before CHC: LTSS paid fee-for-service, waiver by waiver');
+    addDel(m,pick(['ACC','PHW','UPMCC']),wave,null,'Community HealthChoices \u2014 LTSS and duals, capitated');
+    m.flags.push('<b>The launch that moved across the map</b> \u2014 this member\u2019s Community HealthChoices span begins exactly '+mLabel(wave)+': the '+(kind==='SW'?'Southwest wave (January 2018, first)':(kind==='SE'?'Southeast wave (January 2019, second)':'final wave (January 2020, everywhere else)'))+'. One program, three launch walls, staged by zone across two years \u2014 where Missouri\u2019s wall was one court date and Louisiana\u2019s one go-live, Pennsylvania\u2019s rollout is a <b>gradient</b>: plot CHC start dates statewide and you can watch managed care travel east.');
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register D: the county carve in motion (375) ----- */
+(function(){
+  var sameZone=[['Philadelphia','Delaware'],['Montgomery','Bucks'],['Delaware','Montgomery'],['Luzerne','Lackawanna'],['Lancaster','Dauphin']];
+  var crossZone=[['Philadelphia','Allegheny'],['Allegheny','Erie'],['Berks','Luzerne'],['Dauphin','Allegheny'],['Bucks','Lancaster']];
+  for(var i=0;i<375;i++){
+    var grp=wpick([['AEG',5],['CH19',3],['FM01',1]]);
+    var m=baseMember('D');
+    m.age = grp==='CH19'?ri(2,17):ri(19,58); m.dob=dobForAge(m.age);
+    var kind = i<150?'SAMEZONE' : (i<265?'CROSSZONE':'CBH');
+    if(kind==='SAMEZONE'){
+      var pr=pick(sameZone);
+      var fromC=COUNTYBY[pr[0]], toC=COUNTYBY[pr[1]];
+      var s=ri(-22,-8), mv=ri(2,15);
+      m.countyOld=fromC.name; m.county=toC.name; m.zone=zoneFor(toC.name);
+      m.bhOld=bhFor(fromC.name); m.bh=bhFor(toC.name);
+      var a=genAddr(toC); m.street=a.street; m.city=a.city; m.zip=a.zip;
+      addElig(m,grp,s,null,null);
+      var plan=pick(phPlansFor(m.zone));
+      addDel(m,plan,s,null,'Same zone before and after the move \u2014 the physical plan never blinked');
+      m.moveIdx=mv;
+      m.flags.push('<b>The move that switched half the member</b> \u2014 '+fromC.name+' \u2192 '+toC.name+' County in '+mLabel(mv)+': same HealthChoices zone, so the <b>physical</b> plan continued without an event \u2014 but behavioral health follows the <b>county</b>, and '+(m.bhOld===m.bh?'even the BH contractor happened to match \u2014 a quiet move on both halves':BHBY[m.bhOld].name.split(' (')[0]+' handed off to '+BHBY[m.bh].name.split(' (')[0])+'. One address change, two governments, two different answers: the carve, seen in motion.');
+    } else if(kind==='CROSSZONE'){
+      var pr2=pick(crossZone);
+      var fromC2=COUNTYBY[pr2[0]], toC2=COUNTYBY[pr2[1]];
+      var s2=ri(-22,-8), mv2=ri(2,15);
+      m.countyOld=fromC2.name; m.county=toC2.name;
+      var zOld=zoneFor(fromC2.name); m.zone=zoneFor(toC2.name);
+      m.bhOld=bhFor(fromC2.name); m.bh=bhFor(toC2.name);
+      var a2=genAddr(toC2); m.street=a2.street; m.city=a2.city; m.zip=a2.zip;
+      addElig(m,grp,s2,null,null);
+      addDel(m,pick(phPlansFor(zOld)),s2,mv2-1,'The old zone\u2019s plan');
+      addDel(m,pick(phPlansFor(m.zone)),mv2,null,'The new zone\u2019s plan \u2014 both halves switched');
+      m.moveIdx=mv2;
+      m.flags.push('A <b>cross-zone</b> move \u2014 '+fromC2.name+' \u2192 '+toC2.name+' County in '+mLabel(mv2)+': the physical plan changed with the zone and the behavioral contractor changed with the county \u2014 both halves switched, on the same day, by two different governments\u2019 rules.');
+    } else {
+      var pc=COUNTYBY['Philadelphia'];
+      m.county='Philadelphia'; m.zone='Southeast'; m.bh='CBH';
+      var a3=genAddr(pc); m.street=a3.street; m.city=a3.city; m.zip=a3.zip;
+      var s3=ri(-20,-4);
+      addElig(m,grp,s3,null,null);
+      enrollPA(m,s3);
+      m.flags.push('<b>The plan that is a city department</b> \u2014 behavioral health for every Philadelphia member runs through CBH, an entity of city government itself: no procurement, no commercial parent, a public agency holding full behavioral risk for a city of 1.5 million. The deepest public option in this series, hiding inside a carve-out.');
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register E: the behavioral half at work (325) ----- */
+(function(){
+  for(var i=0;i<325;i++){
+    var kind = i<140?'REINVEST' : (i<235?'SUD':'RTF');
+    var m=baseMember('E');
+    if(kind==='REINVEST'){
+      var grp=wpick([['AEG',5],['AB03',2],['FM01',1]]);
+      m.age=ri(22,60); m.dob=dobForAge(m.age);
+      var s=ri(-20,-4);
+      addElig(m,grp,s,null,null);
+      enrollPA(m,s);
+      m.bhStory=pick(['a supported-housing program funded from county reinvestment','a mobile crisis team the county built from BH savings','a peer-run drop-in center funded by reinvestment dollars','a forensic diversion program built from reinvestment']);
+      m.flags.push('<b>Reinvestment</b> \u2014 this member is served by '+m.bhStory+': Pennsylvania\u2019s counties keep behavioral-health savings and must plow them back into local services, so the carve-out has a flywheel \u2014 managed-care efficiency becomes county infrastructure. The state\u2019s plans return savings to shareholders; the county side returns them to the map.');
+    } else if(kind==='SUD'){
+      m.age=ri(20,55); m.dob=dobForAge(m.age); m.sex=pick(['M','M','F']);
+      var s2=ri(-20,-4);
+      addElig(m,'AEG',s2,null,null);
+      enrollPA(m,s2);
+      m.bhStory=pick(['medication-assisted treatment through the county BH-MCO','a warm handoff from the ED to county-managed SUD treatment','a certified recovery specialist assigned by the BH-MCO']);
+      m.flags.push('<b>The opioid front line</b> \u2014 '+m.bhStory+': in the state hit hardest and earliest, SUD treatment runs on the county side of the carve \u2014 the physical plan may never see the episode except as its medical shadow, because the claims live in a different capitation held by a different government.');
+    } else {
+      m.age=ri(8,17); m.dob=dobForAge(m.age);
+      var s3=ri(-20,-4);
+      addElig(m,'CH19',s3,null,null);
+      enrollPA(m,s3);
+      m.bhStory=pick(['residential treatment facility placement authorized by the county BH-MCO','school-based behavioral health arranged through the county contractor','intensive behavioral health services (IBHS) in home and school']);
+      m.flags.push('<b>The children\u2019s deep end</b> \u2014 '+m.bhStory+': the highest-acuity child services in Medicaid, authorized and paid on the county half. Two case files exist for this child \u2014 the physical plan\u2019s and the county\u2019s \u2014 and the family experiences them as one system only when the two governments coordinate well.');
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register F: Medicare arrives -- one birthday, three answers (325) ----- */
+(function(){
+  for(var i=0;i<325;i++){
+    var m=baseMember('F');
+    var ltss=(i<195); /* 195 with LTSS need: CHC picks up */
+    var medi=ri(6,16), lag=ri(1,3);
+    m.age=(medi<=TODAY_IDX)?65:64;
+    m.dob={y:WIN_START_Y+Math.floor(medi/12)-65, m:medi%12, d:ri(1,28)};
+    var s=ri(-30,-12);
+    addElig(m,'AB03',s,null,null);
+    var plan=pick(phPlansFor(m.zone));
+    if(ltss){
+      addDel(m,plan,s,medi-1,'The physical health plan \u2014 answer one: it ends');
+      addDel(m,pick(['ACC','PHW','UPMCC']),medi,null,'Community HealthChoices \u2014 answer two: it begins');
+      m.flags.push('Turned 65 in '+mLabel(medi)+' \u2014 <b>one birthday, three answers</b>. The HealthChoices physical plan <b>ended</b> ('+sysLabel(plan)+', 024). Community HealthChoices <b>began</b> \u2014 a new capitation for LTSS and the Medicaid wrap, same month, 021. And the county behavioral plan ('+BHBY[m.bh].name.split(' (')[0]+') <b>never noticed</b>: the BH capitation is indifferent to Medicare, so its span runs straight through. Three capitations touching one member, and the same birthday reads as a goodbye, a hello, and a shrug \u2014 the twenty-fourth answer, and the only one that is three.');
+    } else {
+      addDel(m,plan,s,medi-1,'The physical health plan ends at Medicare');
+      addDel(m,'FFS',medi,null,'No LTSS need \u2014 the wrap goes fee-for-service; CHC not indicated');
+      m.flags.push('Turned 65 in '+mLabel(medi)+' \u2014 two of the three answers: the physical plan <b>ended</b> and the county behavioral plan ('+BHBY[m.bh].name.split(' (')[0]+') <b>never noticed</b>; with no LTSS need, no CHC hello \u2014 the wrap went fee-for-service, the buy-in accreted '+mLabel(medi+lag)+'. Even the reduced case teaches the carve: the state\u2019s half of this member ended at 65, and the county\u2019s half didn\u2019t.');
+    }
+    m.medicareIdx=medi; m.buyinIdx=medi+lag; m.ltss=ltss;
+    MEMBERS.push(m);
+  }
+})();
+
+/* ---------- derived member state ---------- */
+function eligToday(m){ for(var i=0;i<m.eligSpans.length;i++){var s=m.eligSpans[i]; if(s.start<=TODAY_IDX&&(s.end===null||s.end>=TODAY_IDX))return s} return null }
+function delToday(m){ for(var i=0;i<m.delSpans.length;i++){var s=m.delSpans[i]; if(s.start<=TODAY_IDX&&(s.end===null||s.end>=TODAY_IDX))return s} return null }
+function lastElig(m){ return m.eligSpans[m.eligSpans.length-1] }
+function statusToday(m){
+  if(eligToday(m))return 'Active';
+  var le=lastElig(m);
+  if(le.end!==null&&le.end<TODAY_IDX){
+    for(var i=0;i<m.eligSpans.length;i++){ if(m.eligSpans[i].start>TODAY_IDX)return 'Gap' }
+    return 'Closed';
+  }
+  return 'Gap';
+}
+MEMBERS.forEach(function(m,ix){
+  m.ix=ix;
+  if(m.sex==='F'&&FIRST_F.indexOf(m.first)<0)m.first=FIRST_F[(m.first.length*7+m.last.length)%FIRST_F.length];
+  if(m.sex==='M'&&FIRST_M.indexOf(m.first)<0)m.first=FIRST_M[(m.first.length*7+m.last.length)%FIRST_M.length];
+  m.name=m.last+', '+m.first;
+  var et=eligToday(m), le=lastElig(m);
+  m.grpToday = et?et.grp:le.grp;
+  var dt=delToday(m);
+  m.delTodayCode = dt?dt.sys:'\u2014';
+  m.status=statusToday(m);
+});
+</script>
+<script>
+'use strict';
+/* ================= shared render helpers ================= */
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function grpChip(g){ if(!GROUPS[g])return esc(g);
+  return '<span class="chip" style="background:var('+GROUPS[g].color+')" title="'+esc(GROUPS[g].name)+'">'+g+'</span>' }
+function delChip(code){ if(code==='\u2014')return '<span class="st-cls">\u2014</span>';
+  var cls=sysClass(code), lbl=code;
+  return '<span class="dchip '+cls+'" title="'+esc(sysLabel(code))+'">'+esc(lbl)+'</span>' }
+function statusHtml(st){ return st==='Active'?'<span class="st-act">Active</span>':(st==='Gap'?'<span class="st-gap">In gap</span>':'<span class="st-cls">Closed</span>') }
+function regBadge(r){return '<span class="mono" style="font-weight:600;color:var(--accent)">'+r+'</span>'}
+
+/* ================= overview ================= */
+function renderOverview(){
+  var n=MEMBERS.length, act=0, ph=0, chc=0, cbh=0, reinv=0, three=0, gaps=0;
+  var phSet={}; PAPLANS.forEach(function(p){phSet[p.code]=1});
+  var chcSet={}; CHCPLANS.forEach(function(p){chcSet[p.code]=1});
+  MEMBERS.forEach(function(m){
+    if(m.status==='Active')act++;
+    if(m.status==='Gap')gaps++;
+    var d=m.delTodayCode;
+    if(phSet[d])ph++;
+    if(chcSet[d])chc++;
+    if(m.bh==='CBH')cbh++;
+    if(m.bhStory)reinv++;
+    if(m.reg==='F'&&m.ltss)three++;
+  });
+  var st=document.getElementById('ov-stats');
+  st.innerHTML =
+    stat(n,'Synthetic members',true)+
+    stat(act,'Eligible today (Jul 2026)')+
+    stat(ph,'In a zone physical-health plan today')+
+    stat(chc,'In Community HealthChoices today')+
+    stat(n,'Under a county behavioral capitation \u2014 everyone')+
+    stat(cbh,'Whose BH plan is a Philadelphia city department')+
+    stat(three,'Register F members with all three answers')+
+    stat(gaps,'In an eligibility gap today \u2014 both halves paused');
+  function stat(nv,l,acc){return '<div class="stat'+(acc?' acc':'')+'"><div class="n">'+(typeof nv==='number'?nv.toLocaleString():nv)+'</div><div class="l">'+l+'</div></div>'}
+
+  /* group legend with counts (by current/last group) */
+  var gc={}; MEMBERS.forEach(function(m){gc[m.grpToday]=(gc[m.grpToday]||0)+1});
+  var lg=document.getElementById('ov-groups'); lg.innerHTML='';
+  GROUP_KEYS.forEach(function(g){
+    var c=gc[g]||0;
+    lg.innerHTML+='<div class="legrow"><span class="swatch" style="background:var('+GROUPS[g].color+')"></span>'+
+      '<span class="code">'+g+'</span><span>'+esc(GROUPS[g].name)+'</span>'+
+      '<span class="cnt">'+c+'</span></div>';
+  });
+
+  /* delivery distribution today */
+  var dc={}; MEMBERS.forEach(function(m){ if(m.delTodayCode!=='\u2014') dc[m.delTodayCode]=(dc[m.delTodayCode]||0)+1 });
+  var bc={}; MEMBERS.forEach(function(m){ bc[m.bh]=(bc[m.bh]||0)+1 });
+  var rows=PAPLANS.map(function(p){return {label:p.name+' (physical \u2014 state-procured)', code:p.code, n:dc[p.code]||0, cls:'var(--d-mco)'}});
+  CHCPLANS.forEach(function(p){ rows.push({label:p.name+' (LTSS/duals)', code:p.code, n:dc[p.code]||0, cls:'var(--d-mco)'}) });
+  rows.sort(function(a,b){return b.n-a.n});
+  rows.push({label:'Fee-for-Service (tails and exemptions)', code:'FFS', n:dc.FFS||0, cls:'var(--d-ffs)'});
+  BHPLANS.forEach(function(p){ rows.push({label:p.name+' \u2014 behavioral, county side', code:p.code, n:bc[p.code]||0, cls:'var(--d-harp)'}) });
+  var mx=rows.reduce(function(a,r){return Math.max(a,r.n)},1);
+  var bl=document.getElementById('ov-mcos'); bl.innerHTML='';
+  rows.forEach(function(r){
+    bl.innerHTML+='<div class="barrow"><span title="'+esc(r.label)+'">'+esc(r.label)+'</span>'+
+      '<span class="track"><span class="fill" style="width:0;background:'+r.cls+'" data-w="'+(100*r.n/mx)+'"></span></span>'+
+      '<span class="bn">'+r.n+'</span></div>';
+  });
+  requestAnimationFrame(function(){ setTimeout(function(){
+    bl.querySelectorAll('.fill').forEach(function(f){f.style.width=f.getAttribute('data-w')+'%'}) },60) });
+
+  document.getElementById('ov-plain').innerHTML='<span class="pe-label">In plain English</span>'+
+    'Pennsylvania is the only state in this series that splits one member between <b>two levels of government</b>. When HealthChoices was built in the 1990s, the behavioral-health dollar was carved out and offered to <b>counties</b> first \u2014 the right of first opportunity \u2014 and every county took it. So the chart below has two colors: blue rows are the state\u2019s side (zone-procured physical plans, plus Community HealthChoices for LTSS and duals); purple rows are the <b>county</b> side \u2014 behavioral capitations that cover everyone, including a plan that is literally a Philadelphia city department. The county side keeps its savings and must <b>reinvest</b> them locally (register E), launched CHC in <b>waves</b> across the map (register C\u2019s gradient), and is indifferent to Medicare \u2014 which is why register F\u2019s birthday gets <b>three answers</b>: the physical plan says goodbye, CHC says hello, and the county plan never notices. One member, two governments, three capitations: the twenty-fourth answer, and the only one that is three.';
+}
+
+/* ================= reference ================= */
+function renderReference(){
+  var h='';
+  h+='<div class="card"><h3 style="margin-top:0">Coverage groups (teaching set)</h3>'+
+     '<div class="tblwrap"><table><thead><tr><th>Code</th><th>Name</th><th>Determination</th><th>What it means</th></tr></thead><tbody>';
+  GROUP_KEYS.forEach(function(g){var G=GROUPS[g];
+    h+='<tr><td>'+grpChip(g)+'</td><td>'+esc(G.name)+'</td><td>'+(G.magi?'MAGI (County Assistance Office)':'Non-MAGI')+'</td><td>'+G.blurb+'</td></tr>'});
+  h+='</tbody></table></div></div>';
+  h+='<div class="card"><h3 style="margin-top:0">The state side \u2014 physical health by zone</h3>'+
+     '<div class="tblwrap"><table><thead><tr><th>Zone</th><th>Plans in this population</th><th>Counties here</th></tr></thead><tbody>';
+  ['Southeast','Southwest','Lehigh/Capital','Northeast','Northwest'].forEach(function(z){
+    var ps=phPlansFor(z).map(function(c){return PLANBY[c].name}).join(', ');
+    var cs=COUNTIES.filter(function(c){return zoneFor(c.name)===z}).map(function(c){return c.name}).join(', ');
+    h+='<tr><td>'+esc(z)+'</td><td>'+esc(ps)+'</td><td>'+esc(cs)+'</td></tr>';
+  });
+  h+='</tbody></table></div><p class="sub" style="margin-top:8px">Plus Community HealthChoices for LTSS and duals \u2014 '+CHCPLANS.map(function(p){return esc(p.name)}).join(', ')+' \u2014 launched in waves: Southwest Jan 2018, Southeast Jan 2019, everywhere else Jan 2020.</p></div>';
+  h+='<div class="card"><h3 style="margin-top:0">The county side \u2014 behavioral health</h3>'+
+     '<div class="tblwrap"><table><thead><tr><th>Code</th><th>BH-MCO</th><th>Government</th><th>Counties here</th></tr></thead><tbody>';
+  BHPLANS.forEach(function(p){
+    var cs=COUNTIES.filter(function(c){return bhFor(c.name)===p.code}).map(function(c){return c.name}).join(', ');
+    h+='<tr'+(p.code==='CBH'?' style="background:#f8f6f2"':'')+'><td class="mono">'+p.code+'</td><td>'+esc(p.name)+'</td><td>'+esc(p.gov)+'</td><td>'+esc(cs)+'</td></tr>';
+  });
+  h+='</tbody></table></div><p class="sub" style="margin-top:8px">Counties hold the behavioral risk under the right of first opportunity, keep the savings, and must reinvest them locally.</p></div>';
+  h+='<div class="card"><h3 style="margin-top:0">834 maintenance codes used in this app</h3>'+
+     '<div class="tblwrap"><table><thead><tr><th>INS03</th><th>Meaning</th><th>Where you\u2019ll see it</th></tr></thead><tbody>'+
+     '<tr><td class="mono">021</td><td>Addition</td><td>Enrollments \u2014 including register F\u2019s CHC hello, fired the same month as a 024</td></tr>'+
+     '<tr><td class="mono">024</td><td>Cancellation / termination</td><td>Churn, cross-zone moves, and the physical plan\u2019s goodbye at Medicare</td></tr>'+
+     '<tr><td class="mono">001</td><td>Change</td><td>Demographic and county changes \u2014 including register D\u2019s same-zone moves, where the physical plan never blinks</td></tr>'+
+     '</tbody></table></div></div>';
+  h+='<div class="card"><h3 style="margin-top:0">Glossary</h3><dl class="gloss">'+
+    gl('The carve','Pennsylvania\u2019s founding design choice: the behavioral-health dollar carved out of physical capitation and held as a separate, county-side capitation. Every member has two plans run by two levels of government.')+
+    gl('Right of first opportunity','When HealthChoices launched, counties got first refusal on holding the behavioral risk \u2014 and all of them, alone or in consortia, took it. The carve is not an accident of procurement; it is county government asserting a role.')+
+    gl('CBH','Community Behavioral Health \u2014 Philadelphia\u2019s BH-MCO, an entity of city government itself: no procurement, no commercial parent, a public agency holding full behavioral risk for 1.5 million people. The deepest public option in this series.')+
+    gl('Reinvestment','County BH savings must be plowed back into local services \u2014 supported housing, mobile crisis, peer centers. Managed-care efficiency becomes county infrastructure: the carve\u2019s flywheel, and register E\u2019s subject.')+
+    gl('Community HealthChoices','The LTSS/duals capitation \u2014 launched as a gradient: Southwest 2018, Southeast 2019, the rest 2020. Register C\u2019s start dates let you watch managed care travel east across a map.')+
+    gl('The gradient','What a staged rollout looks like in data: not one wall (Missouri\u2019s court date, Louisiana\u2019s go-live) but three, keyed to geography. Cohort analysis in Pennsylvania must condition on zone or it is confounded by the calendar.')+
+    gl('One birthday, three answers','The twenty-fourth Medicare answer, and the only triple: at 65 the physical plan ends (024), Community HealthChoices begins (021), and the county behavioral plan never notices \u2014 its capitation is indifferent to Medicare. Three contracts, one member, one month.')+
+    gl('HealthChoices zones','The five procurement regions for physical health. A move within a zone can leave the physical plan untouched while the county line switches the behavioral contractor \u2014 register D\u2019s half-member switch.')+
+    gl('834','The X12N enrollment transaction \u2014 which in Pennsylvania two different governments send, about the same person, to different plans.')+
+    '</dl></div>';
+  function gl(t,d){return '<dt>'+t+'</dt><dd>'+d+'</dd>'}
+  h+='<div class="card"><h3 style="margin-top:0">Counties in this population</h3><p style="font-size:.85rem">'+COUNTIES.map(function(c){return esc(c.name)+' ('+zoneFor(c.name)+' \u00b7 '+bhFor(c.name)+')'}).join(' \u00b7 ')+'</p><p class="sub" style="margin-top:8px">The Kowalskis and Russos carry the old industrial northeast; the Riveras and Santiagos, Philadelphia and Reading\u2019s Puerto Rican communities; the Yoders and Stoltzfuses, Lancaster\u2019s Plain communities \u2014 whose LUI segments read Pennsylvania Dutch.</p></div>';
+  document.getElementById('ref-out').innerHTML=h;
+}
+</script>
+<script>
+'use strict';
+/* ================= generic sortable table state ================= */
+var SORT={};
+function bindSort(tblId, renderFn){
+  document.querySelectorAll('#'+tblId+' th.sortable').forEach(function(th){
+    th.addEventListener('click',function(){
+      var k=th.getAttribute('data-k');
+      var cur=SORT[tblId]||{};
+      SORT[tblId]={k:k, dir:(cur.k===k&&cur.dir==='asc')?'desc':'asc'};
+      renderFn();
+    });
+  });
+}
+function sortRows(tblId, rows){
+  var s=SORT[tblId]; if(!s)return rows;
+  var dir=s.dir==='asc'?1:-1;
+  rows.sort(function(a,b){
+    var x=a[s.k],y=b[s.k];
+    if(x===null||x===undefined)x=-Infinity; if(y===null||y===undefined)y=-Infinity;
+    if(typeof x==='string'){x=x.toLowerCase();y=String(y).toLowerCase();return x<y?-dir:(x>y?dir:0)}
+    return (x-y)*dir;
+  });
+  return rows;
+}
+function sortMarks(tblId){
+  var s=SORT[tblId];
+  document.querySelectorAll('#'+tblId+' th.sortable').forEach(function(th){
+    var base=th.textContent.replace(/[\u25b2\u25bc]\s*$/,'').trim();
+    th.innerHTML=esc(base)+(s&&s.k===th.getAttribute('data-k')?' <span class="arr">'+(s.dir==='asc'?'\u25b2':'\u25bc')+'</span>':'');
+  });
+}
+
+/* ================= pagination ================= */
+var PAGE={}, PAGE_SIZE=50;
+function pager(tblId, total, renderFn, pagerId){
+  var pages=Math.max(1,Math.ceil(total/PAGE_SIZE));
+  var p=Math.min(PAGE[tblId]||1,pages); if(p<1)p=1; PAGE[tblId]=p;
+  var el=document.getElementById(pagerId);
+  if(el){
+    if(pages===1){ el.innerHTML=''; }
+    else{
+      el.innerHTML='<button class="pg"'+(p<=1?' disabled':'')+' data-d="-1">\u25c0 Prev</button>'+
+        '<span class="mono pgpos">page '+p+' of '+pages.toLocaleString()+'</span>'+
+        '<button class="pg"'+(p>=pages?' disabled':'')+' data-d="1">Next \u25b6</button>';
+      el.querySelectorAll('button.pg').forEach(function(b){
+        b.addEventListener('click',function(){ PAGE[tblId]=p+parseInt(b.getAttribute('data-d'),10); renderFn(); });
+      });
+    }
+  }
+  return {from:(p-1)*PAGE_SIZE, to:Math.min(total,p*PAGE_SIZE)};
+}
+function resetPage(tblId){ PAGE[tblId]=1 }
+
+/* ================= members roster ================= */
+var ROSTER_VIEW=[]; /* current filtered order (all pages), for modal nav */
+function fillSelect(id, opts, allLabel){
+  var el=document.getElementById(id);
+  el.innerHTML='<option value="">'+allLabel+'</option>'+opts.map(function(o){return '<option value="'+o[0]+'">'+o[1]+'</option>'}).join('');
+}
+function initRosterControls(){
+  fillSelect('m-group',GROUP_KEYS.map(function(g){return[g,g+' \u2014 '+GROUPS[g].name]}),'Coverage group: all');
+  var dopts=PAPLANS.map(function(m){return[m.code,m.name]})
+    .concat(CHCPLANS.map(function(m){return[m.code,m.name]}));
+  dopts.push(['FFS','Fee-for-Service']);
+  fillSelect('m-del',dopts,'Delivery today: all');
+  fillSelect('m-reg',['A','B','C','D','E','F'].map(function(r){return[r,'Register '+r]}),'Register: all');
+  ['m-search','m-group','m-del','m-reg','m-status'].forEach(function(id){
+    document.getElementById(id).addEventListener('input',function(){resetPage('m-tbl');renderRoster()});
+  });
+  bindSort('m-tbl',renderRoster);
+}
+function renderRoster(){
+  var q=document.getElementById('m-search').value.trim().toLowerCase();
+  var fg=document.getElementById('m-group').value, fd=document.getElementById('m-del').value,
+      fr=document.getElementById('m-reg').value, fs=document.getElementById('m-status').value;
+  var rows=MEMBERS.filter(function(m){
+    if(fg&&m.grpToday!==fg)return false;
+    if(fd&&m.delTodayCode!==fd)return false;
+    if(fr&&m.reg!==fr)return false;
+    if(fs&&m.status!==fs)return false;
+    if(q){ var hay=(m.name+' '+m.id+' '+m.city+' '+m.county).toLowerCase(); if(hay.indexOf(q)<0)return false }
+    return true;
+  }).map(function(m){return {ix:m.ix,id:m.id,name:m.name,age:m.age,sex:m.sex,grp:m.grpToday,del:m.delTodayCode,county:m.county,reg:m.reg,status:m.status}});
+  rows=sortRows('m-tbl',rows); sortMarks('m-tbl');
+  ROSTER_VIEW=rows.map(function(r){return r.ix});
+  var pg=pager('m-tbl',rows.length,renderRoster,'m-pager');
+  var tb=document.getElementById('m-body'); tb.innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+r.age+'</td><td>'+r.sex+'</td>'+
+    '<td>'+grpChip(r.grp)+'</td><td>'+delChip(r.del)+'</td><td class="nowrap">'+esc(r.county)+'</td><td>'+regBadge(r.reg)+'</td><td>'+statusHtml(r.status)+'</td></tr>'}).join('');
+  document.getElementById('m-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' matching (population '+MEMBERS.length.toLocaleString()+')';
+  tb.querySelectorAll('tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'roster')})});
+}
+
+/* ================= eligibility spans ================= */
+var SPAN_VIEW=[];
+function initSpanControls(){
+  fillSelect('s-group',GROUP_KEYS.map(function(g){return[g,g+' \u2014 '+GROUPS[g].name]}),'Coverage group: all');
+  ['s-group','s-open'].forEach(function(id){document.getElementById(id).addEventListener('input',function(){resetPage('s-tbl');renderSpans()})});
+  bindSort('s-tbl',renderSpans);
+}
+function renderSpans(){
+  var fg=document.getElementById('s-group').value, fo=document.getElementById('s-open').value;
+  var rows=[];
+  MEMBERS.forEach(function(m){ m.eligSpans.forEach(function(s){
+    if(fg&&s.grp!==fg)return;
+    if(fo==='open'&&s.end!==null)return;
+    if(fo==='closed'&&s.end===null)return;
+    rows.push({ix:m.ix,id:m.id,name:m.name,grp:s.grp,start:s.start,end:(s.end===null?9999:s.end),endRaw:s.end,
+      months:spanMonths(s.start,s.end),reason:s.reason});
+  })});
+  rows=sortRows('s-tbl',rows); sortMarks('s-tbl');
+  SPAN_VIEW=[]; var seenS={}; rows.forEach(function(r){ if(!seenS[r.ix]){seenS[r.ix]=1;SPAN_VIEW.push(r.ix)} });
+  var pg=pager('s-tbl',rows.length,renderSpans,'s-pager');
+  document.getElementById('s-body').innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+grpChip(r.grp)+'</td>'+
+    '<td class="nowrap">'+startLabel(r.start)+'</td><td class="nowrap">'+(r.endRaw===null?'<span class="st-act">open</span>':mLabel(r.endRaw))+'</td>'+
+    '<td class="mono">'+r.months+(r.start<0?'+':'')+'</td><td>'+(r.reason?esc(r.reason):'\u2014')+'</td></tr>'}).join('');
+  document.getElementById('s-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' spans';
+  document.querySelectorAll('#s-body tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'spans')})});
+}
+function startLabel(s){ return s<0 ? mLabel(s)+' <span class="hint">(pre-window)</span>' : mLabel(s) }
+
+/* ================= delivery spans ================= */
+var DEL_VIEW=[];
+function initDelControls(){
+  var dopts=PAPLANS.map(function(m){return[m.code,m.name]})
+    .concat(CHCPLANS.map(function(m){return[m.code,m.name]}));
+  dopts.push(['FFS','Fee-for-Service']);
+  fillSelect('d-sys',dopts,'Delivery system: all');
+  document.getElementById('d-sys').addEventListener('input',function(){resetPage('d-tbl');renderDel()});
+  bindSort('d-tbl',renderDel);
+}
+function renderDel(){
+  var fd=document.getElementById('d-sys').value;
+  var rows=[];
+  MEMBERS.forEach(function(m){ m.delSpans.forEach(function(s){
+    if(fd&&s.sys!==fd)return;
+    rows.push({ix:m.ix,id:m.id,name:m.name,sys:s.sys,start:s.start,end:(s.end===null?9999:s.end),endRaw:s.end,
+      months:spanMonths(s.start,s.end),note:s.note});
+  })});
+  rows=sortRows('d-tbl',rows); sortMarks('d-tbl');
+  DEL_VIEW=[]; var seenD={}; rows.forEach(function(r){ if(!seenD[r.ix]){seenD[r.ix]=1;DEL_VIEW.push(r.ix)} });
+  var pg=pager('d-tbl',rows.length,renderDel,'d-pager');
+  document.getElementById('d-body').innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+delChip(r.sys)+'</td>'+
+    '<td class="nowrap">'+startLabel(r.start)+'</td><td class="nowrap">'+(r.endRaw===null?'<span class="st-act">open</span>':mLabel(r.endRaw))+'</td>'+
+    '<td class="mono">'+r.months+(r.start<0?'+':'')+'</td><td>'+(r.note?esc(r.note):'\u2014')+'</td></tr>'}).join('');
+  document.getElementById('d-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' delivery spans';
+  document.querySelectorAll('#d-body tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'delivery')})});
+}
+</script>
+<script>
+'use strict';
+/* ================= scenario registers ================= */
+var REGDEFS={
+ A:{title:'Steady state \u2014 two capitations, two governments', q:'What does the carve look like at rest?',
+    body:'The baseline: every member holds a state-procured zone plan for physical health <b>and</b> a county-held behavioral capitation \u2014 in Philadelphia, a plan that is a city department. Pennsylvania is the only state in this series that splits one member between two levels of government, and the split is invisible until something moves. The Kowalskis and Russos carry the industrial northeast; the Riveras, Philadelphia and Reading; the Stoltzfuses, Lancaster\u2019s Plain communities.'},
+ B:{title:'Renewal churn \u2014 both halves pause together', q:'What happens to two capitations when one determination fails?',
+    body:'Ordinary procedural churn with the carve\u2019s corollary: one eligibility determination feeds both governments, so when the renewal fails, the state\u2019s plan and the county\u2019s contractor lose the member the same day \u2014 and regain them together. 125 members sit in the gap right now. The carve splits delivery; it cannot split eligibility.'},
+ C:{title:'Community HealthChoices \u2014 the launch that moved across the map', q:'What does a staged rollout look like in span data?',
+    body:'Missouri\u2019s wall was a court date; Louisiana\u2019s was a go-live; Pennsylvania\u2019s is a <b>gradient</b>. Community HealthChoices \u2014 the LTSS/duals capitation \u2014 launched Southwest in January 2018 (140 members here), Southeast in January 2019 (120), and everywhere else in January 2020 (115), so CHC start dates form three walls keyed to geography. Plot them statewide and you can watch managed care travel east. Every cohort analysis of CHC must condition on zone, or the calendar confounds it \u2014 the register\u2019s standing lesson.'},
+ D:{title:'The carve in motion', q:'What does a county move do to a split member?',
+    body:'The seam, seen moving. 150 members moved counties <b>within</b> a zone: the physical plan never blinked \u2014 no enrollment event at all \u2014 while the behavioral contractor switched at the county line: <b>the move that switched half the member</b>. 115 moved <b>across</b> zones: both halves switched, the same day, by two different governments\u2019 rules. And 110 are Philadelphia\u2019s: behavioral health through <b>CBH</b>, an entity of city government itself \u2014 the deepest public option in this series, hiding inside a carve-out.'},
+ E:{title:'The behavioral half at work', q:'What does county-held risk buy that shareholder-held risk doesn\u2019t?',
+    body:'The county side keeps its savings and must <b>reinvest</b> them locally \u2014 so 140 members here are served by supported housing, mobile crisis teams, and peer centers built from behavioral-health savings: managed-care efficiency becoming county infrastructure. 95 carry the opioid front line \u2014 MAT, warm handoffs, recovery specialists, all on the county capitation, invisible to the physical plan except as a medical shadow. 90 are children in the deep end \u2014 RTF, school-based services, IBHS \u2014 where two case files exist for one child and the family experiences one system only when two governments coordinate well.'},
+ F:{title:'Medicare arrives \u2014 one birthday, three answers', q:'The twenty-fourth answer: what does a triple capitation do at 65?',
+    body:'The only Medicare answer in the series that is three answers. For 195 members with LTSS need: the physical plan <b>ends</b> (024), Community HealthChoices <b>begins</b> (021, same month), and the county behavioral plan <b>never notices</b> \u2014 its capitation is indifferent to Medicare, so its span runs straight through the birthday. A goodbye, a hello, and a shrug, in one member-month. The other 130 have no LTSS need: two of the three answers \u2014 the plan ends, the wrap goes fee-for-service, and the county half still doesn\u2019t blink. Even the reduced case teaches the carve: the state\u2019s half of the member ends at 65; the county\u2019s half doesn\u2019t.'}
+};
+function renderRegisters(){
+  var out=document.getElementById('reg-list'); var h='';
+  ['A','B','C','D','E','F'].forEach(function(r){
+    var d=REGDEFS[r], list=MEMBERS.filter(function(m){return m.reg===r});
+    var sample=list.slice(0,12);
+    h+='<div class="reg"><h3><span class="rl">'+r+'</span>'+esc(d.title)+'<span class="meta" style="margin-left:auto">'+list.length.toLocaleString()+' members</span></h3>'+
+       '<div class="q">'+d.q+'</div><p class="sub" style="margin-bottom:10px">'+d.body+'</p>'+
+       '<div class="tblwrap"><table><thead><tr><th>Recipient ID</th><th>Member</th><th>Group</th><th>Physical today</th><th>The planted story</th></tr></thead><tbody>';
+    sample.forEach(function(m){
+      h+='<tr class="rowlink" data-ix="'+m.ix+'"><td class="mono">'+m.id+'</td><td class="nowrap">'+esc(m.name)+'</td><td>'+grpChip(m.grpToday)+'</td><td>'+delChip(m.delTodayCode)+'</td>'+
+         '<td>'+(m.flags.length?m.flags[0]:'Clean spans \u2014 the control group')+'</td></tr>';
+    });
+    h+='</tbody></table></div>';
+    if(list.length>sample.length){
+      h+='<div class="hint" style="margin-top:8px">Showing the first '+sample.length+' of '+list.length.toLocaleString()+'. Open any row \u2014 the \u25c0 \u25b6 arrows walk the entire register \u2014 or filter the Members tab by register for the full list.</div>';
+    }
+    h+='</div>';
+  });
+  out.innerHTML=h;
+  out.querySelectorAll('tr.rowlink').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'register')})});
+}
+
+/* ================= 834 builder ================= */
+function lastDelEvent(m){
+  var spans=m.delSpans.filter(function(s){return s.sys!=='FFS'});
+  var last=spans.length?spans[spans.length-1]:null;
+  if(m.reg==='F'&&m.ltss){
+    return {kind:'021',del:last,why:'The hello half of the triple: this 021 to a CHC plan fires the same month as a 024 to the zone plan \u2014 while the county behavioral roster, which would show a third record here if counties spoke this dialect, shows nothing at all. One birthday, three answers.'};
+  }
+  if(m.reg==='F'){
+    return {kind:'024',del:spans[0],why:'Two of the three answers: the physical plan\u2019s goodbye \u2014 and on the county side, no transaction at all, because the behavioral capitation is indifferent to Medicare.'};
+  }
+  if(m.reg==='C'){
+    return {kind:'021',del:last,why:'A wave-wall addition: this CHC span begins exactly '+mLabel(m.chcWave)+' \u2014 one of three launch walls, keyed to zone. The gradient, one member at a time.'};
+  }
+  if(m.reg==='D'&&m.moveIdx!==null&&m.delSpans.length===1){
+    return {kind:'001',del:last,why:'The half-member switch, rendered: a same-zone move means the physical plan gets only this address <b>change</b> \u2014 no termination, no addition \u2014 while the county line quietly reassigned the behavioral half ('+BHBY[m.bhOld].name.split(' (')[0]+' \u2192 '+BHBY[m.bh].name.split(' (')[0]+') with no event in this stream at all.'};
+  }
+  if(m.reg==='D'&&m.moveIdx!==null){
+    return {kind:'021',del:last,why:'The cross-zone move: both halves switched \u2014 this addition to the new zone\u2019s plan pairs with a 024 to the old one, and the county side changed contractors the same day under its own government\u2019s rules.'};
+  }
+  if(m.reg==='B'&&last&&last.start>TODAY_IDX){
+    return {kind:'024',del:spans[0],why:'The renewal failed and both capitations paused together \u2014 the state\u2019s plan got this 024; the county\u2019s roster dropped the member the same day.'};
+  }
+  if(!last){
+    return {kind:'021',state:true,why:'A fee-for-service record \u2014 the state\u2019s own file, in standard shape.'};
+  }
+  return {kind:'021',del:last,why:(m.reg==='E'?'An ordinary addition \u2014 but the story on this record lives on the other government\u2019s capitation: the county side authorized it, paid it, and will reinvest what it saves.':'Enrollment addition \u2014 the state\u2019s half of a two-government member.')};
+}
+function ediRow(seg,note,loop){return '<div class="edirow'+(loop?' loop':'')+'"><div class="seg">'+esc(seg)+'</div><div class="note">'+note+'</div></div>'}
+function build834(m){
+  var ev=lastDelEvent(m);
+  var eligSpan=m.eligSpans[m.eligSpans.length-1];
+  var eligBegin=m.eligSpans[m.eligSpans.length-1].start;
+  var ctl=String(215000+m.ix*7);
+  var kindLabel={ '021':'Addition','001':'Change','024':'Termination' }[ev.kind];
+  var out='<div class="ediwrap"><div class="edihead"><span class="fn">834 \u2014 '+kindLabel+(ev.state?' (state record)':'')+'</span><span class="hint">'+ev.why+'</span></div>';
+  var recvName = (ev.state||!ev.del)?'PA DHS (STATE RECORD)':sysLabel(ev.del.sys).toUpperCase().split(' (')[0];
+  var recvId = (ev.state||!ev.del)?'PADHS':ev.del.sys;
+  out+=ediRow('ISA*00*          *00*          *ZZ*PAMEDICAID     *ZZ*'+(recvId+'          ').slice(0,10)+'    *260701*0800*^*00501*'+ctl.padStart(9,'0')+'*0*P*:~','Interchange envelope: the Commonwealth to <b>'+esc(recvName)+'</b> \u2014 the state\u2019s half of a two-government member.');
+  out+=ediRow('GS*BE*PAMEDICAID*'+recvId+'*20260701*0800*'+ctl+'*X*005010X220A1~','Functional group: <b>BE</b> = benefit enrollment.');
+  out+=ediRow('ST*834*'+ctl.slice(-4)+'*005010X220A1~','Transaction set header.');
+  out+=ediRow('BGN*00*'+m.id.slice(-5)+'-'+ctl.slice(-3)+'*20260701*0800****4~','Beginning segment. Purpose 00 = original; action 4 = full audit.');
+  out+=ediRow('N1*P5*PA DEPT OF HUMAN SERVICES*FI*236003133~','Loop 1000A \u2014 plan sponsor.', true);
+  out+=ediRow('N1*IN*'+recvName+'*FI*'+String(232000000+m.ix*13)+'~','Loop 1000B \u2014 the receiver.', true);
+  out+=ediRow('INS*Y*18*'+ev.kind+'*'+(ev.kind==='024'?'07':(ev.kind==='001'?'43':'28'))+'*A***FT~','Loop 2000. Maintenance <b>'+ev.kind+'</b>.', true);
+  out+=ediRow('REF*0F*'+m.id+'~','The <b>ten-digit recipient ID</b> \u2014 the person, permanently, on both halves of the carve.');
+  out+=ediRow('DTP*356*D8*'+mFirstD8(Math.max(eligBegin,-24))+'~','<b>Eligibility</b> begin date \u2014 the one determination both governments draw on.');
+  out+=ediRow('NM1*IL*1*'+m.last.toUpperCase()+'*'+m.first.toUpperCase()+'****34*'+String(159000000+m.ix*311)+'~','Member name; SSN qualifier synthetic here.');
+  out+=ediRow('PER*IP**TE*'+m.phone.replace(/\D/g,'')+'~','Contact telephone.');
+  out+=ediRow('N3*'+m.street.toUpperCase()+'~','Street address.');
+  out+=ediRow('N4*'+m.city.toUpperCase()+'*PA*'+m.zip+'~','City/state/ZIP: '+esc(m.city)+', '+esc(m.county)+' County \u2014 '+esc(m.zone)+' zone for the state\u2019s half; '+esc(BHBY[m.bh].name.split(' (')[0])+' territory for the county\u2019s.');
+  out+=ediRow('DMG*D8*'+dobD8(m.dob)+'*'+m.sex+'~','Date of birth and sex.');
+  if(m.lang!=='English') out+=ediRow('LUI*LD*'+({'Spanish':'SPA','Russian':'RUS','Ukrainian':'UKR','Vietnamese':'VIE','Arabic':'ARA','Pennsylvania Dutch':'PDC','Mandarin':'CHI'}[m.lang]||'ENG')+'**6~','Preferred language: '+esc(m.lang)+'.');
+  if(!ev.state&&ev.del){
+    out+=ediRow('HD*'+ev.kind+'**HLT*'+ev.del.sys+'~','Loop 2300 \u2014 '+(m.chcWave!==null||m.reg==='F'&&m.ltss&&ev.kind==='021'?'Community HealthChoices coverage: LTSS and the wrap.':'physical health coverage \u2014 the state-procured half.'), true);
+    out+=ediRow('DTP*348*D8*'+mFirstD8(Math.max(ev.del.start,-24))+'~','Coverage begin date \u2014 first of the month, always prospective.'+(m.chcWave!==null?' This one sits exactly on the '+mLabel(m.chcWave)+' wave wall.':''));
+    if(ev.kind==='024'&&ev.del.end!==null) out+=ediRow('DTP*349*D8*'+mLastD8(ev.del.end)+'~','Coverage end date'+(m.reg==='F'?' \u2014 answer one of three.':'.'));
+  } else {
+    out+=ediRow('HD*021**HLT*FFS~','Loop 2300 \u2014 fee-for-service record.', true);
+    out+=ediRow('DTP*348*D8*'+mFirstD8(Math.max(eligBegin,-24))+'~','Coverage begin for the state-side record.');
+  }
+  out+=ediRow('LS*2700~','Open the member-reporting loop.', true);
+  out+=ediRow('LX*1~ N1*75*COVERAGE GROUP~ REF*ZZ*'+eligSpan.grp+'~','The coverage group ('+esc(GROUPS[eligSpan.grp].name)+').');
+  out+=ediRow('LX*2~ N1*75*BEHAVIORAL HEALTH~ REF*ZZ*'+m.bh+'~','The <b>other government\u2019s</b> capitation, carried for coordination: behavioral health with '+esc(BHBY[m.bh].name.split(' (')[0])+' \u2014 '+BHBY[m.bh].gov+'. This plan receives no copy of this file; the county maintains its own roster of the same person.');
+  if(m.bhOld&&m.bhOld!==m.bh) out+=ediRow('LX*3~ N1*75*BH HANDOFF~ REF*ZZ*'+m.bhOld+'-'+m.bh+'~','The county line\u2019s work: '+esc(BHBY[m.bhOld].name.split(' (')[0])+' \u2192 '+esc(BHBY[m.bh].name.split(' (')[0])+' at the move.');
+  if(m.bhStory) out+=ediRow('LX*3~ N1*75*BH SERVICE CONTEXT~ REF*ZZ*CNTY~','On the county side of this member\u2019s record: '+esc(m.bhStory)+'.');
+  if(m.reg==='F') out+=ediRow('LX*4~ N1*75*MEDICARE STATUS~ REF*ZZ*AB~','Medicare A+B from '+mLabel(m.medicareIdx)+' \u2014 buy-in accreted '+mLabel(m.buyinIdx)+'. The segment the county side never needs to read.');
+  out+=ediRow('LE*2700~','Close the reporting loop.', true);
+  out+=ediRow('SE*'+ri(15,21)+'*'+ctl.slice(-4)+'~ GE*1*'+ctl+'~ IEA*1*'+ctl.padStart(9,'0')+'~','Trailers \u2014 counts must reconcile or the file bounces.');
+  out+='</div>';
+  if(m.reg==='F'&&m.ltss){
+    out+='<div class="plain" style="margin-top:14px"><span class="pe-label">Worth noticing</span>This member\u2019s birthday month generates the fullest enrollment traffic in the series \u2014 and the most instructive silence. The zone plan receives a 024. The CHC plan receives a 021. And the county behavioral contractor receives <b>nothing</b>, because its capitation never keyed on Medicare in the first place. Integration analysts spend careers stitching these three perspectives back into one person; the stitching key is the recipient ID, and the lesson is that \u201cwhat happened at 65?\u201d has a different true answer in each of three systems.</div>';
+  }
+  return out;
+}
+function initFileTab(){
+  var sel=document.getElementById('f-member');
+  var h='';
+  ['A','B','C','D','E','F'].forEach(function(r){
+    h+='<optgroup label="Register '+r+' \u2014 '+esc(REGDEFS[r].title)+'">';
+    MEMBERS.filter(function(m){return m.reg===r}).slice().sort(function(a,b){return (a.name+' — '+a.id).localeCompare(b.name+' — '+b.id)}).forEach(function(m){
+      h+='<option value="'+m.ix+'">'+esc(m.name)+' \u2014 '+m.id+'</option>';
+    });
+    h+='</optgroup>';
+  });
+  sel.innerHTML=h;
+  sel.addEventListener('input',function(){renderFile(+sel.value)});
+  renderFile(+sel.value);
+}
+function renderFile(ix){
+  document.getElementById('f-out').innerHTML=build834(MEMBERS[ix]);
+}
+</script>
+<script>
+'use strict';
+/* ================= modal ================= */
+var MODAL={ix:null, ctx:'roster'};
+function navList(){
+  if(MODAL.ctx==='spans'&&SPAN_VIEW.length)return SPAN_VIEW;
+  if(MODAL.ctx==='delivery'&&DEL_VIEW.length)return DEL_VIEW;
+  if(MODAL.ctx==='register'&&MODAL.ix!==null){
+    var r=MEMBERS[MODAL.ix].reg;
+    return MEMBERS.filter(function(m){return m.reg===r}).map(function(m){return m.ix});
+  }
+  return ROSTER_VIEW.length?ROSTER_VIEW:MEMBERS.map(function(m){return m.ix});
+}
+function openModal(ix,ctx){
+  MODAL.ix=ix; if(ctx)MODAL.ctx=ctx;
+  var m=MEMBERS[ix];
+  document.getElementById('mo-nm').textContent=m.first+' '+m.last;
+  document.getElementById('mo-id').textContent='Recipient ID '+m.id+'  \u00b7  Register '+m.reg;
+  document.getElementById('mo-body').innerHTML=modalBody(m);
+  var list=navList(), pos=list.indexOf(ix);
+  document.getElementById('mo-pos').textContent=(pos+1)+' / '+list.length+' ('+MODAL.ctx+')';
+  document.getElementById('mo-prev').disabled=pos<=0;
+  document.getElementById('mo-next').disabled=pos<0||pos>=list.length-1;
+  document.getElementById('overlay').classList.add('on');
+  document.getElementById('modal').classList.add('on');
+  highlightRow(ix);
+  document.getElementById('mo-x').focus();
+}
+function closeModal(){
+  document.getElementById('overlay').classList.remove('on');
+  document.getElementById('modal').classList.remove('on');
+  highlightRow(null);
+  MODAL.ix=null;
+}
+function stepModal(d){
+  var list=navList(), pos=list.indexOf(MODAL.ix), np=pos+d;
+  if(np<0||np>=list.length)return;
+  openModal(list[np]);
+}
+function highlightRow(ix){
+  document.querySelectorAll('tr.hl').forEach(function(tr){tr.classList.remove('hl')});
+  if(ix===null)return;
+  document.querySelectorAll('tr.rowlink[data-ix="'+ix+'"]').forEach(function(tr){tr.classList.add('hl')});
+}
+
+/* ---------- mini two-band timeline ---------- */
+function tlBar(startIdx,endIdx,color,striped,title){
+  var s=Math.max(startIdx,0), e=(endIdx===null?WIN_MONTHS-1:Math.min(endIdx,WIN_MONTHS-1));
+  if(e<0||s>WIN_MONTHS-1)return '';
+  var l=100*s/WIN_MONTHS, w=100*(e-s+1)/WIN_MONTHS;
+  return '<span class="bar'+(striped?' striped':'')+'" style="left:'+l+'%;width:'+w+'%;background:'+color+'" title="'+esc(title)+'"></span>';
+}
+function timeline(m){
+  var h='<div class="tl">';
+  h+='<div class="band"><span class="bl">Eligibility</span><span class="lane">';
+  m.eligSpans.forEach(function(s){
+    h+=tlBar(s.start,s.end,'var('+GROUPS[s.grp].color+')',false,s.grp+' '+mLabel(s.start)+' \u2013 '+(s.end===null?'open':mLabel(s.end)));
+  });
+  h+='<span class="todayline" style="left:'+(100*(TODAY_IDX+0.5)/WIN_MONTHS)+'%"></span></span></div>';
+  h+='<div class="band"><span class="bl">Delivery</span><span class="lane">';
+  m.delSpans.forEach(function(s){
+    var col = sysKind(s.sys)==='FFS'?'var(--d-ffs)':'var(--d-mco)';
+    h+=tlBar(s.start,s.end,col,s.sys!=='FFS',sysLabel(s.sys)+' '+mLabel(s.start)+' \u2013 '+(s.end===null?'open':mLabel(s.end)));
+  });
+  h+='<span class="todayline" style="left:'+(100*(TODAY_IDX+0.5)/WIN_MONTHS)+'%"></span></span></div>';
+  h+='<div class="axis"><span></span><span class="ax">'+
+     '<span style="left:2%">Jan 25</span><span style="left:27%">Jul 25</span><span style="left:52%">Jan 26</span><span style="left:77%">Jul 26</span></span></div>';
+  h+='<div class="tl-note">Striped blue = the state\u2019s half (zone plan or Community HealthChoices) \u00b7 solid gray = fee-for-service \u00b7 red line = today (Jul 2026). The county\u2019s behavioral capitation is not drawn as a bar \u2014 it is constant while the county is, and that constancy is the point; it rides in the facts above. Bars clamp to the 24-month window; pre-window starts are noted in the span tables.</div></div>';
+  return h;
+}
+
+/* ---------- per-member plain english ---------- */
+function plainFor(m){
+  var p='';
+  var first=m.first;
+  if(m.reg==='A'){
+    p=first+' is one member split between <b>two governments</b>: physical health with '+esc(sysLabel(m.delSpans[0].sys))+' \u2014 a plan the state procured for the '+esc(m.zone)+' zone \u2014 and behavioral health with '+esc(BHBY[m.bh].name.split(' (')[0])+', '+BHBY[m.bh].gov+'. The split is invisible in '+first+'\u2019s life until something moves; then the two halves answer to different rules.';
+  } else if(m.reg==='B'){
+    var t2=m.eligSpans[0].end, rg=m.eligSpans[1].start, gap=rg-t2-1;
+    if(rg>TODAY_IDX){
+      p=first+'\u2019s renewal did not come back and the case closed after '+mLabel(t2)+' \u2014 and <b>both</b> capitations paused together: the state\u2019s plan and the county\u2019s contractor lost '+first+' the same day, on one determination. The case reopens '+mLabel(rg)+'.';
+    } else {
+      p=first+' churned: closed after '+mLabel(t2)+', '+gap+' month'+(gap>1?'s':'')+' in the gap, back '+mLabel(rg)+' \u2014 and both governments\u2019 rosters dropped and regained '+first+' in lockstep. The carve splits delivery; it cannot split eligibility.';
+    }
+  } else if(m.reg==='C'){
+    p=first+'\u2019s Community HealthChoices span begins exactly '+mLabel(m.chcWave)+' \u2014 not because of anything in '+first+'\u2019s life, but because that is when the wave reached '+esc(m.county)+' County: Southwest January 2018, Southeast January 2019, everywhere else January 2020. Pennsylvania\u2019s managed-care wall is a <b>gradient</b> \u2014 plot CHC start dates statewide and you can watch capitation travel east. Any cohort analysis that ignores the zone is confounded by the calendar.';
+  } else if(m.reg==='D'){
+    if(m.moveIdx!==null&&m.delSpans.length===1){
+      p='In '+mLabel(m.moveIdx)+', '+first+' moved '+esc(m.countyOld)+' \u2192 '+esc(m.county)+' County \u2014 same zone, so the physical plan <b>never blinked</b>: no event at all in the state\u2019s stream. But behavioral health follows the county, '+(m.bhOld===m.bh?'and this time the contractor happened to match on both sides of the line \u2014 a move both halves slept through.':'so '+esc(BHBY[m.bhOld].name.split(' (')[0])+' handed off to '+esc(BHBY[m.bh].name.split(' (')[0])+' at the line: <b>the move that switched half the member</b>. One address change, two governments, two different answers.');
+    } else if(m.moveIdx!==null){
+      p='In '+mLabel(m.moveIdx)+', '+first+' crossed zones \u2014 '+esc(m.countyOld)+' \u2192 '+esc(m.county)+' County \u2014 and <b>both halves switched</b>: the physical plan changed with the zone (a 024 and a 021 in the state\u2019s stream) and the behavioral contractor changed with the county ('+esc(BHBY[m.bhOld].name.split(' (')[0])+' \u2192 '+esc(BHBY[m.bh].name.split(' (')[0])+'), the same day, under two different governments\u2019 rules.';
+    } else {
+      p=first+'\u2019s behavioral health runs through <b>CBH</b> \u2014 not a company under contract but a department of Philadelphia\u2019s city government, holding full behavioral risk for 1.5 million people. No procurement cycle, no commercial parent, no shareholders: the deepest public option in this series, hiding inside a carve-out.';
+    }
+  } else if(m.reg==='E'){
+    p=first+'\u2019s story lives on the <b>county\u2019s</b> half of the carve: '+esc(m.bhStory)+'. '+(m.flags[0].indexOf('Reinvestment')>=0?'It exists because Pennsylvania\u2019s counties keep behavioral-health savings and must reinvest them locally \u2014 managed-care efficiency becoming county infrastructure. The state\u2019s plans return savings to shareholders; the county side returns them to the map.':(m.flags[0].indexOf('opioid')>=0?'In the state hit hardest and earliest by the epidemic, SUD treatment runs on the county capitation \u2014 the physical plan may never see the episode except as its medical shadow.':'The highest-acuity child services in Medicaid are authorized and paid on the county half \u2014 two case files exist for this child, and the family experiences one system only when two governments coordinate well.'));
+  } else {
+    var mi=m.medicareIdx, bi=m.buyinIdx;
+    if(m.ltss){
+      p='In '+mLabel(mi)+', '+first+' turned 65 \u2014 and got <b>three answers</b>. The zone plan said goodbye (a 024). Community HealthChoices said hello (a 021, the same month \u2014 LTSS and the wrap, capitated). And '+esc(BHBY[m.bh].name.split(' (')[0])+', the county\u2019s behavioral plan, <b>never noticed</b>: its capitation is indifferent to Medicare, so its span runs straight through the birthday. One member, one month, three contracts, three different true answers to \u201cwhat happened at 65?\u201d \u2014 the twenty-fourth answer in the series, and the only one that is three.';
+    } else {
+      p='In '+mLabel(mi)+', '+first+' turned 65 and got two of the three answers: the physical plan ended, the wrap went fee-for-service (no LTSS need, so no CHC hello), the buy-in accreted '+mLabel(bi)+' \u2014 and the county behavioral plan didn\u2019t blink. Even the reduced case teaches the carve: the state\u2019s half of '+first+' ended at 65; the county\u2019s half didn\u2019t.';
+    }
+  }
+  return '<div class="plain"><span class="pe-label">In plain English</span>'+p+'</div>';
+}
+
+/* ---------- modal body ---------- */
+function modalBody(m){
+  var h='';
+  var et=eligToday(m);
+  h+='<div class="kv">'+
+    kv('Status today',statusHtml(m.status))+
+    kv('Coverage group',grpChip(m.grpToday)+' <span style="font-size:.8rem;color:var(--ink-soft)">'+esc(GROUPS[m.grpToday].name)+'</span>')+
+    kv('Delivery today',delChip(m.delTodayCode)+(m.delTodayCode!=='\u2014'?' <span style="font-size:.8rem;color:var(--ink-soft)">'+esc(sysLabel(m.delTodayCode))+'</span>':''))+
+    kv('Date of birth',dobLabel(m.dob)+' <span class="hint">(age '+m.age+')</span>')+
+    kv('Sex',m.sex)+
+    kv('Address',esc(m.street)+', '+esc(m.city)+', PA '+m.zip)+
+    kv('County / zone',esc(m.county)+' \u2014 '+esc(m.zone))+kv('Behavioral health (county side)',esc(BHBY[m.bh].name.split(' (')[0])+' \u2014 '+BHBY[m.bh].gov)+
+    kv('Phone','<span class="mono">'+m.phone+'</span>')+
+    kv('Preferred language',esc(m.lang))+
+    (m.bhOld&&m.bhOld!==m.bh?kv('BH handoff',esc(BHBY[m.bhOld].name.split(' (')[0])+' \u2192 '+esc(BHBY[m.bh].name.split(' (')[0])+' at the '+mLabel(m.moveIdx)+' move'):'')+(m.chcWave!==null?kv('CHC wave','Coverage began exactly '+mLabel(m.chcWave)+' \u2014 the gradient'):'')+(m.bhStory?kv('On the county capitation',esc(m.bhStory)):'')+(m.reg==='F'?kv('One birthday',m.ltss?'Three answers \u2014 goodbye (zone plan), hello (CHC), and a shrug (county BH)':'Two answers \u2014 the plan ended; the county BH never noticed'):'')+
+    '</div>';
+  function kv(k,v){return '<div class="k">'+k+'</div><div class="v">'+v+'</div>'}
+  h+='<h4>24-month picture</h4>'+timeline(m);
+  h+=plainFor(m);
+  h+='<h4>Eligibility spans</h4><div class="tblwrap"><table><thead><tr><th>Group</th><th>Begin</th><th>End</th><th>Reason</th></tr></thead><tbody>';
+  m.eligSpans.forEach(function(s){
+    h+='<tr><td>'+grpChip(s.grp)+'</td><td class="nowrap">'+startLabel(s.start)+'</td><td class="nowrap">'+(s.end===null?'<span class="st-act">open</span>':mLabel(s.end))+'</td><td>'+(s.reason?esc(s.reason):'\u2014')+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  h+='<h4>Delivery spans</h4><div class="tblwrap"><table><thead><tr><th>System</th><th>Begin</th><th>End</th><th>Note</th></tr></thead><tbody>';
+  m.delSpans.forEach(function(s){
+    h+='<tr><td>'+delChip(s.sys)+'</td><td class="nowrap">'+startLabel(s.start)+'</td><td class="nowrap">'+(s.end===null?'<span class="st-act">open</span>':mLabel(s.end))+'</td><td>'+(s.note?esc(s.note):'\u2014')+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  if(m.flags.length){
+    h+='<h4>Flags</h4><p>'+m.flags.map(function(f){return '<span class="flag">'+esc(f)+'</span>'}).join(' ')+'</p>';
+  }
+  h+='<h4>See the file</h4><p style="font-size:.84rem;color:var(--ink-soft)">Open <b>What the File Says</b> and choose '+esc(m.first+' '+m.last)+' to read the 834 the plan received for this member\u2019s most recent enrollment event.</p>';
+  return h;
+}
+
+/* ================= navigation & boot ================= */
+function showPage(pg){
+  document.querySelectorAll('nav button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-pg')===pg)});
+  document.querySelectorAll('.page').forEach(function(p){p.classList.toggle('on',p.id==='pg-'+pg)});
+  if(pg==='overview')renderOverview();
+}
+document.getElementById('nav').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b)return; showPage(b.getAttribute('data-pg'));
+});
+document.getElementById('mo-x').addEventListener('click',closeModal);
+document.getElementById('overlay').addEventListener('click',closeModal);
+document.getElementById('mo-prev').addEventListener('click',function(){stepModal(-1)});
+document.getElementById('mo-next').addEventListener('click',function(){stepModal(1)});
+document.addEventListener('keydown',function(e){
+  if(MODAL.ix===null)return;
+  if(e.key==='Escape')closeModal();
+  else if(e.key==='ArrowLeft')stepModal(-1);
+  else if(e.key==='ArrowRight')stepModal(1);
+});
+
+/* boot */
+renderOverview();
+initRosterControls(); renderRoster();
+initSpanControls();  renderSpans();
+initDelControls();   renderDel();
+renderRegisters();
+initFileTab();
+renderReference();
+</script>
+</body>
+</html>

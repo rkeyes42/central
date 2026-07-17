@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Michigan Medicaid Eligibility Central</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,600;1,400;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#1E5FCC; --accent-soft:#E8EFFA; --ink:#1A2233; --sub:#5A6478;
+  --line:#DDE3EC; --bg:#F7F9FC; --card:#FFFFFF; --warn:#B4540A; --ok:#1F7A3D;
+  --g-cfc:#4C7FB8; --g-hst:#B85C8A; --g-v8:#3D8F6E; --g-abd:#8A6FB8;
+  --g-mbw:#B08A3D; --g-dua:#B4540A; --g-wvr:#5C8A99; --g-rise:#7A5CB8; --g-ffs:#7A8299;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.55}
+.mono{font-family:'IBM Plex Mono',monospace;font-size:.85em}
+header{background:var(--card);border-bottom:1px solid var(--line);padding:22px 28px 0}
+.wordmark{font-size:1.55rem;font-weight:600}
+.wordmark .central{font-family:'Source Serif 4',serif;font-style:italic;color:var(--accent);font-weight:600}
+.tagline{color:var(--sub);font-size:.9rem;margin:4px 0 14px;max-width:70ch}
+nav{display:flex;gap:2px;flex-wrap:wrap}
+nav button{border:none;background:none;font:inherit;font-size:.88rem;font-weight:500;color:var(--sub);
+  padding:9px 14px;cursor:pointer;border-bottom:3px solid transparent}
+nav button:hover{color:var(--ink)}
+nav button.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+nav button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+main{max-width:1240px;margin:0 auto;padding:24px 28px 80px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px 20px;margin-bottom:16px}
+.card h3{font-size:1.02rem;margin-bottom:10px}
+.grid{display:grid;gap:14px}
+.grid.stats{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px}
+.stat .n{font-size:1.7rem;font-weight:700;letter-spacing:-.01em}
+.stat .l{color:var(--sub);font-size:.8rem;margin-top:2px}
+.plain{font-family:'Source Serif 4',serif;font-style:italic;font-size:1.02rem;line-height:1.6;
+  background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;
+  padding:14px 18px;margin:14px 0;color:#22304a}
+.plain.small{font-size:.94rem;padding:11px 14px}
+.plain b{font-style:normal}
+.tblwrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.86rem}
+th{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--sub);text-align:left;
+  padding:8px 10px;border-bottom:2px solid var(--line);white-space:nowrap;cursor:pointer;user-select:none}
+th.nosort{cursor:default}
+th .arr{color:var(--accent)}
+td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+tbody tr.rowbtn{cursor:pointer}
+tbody tr.rowbtn:hover{background:var(--accent-soft)}
+tbody tr.hl{background:var(--accent-soft);box-shadow:inset 4px 0 0 var(--accent)}
+.pill{display:inline-block;font-size:.72rem;font-weight:600;padding:2px 9px;border-radius:99px;
+  color:#fff;white-space:nowrap}
+.pill.outline{background:none;border:1.5px solid var(--line);color:var(--sub)}
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.controls input[type=search],.controls select{font:inherit;font-size:.86rem;padding:7px 10px;
+  border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink)}
+.controls input[type=search]{min-width:230px}
+.pager{display:flex;gap:8px;align-items:center;margin-top:12px;font-size:.84rem;color:var(--sub)}
+.pager button{font:inherit;font-size:.82rem;border:1px solid var(--line);background:var(--card);
+  border-radius:6px;padding:5px 12px;cursor:pointer}
+.pager button:disabled{opacity:.4;cursor:default}
+button.linkish{border:none;background:none;color:var(--accent);font:inherit;font-size:.85rem;
+  cursor:pointer;text-decoration:underline;padding:0}
+.regcard{border:1px solid var(--line);border-radius:8px;background:var(--card);padding:18px 20px;margin-bottom:18px}
+.regcard .regletter{font-family:'Source Serif 4',serif;font-style:italic;color:var(--accent);
+  font-size:1.5rem;font-weight:600;margin-right:8px}
+.regcard .q{font-weight:600;font-size:1rem;margin-bottom:8px}
+.regcard .body{color:#2a3448;font-size:.92rem;max-width:88ch}
+.answerno{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:.78rem;
+  background:var(--ink);color:#fff;border-radius:4px;padding:2px 8px;margin-left:8px;vertical-align:2px}
+/* slide-over modal */
+.overlay{position:fixed;inset:0;background:rgba(20,28,45,.35);opacity:0;pointer-events:none;transition:opacity .18s;z-index:40}
+.overlay.open{opacity:1;pointer-events:auto}
+.slide{position:fixed;top:0;right:0;bottom:0;width:min(560px,94vw);background:var(--card);
+  border-left:1px solid var(--line);box-shadow:-12px 0 32px rgba(20,28,45,.14);
+  transform:translateX(102%);transition:transform .2s ease;z-index:50;overflow-y:auto;padding:20px 24px 40px}
+.slide.open{transform:none}
+.slide .close{position:absolute;top:14px;right:16px;border:none;background:none;font-size:1.3rem;
+  cursor:pointer;color:var(--sub)}
+.slide .navrow{display:flex;align-items:center;gap:10px;margin:2px 0 14px}
+.slide .navrow button{border:1px solid var(--line);background:var(--card);border-radius:6px;
+  font-size:1rem;padding:3px 12px;cursor:pointer}
+.slide .navrow button:disabled{opacity:.35;cursor:default}
+.slide .pos{font-family:'IBM Plex Mono',monospace;font-size:.76rem;color:var(--sub)}
+.slide h2{font-size:1.25rem;margin-bottom:2px}
+.slide .sub,p.sub{color:var(--sub);font-size:.85rem}
+.slide dl.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;font-size:.86rem;margin:12px 0}
+.slide dl.kv dt{color:var(--sub)}
+.slide dl.kv dd{font-weight:500}
+.slide h4{font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;color:var(--sub);margin:16px 0 6px}
+/* 834 viewer */
+.x12{display:grid;grid-template-columns:minmax(280px,44%) 1fr;font-size:.8rem;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.x12 .seg{font-family:'IBM Plex Mono',monospace;padding:6px 10px;border-bottom:1px solid var(--line);white-space:pre-wrap;word-break:break-all}
+.x12 .exp{padding:6px 10px;border-bottom:1px solid var(--line);color:#2a3448}
+.x12 .loop .seg,.x12 .loop .exp{background:var(--accent-soft);font-weight:600}
+.x12 .teach .exp{border-left:3px solid var(--warn)}
+dl.gloss dt{font-weight:600;margin-top:10px}
+dl.gloss dd{color:#2a3448;font-size:.9rem;max-width:90ch}
+.chron td:first-child{white-space:nowrap;font-weight:600}
+footer{border-top:1px solid var(--line);color:var(--sub);font-size:.8rem;padding:18px 28px;max-width:1240px;margin:0 auto}
+.testpass{color:var(--ok);font-weight:600}.testfail{color:#B00020;font-weight:600}
+@media (prefers-reduced-motion:reduce){.slide,.overlay{transition:none}}
+@media (max-width:720px){.x12{grid-template-columns:1fr}.x12 .seg{border-bottom:none;padding-bottom:0}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wordmark">Michigan Medicaid Eligibility <span class="central">Central</span></div>
+  <p class="tagline">Eligibility, enrollment, and the file that carries both — 3,000 synthetic members of Michigan Medicaid:
+  eight plans and a peninsula with exactly one, a public behavioral-health system riding beside the private plans,
+  an eligibility rule written by Flint's water, and a duals demonstration that graduated statewide.
+  All data is seeded and deterministic; nothing here is real.</p>
+  <nav id="tabs" role="tablist"></nav>
+</header>
+<main id="main"></main>
+<footer>
+  <b>Michigan Medicaid Eligibility Central</b> — a single-file demonstration by <b>Robert Thomas Keyes</b>.
+  All members, identifiers, spans, and files are synthetic, generated in the browser from a fixed seed (313001);
+  no PHI, no network calls, no storage. Policy landscape described as of early 2026; verify currency before relying on any detail.
+</footer>
+<div class="overlay" id="overlay"></div>
+<aside class="slide" id="slide" role="dialog" aria-modal="true" aria-label="Member record"></aside>
+</file_text><script>
+'use strict';
+/* ================= seeded PRNG ================= */
+var SEED=313001; /* Detroit area code + 001, house convention */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);
+  t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+var rng=mulberry32(SEED);
+function ri(n){return Math.floor(rng()*n)}
+function pick(a){return a[ri(a.length)]}
+function chance(p){return rng()<p}
+
+/* ================= time model =================
+   Month index 0 = January 2014. Healthy Michigan Plan opened April 2014 (index 3). NOW = June 2026 = 149. */
+var EPOCH_Y=2014, NOW=149;
+var MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+function mLabel(i){return MONTHS[((i%12)+12)%12]+' '+(EPOCH_Y+Math.floor(i/12))}
+function mYYYYMMDD(i,last){var y=EPOCH_Y+Math.floor(i/12),m=i%12+1,d=last?new Date(y,m,0).getDate():1;
+  return ''+y+String(m).padStart(2,'0')+String(d).padStart(2,'0')}
+var HMP0=3;       /* Apr 2014 - Healthy Michigan Plan opens */
+var FLINT=26;     /* Mar 2016 - Flint 1115 lead-exposure waiver approved */
+var WORKREQ=72;   /* Jan 2020 - work requirement takes effect... */
+var WORKREQ_END=74; /* ...Mar 2020 - Young v. Azar vacates it, 79 days in */
+var DSNP0=144;    /* Jan 2026 - MI Health Link demo ends; integrated D-SNPs statewide */
+var UNWIND=113;   /* Jun 2023 - first unwinding terminations */
+
+/* ================= coverage groups ================= */
+var GROUPS={
+ U19:{name:'Children under 19 (incl. MIChild)',color:'var(--g-cfc)',blurb:'MAGI children \u2014 MIChild, Michigan\u2019s CHIP, folded into the same managed care plans in 2016; one enrollment file, no seam to fall through.'},
+ PRG:{name:'Pregnancy coverage',color:'var(--g-hst)',blurb:'Pregnant women with 12-month postpartum continuation.'},
+ HMP:{name:'Healthy Michigan Plan',color:'var(--g-v8)',blurb:'The 2013 bipartisan expansion \u2014 passed by statute, with a statutory self-destruct clause that has never fired.'},
+ ABD:{name:'Aged, Blind, or Disabled',color:'var(--g-abd)',blurb:'Non-MAGI, SSI-related determinations through MDHHS local offices.'},
+ FTW:{name:'Freedom to Work (buy-in)',color:'var(--g-mbw)',blurb:'Michigan\u2019s premium-paying buy-in for workers with disabilities.'},
+ DUA:{name:'Dual (Medicare + Medicaid)',color:'var(--g-dua)',blurb:'Full and partial duals \u2014 MI Health Link territory through 2025; integrated D-SNPs since January 2026.'},
+ WVR:{name:'MI Choice waiver',color:'var(--g-wvr)',blurb:'Home- and community-based long-term services \u2014 the nursing-home alternative with a queue.'}
+};
+/* ================= delivery systems ================= */
+var PLANS=[
+ {code:'MER',name:'Meridian Health Plan of Michigan'},
+ {code:'MOL',name:'Molina Healthcare of Michigan'},
+ {code:'MCL',name:'McLaren Health Plan'},
+ {code:'PHC',name:'Priority Health Choice'},
+ {code:'BCC',name:'Blue Cross Complete of Michigan'},
+ {code:'UHC',name:'UnitedHealthcare Community Plan'},
+ {code:'HAP',name:'HAP CareSource'},
+ {code:'AET',name:'Aetna Better Health of Michigan'}
+];
+var UPHP={code:'UP',name:'Upper Peninsula Health Plan'};
+var DSNPS=['Meridian Complete (integrated D-SNP)','Molina Complete Care (integrated D-SNP)',
+ 'Aetna Better Health Premier (integrated D-SNP)','HAP Empowered Duals (integrated D-SNP)'];
+function planName(code){if(code==='UP')return UPHP.name;
+  var p=PLANS.find(function(x){return x.code===code});return p?p.name:code}
+/* PIHP attribution by county \u2014 the specialty behavioral health carve-out */
+var PIHP={
+ 'Wayne':'Detroit Wayne Integrated Health Network (PIHP)',
+ 'Macomb':'Macomb County CMH \u2014 Region 9 PIHP',
+ 'Genesee':'Region 10 PIHP',
+ 'Kent':'Lakeshore Regional Entity (PIHP)',
+ 'Ingham':'Mid-State Health Network (PIHP)',
+ 'Kalamazoo':'Southwest Michigan Behavioral Health (PIHP)',
+ 'Saginaw':'Mid-State Health Network (PIHP)',
+ 'Marquette':'NorthCare Network (PIHP)'
+};
+
+/* ================= geography & communities =================
+   Roster texture: Detroit and Dearborn (the largest Arab American community in the U.S.),
+   southwest Detroit\u2019s Mexican-American neighborhoods, Flint, Grand Rapids\u2019 Dutch surnames,
+   and the Upper Peninsula\u2019s Finnish ones \u2014 where there is exactly one plan to choose. */
+var COUNTIES=[
+ {name:'Wayne',    city:'Detroit',      zip:'48227',ac:'313',w:20},
+ {name:'Wayne',    city:'Dearborn',     zip:'48126',ac:'313',w:8},
+ {name:'Genesee',  city:'Flint',        zip:'48503',ac:'810',w:11},
+ {name:'Kent',     city:'Grand Rapids', zip:'49507',ac:'616',w:12},
+ {name:'Macomb',   city:'Warren',       zip:'48089',ac:'586',w:9},
+ {name:'Ingham',   city:'Lansing',      zip:'48910',ac:'517',w:8},
+ {name:'Kalamazoo',city:'Kalamazoo',    zip:'49001',ac:'269',w:8},
+ {name:'Saginaw',  city:'Saginaw',      zip:'48601',ac:'989',w:7},
+ {name:'Marquette',city:'Marquette',    zip:'49855',ac:'906',w:7}
+];
+var CPOOL=[];COUNTIES.forEach(function(c){for(var i=0;i<c.w;i++)CPOOL.push(c)});
+var NAMES={
+ general:{f:['James','Mary','Robert','Patricia','John','Jennifer','Michael','Linda','David','Elizabeth','William','Barbara','Richard','Susan','Joseph','Jessica','Thomas','Sarah','Christopher','Karen','Daniel','Lisa','Matthew','Nancy','Anthony','Betty','Mark','Margaret','Donald','Sandra','Steven','Ashley','Paul','Kimberly','Andrew','Emily','Joshua','Donna','Kenneth','Michelle','Kevin','Carol','Brian','Amanda','George','Melissa','Edward','Deborah','Ronald','Stephanie','Marcus','Keisha','Darnell','Latoya','Jamal','Tamika'],
+  l:['Smith','Johnson','Williams','Brown','Jones','Miller','Davis','Wilson','Anderson','Taylor','Moore','Jackson','Martin','Lee','Thompson','White','Harris','Clark','Lewis','Walker','Hall','Young','Allen','King','Wright','Scott','Green','Baker','Adams','Nelson','Carter','Mitchell','Roberts','Turner','Phillips','Campbell','Washington','Banks','Gaines','Mays']},
+ arab:{f:['Ali','Fatima','Hassan','Mariam','Hussein','Zainab','Ahmad','Layla','Omar','Nour','Khalil','Rania','Youssef','Huda','Sami','Amal','Mohamad','Sana'],
+  l:['Hammoud','Bazzi','Berry','Fakih','Saab','Saleh','Alwan','Harb','Nasser','Awada','Charara','Farhat','Beydoun','Jaber']},
+ mex:{f:['Jos\u00e9','Guadalupe','Juan','Mar\u00eda','Miguel','Rosa','Francisco','Carmen','Antonio','Elena','Luis','Alejandra','Ram\u00f3n','Leticia'],
+  l:['Garc\u00eda','Hern\u00e1ndez','Mart\u00ednez','L\u00f3pez','Gonz\u00e1lez','P\u00e9rez','Ram\u00edrez','Torres','Flores','Reyes','Vargas','Salinas']},
+ dutch:{f:['Gerrit','Johanna','Dirk','Willemina','Hendrik','Cornelia','Pieter','Grietje','Jan','Aaltje','Klaas','Trijntje'],
+  l:['VanDyke','DeVries','VanderMeer','Boersma','Hoekstra','DeJong','Terpstra','Zylstra','Bosma','Dykstra']},
+ finnish:{f:['Eino','Aino','Toivo','Helmi','Arvo','Sylvia','Waino','Impi','Reino','Tyyne','Onni','Saima','Urho','Lempi'],
+  l:['Maki','Niemi','Korpela','Lahti','Hautamaki','Jarvi','Koski','Salmi','Heikkinen','Kangas']}
+};
+var STREETS=['Gratiot Ave','Woodward Ave','Michigan Ave','W Vernor Hwy','E Warren Ave','Livernois Ave','Fenton Rd','Martin Luther King Ave','S Division Ave','Eastern Ave SE','W Saginaw St','Portage St','Genesee Ave','Schaefer Hwy','Van Dyke Ave','US-41'];
+
+function namePoolFor(county){
+  if(county.city==='Dearborn'){if(chance(.8))return['arab','ARA','Arabic'];return['general',null,null]}
+  if(county.city==='Detroit'){if(chance(.15))return['mex','SPA','Spanish'];return['general',null,null]}
+  if(county.name==='Kent'){if(chance(.35))return['dutch',null,null];return['general',null,null]}
+  if(county.name==='Marquette')return['finnish',null,null];
+  return['general',null,null];
+}
+
+/* ================= registers ================= */
+var REGCOUNT={A:1500,B:500,C:250,D:250,E:350,F:150};
+
+/* ================= member generation ================= */
+var MEMBERS=[];
+function pad(n,w){return String(n).padStart(w,'0')}
+function newMedicaidId(i){ /* 10-digit mihealth beneficiary ID, synthetic */
+  return pad(3130000000+i*3+ri(3),10)}
+function mkSpan(cat,b,e,notes,extra){var s={cat:cat,b:b,e:e,notes:notes||''};
+  if(extra)Object.keys(extra).forEach(function(k){s[k]=extra[k]});return s}
+function mcoFor(m){ /* Region 1 (the UP) has exactly one plan; UPHP appears nowhere else */
+  if(m.county==='Marquette')return 'UP';
+  return PLANS[m._planIdx%PLANS.length].code}
+
+function genMember(i,reg){
+  var county=reg==='E'?COUNTIES[2]:pick(CPOOL); /* register E lives in Flint */
+  var np=namePoolFor(county), pool=NAMES[np[0]];
+  var m={
+    id:'M'+pad(i+1,4), mid:newMedicaidId(i), reg:reg,
+    first:pick(pool.f), last:pick(pool.l),
+    sex:chance(.52)?'F':'M',
+    county:county.name, city:county.city, zip:county.zip,
+    addr:(100+ri(8900))+' '+pick(STREETS),
+    phone:'('+county.ac+') 555-'+pad(ri(10000),4),
+    lang:np[1], langName:np[2],
+    _planIdx:ri(PLANS.length),
+    spans:[], dspans:[]
+  };
+  var b,e,g;
+  if(reg==='A'){ /* steady state under the Comprehensive Health Care Program */
+    g=pick(['U19','U19','U19','PRG','HMP','HMP','ABD','WVR','FTW']);
+    b=60+ri(70); m.dob=dobFor(g);
+    m.spans.push(mkSpan(g,b,null,'Ongoing; renewal passed '+mLabel(NOW-ri(10))));
+    addDelivery(m,b,null,g);
+  }else if(reg==='B'){ /* churn through MI Bridges */
+    g=pick(['U19','HMP','HMP','PRG']); m.dob=dobFor(g);
+    b=80+ri(28); var gap=1+ri(3), closed=UNWIND+ri(18);
+    m.spans.push(mkSpan(g,b,closed,'Terminated \u2014 procedural (renewal not completed in MI Bridges)'));
+    m.spans.push(mkSpan(g,closed+gap+1,null,'Reapplied and approved; coverage restored after '+gap+'-month gap'));
+    m.gap=gap; m.closedAt=closed;
+    addDelivery(m,b,closed,g); addDelivery(m,closed+gap+1,null,g);
+  }else if(reg==='C'){ /* retroactive grant */
+    g=pick(['U19','PRG','HMP']); m.dob=dobFor(g);
+    var app=120+ri(26), retro=1+ri(3);
+    m.spans.push(mkSpan(g,app-retro,null,'Application '+mLabel(app)+'; granted '+retro+' retroactive month'+(retro>1?'s':''),{retro:true,app:app,retroN:retro}));
+    addDelivery(m,app,null,g);
+    m.ffsLead={b:app-retro,e:app-1};
+  }else if(reg==='D'){ /* the PIHP carve-out \u2014 two systems, one member */
+    g=pick(['HMP','HMP','ABD','U19']); m.dob=g==='U19'?dobKid():dobAdult();
+    b=70+ri(40); m.spans.push(mkSpan(g,b,null,'Ongoing'));
+    addDelivery(m,b,null,g);
+    var pb=b+ri(24);
+    m.dspans.push({sys:'PIHP',plan:PIHP[m.county],b:pb,e:null,
+      why:'Specialty behavioral health carve-out \u2014 attributed by county through the CMH system, held alongside the MCO'});
+    m.pihpAt=pb;
+  }else if(reg==='E'){ /* Flint \u2014 the waiver the water wrote */
+    g=chance(.75)?'U19':'PRG'; m.dob=g==='U19'?dobKid():dobAdultYoung();
+    b=FLINT+ri(24);
+    m.spans.push(mkSpan(g,b,null,'Flint water system area \u2014 1115 lead-exposure waiver; income limit 400% FPL',{flint:true}));
+    addDelivery(m,b,null,g);
+  }else{ /* F: Medicare arrives \u2014 answer #31 */
+    g=pick(['HMP','ABD','ABD','WVR']); m.dob=dob65();
+    b=20+ri(60); var t65=130+ri(19);
+    m.spans.push(mkSpan(g,b,t65-1,g==='HMP'?'Healthy Michigan Plan ends at 65 by design \u2014 redetermined into dual status':'Group closed at Medicare entitlement \u2014 redetermined, not terminated'));
+    m.spans.push(mkSpan('DUA',t65,null,'Dual eligibility begins; Part B buy-in accreted '+mLabel(t65+1)));
+    m.t65=t65;
+    addDelivery(m,b,t65-1,g);
+    var demoCounty=(m.county==='Wayne'||m.county==='Macomb'||m.county==='Marquette'||m.county==='Kalamazoo');
+    if(t65>=DSNP0&&chance(.75)){
+      m.dspans.push({sys:'MYC',plan:DSNPS[m._planIdx%4],b:t65,e:null,
+        why:'Aligned into an integrated D-SNP \u2014 statewide since January 2026, the month MI Health Link\u2019s decade-long demonstration ended'});
+      m.dsnp=true;
+    }else if(t65<DSNP0&&demoCounty){
+      m.dspans.push({sys:'MYC',plan:'MI Health Link (demonstration)',b:t65,e:DSNP0-1,
+        why:'Enrolled in the MI Health Link financial-alignment demo \u2014 a pilot in its final months'});
+      m.dspans.push({sys:'MYC',plan:DSNPS[m._planIdx%4],b:DSNP0,e:null,
+        why:'The demonstration ended December 2025; transitioned to the integrated D-SNP successor'});
+      m.dsnp=true;
+    }else{
+      m.dspans.push({sys:'FFS',plan:'Fee-for-service (dual)',b:t65,e:null,
+        why:'Opted out of integrated enrollment \u2014 FFS Medicaid wrap around Medicare'});
+    }
+  }
+  m.group=g;
+  return m;
+}
+function dobFor(g){return g==='U19'?dobKid():g==='PRG'?dobAdultYoung():g==='ABD'||g==='WVR'?dobOlder():dobAdult()}
+function dobKid(){return (2009+ri(15))+'-'+pad(1+ri(12),2)+'-'+pad(1+ri(28),2)}
+function dobAdultYoung(){return (1990+ri(15))+'-'+pad(1+ri(12),2)+'-'+pad(1+ri(28),2)}
+function dobAdult(){return (1975+ri(28))+'-'+pad(1+ri(12),2)+'-'+pad(1+ri(28),2)}
+function dobOlder(){return (1955+ri(25))+'-'+pad(1+ri(12),2)+'-'+pad(1+ri(28),2)}
+function dob65(){return (1959+ri(3))+'-'+pad(1+ri(12),2)+'-'+pad(1+ri(28),2)}
+
+function addDelivery(m,b,e,g){
+  b=Math.max(b,0);
+  if(g==='ABD'&&chance(.25)){m.dspans.push({sys:'FFS',plan:'Fee-for-service',b:b,e:e,why:'Non-MAGI FFS \u2014 never enrolled in managed care'});return}
+  var code=mcoFor(m);
+  m.dspans.push({sys:'MCO',plan:planName(code),b:b,e:e,
+    why:code==='UP'?'Region 1 \u2014 the Upper Peninsula\u2019s single plan; \u201cchoice\u201d is a Lower Peninsula word':'Comprehensive Health Care Program enrollment'});
+}
+
+/* build the population */
+(function(){
+  var i=0;
+  ['A','B','C','D','E','F'].forEach(function(reg){
+    for(var k=0;k<REGCOUNT[reg];k++){MEMBERS.push(genMember(i,reg));i++}
+  });
+})();
+/* derived tables */
+var SPANS=[],DSPANS=[];
+MEMBERS.forEach(function(m){
+  m.spans.forEach(function(s){SPANS.push({m:m,s:s})});
+  m.dspans.forEach(function(d){DSPANS.push({m:m,d:d})});
+});
+function eligNow(m){return m.spans.some(function(s){return s.b<=NOW&&(s.e===null||s.e>=NOW)})}
+function inGapNow(m){return !eligNow(m)&&m.spans.length>1}
+function sysNow(m){var d=m.dspans.filter(function(x){return x.b<=NOW&&(x.e===null||x.e>=NOW)});return d}
+</script>
+<script>
+'use strict';
+/* ================= tab framework ================= */
+var TABS=[
+ {id:'overview',label:'Overview'},
+ {id:'members',label:'Members'},
+ {id:'spans',label:'Eligibility Spans'},
+ {id:'delivery',label:'Plans & Carve-outs'},
+ {id:'registers',label:'Scenario Registers'},
+ {id:'file',label:'What the File Says'},
+ {id:'reference',label:'Reference'}
+];
+var activeTab='overview';
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function renderTabs(){
+  var n=document.getElementById('tabs');n.innerHTML='';
+  TABS.forEach(function(t){
+    var b=document.createElement('button');b.textContent=t.label;b.setAttribute('role','tab');
+    if(t.id===activeTab)b.className='active';
+    b.onclick=function(){activeTab=t.id;renderTabs();renderMain()};n.appendChild(b)});
+}
+function renderMain(){
+  var el=document.getElementById('main');
+  ({overview:rOverview,members:rMembers,spans:rSpans,delivery:rDelivery,
+    registers:rRegisters,file:rFile,reference:rReference})[activeTab](el);
+  window.scrollTo(0,0);
+}
+function pillFor(g){return '<span class="pill" style="background:'+GROUPS[g].color+'">'+g+'</span>'}
+function sortable(rows,cols,state,onchange){
+  /* returns thead html + attaches click sort via delegation key */
+  return cols.map(function(c,i){
+    var arr=state.col===i?(state.dir>0?' <span class="arr">\u25B2</span>':' <span class="arr">\u25BC</span>'):'';
+    return '<th data-si="'+i+'"'+(c.nosort?' class="nosort"':'')+'>'+c.h+arr+'</th>'}).join('');
+}
+function bindSort(theadEl,state,rerender){
+  theadEl.querySelectorAll('th[data-si]').forEach(function(th){
+    if(th.classList.contains('nosort'))return;
+    th.onclick=function(){var i=+th.dataset.si;
+      if(state.col===i)state.dir=-state.dir;else{state.col=i;state.dir=1}
+      state.page=0;rerender()}});
+}
+
+/* ================= Overview ================= */
+function rOverview(el){
+  var elig=0,mco=0,ffs=0,pihp=0,duals=0,gap=0,dsnp=0;
+  MEMBERS.forEach(function(m){
+    if(eligNow(m))elig++; else if(inGapNow(m))gap++;
+    if(m.group==='DUA'||m.spans.some(function(s){return s.cat==='DUA'&&s.b<=NOW&&(s.e===null||s.e>=NOW)}))duals++;
+    sysNow(m).forEach(function(d){if(d.sys==='MCO')mco++;if(d.sys==='FFS')ffs++;if(d.sys==='PIHP')pihp++;if(d.sys==='MYC')dsnp++});
+  });
+  var h='<div class="grid stats">'+
+    stat(MEMBERS.length.toLocaleString(),'members in population')+
+    stat(elig.toLocaleString(),'eligible today')+
+    stat(mco.toLocaleString(),'in a managed care plan today')+
+    stat(pihp.toLocaleString(),'also attributed to a PIHP')+
+    stat(dsnp.toLocaleString(),'in an integrated D-SNP')+
+    stat(duals.toLocaleString(),'duals (Medicare + Medicaid)')+
+    stat(gap.toLocaleString(),'in an eligibility gap')+
+    '</div>';
+  h+=`<div class="plain">Michigan runs one of the country's largest Medicaid programs with a split personality
+   it is honest about: private regional MCOs carry physical health, a public county-built system — the PIHPs —
+   carries specialty behavioral health beside them, and in the Upper Peninsula the whole apparatus of plan choice
+   reduces to a single plan. This app holds 3,000 members of that world: a register for the carve-out, a register
+   for the water that wrote an eligibility rule, and — answer #31 in the series — a duals demonstration that ended
+   the same December as Ohio's and graduated statewide in one month. Everything is synthetic and seeded: reload it
+   anywhere and you get exactly these people, exactly these dates.</div>`;
+  h+='<div class="card"><h3>Coverage groups in this population</h3><div class="tblwrap"><table><tbody>';
+  Object.keys(GROUPS).forEach(function(g){
+    var n=MEMBERS.filter(function(m){return m.group===g||(g==='DUA'&&m.spans.some(function(s){return s.cat==='DUA'}))}).length;
+    h+='<tr><td>'+pillFor(g)+'</td><td><b>'+esc(GROUPS[g].name)+'</b></td><td>'+GROUPS[g].blurb+'</td><td class="mono" style="text-align:right">'+n.toLocaleString()+'</td></tr>'});
+  h+='</tbody></table></div></div>';
+  h+='<div class="card"><h3>The plans — and the carve-outs beside them</h3><div class="tblwrap"><table><thead><tr><th class="nosort">Plan / entity</th><th class="nosort">Note</th></tr></thead><tbody>'+
+   PLANS.map(function(p){return '<tr><td><b>'+esc(p.name)+'</b></td><td>Comprehensive Health Care Program MCO — Lower Peninsula regions</td></tr>'}).join('')+
+   '<tr><td><b>Upper Peninsula Health Plan</b> <span class="pill outline">Region 1</span></td><td>The UP\u2019s only plan — all of managed care\u2019s structure, none of its choice</td></tr>'+
+   '<tr><td><b>The ten PIHPs</b> <span class="pill" style="background:var(--g-rise)">public</span></td><td>Quasi-public regional entities on the county CMH chassis, carrying specialty behavioral health beside every MCO — register D</td></tr>'+
+   '<tr><td><b>Integrated D-SNPs</b> <span class="pill" style="background:var(--g-dua)">duals</span></td><td>MI Health Link\u2019s statewide successors since January 2026 — register F, answer #31</td></tr>'+
+   '</tbody></table></div></div>';
+  el.innerHTML=h;
+  function stat(n,l){return '<div class="stat"><div class="n">'+n+'</div><div class="l">'+l+'</div></div>'}
+}
+
+/* ================= Members ================= */
+var mState={q:'',grp:'',reg:'',st:'',page:0,col:0,dir:1};
+function memberRows(){
+  var q=mState.q.toLowerCase();
+  var rows=MEMBERS.filter(function(m){
+    if(mState.grp&&m.group!==mState.grp)return false;
+    if(mState.reg&&m.reg!==mState.reg)return false;
+    if(mState.st){var s=eligNow(m)?'A':(inGapNow(m)?'G':'C');if(s!==mState.st)return false}
+    if(q){var hay=(m.first+' '+m.last+' '+m.mid+' '+m.city+' '+m.county).toLowerCase();
+      if(hay.indexOf(q)<0)return false}
+    return true});
+  var key=[function(m){return m.last+m.first},function(m){return m.mid},function(m){return m.group},
+           function(m){return m.county},function(m){return m.reg},function(m){return eligNow(m)?0:inGapNow(m)?1:2}][mState.col];
+  rows.sort(function(a,b){var x=key(a),y=key(b);return (x<y?-1:x>y?1:0)*mState.dir});
+  return rows;
+}
+function rMembers(el){
+  var rows=memberRows(), per=50, pages=Math.max(1,Math.ceil(rows.length/per));
+  mState.page=Math.min(mState.page,pages-1);
+  var slice=rows.slice(mState.page*per,mState.page*per+per);
+  var h='<div class="plain small">Every column sorts; search covers name, Medicaid ID, city, and county. Click any row for the member record \u2014 the \u25C0 \u25B6 arrows there walk this exact filtered order.</div>';
+  h+='<div class="controls">'+
+   '<input type="search" id="mq" placeholder="Search 3,000 members\u2026" value="'+esc(mState.q)+'">'+
+   sel('mgrp','All coverage groups',Object.keys(GROUPS).map(function(g){return[g,GROUPS[g].name]}),mState.grp)+
+   sel('mreg','All registers',['A','B','C','D','E','F'].map(function(r){return[r,'Register '+r]}),mState.reg)+
+   sel('mst','Any status',[['A','Active'],['G','In gap'],['C','Closed']],mState.st)+
+   '</div>';
+  var cols=[{h:'Member'},{h:'Medicaid ID'},{h:'Group'},{h:'County'},{h:'Reg'},{h:'Status'}];
+  h+='<div class="card"><div class="tblwrap"><table><thead id="mth"><tr>'+sortable(rows,cols,mState)+'</tr></thead><tbody>';
+  slice.forEach(function(m){
+    var st=eligNow(m)?'<span class="pill" style="background:var(--ok)">Active</span>':
+      inGapNow(m)?'<span class="pill" style="background:var(--warn)">In gap</span>':
+      '<span class="pill outline">Closed</span>';
+    h+='<tr class="rowbtn" data-mid="'+m.id+'"><td><b>'+esc(m.last)+', '+esc(m.first)+'</b><br><span class="sub">'+esc(m.city)+'</span></td>'+
+      '<td class="mono">'+m.mid+'</td><td>'+pillFor(m.group)+'</td><td>'+esc(m.county)+'</td>'+
+      '<td class="mono">'+m.reg+'</td><td>'+st+'</td></tr>'});
+  h+='</tbody></table></div>'+pager(rows.length,per,mState)+'</div>';
+  el.innerHTML=h;
+  bindSort(document.getElementById('mth'),mState,function(){rMembers(el)});
+  document.getElementById('mq').oninput=function(){mState.q=this.value;mState.page=0;
+    var y=this.selectionStart;rMembers(el);var q=document.getElementById('mq');q.focus();q.setSelectionRange(y,y)};
+  ['mgrp','mreg','mst'].forEach(function(id,ix){document.getElementById(id).onchange=function(){
+    mState[['grp','reg','st'][ix]]=this.value;mState.page=0;rMembers(el)}});
+  bindPager(el,mState,function(){rMembers(el)});
+  bindRows(el,rows.map(function(m){return{m:m}}),'roster');
+}
+function sel(id,none,opts,cur){return '<select id="'+id+'"><option value="">'+none+'</option>'+
+  opts.map(function(o){return '<option value="'+o[0]+'"'+(cur===o[0]?' selected':'')+'>'+esc(o[1])+'</option>'}).join('')+'</select>'}
+function pager(total,per,state){
+  var a=state.page*per+1,b=Math.min(total,a+per-1);
+  if(!total)return '<p class="sub" style="margin-top:10px">No rows match \u2014 clear a filter to widen the view.</p>';
+  return '<div class="pager"><button data-pg="-1"'+(state.page===0?' disabled':'')+'>\u25C0 Prev</button>'+
+   '<span>showing '+a.toLocaleString()+'\u2013'+b.toLocaleString()+' of '+total.toLocaleString()+' matching (population '+MEMBERS.length.toLocaleString()+')</span>'+
+   '<button data-pg="1"'+(b>=total?' disabled':'')+'>Next \u25B6</button></div>'}
+function bindPager(el,state,rerender){el.querySelectorAll('[data-pg]').forEach(function(b){
+  b.onclick=function(){state.page+=+b.dataset.pg;rerender()}})}
+function bindRows(el,navList,ctx){el.querySelectorAll('tr[data-mid]').forEach(function(tr){
+  tr.onclick=function(){openMember(tr.dataset.mid,navList.map(function(x){return x.m.id}),ctx)}})}
+
+/* ================= Eligibility Spans ================= */
+var sState={grp:'',open:'',page:0,col:1,dir:1};
+function rSpans(el){
+  var rows=SPANS.filter(function(r){
+    if(sState.grp&&r.s.cat!==sState.grp)return false;
+    if(sState.open==='O'&&r.s.e!==null)return false;
+    if(sState.open==='C'&&r.s.e===null)return false;return true});
+  var key=[function(r){return r.m.last+r.m.first},function(r){return r.s.b},
+    function(r){return r.s.e===null?9999:r.s.e},function(r){return (r.s.e===null?NOW:r.s.e)-r.s.b},
+    function(r){return r.s.cat}][sState.col];
+  rows.sort(function(a,b){var x=key(a),y=key(b);return (x<y?-1:x>y?1:0)*sState.dir});
+  var per=50,pages=Math.max(1,Math.ceil(rows.length/per));sState.page=Math.min(sState.page,pages-1);
+  var slice=rows.slice(sState.page*per,sState.page*per+per);
+  var h='<div class="plain small">'+SPANS.length.toLocaleString()+' eligibility spans across the population \u2014 each row one continuous stretch in one coverage group. The end-reason column is where the registers live: procedural closures, Medicare redeterminations, retro grants whose begin dates precede their applications.</div>';
+  h+='<div class="controls">'+sel('sgrp','All coverage groups',Object.keys(GROUPS).map(function(g){return[g,GROUPS[g].name]}),sState.grp)+
+    sel('sopen','Open + closed',[['O','Open only'],['C','Closed only']],sState.open)+'</div>';
+  var cols=[{h:'Member'},{h:'Begin'},{h:'End'},{h:'Months'},{h:'Group'},{h:'Note',nosort:true}];
+  h+='<div class="card"><div class="tblwrap"><table><thead id="sth"><tr>'+sortable(rows,cols,sState)+'</tr></thead><tbody>';
+  slice.forEach(function(r){
+    h+='<tr class="rowbtn" data-mid="'+r.m.id+'"><td><b>'+esc(r.m.last)+', '+esc(r.m.first)+'</b></td>'+
+     '<td class="mono">'+mLabel(r.s.b)+'</td><td class="mono">'+(r.s.e===null?'\u2014 open \u2014':mLabel(r.s.e))+'</td>'+
+     '<td class="mono">'+((r.s.e===null?NOW:r.s.e)-r.s.b+1)+'</td><td>'+pillFor(r.s.cat)+'</td>'+
+     '<td style="max-width:340px">'+esc(r.s.notes)+'</td></tr>'});
+  h+='</tbody></table></div>'+pager(rows.length,per,sState)+'</div>';
+  el.innerHTML=h;
+  bindSort(document.getElementById('sth'),sState,function(){rSpans(el)});
+  ['sgrp','sopen'].forEach(function(id,ix){document.getElementById(id).onchange=function(){
+    sState[['grp','open'][ix]]=this.value;sState.page=0;rSpans(el)}});
+  bindPager(el,sState,function(){rSpans(el)});
+  bindRows(el,dedupeByMember(rows),'spans');
+}
+function dedupeByMember(rows){var seen={},out=[];rows.forEach(function(r){if(!seen[r.m.id]){seen[r.m.id]=1;out.push(r)}});return out}
+
+/* ================= Next Gen Enrollment (delivery spans) ================= */
+var dState={sys:'',plan:'',page:0,col:1,dir:1};
+function rDelivery(el){
+  var plans={};DSPANS.forEach(function(r){plans[r.d.plan]=1});
+  var rows=DSPANS.filter(function(r){
+    if(dState.sys&&r.d.sys!==dState.sys)return false;
+    if(dState.plan&&r.d.plan!==dState.plan)return false;return true});
+  var key=[function(r){return r.m.last+r.m.first},function(r){return r.d.b},
+    function(r){return r.d.e===null?9999:r.d.e},function(r){return r.d.plan},function(r){return r.d.sys}][dState.col];
+  rows.sort(function(a,b){var x=key(a),y=key(b);return (x<y?-1:x>y?1:0)*dState.dir});
+  var per=50,pages=Math.max(1,Math.ceil(rows.length/per));dState.page=Math.min(dState.page,pages-1);
+  var slice=rows.slice(dState.page*per,dState.page*per+per);
+  var h='<div class="plain small">The second clock, as a first-class table: '+DSPANS.length.toLocaleString()+' delivery spans \u2014 who carries the member, distinct from whether they are eligible. Here is where the PIHP rides <i>alongside</i> an MCO rather than replacing it (one private clock, one public), where Region 1 shows a peninsula with exactly one plan, and where register F\u2019s members step from the Healthy Michigan Plan into an integrated D-SNP without their eligibility ever blinking.</div>';
+  h+='<div class="controls">'+
+    sel('dsys','All systems',[['MCO','MCO'],['PIHP','PIHP (parallel, public)'],['MYC','MI Health Link / D-SNP'],['FFS','Fee-for-service']],dState.sys)+
+    sel('dplan','All plans',Object.keys(plans).sort().map(function(p){return[p,p]}),dState.plan)+'</div>';
+  var cols=[{h:'Member'},{h:'Begin'},{h:'End'},{h:'Plan'},{h:'System'},{h:'Why',nosort:true}];
+  h+='<div class="card"><div class="tblwrap"><table><thead id="dth"><tr>'+sortable(rows,cols,dState)+'</tr></thead><tbody>';
+  slice.forEach(function(r){
+    var sysPill={MCO:'var(--g-cfc)',PIHP:'var(--g-rise)',MYC:'var(--g-dua)',FFS:'var(--g-ffs)'}[r.d.sys];
+    h+='<tr class="rowbtn" data-mid="'+r.m.id+'"><td><b>'+esc(r.m.last)+', '+esc(r.m.first)+'</b></td>'+
+     '<td class="mono">'+mLabel(r.d.b)+'</td><td class="mono">'+(r.d.e===null?'\u2014 open \u2014':mLabel(r.d.e))+'</td>'+
+     '<td>'+esc(r.d.plan)+'</td><td><span class="pill" style="background:'+sysPill+'">'+r.d.sys+'</span></td>'+
+     '<td style="max-width:330px">'+esc(r.d.why)+'</td></tr>'});
+  h+='</tbody></table></div>'+pager(rows.length,per,dState)+'</div>';
+  el.innerHTML=h;
+  bindSort(document.getElementById('dth'),dState,function(){rDelivery(el)});
+  ['dsys','dplan'].forEach(function(id,ix){document.getElementById(id).onchange=function(){
+    dState[['sys','plan'][ix]]=this.value;dState.page=0;rDelivery(el)}});
+  bindPager(el,dState,function(){rDelivery(el)});
+  bindRows(el,dedupeByMember(rows),'delivery');
+}
+</script>
+<script>
+'use strict';
+/* ================= scenario registers ================= */
+var REGDEFS={
+ A:{title:'Steady state \u2014 the mihealth card and the regional map',
+    q:'What does the Comprehensive Health Care Program look like at rest?',
+    body:`1,500 members simply covered: eight regional MCOs across the Lower Peninsula, MIChild children riding the same plans since Michigan folded its CHIP into managed care, and everyone carrying the same green-and-white mihealth card regardless of plan. The exception that teaches: Region 1. In the Upper Peninsula there is exactly one plan \u2014 the Upper Peninsula Health Plan \u2014 so the Makis and Niemis of Marquette County have all of managed care\u2019s structure and none of its choice. A delivery model is what geography lets it be.`},
+ B:{title:'Churn \u2014 the portal renewal that lapsed',
+    q:'What does unwinding-era churn look like when the state is the caseworker?',
+    body:`Michigan eligibility is state-administered through MDHHS local offices and the MI Bridges portal \u2014 no county mailroom to blame, which makes the gaps sharper to read. These 500 members closed procedurally (\u201crenewal not completed in MI Bridges\u201d), sat uncovered one to three months, reapplied, and returned. Every reopened span is a new span, not a correction: the gap stays in the history because it happened.`},
+ C:{title:'Retroactive grant \u2014 the begin date that precedes the application',
+    q:'How does a span honestly show coverage that was granted backwards?',
+    body:`250 members applied and received up to three retroactive months. The eligibility span begins before the application date; the plan enrollment does not \u2014 retro months run fee-for-service because you cannot retroactively capitate. In the 834, this is the DTP*356 versus DTP*348 gap: member-level eligibility opens earlier than the health-coverage loop. Two dates, both true, doing different jobs.`},
+ D:{title:'The carve-out with a county address \u2014 MCO plus PIHP',
+    q:'Can one member correctly sit in a private plan and a public system at once?',
+    body:`250 members whose specialty behavioral health runs not through their MCO but through a regional Prepaid Inpatient Health Plan \u2014 the quasi-public entities built on Michigan\u2019s county community mental health system. Where Ohio\u2019s parallel plan (register D, one state south) is entered by assessment and run by a national carrier, Michigan\u2019s attaches by geography and is run by the public sector: Detroit Wayne Integrated Health Network, NorthCare in the UP, Region 10 in Flint. Two concurrent delivery spans, one private and one public, both correct \u2014 and a data model that enforces \u201cone plan per member\u201d is wrong in two states now.`},
+ E:{title:'Flint \u2014 the waiver the water wrote',
+    q:'Where did 350 of these spans come from?',
+    body:`In March 2016, CMS approved an 1115 waiver Michigan requested for one city: children and pregnant women served by the Flint water system became Medicaid-eligible up to 400% of poverty \u2014 an income limit found nowhere else in the program \u2014 because of what was in the pipes. These spans begin in 2016 and 2017 and many are still open: lead exposure is not an episode. It is the only register in the series whose eligibility rule was written by a public-health disaster, and the begin dates cluster the way disasters do.`},
+ F:{title:'Medicare arrives \u2014 the second commencement',
+    q:'What happens to these 150 members the month they turn 65?',
+    body:`Answer #31 in the series, and it rhymes with #30: <b>the demonstration graduates again.</b> MI Health Link \u2014 Michigan\u2019s financial-alignment duals pilot, a decade old and always officially temporary \u2014 ended in December 2025, the same month Ohio\u2019s MyCare did. In January 2026 its members stepped into highly integrated D-SNPs, and Michigan went statewide at once where Ohio walks county by county. So when Medicare arrives here, the Healthy Michigan Plan span closes by design at 65, dual status opens, the buy-in accretes, and an integrated plan \u2014 often wearing a familiar name \u2014 opens the same day. Two states, two pilots, one commencement season: the 834 shows a termination and an addition, and the member walks across a stage they never see.`}
+};
+function rRegisters(el){
+  var h='<div class="plain">Six planted business questions \u2014 the registers are the population\u2019s table of contents. Each shows a 12-member sample; open any row and the \u25C0 \u25B6 arrows walk the <i>entire</i> register in order. For the complete list, filter the Members tab by register.</div>';
+  ['A','B','C','D','E','F'].forEach(function(r){
+    var d=REGDEFS[r], members=MEMBERS.filter(function(m){return m.reg===r});
+    h+='<div class="regcard"><div class="q"><span class="regletter">'+r+'</span>'+esc(d.title)+
+      (r==='F'?'<span class="answerno">answer #31</span>':'')+
+      ' <span class="sub" style="font-weight:400">\u2014 '+members.length.toLocaleString()+' members</span></div>'+
+      '<p class="body" style="margin-bottom:6px"><b>'+esc(d.q)+'</b></p>'+
+      '<p class="body">'+d.body+'</p>'+
+      '<div class="tblwrap" style="margin-top:12px"><table><thead><tr><th class="nosort">Member</th><th class="nosort">Group</th><th class="nosort">County</th><th class="nosort">Story in one line</th></tr></thead><tbody>';
+    members.slice(0,12).forEach(function(m){
+      h+='<tr class="rowbtn" data-mid="'+m.id+'" data-reg="'+r+'"><td><b>'+esc(m.last)+', '+esc(m.first)+'</b></td>'+
+        '<td>'+pillFor(m.group)+'</td><td>'+esc(m.county)+'</td><td>'+esc(oneLiner(m))+'</td></tr>'});
+    h+='</tbody></table></div></div>';
+  });
+  el.innerHTML=h;
+  el.querySelectorAll('tr[data-mid]').forEach(function(tr){
+    tr.onclick=function(){var r=tr.dataset.reg;
+      openMember(tr.dataset.mid,MEMBERS.filter(function(m){return m.reg===r}).map(function(m){return m.id}),'register')}});
+}
+function oneLiner(m){
+  switch(m.reg){
+   case 'A':return m.county==='Marquette'?'Covered since '+mLabel(m.spans[0].b)+' \u2014 in the one-plan peninsula.':'Covered since '+mLabel(m.spans[0].b)+', no story \u2014 which is the story.';
+   case 'B':return 'Closed '+mLabel(m.closedAt)+' for paperwork; back after '+m.gap+' month'+(m.gap>1?'s':'')+'.';
+   case 'C':return 'Applied '+mLabel(m.spans[0].app)+'; coverage reaches back to '+mLabel(m.spans[0].b)+'.';
+   case 'D':return 'MCO since '+mLabel(m.spans[0].b)+'; PIHP attached '+mLabel(m.pihpAt)+' \u2014 both open.';
+   case 'E':return 'Flint waiver \u2014 eligible since '+mLabel(m.spans[0].b)+', still open.';
+   default:return 'Turned 65 '+mLabel(m.t65)+'; '+(m.dsnp?'walked into an integrated D-SNP.':'FFS wrap by choice.')}
+}
+
+/* ================= What the File Says (annotated 834) ================= */
+var fileSel=null;
+function rFile(el){
+  if(!fileSel)fileSel=MEMBERS.filter(function(m){return m.reg==='F'})[0].id;
+  var opts='';['A','B','C','D','E','F'].forEach(function(r){
+    opts+='<optgroup label="Register '+r+' \u2014 '+esc(REGDEFS[r].title)+'">'+
+     MEMBERS.filter(function(m){return m.reg===r}).slice(0,40).map(function(m){
+       return '<option value="'+m.id+'"'+(m.id===fileSel?' selected':'')+'>'+esc(m.last)+', '+esc(m.first)+' \u2014 '+m.mid+'</option>'}).join('')+'</optgroup>'});
+  var m=MEMBERS.find(function(x){return x.id===fileSel});
+  var h='<div class="plain small">Pick a member and the app builds their most recent X12N 834 enrollment event \u2014 addition (021), change (001), or termination (024) \u2014 with every segment explained. The planted lessons: the DTP*356 vs DTP*348 gap on retroactive grants, register D\u2019s concurrent MCO-and-PIHP loops, register E\u2019s waiver reporting category, and register F\u2019s termination-and-addition pair \u2014 the second commencement, one segment at a time.</div>'+
+   '<div class="controls"><select id="fsel" style="max-width:480px">'+opts+'</select></div>'+
+   '<div class="card"><div class="x12">'+build834(m).map(function(row){
+     return '<div class="seg'+(row.loop?' loop':'')+'">'+esc(row.seg)+'</div>'+
+            '<div class="exp'+(row.loop?' loop':'')+(row.teach?' teach':'')+'">'+row.exp+'</div>'}).join('')+
+   '</div></div>';
+  el.innerHTML=h;
+  document.getElementById('fsel').onchange=function(){fileSel=this.value;rFile(el)};
+}
+function build834(m){
+  var rows=[];
+  var evt={A:'021',B:'021',C:'021',D:'001',E:'021',F:'024'}[m.reg];
+  function seg(s,e,o){rows.push({seg:s,exp:e,loop:o&&o.loop,teach:o&&o.teach})}
+  seg('ISA*00*          *00*          *ZZ*MDHHSSENDER    *ZZ*PLANRCVR       *260601*0800*^*00501*000031300*0*P*:~',
+    'Interchange envelope \u2014 sender is the state, receiver is the plan. Synthetic control number.');
+  seg('GS*BE*MDHHSSENDER*PLANRCVR*20260601*0800*313*X*005010X220A1~','Functional group: BE = benefit enrollment, the 834\u2019s family name.');
+  seg('ST*834*0001*005010X220A1~','Transaction set header.');
+  seg('BGN*00*'+m.id+'FILE*20260601*0800****4~','Original transaction (BGN01=00), reference keyed to the member for this demo.');
+  seg('INS*Y*18*'+evt+'*XN*A***FT~','Loop 2000 \u2014 member level. INS03='+evt+' ('+({'021':'addition','001':'change','024':'termination'})[evt]+'): '+insStory(m),{loop:true});
+  seg('REF*0F*'+m.mid+'~','Subscriber identifier \u2014 the 10-digit mihealth beneficiary ID.');
+  seg('REF*3H*'+m.reg+m.id.slice(1)+'~','Case/agency reference \u2014 synthetic, keyed to the register.');
+  if(m.reg==='C'){
+    seg('DTP*356*D8*'+mYYYYMMDD(m.spans[0].b)+'~','Member-level eligibility begin \u2014 <b>the retroactive date</b>: '+mLabel(m.spans[0].b)+'.',{teach:true});
+  }else{
+    seg('DTP*356*D8*'+mYYYYMMDD(m.spans[0].b)+'~','Member-level eligibility begin: '+mLabel(m.spans[0].b)+'.');
+  }
+  if(m.reg==='F')seg('DTP*357*D8*'+mYYYYMMDD(m.t65-1,true)+'~','Member-level eligibility end for the <i>pre-Medicare group</i> \u2014 the category closed; the person\u2019s Medicaid did not.',{teach:true});
+  seg('NM1*IL*1*'+m.last.toUpperCase()+'*'+m.first.toUpperCase()+'~','Member name.');
+  seg('PER*IP**TE*'+m.phone.replace(/\D/g,'')+'~','Contact telephone.');
+  seg('N3*'+m.addr.toUpperCase()+'~','Street address \u2014 '+esc(m.city)+' texture from the seeded roster.');
+  seg('N4*'+m.city.toUpperCase()+'*MI*'+m.zip+'~','City / state / ZIP.');
+  seg('DMG*D8*'+m.dob.replace(/-/g,'')+'*'+m.sex+'~','Demographics: date of birth and sex.');
+  if(m.lang)seg('LUI*LE*'+m.lang+'**7~','Preferred language: '+m.langName+' \u2014 '+(m.lang==='ARA'?'Dearborn carries the largest Arab American community in the United States, and the enrollment file is where the interpreter line begins.':'southwest Detroit texture from the seeded roster.'));
+  /* health coverage loops */
+  var openD=m.dspans.filter(function(d){return d.e===null});
+  var mainD=openD.find(function(d){return d.sys==='MCO'})||openD[0]||m.dspans[m.dspans.length-1];
+  if(m.reg==='F'){
+    var closed=m.dspans.find(function(d){return d.sys==='MCO'})||m.dspans.find(function(d){return d.e===m.t65-1})||m.dspans[0];
+    seg('HD*024**HLT*'+esc(closed.plan.toUpperCase().replace(/\s+/g,' '))+'~','Loop 2300 \u2014 the '+(closed.sys==='MCO'?'MCO span':'pre-Medicare coverage')+' <b>terminates</b> at Medicare entitlement\u2026',{loop:true,teach:true});
+    seg('DTP*349*D8*'+mYYYYMMDD(m.t65-1,true)+'~','\u2026coverage-end '+mLabel(m.t65-1)+'.');
+    var next=m.dspans.find(function(d){return (d.sys==='MYC'||d.sys==='FFS')&&d.b===m.t65});
+    seg('HD*021**HLT*'+esc(next.plan.toUpperCase())+'~','\u2026and the successor opens in the same file: '+esc(next.why)+'. Answer #31 \u2014 the second commencement.',{loop:true,teach:true});
+    seg('DTP*348*D8*'+mYYYYMMDD(m.t65)+'~','Successor coverage begins '+mLabel(m.t65)+' \u2014 zero-day gap.');
+    seg('COB*P*'+m.mid+'*1~','Coordination of benefits: Medicare is now primary; Medicaid wraps.');
+  }else if(m.reg==='D'){
+    seg('HD*001**HLT*'+esc(mainD.plan.toUpperCase())+'~','Loop 2300, first HD \u2014 the MCO for physical health.',{loop:true});
+    seg('DTP*348*D8*'+mYYYYMMDD(mainD.b)+'~','MCO coverage begin '+mLabel(mainD.b)+'.');
+    var pihp=m.dspans.find(function(d){return d.sys==='PIHP'});
+    seg('HD*021**HLT*'+esc(pihp.plan.toUpperCase())+'~','Second concurrent HD loop \u2014 <b>the PIHP, held at the same time</b>: a public regional entity carrying specialty behavioral health while a private plan carries the rest. Two open coverage loops, one member, both correct.',{loop:true,teach:true});
+    seg('DTP*348*D8*'+mYYYYMMDD(pihp.b)+'~','PIHP attribution begin '+mLabel(pihp.b)+' \u2014 the public clock beside the private one.');
+  }else{
+    seg('HD*'+evt+'**HLT*'+esc((mainD?mainD.plan:'FEE-FOR-SERVICE').toUpperCase())+'~','Loop 2300 \u2014 health coverage: the delivery span, distinct from eligibility.',{loop:true});
+    var covB=m.reg==='C'?m.spans[0].app:Math.max(m.spans[m.spans.length-1].b,0);
+    if(m.reg==='C'){
+      seg('DTP*348*D8*'+mYYYYMMDD(covB)+'~','Coverage-level begin \u2014 <b>the application month</b>, '+mLabel(covB)+'. The '+m.spans[0].retroN+'-month gap back to DTP*356 is the retro grant: eligibility reaches back; capitation does not.',{teach:true});
+    }else{
+      seg('DTP*348*D8*'+mYYYYMMDD(covB)+'~','Coverage begin '+mLabel(covB)+'.');
+    }
+  }
+  if(m.reg==='E'){
+    seg('REF*CE*FLINT400~','Reporting category \u2014 <b>the Flint lead-exposure waiver group</b>: an income limit (400% FPL) that exists for one water system\u2019s service area. The rule rides in the file because the disaster wrote it.',{teach:true});
+  }else{
+    seg('REF*CE*'+m.group+'~','Reporting category \u2014 the coverage group riding with the enrollment ('+esc(GROUPS[m.group]?GROUPS[m.group].name:m.group)+').');
+  }
+  seg('SE*'+(rows.length+2)+'*0001~','Transaction trailer with segment count.');
+  seg('GE*1*313~','Functional group trailer.');
+  seg('IEA*1*000031300~','Interchange trailer.');
+  return rows;
+}
+function insStory(m){
+  return {A:'routine enrollment maintenance.',B:'the reapproval after the MI Bridges gap \u2014 a brand-new addition, not a correction.',
+   C:'an addition whose dates teach the retro lesson below.',D:'a change transaction carrying the PIHP\u2019s parallel public loop.',
+   E:'a Flint-waiver addition \u2014 read the reporting category at the bottom.',F:'the Medicare-arrival event pair \u2014 read the two HD loops.'}[m.reg];
+}
+
+/* ================= Reference ================= */
+function rReference(el){
+  var h='<div class="card"><h3>The clause and the clock \u2014 two things that almost stopped the Healthy Michigan Plan</h3>'+
+   '<div class="tblwrap"><table class="chron"><tbody>'+
+   '<tr><td class="mono">2013</td><td>Michigan expands by statute \u2014 a bipartisan bill, not an executive maneuver \u2014 and writes a self-destruct clause into the law: if the program\u2019s state costs ever exceed its savings, the Healthy Michigan Plan terminates automatically. The clause has never fired, but it has never left the statute either.</td></tr>'+
+   '<tr><td class="mono">Jan 2020</td><td>A work requirement takes effect for Healthy Michigan members \u2014 reporting begins, with tens of thousands out of compliance in the first weeks.</td></tr>'+
+   '<tr><td class="mono">Mar 2020</td><td>Seventy-nine days in, a federal court vacates the requirement (<i>Young v. Azar</i>) before a single member is disenrolled for it. The pandemic arrives the same month and moots the appeal.</td></tr>'+
+   '<tr><td class="mono">After</td><td>Michigan\u2019s scar is the near miss: the requirement that ran but never bit \u2014 a counterpoint to the state two borders south where it ran and did. The spans in this file carry no work-requirement closures because, here, there were none to carry.</td></tr>'+
+   '</tbody></table></div></div>';
+  h+='<div class="card"><h3>834 maintenance codes used in this app</h3><div class="tblwrap"><table><thead><tr><th class="nosort">INS03</th><th class="nosort">Meaning</th><th class="nosort">Where you\u2019ll see it</th></tr></thead><tbody>'+
+   '<tr><td class="mono">021</td><td>Addition</td><td>New enrollments, register B\u2019s post-gap returns, register E\u2019s Flint-waiver cohort</td></tr>'+
+   '<tr><td class="mono">001</td><td>Change</td><td>Register D \u2014 the PIHP\u2019s public loop arriving beside the MCO\u2019s private one</td></tr>'+
+   '<tr><td class="mono">024</td><td>Cancellation / termination</td><td>Register F \u2014 always paired, in the same file, with the 021 that replaces it</td></tr>'+
+   '</tbody></table></div></div>';
+  h+='<div class="card"><h3>Glossary</h3><dl class="gloss">'+
+   gl('mihealth card','The one card every Michigan Medicaid member carries regardless of plan \u2014 the program\u2019s most visible piece of shared infrastructure.')+
+   gl('Healthy Michigan Plan','The 2013 statutory expansion \u2014 cost-sharing accounts, healthy-behavior incentives, an end-at-65 by design, and the self-destruct clause chronicled above. Register F\u2019s HMP members close their spans at Medicare because the statute says so, not because eligibility failed.')+
+   gl('PIHP','Prepaid Inpatient Health Plan \u2014 ten quasi-public regional entities, built on the county community mental health system, that carry specialty behavioral health and I/DD services outside the MCOs. Register D\u2019s second, public clock.')+
+   gl('MI Bridges','The statewide eligibility portal \u2014 Michigan is state-administered through MDHHS local offices, so register B\u2019s gaps have no county postmark, only a login that lapsed.')+
+   gl('The Flint waiver','The March 2016 1115 waiver covering children and pregnant women served by the Flint water system to 400% FPL \u2014 eligibility written by a public-health disaster. Register E, and the only REF*CE in the series that names a city\u2019s pipes.')+
+   gl('MI Health Link','Michigan\u2019s financial-alignment duals demonstration, 2015\u20132025 \u2014 the decade-long pilot that ended the same December as Ohio\u2019s MyCare and handed its members to integrated D-SNPs statewide in January 2026.')+
+   gl('Region 1','The Upper Peninsula \u2014 where the Comprehensive Health Care Program has exactly one plan, the Upper Peninsula Health Plan, and managed care\u2019s defining feature, choice, does not apply. Geography is a delivery system.')+
+   gl('MIChild','Michigan\u2019s CHIP brand, folded into the same managed care plans as Medicaid proper in 2016 \u2014 one enrollment file, no separate program to fall between.')+
+   gl('Freedom to Work','Michigan\u2019s premium-paying buy-in for workers with disabilities \u2014 earned income as a pathway in, not a reason out.')+
+   gl('The second commencement','The thirty-first Medicare answer: MI Health Link graduating into statewide integrated D-SNPs one month after \u2014 and one state north of \u2014 answer #30\u2019s Ohio graduation. Turning 65 is an alignment, not an exit, in two states now, and the answers are starting to rhyme.')+
+   gl('834','The X12N benefit enrollment transaction \u2014 this app\u2019s native tongue. Register D\u2019s files carry a private and a public HD loop side by side; register F\u2019s carry the paired 024/021.')+
+   '</dl></div>';
+  h+='<div class="card"><h3>Counties in this population</h3><p style="font-size:.85rem">'+
+   Array.from(new Set(COUNTIES.map(function(c){return c.name}))).join(' \u00b7 ')+'</p>'+
+   '<p class="sub" style="margin-top:8px">The Hammouds and Bazzis carry Dearborn \u2014 the largest Arab American community in the United States; the Garc\u00edas and Hern\u00e1ndezes, southwest Detroit; the VanDykes and DeVrieses, Grand Rapids; the Makis and Niemis, the Finnish Upper Peninsula, where there is exactly one plan; and Flint\u2019s register E carries the only eligibility rule in the series written by a water system.</p></div>';
+  el.innerHTML=h;
+  function gl(t,d){return '<dt>'+t+'</dt><dd>'+d+'</dd>'}
+}
+</script>
+<script>
+'use strict';
+/* ================= slide-over member record ================= */
+var nav={list:[],ix:-1,ctx:''};
+function openMember(id,list,ctx){
+  nav.list=list||[id];nav.ix=nav.list.indexOf(id);nav.ctx=ctx||'';
+  paintMember();document.getElementById('overlay').classList.add('open');
+  var s=document.getElementById('slide');s.classList.add('open');
+  highlightRow(id);s.focus&&s.focus();
+}
+function closeMember(){
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('slide').classList.remove('open');
+  highlightRow(null);
+}
+function stepMember(d){var n=nav.ix+d;if(n<0||n>=nav.list.length)return;nav.ix=n;paintMember();highlightRow(nav.list[n])}
+function highlightRow(id){document.querySelectorAll('tr.hl').forEach(function(t){t.classList.remove('hl')});
+  if(id){var tr=document.querySelector('tr[data-mid="'+id+'"]');if(tr)tr.classList.add('hl')}}
+function paintMember(){
+  var m=MEMBERS.find(function(x){return x.id===nav.list[nav.ix]});
+  var s=document.getElementById('slide');
+  var ctxLabel={roster:'filtered roster',spans:'spans view',delivery:'enrollment view',register:'register'}[nav.ctx]||'list';
+  var h='<button class="close" aria-label="Close">\u00d7</button>'+
+   '<div class="navrow"><button id="mprev"'+(nav.ix===0?' disabled':'')+' aria-label="Previous member">\u25C0</button>'+
+   '<button id="mnext"'+(nav.ix>=nav.list.length-1?' disabled':'')+' aria-label="Next member">\u25B6</button>'+
+   '<span class="pos">'+(nav.ix+1)+' / '+nav.list.length+' ('+ctxLabel+')</span></div>'+
+   '<h2>'+esc(m.last)+', '+esc(m.first)+'</h2>'+
+   '<p class="sub">'+pillFor(m.group)+' &nbsp; Register '+m.reg+' \u2014 '+esc(REGDEFS[m.reg].title)+'</p>'+
+   '<dl class="kv">'+
+   kv('Medicaid ID','<span class="mono">'+m.mid+'</span>')+
+   kv('Born',esc(m.dob)+' ('+m.sex+')')+
+   kv('Address',esc(m.addr)+', '+esc(m.city)+', OH '+m.zip+' \u2014 '+esc(m.county)+' County')+
+   kv('Phone','<span class="mono">'+esc(m.phone)+'</span>')+
+   (m.lang?kv('Language',esc(m.langName)+' <span class="mono">('+m.lang+')</span>'):'')+
+   '</dl>'+
+   '<div class="plain small">'+plainEnglish(m)+'</div>'+
+   '<h4>Eligibility spans</h4><div class="tblwrap"><table><thead><tr><th class="nosort">Group</th><th class="nosort">Begin</th><th class="nosort">End</th><th class="nosort">Note</th></tr></thead><tbody>'+
+   m.spans.map(function(x){return '<tr><td>'+pillFor(x.cat)+'</td><td class="mono">'+mLabel(x.b)+'</td>'+
+     '<td class="mono">'+(x.e===null?'\u2014 open \u2014':mLabel(x.e))+'</td><td>'+esc(x.notes)+'</td></tr>'}).join('')+
+   '</tbody></table></div>'+
+   '<h4>Delivery spans</h4><div class="tblwrap"><table><thead><tr><th class="nosort">Plan</th><th class="nosort">Begin</th><th class="nosort">End</th><th class="nosort">Why</th></tr></thead><tbody>'+
+   m.dspans.map(function(x){return '<tr><td><b>'+esc(x.plan)+'</b></td><td class="mono">'+mLabel(x.b)+'</td>'+
+     '<td class="mono">'+(x.e===null?'\u2014 open \u2014':mLabel(x.e))+'</td><td>'+esc(x.why)+'</td></tr>'}).join('')+
+   '</tbody></table></div>'+
+   '<p style="margin-top:14px"><button class="linkish" id="see834">Read this member\u2019s 834 \u2192</button></p>';
+  s.innerHTML=h;
+  s.querySelector('.close').onclick=closeMember;
+  document.getElementById('mprev').onclick=function(){stepMember(-1)};
+  document.getElementById('mnext').onclick=function(){stepMember(1)};
+  document.getElementById('see834').onclick=function(){fileSel=m.id;closeMember();activeTab='file';renderTabs();renderMain()};
+  function kv(k,v){return '<dt>'+k+'</dt><dd>'+v+'</dd>'}
+}
+function plainEnglish(m){
+  var first=m.spans[0];
+  switch(m.reg){
+   case 'A':return esc(m.first)+' has been covered under '+esc(GROUPS[m.group].name)+' since '+mLabel(first.b)+
+     ' — '+(NOW-first.b+1)+' straight months — and is carried today by '+esc(currentPlan(m))+'.'+
+     (m.county==='Marquette'?' In the Upper Peninsula that sentence needs no plan-selection story: there is one plan, and this is it.':
+     ' The most recent renewal passed without incident. In a program this size, uneventful is an achievement.');
+   case 'B':return esc(m.first)+"'s renewal was never completed in MI Bridges, so coverage closed at the end of "+mLabel(m.closedAt)+
+     ' — not because anything about '+(m.sex==='F'?'her':'him')+' changed, but because a login lapsed. After '+m.gap+
+     ' uncovered month'+(m.gap>1?'s':'')+', a new application was approved and a new span opened '+mLabel(m.closedAt+m.gap+1)+
+     '. The gap stays in the record; that is the point.';
+   case 'C':return esc(m.first)+' applied in '+mLabel(first.app)+' and was granted '+first.retroN+' retroactive month'+
+     (first.retroN>1?'s':'')+', so eligibility begins '+mLabel(first.b)+' — before the application existed. Those retro months ran '+
+     'fee-for-service; the plan enrollment starts at '+mLabel(first.app)+'. Two begin dates, both true, doing different jobs.';
+   case 'D':return esc(m.first)+' is '+esc(currentPlan(m))+"'s member for physical health, and since "+mLabel(m.pihpAt)+
+     ' has also been attributed to '+esc(m.dspans.find(function(d){return d.sys==='PIHP'}).plan)+' for specialty behavioral health — '+
+     'a private plan and a public system, both open at once. Two concurrent delivery spans on one member is not a data error; '+
+     'in Michigan it is the architecture.';
+   case 'E':return esc(m.first)+' became eligible in '+mLabel(first.b)+' under the Flint waiver — children and pregnant women '+
+     'served by the Flint water system, to 400% of poverty, an income limit that exists nowhere else in the program. '+
+     'The span is still open because lead exposure is not an episode. The water wrote this eligibility rule; the file just carries it.';
+   default:
+     var next=m.dspans.find(function(d){return (d.sys==='MYC'||d.sys==='FFS')&&d.e===null});
+     return esc(m.first)+' turned 65 and Medicare arrived '+mLabel(m.t65)+'. The '+esc(GROUPS[m.spans[0].cat].name)+
+     ' span closed the month before — '+(m.spans[0].cat==='HMP'?'the Healthy Michigan Plan ends at 65 by statute, a redetermination built into the law':'a redetermination, not a termination')+
+     ' — dual status opened, and the Part B buy-in accreted on the next cycle. '+(m.dsnp?
+     esc(m.first)+' stepped into '+esc(next.plan)+': MI Health Link ran as a pilot for a decade, ended the same December as Ohio\u2019s '+
+     'MyCare, and graduated statewide in January 2026. Answer #31 is the second commencement — and the answers are starting to rhyme.':
+     esc(m.first)+' chose the fee-for-service wrap instead of integrated enrollment — the commencement happened; attendance is optional. '+
+     'Answer #31 watches from the back row.');
+  }
+}
+function currentPlan(m){var d=sysNow(m).find(function(x){return x.sys==='MCO'||x.sys==='MYC'});
+  return d?d.plan:'fee-for-service'}
+
+/* ================= internal invariant suite (headless harness calls runTests) ================= */
+function runTests(){
+  var out=[],pass=0;
+  function t(name,fn){try{var r=fn();out.push([!!r,name+(typeof r==='string'?' \u2014 '+r:'')]);if(r)pass++}
+    catch(e){out.push([false,name+' \u2014 threw: '+e.message])}}
+  t('Population is exactly 3,000 members',function(){return MEMBERS.length===3000});
+  t('Register counts are exactly as planted (1500/500/250/250/350/150)',function(){
+    return ['A','B','C','D','E','F'].every(function(r){
+      return MEMBERS.filter(function(m){return m.reg===r}).length===REGCOUNT[r]})});
+  t('No span ends before it begins',function(){
+    return SPANS.every(function(r){return r.s.e===null||r.s.e>=r.s.b})&&
+           DSPANS.every(function(r){return r.d.e===null||r.d.e>=r.d.b})});
+  t('Every register D member holds two concurrent open delivery spans (MCO + PIHP)',function(){
+    return MEMBERS.filter(function(m){return m.reg==='D'}).every(function(m){
+      var open=m.dspans.filter(function(d){return d.e===null});
+      return open.length===2&&open.some(function(d){return d.sys==='PIHP'})})});
+  t('Every register F member: pre-Medicare span closes exactly when the dual span opens',function(){
+    return MEMBERS.filter(function(m){return m.reg==='F'}).every(function(m){
+      return m.spans.length===2&&m.spans[0].e===m.spans[1].b-1&&m.spans[1].cat==='DUA'})});
+  t('Every retro grant begins before its application month',function(){
+    return MEMBERS.filter(function(m){return m.reg==='C'}).every(function(m){
+      return m.spans[0].b<m.spans[0].app})});
+  
+  t('Every member renders an 834 without error',function(){
+    var n=0;MEMBERS.forEach(function(m){n+=build834(m).length});return n>0?String(n)+' segments built':false});
+  t('Dataset checksum (FNV-1a over the serialized population)',function(){
+    var s='';MEMBERS.forEach(function(m){s+=m.mid+m.last+m.first+m.reg+m.group+
+      m.spans.map(function(x){return x.cat+x.b+'/'+x.e}).join('|')+
+      m.dspans.map(function(x){return x.sys+x.b+'/'+x.e}).join('|')});
+    var hv=0x811c9dc5;
+    for(var i=0;i<s.length;i++){hv^=s.charCodeAt(i);hv=Math.imul(hv,0x01000193)}
+    return 'FNV 0x'+(hv>>>0).toString(16).toUpperCase()});
+  var h='<table><tbody>'+out.map(function(r){
+    return '<tr><td class="'+(r[0]?'testpass':'testfail')+'">'+(r[0]?'PASS':'FAIL')+'</td><td>'+esc(r[1])+'</td></tr>'}).join('')+
+    '</tbody></table><p class="sub" style="margin-top:10px">'+pass+' / '+out.length+' checks passed.</p>';
+  var out_el=document.getElementById('testout');if(out_el)out_el.innerHTML=h;
+  return pass===out.length;
+}
+
+/* ================= keyboard & overlay ================= */
+document.getElementById('overlay').onclick=closeMember;
+document.addEventListener('keydown',function(e){
+  var open=document.getElementById('slide').classList.contains('open');
+  if(!open)return;
+  if(e.key==='Escape')closeMember();
+  if(e.key==='ArrowLeft')stepMember(-1);
+  if(e.key==='ArrowRight')stepMember(1);
+});
+
+/* ================= boot ================= */
+renderTabs();renderMain();
+</script>
+</body>
+</html>

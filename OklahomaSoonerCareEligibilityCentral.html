@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oklahoma SoonerCare Eligibility Central</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@1,8..60,400;1,8..60,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#1E5FCC;
+  --accent-soft:#E8EFFB;
+  --ink:#1b2430;
+  --ink-soft:#4a5568;
+  --ink-faint:#8a94a3;
+  --line:#dde3ea;
+  --line-soft:#eceff3;
+  --bg:#f7f8fa;
+  --card:#ffffff;
+  --serif:'Source Serif 4', Georgia, serif;
+  --sans:'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono:'IBM Plex Mono', 'Consolas', monospace;
+  --g-FC01:#2E7D5B; --g-PG02:#B0568C; --g-CH19:#C98A2B; --g-EA02:#1E5FCC;
+  --g-SI02:#6A4FB6; --g-MN98:#5B8AA6; --g-FF26:#C25B4A; --g-WD02:#3E9C9C; --g-LT01:#7A7A52;
+  --d-mco:#4a7fd6; --d-ffs:#9aa3ad; --d-harp:#8a5fc0; --d-mltc:#2e8f8f;
+  --ok:#2E7D5B; --warn:#C98A2B; --bad:#C0392B;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+
+/* ---------- header ---------- */
+header{background:var(--card);border-bottom:1px solid var(--line);padding:18px 28px 0}
+.brandrow{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.wordmark{font-family:var(--serif);font-style:italic;font-weight:600;font-size:1.65rem;color:var(--accent);letter-spacing:.01em}
+.wordmark .st{color:var(--ink)}
+.tagline{color:var(--ink-faint);font-size:.85rem}
+.credit{margin-left:auto;color:var(--ink-faint);font-size:.78rem}
+nav{display:flex;gap:2px;margin-top:14px;flex-wrap:wrap}
+nav button{appearance:none;border:none;background:none;font:inherit;font-size:.86rem;font-weight:500;color:var(--ink-soft);padding:9px 14px;cursor:pointer;border-bottom:3px solid transparent;border-radius:6px 6px 0 0}
+nav button:hover{background:var(--line-soft)}
+nav button.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+nav button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+/* ---------- layout ---------- */
+main{max-width:1280px;margin:0 auto;padding:24px 28px 80px}
+.page{display:none}
+.page.on{display:block}
+h2{font-size:1.22rem;font-weight:700;margin:4px 0 4px}
+h3{font-size:.98rem;font-weight:600;margin:22px 0 8px}
+.sub{color:var(--ink-soft);font-size:.88rem;margin-bottom:16px;max-width:70ch}
+
+/* ---------- plain english callout ---------- */
+.plain{font-family:var(--serif);font-style:italic;font-size:1.02rem;line-height:1.65;color:#2c3a4d;background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:14px 18px;margin:14px 0 20px;max-width:86ch}
+.plain b{font-style:italic;font-weight:600}
+.plain .pe-label{display:block;font-family:var(--sans);font-style:normal;font-weight:700;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:5px}
+
+/* ---------- cards / stats ---------- */
+.statrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.stat .n{font-family:var(--mono);font-size:1.55rem;font-weight:600;color:var(--ink)}
+.stat .l{font-size:.74rem;color:var(--ink-soft);margin-top:2px;line-height:1.35}
+.stat.acc .n{color:var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:14px 0}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:900px){.twocol{grid-template-columns:1fr}}
+
+/* ---------- legend / bars ---------- */
+.leg{display:flex;flex-direction:column;gap:7px}
+.legrow{display:grid;grid-template-columns:16px 64px 1fr 46px;gap:10px;align-items:center;font-size:.84rem}
+.legrow .swatch{width:14px;height:14px;border-radius:4px}
+.legrow .code{font-family:var(--mono);font-size:.8rem;font-weight:600}
+.legrow .cnt{font-family:var(--mono);text-align:right;color:var(--ink-soft)}
+.barlist{display:flex;flex-direction:column;gap:8px}
+.barrow{display:grid;grid-template-columns:210px 1fr 40px;gap:10px;align-items:center;font-size:.83rem}
+.barrow .track{background:var(--line-soft);border-radius:5px;height:14px;overflow:hidden}
+.barrow .fill{display:block;height:100%;background:var(--d-mco);border-radius:5px;transition:width .8s ease}
+.barrow .bn{font-family:var(--mono);text-align:right;color:var(--ink-soft)}
+@media(max-width:700px){.barrow{grid-template-columns:130px 1fr 36px}}
+
+/* ---------- controls ---------- */
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;align-items:center}
+.controls input[type=search],.controls select{font:inherit;font-size:.85rem;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
+.controls input[type=search]{min-width:220px}
+.controls select:focus,.controls input:focus{outline:2px solid var(--accent);outline-offset:0}
+.hint{font-size:.76rem;color:var(--ink-faint)}
+
+/* ---------- tables ---------- */
+.tblwrap{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:auto;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:.83rem}
+th{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);background:#fbfcfd;white-space:nowrap;position:sticky;top:0}
+th.sortable{cursor:pointer;user-select:none}
+th.sortable:hover{color:var(--accent)}
+th .arr{font-size:.72rem;color:var(--accent)}
+.pager{display:flex;align-items:center;justify-content:center;gap:14px;margin:12px 0 2px}
+.pager button.pg{appearance:none;font:inherit;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:5px 13px;cursor:pointer;font-size:.82rem;color:var(--ink-soft)}
+.pager button.pg:hover:not(:disabled){background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.pager button.pg:disabled{opacity:.35;cursor:default}
+.pager .pgpos{font-size:.78rem;color:var(--ink-faint)}
+td{padding:9px 12px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tbody tr.rowlink{cursor:pointer}
+tbody tr.rowlink:hover{background:var(--accent-soft)}
+tbody tr.hl{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+.mono{font-family:var(--mono);font-size:.8rem}
+.nowrap{white-space:nowrap}
+
+/* ---------- chips ---------- */
+.chip{display:inline-block;font-family:var(--mono);font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:20px;color:#fff;white-space:nowrap}
+.chip.outl{background:none;border:1.5px solid currentColor}
+.dchip{display:inline-block;font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:5px;white-space:nowrap}
+.d-mco{background:#e5edfa;color:#2456a8}
+.d-ffs{background:#eceff2;color:#5c6672}
+.d-harp{background:#efe7f8;color:#6a3fa0}
+.d-mltc{background:#e2f2f2;color:#1f6f6f}
+.st-act{color:var(--ok);font-weight:600}
+.st-gap{color:var(--warn);font-weight:600}
+.st-cls{color:var(--ink-faint);font-weight:600}
+.flag{display:inline-block;font-size:.7rem;font-weight:600;background:#fdf1e0;color:#96660f;border:1px solid #f0d9ae;border-radius:5px;padding:1px 7px;white-space:nowrap}
+
+/* ---------- registers ---------- */
+.reg{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin:12px 0}
+.reg h3{margin:0 0 4px;display:flex;align-items:center;gap:10px}
+.reg .rl{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;background:var(--accent);color:#fff;font-family:var(--mono);font-weight:600;font-size:.85rem;flex:none}
+.reg .q{font-family:var(--serif);font-style:italic;color:#2c3a4d;font-size:.95rem;margin:4px 0 10px}
+.reg .meta{font-size:.78rem;color:var(--ink-faint);margin-bottom:8px}
+
+/* ---------- 834 ---------- */
+.ediwrap{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:12px 0;overflow:hidden}
+.edihead{padding:12px 18px;border-bottom:1px solid var(--line);display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;background:#fbfcfd}
+.edihead .fn{font-family:var(--mono);font-size:.82rem;font-weight:600}
+.edirow{display:grid;grid-template-columns:minmax(300px,46%) 1fr;border-bottom:1px solid var(--line-soft)}
+.edirow:last-child{border-bottom:none}
+.edirow .seg{font-family:var(--mono);font-size:.78rem;padding:8px 16px;background:#f4f7fb;color:#1b3a66;overflow-wrap:anywhere;border-right:1px solid var(--line-soft)}
+.edirow .note{font-size:.8rem;padding:8px 16px;color:var(--ink-soft)}
+.edirow.loop .seg{background:#e8effb;font-weight:600}
+@media(max-width:780px){.edirow{grid-template-columns:1fr}.edirow .seg{border-right:none}}
+
+/* ---------- modal ---------- */
+.overlay{position:fixed;inset:0;background:rgba(20,28,40,.42);opacity:0;pointer-events:none;transition:opacity .22s;z-index:40}
+.overlay.on{opacity:1;pointer-events:auto}
+.slideover{position:fixed;top:0;right:0;bottom:0;width:640px;max-width:94vw;background:var(--card);box-shadow:-12px 0 40px rgba(15,25,45,.22);transform:translateX(102%);transition:transform .26s ease;z-index:50;display:flex;flex-direction:column}
+.slideover.on{transform:translateX(0)}
+.mo-head{padding:16px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+.mo-head .who{min-width:0}
+.mo-head .nm{font-weight:700;font-size:1.05rem}
+.mo-head .idz{font-family:var(--mono);font-size:.76rem;color:var(--ink-soft)}
+.mo-x{margin-left:auto;appearance:none;border:1px solid var(--line);background:none;border-radius:8px;width:32px;height:32px;font-size:1rem;cursor:pointer;color:var(--ink-soft);flex:none}
+.mo-x:hover{background:var(--line-soft)}
+.mo-body{overflow-y:auto;padding:18px 22px;flex:1}
+.mo-foot{border-top:1px solid var(--line);padding:10px 22px;display:flex;align-items:center;gap:12px}
+.mo-foot button{appearance:none;font:inherit;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:.9rem}
+.mo-foot button:hover:not(:disabled){background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.mo-foot button:disabled{opacity:.35;cursor:default}
+.mo-foot .pos{font-family:var(--mono);font-size:.78rem;color:var(--ink-faint);margin-left:auto}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:4px 12px;font-size:.85rem;margin:8px 0 14px}
+.kv .k{color:var(--ink-faint)}
+.kv .v{color:var(--ink)}
+.mo-body h4{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);margin:16px 0 8px}
+.mo-body .plain{font-size:.93rem;padding:12px 15px}
+
+/* ---------- mini timeline ---------- */
+.tl{margin:6px 0 4px}
+.tl .band{display:grid;grid-template-columns:78px 1fr;gap:8px;align-items:center;margin:5px 0}
+.tl .bl{font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-faint);text-align:right}
+.tl .lane{position:relative;height:18px;background:var(--line-soft);border-radius:4px}
+.tl .bar{position:absolute;top:0;bottom:0;border-radius:4px;min-width:3px}
+.tl .bar.striped{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.28) 0 5px,transparent 5px 10px)}
+.tl .axis{display:grid;grid-template-columns:78px 1fr;gap:8px;margin-top:3px}
+.tl .ax{position:relative;height:14px;font-size:.62rem;color:var(--ink-faint);font-family:var(--mono)}
+.tl .ax span{position:absolute;transform:translateX(-50%)}
+.tl .todayline{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--bad);opacity:.7}
+.tl-note{font-size:.7rem;color:var(--ink-faint);margin-top:6px}
+
+/* ---------- reference ---------- */
+.refgrid{display:grid;grid-template-columns:1fr;gap:4px}
+dl.gloss{display:grid;grid-template-columns:200px 1fr;gap:8px 16px;font-size:.85rem}
+dl.gloss dt{font-weight:600}
+dl.gloss dd{color:var(--ink-soft)}
+@media(max-width:700px){dl.gloss{grid-template-columns:1fr}dl.gloss dd{margin-bottom:8px}}
+footer{max-width:1280px;margin:0 auto;padding:0 28px 40px;color:var(--ink-faint);font-size:.75rem;line-height:1.6}
+@media(max-width:700px){header{padding:14px 16px 0}main{padding:18px 14px 60px}.kv{grid-template-columns:120px 1fr}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brandrow">
+    <div class="wordmark">Oklahoma SoonerCare Eligibility <span class="st">Central</span></div>
+    <div class="tagline">SQ 802, SoonerSelect, the tribal nations, and the 834 &mdash; a synthetic demonstration</div>
+    <div class="credit">Robert Thomas Keyes</div>
+  </div>
+  <nav id="nav" aria-label="Sections">
+    <button data-pg="overview" class="on">Overview</button>
+    <button data-pg="members">Members</button>
+    <button data-pg="spans">Eligibility Spans</button>
+    <button data-pg="delivery">SoonerSelect</button>
+    <button data-pg="registers">Scenario Registers</button>
+    <button data-pg="file">What the File Says</button>
+    <button data-pg="reference">Reference Codes</button>
+  </nav>
+</header>
+<main>
+  <section class="page on" id="pg-overview">
+    <h2>Overview</h2>
+    <p class="sub">A synthetic Oklahoma SoonerCare population across a 24-month window (January 2025 &ndash; December 2026), viewed as of <b>July 2026</b>. Every value is deterministic &mdash; seeded PRNG, identical on every load.</p>
+    <div class="plain" id="ov-plain"></div>
+    <div class="statrow" id="ov-stats"></div>
+    <div class="twocol">
+      <div class="card">
+        <h3 style="margin-top:0">Coverage groups in the population</h3>
+        <div class="leg" id="ov-groups"></div>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Where members get their care today</h3>
+        <div class="barlist" id="ov-mcos"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="pg-members">
+    <h2>Members</h2>
+    <p class="sub">The full synthetic roster. Click any row for the member record; click a column header to sort.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>Every person here has a nine-digit <b>SoonerCare ID</b> that never changes: it survives gaps, plan switches, and the biggest single event in this file — the day the whole program moved. The roster shows <b>why</b> the state covers someone and <b>who</b> delivers the care today; the second column is younger than it looks. SoonerSelect launched <b>April 1, 2024</b>, and most long-tenured members carry its birthmark: decades of gray fee-for-service, then a plan span that begins the same month as everyone else’s. Watch, too, for the <b>AE02</b> chips — the expansion group the voters wrote into the constitution.</div>
+    <div class="controls">
+      <input type="search" id="m-search" placeholder="Search name, SoonerCare ID, city&hellip;" aria-label="Search members">
+      <select id="m-group" aria-label="Filter by coverage group"></select>
+      <select id="m-del" aria-label="Filter by delivery system"></select>
+      <select id="m-reg" aria-label="Filter by register"></select>
+      <select id="m-status" aria-label="Filter by status">
+        <option value="">Status today: all</option>
+        <option value="Active">Active</option>
+        <option value="Gap">In gap</option>
+        <option value="Closed">Closed</option>
+      </select>
+      <span class="hint" id="m-count"></span>
+    </div>
+    <div class="tblwrap"><table id="m-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">SoonerCare ID</th>
+        <th class="sortable" data-k="name">Name</th>
+        <th class="sortable" data-k="age">Age</th>
+        <th class="sortable" data-k="sex">Sex</th>
+        <th class="sortable" data-k="grp">Coverage Group</th>
+        <th class="sortable" data-k="del">Delivery Today</th>
+        <th class="sortable" data-k="county">Jurisdiction</th>
+        <th class="sortable" data-k="reg">Register</th>
+        <th class="sortable" data-k="status">Status Today</th>
+      </tr></thead>
+      <tbody id="m-body"></tbody>
+    </table></div>
+    <div class="pager" id="m-pager"></div>
+  </section>
+
+  <section class="page" id="pg-spans">
+    <h2>Eligibility Spans</h2>
+    <p class="sub">One row per coverage-group span &mdash; the state's answer to <i>&ldquo;from when to when, and under which door did this person enter?&rdquo;</i> Click a row to open the member.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>A span is a promise with dates on it — and in Oklahoma the promise can be made <b>the same day it’s asked for</b>: the online application runs real-time eligibility, one of the first in the country to say yes before the applicant logs off. Spans close for reasons — renewals that didn't come back, Medicare arriving — and one reason appears here that Mississippi’s file, three states east, cannot produce: <i>category change</i> into the expansion group. Register D is built on it. Watch also for <b>SP07</b> spans: SoonerPlan is a real eligibility value that is <i>not</i> full coverage — family planning only. Read the benefit, not just the yes.</div>
+    <div class="controls">
+      <select id="s-group" aria-label="Filter spans by coverage group"></select>
+      <select id="s-open" aria-label="Filter by open or closed">
+        <option value="">Open + closed</option><option value="open">Open only</option><option value="closed">Closed only</option>
+      </select>
+      <span class="hint" id="s-count"></span>
+    </div>
+    <div class="tblwrap"><table id="s-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">SoonerCare ID</th>
+        <th class="sortable" data-k="name">Member</th>
+        <th class="sortable" data-k="grp">Group</th>
+        <th class="sortable" data-k="start">Begin</th>
+        <th class="sortable" data-k="end">End</th>
+        <th class="sortable" data-k="months">Months</th>
+        <th>End Reason</th>
+      </tr></thead>
+      <tbody id="s-body"></tbody>
+    </table></div>
+    <div class="pager" id="s-pager"></div>
+  </section>
+
+  <section class="page" id="pg-delivery">
+    <h2>SoonerSelect</h2>
+    <p class="sub">One row per delivery span: which <b>SoonerSelect</b> plan held the member — Aetna, Humana, or Oklahoma Complete Health — the statewide <b>Children’s Specialty Plan</b> for children in foster care, or fee-for-service: ABD members, SoonerPlan, AI/AN members who kept the exemption, and everything before April 2024. Click a row to open the member.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>For thirty years Oklahoma was the great holdout: SoonerCare ran as the state’s own program — a patient-centered medical home model with the state as payer — while nearly every other state capitated. Then, after a ballot initiative, a court fight, and an act of the legislature, <b>SoonerSelect went live on April 1, 2024</b>: the newest Medicaid managed care program in the nation, moving an entire population into three plans essentially at once. That launch is <b>visible in the data</b> — the vertical line where thousands of gray FFS spans end in March 2024 and plan spans begin in April. When a state converts, its history keeps the seam forever, and every converted record carries the same begin date. Anyone who has migrated a large system will recognize the shape.</div>
+    <div class="controls">
+      <select id="d-sys" aria-label="Filter by delivery system"></select>
+      <span class="hint" id="d-count"></span>
+    </div>
+    <div class="tblwrap"><table id="d-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">SoonerCare ID</th>
+        <th class="sortable" data-k="name">Member</th>
+        <th class="sortable" data-k="sys">Delivery</th>
+        <th class="sortable" data-k="start">Begin</th>
+        <th class="sortable" data-k="end">End</th>
+        <th class="sortable" data-k="months">Months</th>
+        <th>Begin / End Reason</th>
+      </tr></thead>
+      <tbody id="d-body"></tbody>
+    </table></div>
+    <div class="pager" id="d-pager"></div>
+  </section>
+
+  <section class="page" id="pg-registers">
+    <h2>Scenario Registers</h2>
+    <p class="sub">Six business questions, each answered by a register of members whose data was planted to demonstrate exactly that scenario. Click any member to inspect the record behind the answer.</p>
+    <div id="reg-list"></div>
+  </section>
+
+  <section class="page" id="pg-file">
+    <h2>What the File Says</h2>
+    <p class="sub">Oklahoma really does speak X12N 834 — the Oklahoma Health Care Authority’s roster file to its SoonerSelect plans, a file type this state has only been sending since 2024. Pick a member and read the transaction the plan would receive for that member's most recent enrollment event, segment by segment, with a plain-language note on every line.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>An 834 is the state telling a health plan: <b>this person is yours now</b> (or isn't anymore). Oklahoma’s register D carries the segment worth staring at: an <b>001 change</b> moving a member from the postpartum or parent category into <b>AE02</b> — the expansion group installed by State Question 802. Same person, same plan, new group code, coverage unbroken. Hold it against Mississippi’s register D, where the identical life event produces a 024 and then silence. Two files, one 834 standard, one state line — and the difference is a constitutional amendment. Fee-for-service members (ABD, SoonerPlan, tribal opt-outs) generate no plan 834; for them, the rendering below is the state’s own record in the standard shape.</div>
+    <div class="controls">
+      <select id="f-member" aria-label="Choose member for 834"></select>
+      <span class="hint">Members are grouped by register; the transaction is rebuilt live from the member's actual spans.</span>
+    </div>
+    <div id="f-out"></div>
+  </section>
+
+  <section class="page" id="pg-reference">
+    <h2>Reference Codes</h2>
+    <p class="sub">The teaching code sets used throughout the app. Codes are patterned on Oklahoma's conventions; verify against current Oklahoma Health Care Authority publications before any non-demonstration use.</p>
+    <div id="ref-out"></div>
+  </section>
+</main>
+
+<footer>
+  <p><b>Oklahoma SoonerCare Eligibility Central</b> &mdash; a single-file demonstration app in the Central series. All members, identifiers, addresses, phone numbers, and dates are synthetic and deterministic (seeded PRNG, seed 405001); any resemblance to real persons is coincidental. Program facts reflect public Oklahoma Health Care Authority policy of the mid-2020s and change year to year — SoonerSelect is new and its details are still settling; verify against current OHCA and CMS publications before any non-demonstration use. The 834 rendering is a teaching aid, not an implementation guide. &copy; Robert Thomas Keyes.</p>
+</footer>
+
+<div class="overlay" id="overlay"></div>
+<aside class="slideover" id="modal" role="dialog" aria-modal="true" aria-labelledby="mo-nm">
+  <div class="mo-head">
+    <div class="who">
+      <div class="nm" id="mo-nm"></div>
+      <div class="idz" id="mo-id"></div>
+    </div>
+    <button class="mo-x" id="mo-x" aria-label="Close">&#10005;</button>
+  </div>
+  <div class="mo-body" id="mo-body"></div>
+  <div class="mo-foot">
+    <button id="mo-prev" aria-label="Previous member">&#9664;</button>
+    <button id="mo-next" aria-label="Next member">&#9654;</button>
+    <span class="pos" id="mo-pos"></span>
+  </div>
+</aside>
+<script>
+'use strict';
+/* ============ Oklahoma SoonerCare Eligibility Central ============
+   Central series -- Robert Thomas Keyes
+   Deterministic synthetic data. Seed 405001 (Oklahoma City's area code).
+   Window: Jan 2025 (idx 0) .. Dec 2026 (idx 23). "Today" = Jul 2026 (idx 18).
+================================================================= */
+
+/* ---------- seeded PRNG (mulberry32) ---------- */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+var R = mulberry32(405001);
+function ri(lo,hi){return lo+Math.floor(R()*(hi-lo+1))}
+function pick(arr){return arr[Math.floor(R()*arr.length)]}
+function wpick(pairs){var tot=0,i;for(i=0;i<pairs.length;i++)tot+=pairs[i][1];var x=R()*tot;for(i=0;i<pairs.length;i++){x-=pairs[i][1];if(x<0)return pairs[i][0]}return pairs[pairs.length-1][0]}
+
+/* ---------- window ---------- */
+var WIN_START_Y=2025, WIN_MONTHS=24, TODAY_IDX=18; /* Jul 2026 */
+var LAUNCH_IDX=-9; /* April 1, 2024 -- the SoonerSelect big bang */
+var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function mLabel(idx){ if(idx===null||idx===undefined)return '&mdash;';
+  var y=WIN_START_Y+Math.floor(idx/12), m=((idx%12)+12)%12;
+  return MONTHS[m]+' '+y }
+function mFirstD8(idx){var y=WIN_START_Y+Math.floor(idx/12),m=((idx%12)+12)%12;return ''+y+String(m+1).padStart(2,'0')+'01'}
+function mLastD8(idx){var y=WIN_START_Y+Math.floor(idx/12),m=((idx%12)+12)%12;var last=new Date(y,m+1,0).getDate();return ''+y+String(m+1).padStart(2,'0')+String(last).padStart(2,'0')}
+function spanMonths(s,e){var last=(e===null?TODAY_IDX:e);return Math.max(1,last-Math.max(s,-990)+1)}
+
+/* ---------- coverage groups ---------- */
+var GROUPS={
+ CH19:{name:'Children',                  magi:true,  color:'--g-CH19', blurb:'The largest category \u2014 SoonerCare covers children broadly, with real-time online eligibility that can say yes the same day.'},
+ AE02:{name:'Adult Expansion (SQ 802)',  magi:true,  color:'--g-SI02', blurb:'The rung the voters installed: State Question 802 (June 2020) wrote Medicaid expansion into the Oklahoma Constitution \u2014 adults 19\u201364 to 138% FPL, live July 2021. The legislature cannot repeal it; only another vote of the people can.'},
+ PW02:{name:'Pregnant & Postpartum',     magi:true,  color:'--g-EA02', blurb:'Pregnancy coverage plus twelve months postpartum.'},
+ FM01:{name:'Parents & Caretakers',      magi:true,  color:'--g-FC01', blurb:'Very-low-income parents \u2014 the pre-802 door, now mostly a waypoint on the way to the expansion group.'},
+ AB03:{name:'Aged / Blind / Disabled',   magi:false, color:'--g-MN98', blurb:'SSI recipients and SSI-related budgeting \u2014 excluded from SoonerSelect; served fee-for-service.'},
+ FF26:{name:'Former Foster Care',        magi:true,  color:'--g-FF26', blurb:'Young adults formerly in foster care, covered to 26 regardless of income.'},
+ LT01:{name:'Long-Term Services & Supports', magi:false, color:'--g-LT01', blurb:'Nursing facility residents and ADvantage waiver participants \u2014 Oklahoma\u2019s big HCBS waiver keeps elders at home, fee-for-service.'},
+ SP07:{name:'SoonerPlan (family planning)', magi:true, color:'--g-WD02', blurb:'A limited-benefit program \u2014 family planning services only, for men and women over the full-benefit income lines. A real eligibility value that is not full coverage: read the benefit, not just the yes.'}
+};
+var GROUP_KEYS=Object.keys(GROUPS);
+
+/* ---------- SoonerSelect plans (launched April 1, 2024 -- the newest program in the nation) ---------- */
+var OKPLANS=[
+ {code:'AETNA',  name:'Aetna Better Health of Oklahoma'},
+ {code:'HUMANA', name:'Humana Healthy Horizons in Oklahoma'},
+ {code:'OCH',    name:'Oklahoma Complete Health'}
+];
+var CSP={code:'OCHCSP', name:'Oklahoma Complete Health \u2014 Children\u2019s Specialty Plan'};
+var PLANBY={}; OKPLANS.forEach(function(p){PLANBY[p.code]=p}); PLANBY[CSP.code]=CSP;
+function sysLabel(code){ return code==='FFS'?'Fee-for-Service':(PLANBY[code]?PLANBY[code].name:code) }
+function sysKind(code){ return code==='FFS'?'FFS':(code===CSP.code?'CSP':'PLAN') }
+function sysClass(code){ var k=sysKind(code); return k==='FFS'?'d-ffs':(k==='CSP'?'d-harp':'d-mco') }
+function pickPlan(){ return pick(OKPLANS).code }
+
+/* ---------- tribal nations & facilities ---------- */
+var TRIBES=[['Cherokee Nation',9],['Chickasaw Nation',4],['Choctaw Nation of Oklahoma',5],['Muscogee (Creek) Nation',4],['Osage Nation',1],['Kiowa Tribe',1],['Comanche Nation',1.5],['Citizen Potawatomi Nation',1.5]];
+var IHS_FAC={
+ 'Cherokee Nation':'W.W. Hastings Hospital (Cherokee Nation Health Services, Tahlequah)',
+ 'Chickasaw Nation':'Chickasaw Nation Medical Center (Ada)',
+ 'Choctaw Nation of Oklahoma':'Choctaw Nation Health Care Center (Talihina)',
+ 'Muscogee (Creek) Nation':'Council Oak Comprehensive Healthcare (Muscogee Nation, Tulsa)',
+ 'Osage Nation':'Wah-Zha-Zhi Health Center (Pawhuska)',
+ 'Kiowa Tribe':'Lawton Indian Hospital (IHS)',
+ 'Comanche Nation':'Lawton Indian Hospital (IHS)',
+ 'Citizen Potawatomi Nation':'CPN Health Services (Shawnee)'
+};
+
+/* ---------- jurisdictions ---------- */
+var COUNTIES=[
+ {name:'Oklahoma',     w:14, zips:['73109','73119','73111'], city:'Oklahoma City',
+  streets:['SW 29th St','S Western Ave','S Robinson Ave','NE 23rd St','S May Ave','Classen Blvd']},
+ {name:'Tulsa',        w:11, zips:['74106','74115','74127'], city:'Tulsa',
+  streets:['N Peoria Ave','E Admiral Pl','Charles Page Blvd','N Lewis Ave','E Pine St']},
+ {name:'Cleveland',    w:5,  zips:['73069','73160'], city:null, cities:['Norman','Moore'],
+  streets:['W Lindsey St','N Porter Ave','S Telephone Rd','SE 4th St']},
+ {name:'Comanche',     w:4,  zips:['73501'], city:'Lawton',
+  streets:['SW Lee Blvd','NW Cache Rd','SW 11th St']},
+ {name:'Garfield',     w:3,  zips:['73701'], city:'Enid',
+  streets:['W Owen K Garriott Rd','N Van Buren St','E Maple Ave']},
+ {name:'Muskogee',     w:3,  zips:['74401'], city:'Muskogee',
+  streets:['W Okmulgee Ave','N York St','S 32nd St']},
+ {name:'Cherokee',     w:3,  zips:['74464'], city:'Tahlequah',
+  streets:['Muskogee Ave','Downing St','S Bertha Parker Bypass']},
+ {name:'Pottawatomie', w:2,  zips:['74801'], city:'Shawnee',
+  streets:['N Kickapoo Ave','E Highland St','N Harrison St']},
+ {name:'Bryan',        w:2,  zips:['74701'], city:'Durant',
+  streets:['W Main St','N 1st Ave','Radio Rd']},
+ {name:'Okmulgee',     w:2,  zips:['74447'], city:'Okmulgee',
+  streets:['E 6th St','N Wood Dr','S Belmont Ave']},
+ {name:'Pontotoc',     w:2,  zips:['74820'], city:'Ada',
+  streets:['N Mississippi Ave','E Arlington St','Stonecipher Blvd']},
+ {name:'Carter',       w:2,  zips:['73401'], city:'Ardmore',
+  streets:['W Broadway St','N Commerce St','12th Ave NW']}
+];
+function pickCounty(){return wpick(COUNTIES.map(function(c){return [c,c.w]}))}
+var AREA=['405','918','539','580'];
+
+/* ---------- names & languages ---------- */
+var FIRST_F=['Emily','Madison','Ashley','Brittany','Amber','Cheyenne','Savannah','Shelby','Kaylee','Peyton','Maria','Guadalupe','Yesenia','Alejandra','Linh','Thao','Ayasha','Winona','Sequoyah','Nita','Awinita','Dawn','Misty','Crystal','Tammy','Donna','Brenda','Loretta','Faith','Journey','Aiyana','Halona'],
+    FIRST_M=['Tyler','Hunter','Colton','Austin','Dakota','Cody','Wyatt','Bryce','Garrett','Jose','Miguel','Juan','Minh','Tuan','Sequoyah','Chebon','Koda','Billy','Jimmy','Earl','Dale','Travis','Levi','Wade','Clint','Roy','Dustin','Tommy','Ray','Gage','Bo','Denny'];
+var LAST=['Smith','Johnson','Williams','Brown','Jones','Miller','Davis','Wilson','Taylor','Moore','Harjo','Tiger','Fixico','Yahola','Walkingstick','Sixkiller','Hummingbird','Swimmer','Vann','Ross','Christie','Battiest','Redcorn','Poolaw','Tsatoke','Garcia','Martinez','Hernandez','Lopez','Ramirez','Nguyen','Tran','Pham','Jetnil','Kabua','McCurtain','Colbert','Folsom','Byrd','Ketcher','Buckskin','Whitehorn','Littlejohn','Bearpaw','Crittenden','Dreadfulwater','Pigeon','Sands','Wolfe','Cloud'];
+var LANGS=[['English',88],['Spanish',8],['Vietnamese',1.5],['Cherokee',1],['Marshallese',1],['Muscogee',0.5]];
+
+/* ---------- end reasons ---------- */
+var ELIG_END={
+ REDET:'Renewal not completed \u2014 case closed at annual renewal',
+ GRPCHG:'Category change \u2014 moved to a different coverage group',
+ INCOME:'Over income at renewal',
+ MOVED:'Moved out of state'
+};
+</script>
+<script>
+'use strict';
+/* ================= population generator ================= */
+var MEMBERS=[];
+var usedIds={};
+function genId(){ var s; do{ s=String(ri(100000000,899999999)) }while(usedIds[s]); usedIds[s]=1; return s }
+function genPhone(){ return '('+pick(AREA)+') '+ri(200,989)+'-'+String(ri(0,9999)).padStart(4,'0') }
+function genAddr(c){ var city=c.city||pick(c.cities); return {street:ri(100,9999)+' '+pick(c.streets), city:city, zip:pick(c.zips)} }
+function genName(sex){ return {first:(sex==='F'?pick(FIRST_F):pick(FIRST_M)), last:pick(LAST)} }
+function dobForAge(age){ var y=2026-age; var m=ri(0,11); if(m>6)y--; return {y:y,m:m,d:ri(1,28)} }
+function dobD8(d){return ''+d.y+String(d.m+1).padStart(2,'0')+String(d.d).padStart(2,'0')}
+function dobLabel(d){return MONTHS[d.m]+' '+d.d+', '+d.y}
+
+function baseMember(reg){
+  var sex=pick(['F','F','F','M','M']);
+  var nm=genName(sex), c=pickCounty(), a=genAddr(c);
+  return { id:genId(), first:nm.first, last:nm.last, sex:sex, county:c.name,
+    street:a.street, city:a.city, zip:a.zip, phone:genPhone(),
+    lang:wpick(LANGS), reg:reg, eligSpans:[], delSpans:[], flags:[],
+    aian:false, tribe:null };
+}
+function addElig(m,grp,s,e,reason){m.eligSpans.push({grp:grp,start:s,end:e,reason:reason||null})}
+function addDel(m,sys,s,e,note){m.delSpans.push({sys:sys,start:s,end:e,note:note||null})}
+/* the big-bang helper: FFS until the launch, then a plan -- the birthmark every
+   long-tenured record carries: no SoonerSelect span can predate April 2024. */
+function addBigBang(m,eligStart,plan){
+  if(eligStart<LAUNCH_IDX){
+    addDel(m,'FFS',eligStart,LAUNCH_IDX-1,'SoonerCare as it was for decades \u2014 the state as payer, PCCM/FFS');
+    addDel(m,plan,LAUNCH_IDX,null,'Enrolled at the April 2024 SoonerSelect launch \u2014 the day the whole program moved');
+    m.flags.push('SoonerSelect since day one: April 2024, when Oklahoma moved a whole program into managed care at once');
+    return true;
+  }
+  var lag=R()<0.5?1:0;
+  if(lag){ addDel(m,'FFS',eligStart,eligStart+lag-1,'Processing sliver before plan pickup'); addDel(m,plan,eligStart+lag,null,null); }
+  else addDel(m,plan,eligStart,null,null);
+  return false;
+}
+
+/* ----- Register A: steady state (1100) ----- */
+(function(){
+  var grpsA=[['CH19',8],['AE02',6],['FM01',1],['PW02',1],['AB03',2],['FF26',1],['SP07',1]];
+  for(var i=0;i<1100;i++){
+    var grp=wpick(grpsA);
+    var m=baseMember('A');
+    var age = grp==='CH19'?ri(0,18) : grp==='FF26'?ri(18,25) : grp==='AB03'?ri(28,62) : grp==='PW02'?ri(19,38) : grp==='SP07'?ri(19,44) : grp==='AE02'?ri(19,63) : ri(19,45);
+    m.age=age; m.dob=dobForAge(age); if(grp==='PW02')m.sex='F';
+    var s=ri(-20,2);
+    addElig(m,grp,s,null,null);
+    if(grp==='AB03'){
+      addDel(m,'FFS',s,null,'ABD member \u2014 excluded from SoonerSelect; fee-for-service');
+    } else if(grp==='SP07'){
+      addDel(m,'FFS',s,null,'SoonerPlan is a limited benefit \u2014 family planning only, fee-for-service; no plan receives it');
+    } else if(grp==='CH19'&&R()<0.05){
+      /* children in foster care: one statewide specialty plan */
+      var fs=Math.max(s,LAUNCH_IDX);
+      if(s<LAUNCH_IDX)addDel(m,'FFS',s,LAUNCH_IDX-1,null);
+      addDel(m,CSP.code,fs,null,'Child in foster care \u2014 the Children\u2019s Specialty Plan: one statewide plan for every child in state custody');
+      m.flags.push('In foster care \u2014 enrolled in the Children\u2019s Specialty Plan, the single statewide plan for children in custody; placements move, the plan doesn\u2019t');
+    } else {
+      addBigBang(m,s,pickPlan());
+      if(m.flags.length===0&&R()<0.05){ /* rare voluntary switch for post-launch joiners */
+        var lastDs=m.delSpans[m.delSpans.length-1];
+        if(lastDs.sys!=='FFS'&&lastDs.start<12){
+          var sw=ri(Math.max(lastDs.start+2,6),15);
+          var alt=pickPlan(); var g=0; while(alt===lastDs.sys&&g++<6)alt=pickPlan();
+          lastDs.end=sw-1;
+          addDel(m,alt,sw,null,'Member-elected plan change');
+          m.flags.push('Plan change '+mLabel(sw)+' \u2014 the eligibility span never noticed');
+        }
+      }
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register B: renewal churn (500) ----- */
+(function(){
+  for(var i=0;i<500;i++){
+    var grp=wpick([['CH19',4],['AE02',4],['FM01',1],['PW02',1]]);
+    var m=baseMember('B');
+    m.age = grp==='CH19'?ri(1,17):ri(19,55); m.dob=dobForAge(m.age); if(grp==='PW02')m.sex='F';
+    var s=ri(-18,-2);
+    var inGapNow=(i<125);
+    var term=inGapNow?ri(15,16):ri(4,12);
+    var gap=inGapNow?ri(3,4):ri(1,4);
+    var regain=term+gap+1;
+    addElig(m,grp,s,term,ELIG_END.REDET);
+    addElig(m,grp,regain,null,null);
+    var plan=pickPlan();
+    if(s<LAUNCH_IDX){ addDel(m,'FFS',s,LAUNCH_IDX-1,'Pre-launch FFS'); addDel(m,plan,LAUNCH_IDX,term,null); }
+    else addDel(m,plan,s,term,null);
+    var same=R()<0.6;
+    var plan2=same?plan:pickPlan();
+    var lag=R()<0.5?1:0;
+    if(lag){
+      addDel(m,'FFS',regain,regain+lag-1,'Coverage restored before plan pickup');
+      addDel(m,plan2,regain+lag,null,same?null:'Auto-assignment landed differently on return');
+    } else {
+      addDel(m,plan2,regain,null,same?null:'Auto-assignment landed differently on return');
+    }
+    m.flags.push('Gap '+mLabel(term+1)+'\u2013'+mLabel(regain-1)+' ('+gap+' mo) \u2014 real-time enrollment means the way back in can take a day; the gap is the paperwork, not the door');
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register C: retroactive grant (375) ----- */
+(function(){
+  for(var i=0;i<375;i++){
+    var grp=wpick([['CH19',4],['AE02',3],['PW02',2]]);
+    var m=baseMember('C');
+    if(grp==='PW02')m.sex='F';
+    m.age = grp==='CH19'?ri(0,16) : grp==='PW02'?ri(19,36) : ri(19,55);
+    m.dob=dobForAge(m.age);
+    var app=ri(6,15), retro=ri(1,3), s=app-retro;
+    addElig(m,grp,s,null,null);
+    var plan=pickPlan();
+    addDel(m,'FFS',s,app,'The retro months and the processing month \u2014 fee-for-service; capitation only runs forward');
+    addDel(m,plan,app+1,null,null);
+    m.flags.push('Retro grant: '+retro+' month'+(retro>1?'s':'')+' back to '+mLabel(s)+' \u2014 and this is the state where the online application can say yes the same day it\u2019s filed');
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register D: SQ 802 -- the mirror of Mississippi (375) ----- */
+(function(){
+  for(var i=0;i<375;i++){
+    var m=baseMember('D');
+    var kind = i<150?'PPMOVE' : (i<265?'KID18':'INCMOVE');
+    var move;
+    if(kind==='PPMOVE'){
+      m.sex='F'; m.age=ri(19,38); m.dob=dobForAge(m.age);
+      var s=ri(-6,4); move=s+12;              /* postpartum year completes -> AE02 */
+      addElig(m,'PW02',s,move-1,ELIG_END.GRPCHG);
+      addElig(m,'AE02',move,null,null);
+      var plan=pickPlan();
+      if(s<LAUNCH_IDX){ addDel(m,'FFS',s,LAUNCH_IDX-1,null); addDel(m,plan,LAUNCH_IDX,null,'Enrollment continues across the group change'); }
+      else addDel(m,plan,s,null,'Enrollment continues across the group change');
+      m.flags.push('Postpartum year ended '+mLabel(move-1)+' \u2014 and SQ 802 caught her: moved to the expansion group, coverage unbroken. One state line away, this exact month is a closure.');
+    } else if(kind==='KID18'){
+      m.age=ri(36,52); m.dob=dobForAge(m.age);
+      var s2=ri(-20,-6); move=ri(6,16);
+      addElig(m,'FM01',s2,move-1,ELIG_END.GRPCHG);
+      addElig(m,'AE02',move,null,null);
+      var plan2=pickPlan();
+      addDel(m,'FFS',s2,LAUNCH_IDX-1,null); addDel(m,plan2,LAUNCH_IDX,null,'Enrollment continues across the group change');
+      m.flags.push('Youngest child turned 18 in '+mLabel(move-1)+' \u2014 the parent category ended and the expansion group began the next day. In Mississippi, this birthday is a closure.');
+    } else {
+      m.age=ri(22,48); m.dob=dobForAge(m.age);
+      var s3=ri(-20,-6); move=ri(6,16);
+      addElig(m,'FM01',s3,move-1,ELIG_END.GRPCHG);
+      addElig(m,'AE02',move,null,null);
+      var plan3=pickPlan();
+      addDel(m,'FFS',s3,LAUNCH_IDX-1,null); addDel(m,plan3,LAUNCH_IDX,null,'Enrollment continues across the group change');
+      m.flags.push('A raise over the parent limit in '+mLabel(move-1)+' \u2014 and the record shows a category change, not a cliff: the expansion group the voters installed caught the fall.');
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register E: the tribal nations (325) ----- */
+(function(){
+  for(var i=0;i<325;i++){
+    var grp=wpick([['CH19',4],['AE02',4],['PW02',1],['AB03',1],['FM01',1]]);
+    var m=baseMember('E');
+    m.aian=true; m.tribe=wpick(TRIBES);
+    if(m.tribe==='Cherokee Nation'&&R()<0.35)m.lang='Cherokee';
+    if(m.tribe==='Muscogee (Creek) Nation'&&R()<0.2)m.lang='Muscogee';
+    if(R()<0.75)m.last=pick(['Harjo','Tiger','Fixico','Yahola','Walkingstick','Sixkiller','Hummingbird','Swimmer','Vann','Ross','Christie','Battiest','Redcorn','Poolaw','Tsatoke','McCurtain','Colbert','Folsom','Byrd','Ketcher','Whitehorn','Littlejohn','Bearpaw','Crittenden','Dreadfulwater','Pigeon','Sands','Wolfe','Cloud']);
+    if(grp==='PW02')m.sex='F';
+    m.age = grp==='CH19'?ri(0,17) : grp==='PW02'?ri(19,36) : grp==='AB03'?ri(30,62) : ri(19,60);
+    m.dob=dobForAge(m.age);
+    var s=ri(-22,-2);
+    addElig(m,grp,s,null,null);
+    var optIn=(i>=228);   /* ~30% opted in to SoonerSelect */
+    if(optIn&&grp!=='AB03'){
+      if(s<LAUNCH_IDX){ addDel(m,'FFS',s,LAUNCH_IDX-1,null); addDel(m,pickPlan(),LAUNCH_IDX,null,'AI/AN exemption is a choice \u2014 this member opted in to SoonerSelect'); }
+      else addDel(m,pickPlan(),s,null,'AI/AN exemption is a choice \u2014 this member opted in');
+      m.flags.push(m.tribe+' citizen \u2014 exempt from mandatory SoonerSelect enrollment, and chose to opt in anyway; '+IHS_FAC[m.tribe]+' remains in-network through the Indian health provisions');
+    } else {
+      addDel(m,'FFS',s,null,'AI/AN member \u2014 exempt from SoonerSelect; care through the tribal health system, fee-for-service');
+      m.flags.push(m.tribe+' citizen \u2014 exempt from SoonerSelect; medical home: '+IHS_FAC[m.tribe]);
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register F: Medicare arrives -- a young program's first goodbyes (325) ----- */
+(function(){
+  for(var i=0;i<325;i++){
+    var m=baseMember('F');
+    var ssdi=(R()<0.6);
+    var medi=ri(6,16), lag=ri(1,3);
+    if(ssdi){ m.age=ri(38,62); m.dob=dobForAge(m.age); }
+    else { m.age=(medi<=TODAY_IDX)?65:64; m.dob={y:WIN_START_Y+Math.floor(medi/12)-65, m:medi%12, d:ri(1,28)}; }
+    var s=ri(-22,-10);
+    var grp=ssdi?'AE02':'AE02';
+    addElig(m,grp,s,medi-1,'Medicare entitlement \u2014 expansion group ends; redetermined under the ABD rules');
+    addElig(m,'AB03',medi,null,null);
+    var plan=pickPlan();
+    addDel(m,'FFS',s,LAUNCH_IDX-1,null);
+    addDel(m,plan,LAUNCH_IDX,medi-1,'SoonerSelect enrollment ends with Medicare \u2014 duals are excluded');
+    addDel(m,'FFS',medi,null,'FFS wrap \u2014 Medicare primary, Medicaid paying cost sharing and the gaps');
+    m.medicareIdx=medi; m.buyinIdx=medi+lag; m.ssdi=ssdi;
+    if(i<130)m.flags.push('ADvantage waiver assessment underway \u2014 Oklahoma\u2019s HCBS waiver would add personal care at home, still fee-for-service');
+    m.flags.push((ssdi?'Medicare via SSDI (24-month waiting period ended) ':'Turned 65 ')+mLabel(medi)+' \u2014 an enrollment born April 2024 ended '+mLabel(medi-1)+': among the shortest-lived plan spans in this series. The wrap went FFS; buy-in effective '+mLabel(medi+lag)+'.');
+    MEMBERS.push(m);
+  }
+})();
+
+/* ---------- derived member state ---------- */
+function eligToday(m){ for(var i=0;i<m.eligSpans.length;i++){var s=m.eligSpans[i]; if(s.start<=TODAY_IDX&&(s.end===null||s.end>=TODAY_IDX))return s} return null }
+function delToday(m){ for(var i=0;i<m.delSpans.length;i++){var s=m.delSpans[i]; if(s.start<=TODAY_IDX&&(s.end===null||s.end>=TODAY_IDX))return s} return null }
+function lastElig(m){ return m.eligSpans[m.eligSpans.length-1] }
+function statusToday(m){
+  if(eligToday(m))return 'Active';
+  var le=lastElig(m);
+  if(le.end!==null&&le.end<TODAY_IDX){
+    for(var i=0;i<m.eligSpans.length;i++){ if(m.eligSpans[i].start>TODAY_IDX)return 'Gap' }
+    return 'Closed';
+  }
+  return 'Gap';
+}
+MEMBERS.forEach(function(m,ix){
+  m.ix=ix;
+  /* name/sex coherence: registers that force sex after baseMember (e.g. postpartum)
+     must not keep an opposite-list first name. Deterministic, PRNG-free remap. */
+  if(m.sex==='F'&&FIRST_F.indexOf(m.first)<0)m.first=FIRST_F[(m.first.length*7+m.last.length)%FIRST_F.length];
+  if(m.sex==='M'&&FIRST_M.indexOf(m.first)<0)m.first=FIRST_M[(m.first.length*7+m.last.length)%FIRST_M.length];
+  m.name=m.last+', '+m.first;
+  var et=eligToday(m), le=lastElig(m);
+  m.grpToday = et?et.grp:le.grp;
+  var dt=delToday(m);
+  m.delTodayCode = dt?dt.sys:'\u2014';
+  m.status=statusToday(m);
+});
+</script>
+<script>
+'use strict';
+/* ================= shared render helpers ================= */
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function grpChip(g){ if(!GROUPS[g])return esc(g);
+  return '<span class="chip" style="background:var('+GROUPS[g].color+')" title="'+esc(GROUPS[g].name)+'">'+g+'</span>' }
+function delChip(code){ if(code==='\u2014')return '<span class="st-cls">\u2014</span>';
+  var cls=sysClass(code), lbl=code;
+  return '<span class="dchip '+cls+'" title="'+esc(sysLabel(code))+'">'+esc(lbl)+'</span>' }
+function statusHtml(st){ return st==='Active'?'<span class="st-act">Active</span>':(st==='Gap'?'<span class="st-gap">In gap</span>':'<span class="st-cls">Closed</span>') }
+function regBadge(r){return '<span class="mono" style="font-weight:600;color:var(--accent)">'+r+'</span>'}
+
+/* ================= overview ================= */
+function renderOverview(){
+  var n=MEMBERS.length, act=0, plan=0, csp=0, ffs=0, sq=0, aian=0, launch=0, gaps=0;
+  MEMBERS.forEach(function(m){
+    if(m.status==='Active')act++;
+    if(m.status==='Gap')gaps++;
+    var d=m.delTodayCode;
+    if(d!=='\u2014'){ var k=sysKind(d); if(k==='PLAN')plan++; else if(k==='CSP')csp++; else ffs++; }
+    if(m.status==='Active'&&m.grpToday==='AE02')sq++;
+    if(m.aian)aian++;
+    if(m.delSpans.some(function(s){return s.sys!=='FFS'&&s.start===LAUNCH_IDX}))launch++;
+  });
+  var st=document.getElementById('ov-stats');
+  st.innerHTML =
+    stat(n,'Synthetic members',true)+
+    stat(act,'Eligible today (Jul 2026)')+
+    stat(sq,'SQ 802 expansion adults today')+
+    stat(plan,'In a SoonerSelect plan today')+
+    stat(csp,'Children\u2019s Specialty Plan (foster care)')+
+    stat(launch,'Enrolled at the Apr 2024 launch \u2014 the birthmark')+
+    stat(aian,'AI/AN members (tribal citizens)')+
+    stat(gaps,'In an eligibility gap today');
+  function stat(nv,l,acc){return '<div class="stat'+(acc?' acc':'')+'"><div class="n">'+(typeof nv==='number'?nv.toLocaleString():nv)+'</div><div class="l">'+l+'</div></div>'}
+
+  /* group legend with counts (by current/last group) */
+  var gc={}; MEMBERS.forEach(function(m){gc[m.grpToday]=(gc[m.grpToday]||0)+1});
+  var lg=document.getElementById('ov-groups'); lg.innerHTML='';
+  GROUP_KEYS.forEach(function(g){
+    var c=gc[g]||0;
+    lg.innerHTML+='<div class="legrow"><span class="swatch" style="background:var('+GROUPS[g].color+')"></span>'+
+      '<span class="code">'+g+'</span><span>'+esc(GROUPS[g].name)+'</span>'+
+      '<span class="cnt">'+c+'</span></div>';
+  });
+
+  /* delivery distribution today */
+  var dc={}; MEMBERS.forEach(function(m){ if(m.delTodayCode!=='\u2014') dc[m.delTodayCode]=(dc[m.delTodayCode]||0)+1 });
+  var rows=OKPLANS.map(function(p){return {label:p.name, code:p.code, n:dc[p.code]||0, cls:'var(--d-mco)'}});
+  rows.push({label:CSP.name, code:CSP.code, n:dc[CSP.code]||0, cls:'var(--d-harp)'});
+  rows.push({label:'Fee-for-service (ABD, AI/AN, SoonerPlan, duals, tails)', code:'FFS', n:dc.FFS||0, cls:'var(--d-ffs)'});
+  rows.sort(function(a,b){return b.n-a.n});
+  var mx=rows.reduce(function(a,r){return Math.max(a,r.n)},1);
+  var bl=document.getElementById('ov-mcos'); bl.innerHTML='';
+  rows.forEach(function(r){
+    bl.innerHTML+='<div class="barrow"><span title="'+esc(r.label)+'">'+esc(r.label)+'</span>'+
+      '<span class="track"><span class="fill" style="width:0;background:'+r.cls+'" data-w="'+(100*r.n/mx)+'"></span></span>'+
+      '<span class="bn">'+r.n+'</span></div>';
+  });
+  requestAnimationFrame(function(){ setTimeout(function(){
+    bl.querySelectorAll('.fill').forEach(function(f){f.style.width=f.getAttribute('data-w')+'%'}) },60) });
+
+  document.getElementById('ov-plain').innerHTML='<span class="pe-label">In plain English</span>'+
+    'Oklahoma\u2019s file carries two dates you can see from orbit. <b>July 2021</b>: Medicaid expansion goes live \u2014 not by a governor\u2019s pen or a legislature\u2019s vote, but by <b>State Question 802</b>, a citizen ballot initiative that wrote the expansion group into the state constitution, where no session can quietly repeal it. And <b>April 1, 2024</b>: <b>SoonerSelect</b> launches \u2014 the newest Medicaid managed care program in America, ending three decades of Oklahoma as the great fee-for-service holdout and moving an entire population into three plans essentially overnight. That second date is a <i>birthmark</i>: open almost any long-tenured member and the timeline shows gray until March 2024, then a plan. '+
+    'Around those two dates: the largest American Indian/Alaska Native Medicaid population in the country \u2014 tribal citizens are exempt from SoonerSelect and many keep their tribal health systems, from W.W. Hastings in Tahlequah to the Chickasaw Nation Medical Center in Ada \u2014 a statewide Children\u2019s Specialty Plan for every child in foster care, real-time online eligibility that can say yes the same day, and a register D that is Mississippi\u2019s register D reflected in a mirror: the same three life events, ending in group changes instead of closures.';
+}
+
+/* ================= reference ================= */
+function renderReference(){
+  var h='';
+  h+='<div class="card"><h3 style="margin-top:0">Coverage groups (teaching set)</h3>'+
+     '<p class="sub" style="margin-bottom:8px">Patterned on Oklahoma\u2019s eligibility categories. The AE02 row deserves a pause: it exists because 340,000 more Oklahomans voted yes than no.</p>'+
+     '<div class="tblwrap"><table><thead><tr><th>Code</th><th>Name</th><th>Determination</th><th>What it means</th></tr></thead><tbody>';
+  GROUP_KEYS.forEach(function(g){var G=GROUPS[g];
+    h+='<tr><td>'+grpChip(g)+'</td><td>'+esc(G.name)+'</td><td>'+(G.magi?'MAGI (real-time online)':'Non-MAGI')+'</td><td>'+esc(G.blurb)+'</td></tr>'});
+  h+='</tbody></table></div></div>';
+
+  h+='<div class="card"><h3 style="margin-top:0">SoonerSelect \u2014 the newest program in the nation</h3>'+
+     '<p class="sub" style="margin-bottom:8px">Live April 1, 2024, after a ballot initiative, a court decision, and enabling legislation. Dental runs through separate dental plans (not modeled here). HD segment plan codes below.</p>'+
+     '<div class="tblwrap"><table><thead><tr><th>Code</th><th>Plan</th><th>Worth knowing</th></tr></thead><tbody>'+
+     '<tr><td class="mono">AETNA</td><td>Aetna Better Health of Oklahoma</td><td>Statewide</td></tr>'+
+     '<tr><td class="mono">HUMANA</td><td>Humana Healthy Horizons in Oklahoma</td><td>Statewide</td></tr>'+
+     '<tr><td class="mono">OCH</td><td>Oklahoma Complete Health</td><td>Statewide (Centene)</td></tr>'+
+     '<tr><td class="mono">OCHCSP</td><td>Oklahoma Complete Health \u2014 Children\u2019s Specialty Plan</td><td><b>One statewide plan for every child in foster care</b> \u2014 placements move across the state; the plan and its records do not</td></tr>'+
+     '<tr><td class="mono">FFS</td><td>Fee-for-service</td><td>ABD members and duals (excluded from SoonerSelect), SoonerPlan, AI/AN members keeping the exemption, retro tails \u2014 and all of history before April 2024</td></tr>'+
+     '</tbody></table></div></div>';
+
+  h+='<div class="card"><h3 style="margin-top:0">834 maintenance codes used in this app</h3>'+
+     '<div class="tblwrap"><table><thead><tr><th>INS03</th><th>Meaning</th><th>Where you\u2019ll see it</th></tr></thead><tbody>'+
+     '<tr><td class="mono">021</td><td>Addition</td><td>The April 2024 launch wave (registers A, B, D, F), new enrollments, re-enrollments, tribal opt-ins (E)</td></tr>'+
+     '<tr><td class="mono">001</td><td>Change</td><td><b>The SQ 802 group change (D)</b>: postpartum or parent category into AE02, coverage unbroken \u2014 the transaction Mississippi\u2019s file cannot produce</td></tr>'+
+     '<tr><td class="mono">024</td><td>Cancellation / termination</td><td>Renewal churn (B) and the Medicare exclusion (F) \u2014 a young program\u2019s first goodbyes</td></tr>'+
+     '</tbody></table></div></div>';
+
+  h+='<div class="card"><h3 style="margin-top:0">Glossary</h3><dl class="gloss">'+
+    gl('SoonerCare','Oklahoma\u2019s Medicaid program, run by the Oklahoma Health Care Authority (OHCA).')+
+    gl('State Question 802','The June 2020 citizen ballot initiative that added Medicaid expansion to the Oklahoma Constitution \u2014 Article II, Section 37A. Passed by about one percentage point; effective July 1, 2021. Because it is constitutional, the legislature cannot repeal it.')+
+    gl('SoonerSelect','The managed care program launched April 1, 2024 \u2014 the newest in the nation \u2014 after decades of Oklahoma running its own PCCM/FFS model (SoonerCare Choice). Three medical plans plus a statewide Children\u2019s Specialty Plan for foster care; separate dental plans.')+
+    gl('The birthmark','What a big-bang conversion leaves in the data: thousands of plan spans that all begin April 2024, with gray FFS before. Every migrated system carries its seam; Oklahoma\u2019s is fifteen months old and visible on nearly every long-tenured timeline in this file.')+
+    gl('AI/AN exemption','American Indian and Alaska Native members cannot be required to enroll in managed care; they may opt in. Oklahoma has the largest AI/AN Medicaid population in the country, served by tribal health systems \u2014 Cherokee Nation Health Services (the largest tribal system in the U.S.), Chickasaw, Choctaw, Muscogee, and IHS facilities.')+
+    gl('Children\u2019s Specialty Plan','The single statewide plan for children in foster care \u2014 so a placement change never means a plan change.')+
+    gl('SoonerPlan','A limited-benefit family-planning program \u2014 a real eligibility value that is not full coverage. Systems that treat every eligibility span as equivalent will overstate what SoonerPlan members can access.')+
+    gl('ADvantage waiver','Oklahoma\u2019s large HCBS waiver \u2014 personal care and in-home supports for elders and adults with disabilities, fee-for-service.')+
+    gl('Real-time eligibility','Oklahoma\u2019s online application runs determinations in real time \u2014 among the first states where an applicant could be eligible the same day. It changes the texture of churn: the gap is the paperwork, not the queue.')+
+    gl('Buy-in','The state paying a dual member\u2019s Medicare Part B premium. Accretion runs one to three months behind entitlement \u2014 the limbo in register F.')+
+    gl('834','The X12N enrollment and maintenance transaction \u2014 OHCA\u2019s roster file to the SoonerSelect plans, a file this state has only sent since 2024. Its register D change, moving a member into AE02, is the constitutional amendment expressed as EDI.')+
+    '</dl></div>';
+  function gl(t,d){return '<dt>'+t+'</dt><dd>'+d+'</dd>'}
+
+  h+='<div class="card"><h3 style="margin-top:0">Jurisdictions in this population</h3><p class="sub" style="margin-bottom:8px">Oklahoma has 77 counties; this roster draws from twelve \u2014 the metros, Lawton, Enid (home to a large Marshallese community), and the tribal capitals: Tahlequah (Cherokee Nation), Durant (Choctaw), Ada (Chickasaw), Okmulgee (Muscogee), Shawnee (Citizen Potawatomi).</p><p style="font-size:.85rem">'+COUNTIES.map(function(c){return esc(c.name)}).join(' \u00b7 ')+'</p></div>';
+
+  document.getElementById('ref-out').innerHTML=h;
+}
+</script>
+<script>
+'use strict';
+/* ================= generic sortable table state ================= */
+var SORT={};
+function bindSort(tblId, renderFn){
+  document.querySelectorAll('#'+tblId+' th.sortable').forEach(function(th){
+    th.addEventListener('click',function(){
+      var k=th.getAttribute('data-k');
+      var cur=SORT[tblId]||{};
+      SORT[tblId]={k:k, dir:(cur.k===k&&cur.dir==='asc')?'desc':'asc'};
+      renderFn();
+    });
+  });
+}
+function sortRows(tblId, rows){
+  var s=SORT[tblId]; if(!s)return rows;
+  var dir=s.dir==='asc'?1:-1;
+  rows.sort(function(a,b){
+    var x=a[s.k],y=b[s.k];
+    if(x===null||x===undefined)x=-Infinity; if(y===null||y===undefined)y=-Infinity;
+    if(typeof x==='string'){x=x.toLowerCase();y=String(y).toLowerCase();return x<y?-dir:(x>y?dir:0)}
+    return (x-y)*dir;
+  });
+  return rows;
+}
+function sortMarks(tblId){
+  var s=SORT[tblId];
+  document.querySelectorAll('#'+tblId+' th.sortable').forEach(function(th){
+    var base=th.textContent.replace(/[\u25b2\u25bc]\s*$/,'').trim();
+    th.innerHTML=esc(base)+(s&&s.k===th.getAttribute('data-k')?' <span class="arr">'+(s.dir==='asc'?'\u25b2':'\u25bc')+'</span>':'');
+  });
+}
+
+/* ================= pagination ================= */
+var PAGE={}, PAGE_SIZE=50;
+function pager(tblId, total, renderFn, pagerId){
+  var pages=Math.max(1,Math.ceil(total/PAGE_SIZE));
+  var p=Math.min(PAGE[tblId]||1,pages); if(p<1)p=1; PAGE[tblId]=p;
+  var el=document.getElementById(pagerId);
+  if(el){
+    if(pages===1){ el.innerHTML=''; }
+    else{
+      el.innerHTML='<button class="pg"'+(p<=1?' disabled':'')+' data-d="-1">\u25c0 Prev</button>'+
+        '<span class="mono pgpos">page '+p+' of '+pages.toLocaleString()+'</span>'+
+        '<button class="pg"'+(p>=pages?' disabled':'')+' data-d="1">Next \u25b6</button>';
+      el.querySelectorAll('button.pg').forEach(function(b){
+        b.addEventListener('click',function(){ PAGE[tblId]=p+parseInt(b.getAttribute('data-d'),10); renderFn(); });
+      });
+    }
+  }
+  return {from:(p-1)*PAGE_SIZE, to:Math.min(total,p*PAGE_SIZE)};
+}
+function resetPage(tblId){ PAGE[tblId]=1 }
+
+/* ================= members roster ================= */
+var ROSTER_VIEW=[]; /* current filtered order (all pages), for modal nav */
+function fillSelect(id, opts, allLabel){
+  var el=document.getElementById(id);
+  el.innerHTML='<option value="">'+allLabel+'</option>'+opts.map(function(o){return '<option value="'+o[0]+'">'+o[1]+'</option>'}).join('');
+}
+function initRosterControls(){
+  fillSelect('m-group',GROUP_KEYS.map(function(g){return[g,g+' \u2014 '+GROUPS[g].name]}),'Coverage group: all');
+  var dopts=OKPLANS.map(function(m){return[m.code,m.name]});
+  dopts.push([CSP.code,CSP.name]);
+  dopts.push(['FFS','Fee-for-Service']);
+  fillSelect('m-del',dopts,'Delivery today: all');
+  fillSelect('m-reg',['A','B','C','D','E','F'].map(function(r){return[r,'Register '+r]}),'Register: all');
+  ['m-search','m-group','m-del','m-reg','m-status'].forEach(function(id){
+    document.getElementById(id).addEventListener('input',function(){resetPage('m-tbl');renderRoster()});
+  });
+  bindSort('m-tbl',renderRoster);
+}
+function renderRoster(){
+  var q=document.getElementById('m-search').value.trim().toLowerCase();
+  var fg=document.getElementById('m-group').value, fd=document.getElementById('m-del').value,
+      fr=document.getElementById('m-reg').value, fs=document.getElementById('m-status').value;
+  var rows=MEMBERS.filter(function(m){
+    if(fg&&m.grpToday!==fg)return false;
+    if(fd&&m.delTodayCode!==fd)return false;
+    if(fr&&m.reg!==fr)return false;
+    if(fs&&m.status!==fs)return false;
+    if(q){ var hay=(m.name+' '+m.id+' '+m.city+' '+m.county).toLowerCase(); if(hay.indexOf(q)<0)return false }
+    return true;
+  }).map(function(m){return {ix:m.ix,id:m.id,name:m.name,age:m.age,sex:m.sex,grp:m.grpToday,del:m.delTodayCode,county:m.county,reg:m.reg,status:m.status}});
+  rows=sortRows('m-tbl',rows); sortMarks('m-tbl');
+  ROSTER_VIEW=rows.map(function(r){return r.ix});
+  var pg=pager('m-tbl',rows.length,renderRoster,'m-pager');
+  var tb=document.getElementById('m-body'); tb.innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+r.age+'</td><td>'+r.sex+'</td>'+
+    '<td>'+grpChip(r.grp)+'</td><td>'+delChip(r.del)+'</td><td class="nowrap">'+esc(r.county)+'</td><td>'+regBadge(r.reg)+'</td><td>'+statusHtml(r.status)+'</td></tr>'}).join('');
+  document.getElementById('m-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' matching (population '+MEMBERS.length.toLocaleString()+')';
+  tb.querySelectorAll('tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'roster')})});
+}
+
+/* ================= eligibility spans ================= */
+var SPAN_VIEW=[];
+function initSpanControls(){
+  fillSelect('s-group',GROUP_KEYS.map(function(g){return[g,g+' \u2014 '+GROUPS[g].name]}),'Coverage group: all');
+  ['s-group','s-open'].forEach(function(id){document.getElementById(id).addEventListener('input',function(){resetPage('s-tbl');renderSpans()})});
+  bindSort('s-tbl',renderSpans);
+}
+function renderSpans(){
+  var fg=document.getElementById('s-group').value, fo=document.getElementById('s-open').value;
+  var rows=[];
+  MEMBERS.forEach(function(m){ m.eligSpans.forEach(function(s){
+    if(fg&&s.grp!==fg)return;
+    if(fo==='open'&&s.end!==null)return;
+    if(fo==='closed'&&s.end===null)return;
+    rows.push({ix:m.ix,id:m.id,name:m.name,grp:s.grp,start:s.start,end:(s.end===null?9999:s.end),endRaw:s.end,
+      months:spanMonths(s.start,s.end),reason:s.reason});
+  })});
+  rows=sortRows('s-tbl',rows); sortMarks('s-tbl');
+  SPAN_VIEW=[]; var seenS={}; rows.forEach(function(r){ if(!seenS[r.ix]){seenS[r.ix]=1;SPAN_VIEW.push(r.ix)} });
+  var pg=pager('s-tbl',rows.length,renderSpans,'s-pager');
+  document.getElementById('s-body').innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+grpChip(r.grp)+'</td>'+
+    '<td class="nowrap">'+startLabel(r.start)+'</td><td class="nowrap">'+(r.endRaw===null?'<span class="st-act">open</span>':mLabel(r.endRaw))+'</td>'+
+    '<td class="mono">'+r.months+(r.start<0?'+':'')+'</td><td>'+(r.reason?esc(r.reason):'\u2014')+'</td></tr>'}).join('');
+  document.getElementById('s-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' spans';
+  document.querySelectorAll('#s-body tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'spans')})});
+}
+function startLabel(s){ return s<0 ? mLabel(s)+' <span class="hint">(pre-window)</span>' : mLabel(s) }
+
+/* ================= delivery spans ================= */
+var DEL_VIEW=[];
+function initDelControls(){
+  var dopts=OKPLANS.map(function(m){return[m.code,m.name]});
+  dopts.push([CSP.code,CSP.name]);
+  dopts.push(['FFS','Fee-for-Service']);
+  fillSelect('d-sys',dopts,'Delivery system: all');
+  document.getElementById('d-sys').addEventListener('input',function(){resetPage('d-tbl');renderDel()});
+  bindSort('d-tbl',renderDel);
+}
+function renderDel(){
+  var fd=document.getElementById('d-sys').value;
+  var rows=[];
+  MEMBERS.forEach(function(m){ m.delSpans.forEach(function(s){
+    if(fd&&s.sys!==fd)return;
+    rows.push({ix:m.ix,id:m.id,name:m.name,sys:s.sys,start:s.start,end:(s.end===null?9999:s.end),endRaw:s.end,
+      months:spanMonths(s.start,s.end),note:s.note});
+  })});
+  rows=sortRows('d-tbl',rows); sortMarks('d-tbl');
+  DEL_VIEW=[]; var seenD={}; rows.forEach(function(r){ if(!seenD[r.ix]){seenD[r.ix]=1;DEL_VIEW.push(r.ix)} });
+  var pg=pager('d-tbl',rows.length,renderDel,'d-pager');
+  document.getElementById('d-body').innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+delChip(r.sys)+'</td>'+
+    '<td class="nowrap">'+startLabel(r.start)+'</td><td class="nowrap">'+(r.endRaw===null?'<span class="st-act">open</span>':mLabel(r.endRaw))+'</td>'+
+    '<td class="mono">'+r.months+(r.start<0?'+':'')+'</td><td>'+(r.note?esc(r.note):'\u2014')+'</td></tr>'}).join('');
+  document.getElementById('d-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' delivery spans';
+  document.querySelectorAll('#d-body tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'delivery')})});
+}
+</script>
+<script>
+'use strict';
+/* ================= scenario registers ================= */
+var REGDEFS={
+ A:{title:'Steady state \u2014 with a birthmark', q:'Who is simply covered \u2014 and why do so many timelines change color in the same month?',
+    body:'The baseline \u2014 children, expansion adults, and the categories around them \u2014 with the April 2024 seam running through nearly every long-tenured record: gray FFS for years, then a SoonerSelect span that begins the same month as everyone else\u2019s. Also planted here: children in foster care on the statewide <b>Children\u2019s Specialty Plan</b> (placements move; the plan doesn\u2019t), and SoonerPlan members whose eligibility is real but whose benefit is family planning only.'},
+ B:{title:'Renewal churn', q:'Who lost coverage at renewal for paperwork \u2014 in the state where the way back in takes a day?',
+    body:'Cases close at renewal, sit in a gap, and reopen \u2014 125 members are in the gap right now. Oklahoma\u2019s twist is on the return trip: real-time online eligibility means the re-application can be approved the same day it\u2019s filed. The gap is the paperwork and the not-knowing, not the queue.'},
+ C:{title:'Retroactive grant', q:'Whose eligibility begins before their application?',
+    body:'Oklahoma kept the classic three-month retroactive reach \u2014 and pairs it with the fastest front door in the series. A record here can hold both truths at once: a determination made in minutes, granting coverage that started three months ago. The backward months run fee-for-service; the plan picks up prospectively.'},
+ D:{title:'SQ 802 \u2014 the mirror of Mississippi', q:'Three life events, two states, opposite endings. What does a constitutional amendment look like in an 834?',
+    body:'Read this register side by side with Mississippi\u2019s register D \u2014 the same three stories, reflected. <b>The postpartum year completes</b>: in Mississippi, closure; here, a category change into AE02, coverage unbroken. <b>The youngest child turns 18</b>: there, the record ends; here, the expansion group begins the next day. <b>The raise over the parent limit</b>: there, the coverage gap; here, a group code. The delivery span runs straight through all three. The difference between silence and an 001 is State Question 802 \u2014 340,000 more yes votes than no, written into the constitution where no legislature can quietly take it back.'},
+ E:{title:'The tribal nations', q:'Who is exempt from SoonerSelect by federal law \u2014 and what does a chosen exemption look like next to a chosen opt-in?',
+    body:'Oklahoma has the largest AI/AN Medicaid population in the country \u2014 Cherokee, Choctaw, Chickasaw, Muscogee, Osage, Kiowa, Comanche, Potawatomi citizens among the 38 nations headquartered here. Tribal citizens cannot be required to enroll in managed care: most in this register kept the exemption, their care running through tribal health systems \u2014 W.W. Hastings in Tahlequah, the Chickasaw Nation Medical Center in Ada, the Choctaw Nation Health Care Center in Talihina \u2014 fee-for-service. About a third <b>opted in</b> to a SoonerSelect plan anyway, with the Indian health providers protected in-network. Same population, two deliberate answers, both visible in the spans.'},
+ F:{title:'Medicare arrives \u2014 a young program\u2019s first goodbyes', q:'What happens when Medicare reaches enrollments that are barely two years old?',
+    body:'Duals are excluded from SoonerSelect, so Medicare\u2019s arrival ends the plan enrollment \u2014 and because every plan enrollment here began April 2024, these are among the <b>shortest-lived plan spans in the series</b>: born at the launch, ended by a birthday or an SSDI clock. The eligibility record shows the category moving from AE02 to ABD; the delivery record shows the wrap going FFS, the buy-in lagging its one to three months, and for 130 members an ADvantage waiver assessment opening the door to care at home. A program young enough that its first goodbyes are still news.'}
+};
+function renderRegisters(){
+  var out=document.getElementById('reg-list'); var h='';
+  ['A','B','C','D','E','F'].forEach(function(r){
+    var d=REGDEFS[r], list=MEMBERS.filter(function(m){return m.reg===r});
+    var sample=list.slice(0,12);
+    h+='<div class="reg"><h3><span class="rl">'+r+'</span>'+esc(d.title)+'<span class="meta" style="margin-left:auto">'+list.length.toLocaleString()+' members</span></h3>'+
+       '<div class="q">'+d.q+'</div><p class="sub" style="margin-bottom:10px">'+d.body+'</p>'+
+       '<div class="tblwrap"><table><thead><tr><th>SoonerCare ID</th><th>Member</th><th>Group</th><th>Delivery today</th><th>The planted story</th></tr></thead><tbody>';
+    sample.forEach(function(m){
+      h+='<tr class="rowlink" data-ix="'+m.ix+'"><td class="mono">'+m.id+'</td><td class="nowrap">'+esc(m.name)+'</td><td>'+grpChip(m.grpToday)+'</td><td>'+delChip(m.delTodayCode)+'</td>'+
+         '<td>'+(m.flags.length?esc(m.flags[0]):'Clean spans \u2014 the control group')+'</td></tr>';
+    });
+    h+='</tbody></table></div>';
+    if(list.length>sample.length){
+      h+='<div class="hint" style="margin-top:8px">Showing the first '+sample.length+' of '+list.length.toLocaleString()+'. Open any row \u2014 the \u25c0 \u25b6 arrows walk the entire register \u2014 or filter the Members tab by register for the full list.</div>';
+    }
+    h+='</div>';
+  });
+  out.innerHTML=h;
+  out.querySelectorAll('tr.rowlink').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'register')})});
+}
+
+/* ================= 834 builder ================= */
+function lastDelEvent(m){
+  var planSpans=m.delSpans.filter(function(s){return s.sys!=='FFS'});
+  if(!planSpans.length)return null;
+  var last=planSpans[planSpans.length-1];
+  if(m.reg==='D'){
+    return {kind:'001',del:last,why:'The SQ 802 change: the coverage group moved to AE02 underneath a continuing enrollment. Same person, same plan, new category \u2014 the transaction Mississippi\u2019s file cannot produce. A constitutional amendment, expressed as EDI.'};
+  }
+  if(m.reg==='F'){
+    return {kind:'024',del:last,why:'Terminated at Medicare entitlement \u2014 duals are excluded from SoonerSelect. An enrollment born April 2024, ended by a birthday: among the shortest-lived plan spans in this series.'};
+  }
+  if(m.reg==='B'&&last.start>TODAY_IDX){
+    var first=planSpans[0];
+    return {kind:'024',del:first,why:'Eligibility closed at renewal; the plan received a clean termination. The member is in the gap today \u2014 and the way back in can take a day.'};
+  }
+  if(m.reg==='E'){
+    return {kind:'021',del:last,why:'A tribal citizen\u2019s opt-in \u2014 the AI/AN exemption is a right, and so is waiving it. The Indian health providers stay in-network either way.'};
+  }
+  var launchBorn=(last.start===LAUNCH_IDX);
+  return {kind:'021',del:last,why:(m.reg==='C'?'Enrollment following a retroactive grant \u2014 note the two begin dates below.':(m.reg==='B'?'Re-enrollment after the renewal gap.':(launchBorn?'One of hundreds of thousands sent for April 1, 2024 \u2014 the launch wave. When a state converts, every migrated record carries the same begin date.':(sysKind(last.sys)==='CSP'?'Enrollment in the statewide Children\u2019s Specialty Plan \u2014 foster placements move; the plan doesn\u2019t.':'Enrollment addition.'))))};
+}
+function ediRow(seg,note,loop){return '<div class="edirow'+(loop?' loop':'')+'"><div class="seg">'+esc(seg)+'</div><div class="note">'+note+'</div></div>'}
+function build834(m){
+  var ev=lastDelEvent(m);
+  var eligSpan=m.eligSpans[m.eligSpans.length-1];
+  var eligBegin=m.eligSpans[0].start;
+  var ctl=String(300000+m.ix*7);
+  var out='';
+  if(!ev){
+    out+='<div class="ediwrap"><div class="edihead"><span class="fn">834 \u2014 State record</span><span class="hint">No plan receives this member \u2014 '+(m.aian?'a tribal citizen keeping the AI/AN exemption':(m.grpToday==='SP07'?'SoonerPlan is a limited benefit with no plan behind it':'ABD members sit outside SoonerSelect'))+'. This is the state\u2019s own record in the standard shape, for teaching.</span></div>';
+  } else {
+    var kindLabel={ '021':'Addition','001':'Change','024':'Termination' }[ev.kind];
+    out+='<div class="ediwrap"><div class="edihead"><span class="fn">834 \u2014 '+kindLabel+'</span><span class="hint">'+esc(ev.why)+'</span></div>';
+  }
+  var recvName = ev?PLANBY[ev.del.sys].name.toUpperCase().replace(/\u2014/g,'-').replace(/\u2019/g,''):'OHCA (STATE RECORD)';
+  var recvId = ev?ev.del.sys:'OHCA';
+  out+=ediRow('ISA*00*          *00*          *ZZ*OKOHCA         *ZZ*'+(recvId+'          ').slice(0,10)+'    *260701*0800*^*00501*'+ctl.padStart(9,'0')+'*0*P*:~','Interchange envelope: the Oklahoma Health Care Authority to <b>'+esc(recvName)+'</b> \u2014 a trading-partner relationship that has only existed since 2024.');
+  out+=ediRow('GS*BE*OKOHCA*'+recvId+'*20260701*0800*'+ctl+'*X*005010X220A1~','Functional group: <b>BE</b> = benefit enrollment.');
+  out+=ediRow('ST*834*'+ctl.slice(-4)+'*005010X220A1~','Transaction set header. One ST/SE per batch; this rendering shows a single member for teaching.');
+  out+=ediRow('BGN*00*'+m.id.slice(-6)+'-'+ctl.slice(-3)+'*20260701*0800****4~','Beginning segment. Purpose 00 = original. Action 4 = verify/full audit.');
+  out+=ediRow('N1*P5*OKLAHOMA HEALTH CARE AUTHORITY*FI*736017987~','Loop 1000A \u2014 plan sponsor: the state.', true);
+  out+=ediRow('N1*IN*'+recvName+'*FI*'+String(730000000+m.ix*13)+'~','Loop 1000B \u2014 the receiver'+(ev?'.':' \u2014 the state\u2019s own record, standing where a plan would.'), true);
+  var insKind=ev?ev.kind:'021';
+  out+=ediRow('INS*Y*18*'+insKind+'*'+(insKind==='024'?'07':(insKind==='001'?'25':'28'))+'*A***FT~','Loop 2000. Subscriber (Y/18). Maintenance <b>'+insKind+'</b>'+(m.reg==='D'?' \u2014 a change, not a goodbye: the category moved and the coverage never blinked. Compare with the Mississippi file, where this life event is a 024.':'.'), true);
+  out+=ediRow('REF*0F*'+m.id+'~','The <b>SoonerCare ID</b> \u2014 nine digits. The person, permanently.');
+  out+=ediRow('DTP*356*D8*'+mFirstD8(Math.max(eligBegin,-24))+'~','<b>Eligibility</b> begin date'+(m.reg==='C'?' \u2014 note it precedes the plan begin date below by the retroactive months. Two clocks.':'.'));
+  if(ev&&ev.kind==='024'&&ev.del.end!==null) out+=ediRow('DTP*357*D8*'+mLastD8(ev.del.end)+'~','End date \u2014 the last day before Medicare made this member ineligible for SoonerSelect.');
+  out+=ediRow('NM1*IL*1*'+m.last.toUpperCase().replace(/\u2019/g,'')+'*'+m.first.toUpperCase()+'****34*'+String(440000000+m.ix*311)+'~','Member name. The 34 qualifier carries an SSN in real files; synthetic here.');
+  out+=ediRow('PER*IP**TE*'+m.phone.replace(/\D/g,'')+'~','Contact telephone.');
+  out+=ediRow('N3*'+m.street.toUpperCase().replace(/\u2019/g,'')+'~','Street address.');
+  out+=ediRow('N4*'+m.city.toUpperCase()+'*OK*'+m.zip+'~','City/state/ZIP: '+esc(m.city)+', '+esc(m.county)+' County.');
+  out+=ediRow('DMG*D8*'+dobD8(m.dob)+'*'+m.sex+'~','Date of birth and sex.');
+  if(m.lang!=='English') out+=ediRow('LUI*LD*'+({'Spanish':'SPA','Vietnamese':'VIE','Cherokee':'CHR','Muscogee':'MUS','Marshallese':'MAH'}[m.lang]||'ENG')+'**6~','Preferred language: '+esc(m.lang)+'.'+(m.lang==='Cherokee'?' A living first language \u2014 the Cherokee Nation runs one of the country\u2019s most serious language revitalization programs.':(m.lang==='Marshallese'?' Enid, Oklahoma is home to one of the largest Marshallese communities on the mainland \u2014 the COFA story reaches the southern plains.':'')));
+  if(ev){
+    out+=ediRow('HD*'+ev.kind+'**HLT*'+ev.del.sys+'~','Loop 2300 \u2014 health coverage: the SoonerSelect '+(sysKind(ev.del.sys)==='CSP'?'Children\u2019s Specialty Plan':'plan')+'.', true);
+    out+=ediRow('DTP*348*D8*'+mFirstD8(Math.max(ev.del.start,-9))+'~','<b>Plan</b> begin date'+(ev.del.start===LAUNCH_IDX?' \u2014 April 1, 2024. Hold this member next to any other launched record: the same date, hundreds of thousands of times. The birthmark.':' \u2014 first of the month, always prospective.'));
+    if(ev.del.end!==null&&ev.kind!=='024') out+=ediRow('DTP*349*D8*'+mLastD8(ev.del.end)+'~','Plan end date \u2014 last day of the final capitated month.');
+  } else {
+    out+=ediRow('HD*021**HLT*OKFFS~','Loop 2300 \u2014 the \u201cplan code\u201d names fee-for-service itself.', true);
+    out+=ediRow('DTP*348*D8*'+mFirstD8(Math.max(eligBegin,-24))+'~','Coverage begin for the FFS record.');
+  }
+  out+=ediRow('LS*2700~','Open the member-reporting loop.', true);
+  out+=ediRow('LX*1~ N1*75*COVERAGE GROUP~ REF*ZZ*'+eligSpan.grp+'~','The coverage group ('+esc(GROUPS[eligSpan.grp].name)+').'+(eligSpan.grp==='AE02'?' <b>AE02 exists here because the voters put it in the constitution.</b> Article II, Section 37A.':(eligSpan.grp==='SP07'?' A limited benefit \u2014 the value is real; the coverage is family planning only.':'')));
+  if(m.aian) out+=ediRow('LX*2~ N1*75*AI-AN~ REF*ZZ*IHS~','Tribal citizen \u2014 '+esc(m.tribe)+'; '+esc(IHS_FAC[m.tribe])+'. Managed care enrollment is voluntary by federal law; Indian health providers are protected in-network.');
+  if(m.reg==='F') out+=ediRow('LX*3~ N1*75*MEDICARE STATUS~ REF*ZZ*AB~','Medicare A+B from '+mLabel(m.medicareIdx)+' \u2014 the fact that ended the plan enrollment.');
+  out+=ediRow('LE*2700~','Close the reporting loop.', true);
+  out+=ediRow('SE*'+ri(16,22)+'*'+ctl.slice(-4)+'~ GE*1*'+ctl+'~ IEA*1*'+ctl.padStart(9,'0')+'~','Trailers: segment count, group close, interchange close. Counts must reconcile or the whole file bounces.');
+  out+='</div>';
+  if(m.reg==='D'){
+    out+='<div class="plain" style="margin-top:14px"><span class="pe-label">Worth noticing</span>Set this 001 beside the Mississippi file\u2019s register D. Same life event \u2014 a postpartum year completing, a child turning 18, a raise \u2014 same 834 standard, same segments available. There, the event produces a termination and then silence; here, a change and an unbroken span. Nothing in the EDI grammar differs. What differs is one row in one state\u2019s eligibility rulebook \u2014 which is the whole reason converters read state policy before they read file layouts.</div>';
+  }
+  return out;
+}
+function initFileTab(){
+  var sel=document.getElementById('f-member');
+  var h='';
+  ['A','B','C','D','E','F'].forEach(function(r){
+    h+='<optgroup label="Register '+r+' \u2014 '+esc(REGDEFS[r].title)+'">';
+    MEMBERS.filter(function(m){return m.reg===r}).slice().sort(function(a,b){return a.name.localeCompare(b.name)}).forEach(function(m){
+      h+='<option value="'+m.ix+'">'+esc(m.name)+' \u2014 '+m.id+'</option>';
+    });
+    h+='</optgroup>';
+  });
+  sel.innerHTML=h;
+  sel.addEventListener('input',function(){renderFile(+sel.value)});
+  renderFile(+sel.value);
+}
+function renderFile(ix){
+  document.getElementById('f-out').innerHTML=build834(MEMBERS[ix]);
+}
+</script>
+<script>
+'use strict';
+/* ================= modal ================= */
+var MODAL={ix:null, ctx:'roster'};
+function navList(){
+  if(MODAL.ctx==='spans'&&SPAN_VIEW.length)return SPAN_VIEW;
+  if(MODAL.ctx==='delivery'&&DEL_VIEW.length)return DEL_VIEW;
+  if(MODAL.ctx==='register'&&MODAL.ix!==null){
+    var r=MEMBERS[MODAL.ix].reg;
+    return MEMBERS.filter(function(m){return m.reg===r}).map(function(m){return m.ix});
+  }
+  return ROSTER_VIEW.length?ROSTER_VIEW:MEMBERS.map(function(m){return m.ix});
+}
+function openModal(ix,ctx){
+  MODAL.ix=ix; if(ctx)MODAL.ctx=ctx;
+  var m=MEMBERS[ix];
+  document.getElementById('mo-nm').textContent=m.first+' '+m.last;
+  document.getElementById('mo-id').textContent='SoonerCare ID '+m.id+'  \u00b7  Register '+m.reg;
+  document.getElementById('mo-body').innerHTML=modalBody(m);
+  var list=navList(), pos=list.indexOf(ix);
+  document.getElementById('mo-pos').textContent=(pos+1)+' / '+list.length+' ('+MODAL.ctx+')';
+  document.getElementById('mo-prev').disabled=pos<=0;
+  document.getElementById('mo-next').disabled=pos<0||pos>=list.length-1;
+  document.getElementById('overlay').classList.add('on');
+  document.getElementById('modal').classList.add('on');
+  highlightRow(ix);
+  document.getElementById('mo-x').focus();
+}
+function closeModal(){
+  document.getElementById('overlay').classList.remove('on');
+  document.getElementById('modal').classList.remove('on');
+  highlightRow(null);
+  MODAL.ix=null;
+}
+function stepModal(d){
+  var list=navList(), pos=list.indexOf(MODAL.ix), np=pos+d;
+  if(np<0||np>=list.length)return;
+  openModal(list[np]);
+}
+function highlightRow(ix){
+  document.querySelectorAll('tr.hl').forEach(function(tr){tr.classList.remove('hl')});
+  if(ix===null)return;
+  document.querySelectorAll('tr.rowlink[data-ix="'+ix+'"]').forEach(function(tr){tr.classList.add('hl')});
+}
+
+/* ---------- mini two-band timeline ---------- */
+function tlBar(startIdx,endIdx,color,striped,title){
+  var s=Math.max(startIdx,0), e=(endIdx===null?WIN_MONTHS-1:Math.min(endIdx,WIN_MONTHS-1));
+  if(e<0||s>WIN_MONTHS-1)return '';
+  var l=100*s/WIN_MONTHS, w=100*(e-s+1)/WIN_MONTHS;
+  return '<span class="bar'+(striped?' striped':'')+'" style="left:'+l+'%;width:'+w+'%;background:'+color+'" title="'+esc(title)+'"></span>';
+}
+function timeline(m){
+  var h='<div class="tl">';
+  h+='<div class="band"><span class="bl">Eligibility</span><span class="lane">';
+  m.eligSpans.forEach(function(s){
+    h+=tlBar(s.start,s.end,'var('+GROUPS[s.grp].color+')',false,s.grp+' '+mLabel(s.start)+' \u2013 '+(s.end===null?'open':mLabel(s.end)));
+  });
+  h+='<span class="todayline" style="left:'+(100*(TODAY_IDX+0.5)/WIN_MONTHS)+'%"></span></span></div>';
+  h+='<div class="band"><span class="bl">Delivery</span><span class="lane">';
+  m.delSpans.forEach(function(s){
+    var k=sysKind(s.sys);
+    var col = k==='FFS'?'var(--d-ffs)':(k==='CSP'?'var(--d-harp)':'var(--d-mco)');
+    h+=tlBar(s.start,s.end,col,k!=='FFS',sysLabel(s.sys)+' '+mLabel(s.start)+' \u2013 '+(s.end===null?'open':mLabel(s.end)));
+  });
+  h+='<span class="todayline" style="left:'+(100*(TODAY_IDX+0.5)/WIN_MONTHS)+'%"></span></span></div>';
+  h+='<div class="axis"><span></span><span class="ax">'+
+     '<span style="left:2%">Jan 25</span><span style="left:27%">Jul 25</span><span style="left:52%">Jan 26</span><span style="left:77%">Jul 26</span></span></div>';
+  h+='<div class="tl-note">Striped blue = SoonerSelect plan \u00b7 striped purple = Children\u2019s Specialty Plan (foster care) \u00b7 solid gray = fee-for-service \u00b7 red line = today (Jul 2026). On long-tenured members, look for the seam: gray ending March 2024, a plan beginning April \u2014 the launch birthmark. Bars clamp to the 24-month window; pre-window starts are noted in the span tables.</div></div>';
+  return h;
+}
+
+/* ---------- per-member plain english ---------- */
+function plainFor(m){
+  var p='';
+  var first=m.first;
+  if(m.reg==='A'){
+    if(m.delTodayCode===CSP.code){
+      p=first+' is in foster care \u2014 and on the <b>Children\u2019s Specialty Plan</b>, the single statewide plan for every child in state custody. Placements can move '+first+' across Oklahoma; the plan, the care coordinators, and the records stay put. One of the quiet good ideas in this file.';
+    } else if(m.grpToday==='SP07'){
+      p=first+' holds a real eligibility span with a limited benefit behind it: <b>SoonerPlan</b> covers family planning services only. Any pipeline that treats every eligibility \u201cyes\u201d as full coverage will overstate what '+first+' can access \u2014 read the benefit, not just the span.';
+    } else if(m.grpToday==='AB03'){
+      p=first+' is eligible under the ABD rules and sits outside SoonerSelect entirely \u2014 fee-for-service throughout, the way Oklahoma kept its disability categories when everything else moved.';
+    } else if(m.flags[0]&&m.flags[0].indexOf('SoonerSelect since day one')===0){
+      p=first+'\u2019s timeline carries the birthmark: gray fee-for-service back through the years \u2014 SoonerCare as it ran for three decades, the state as payer \u2014 and then, in <b>April 2024</b>, a '+esc(sysLabel(m.delSpans[m.delSpans.length-1].sys))+' span that begins the same month as hundreds of thousands of others. When a state converts, every migrated record keeps the seam.';
+    } else if(m.flags[0]&&m.flags[0].indexOf('Plan change')===0){
+      p=first+' joined after the launch and made one voluntary plan change \u2014 to '+esc(sysLabel(m.delSpans[m.delSpans.length-1].sys))+' in '+mLabel(m.delSpans[m.delSpans.length-1].start)+'. The eligibility span never noticed.';
+    } else {
+      p=first+' is the case that never pages anyone: eligible under <b>'+m.grpToday+' ('+esc(GROUPS[m.grpToday].name)+')</b>, enrolled and steady. A post-launch record \u2014 no birthmark, because there was nothing to convert.';
+    }
+  } else if(m.reg==='B'){
+    var t2=m.eligSpans[0].end, rg=m.eligSpans[1].start, gap=rg-t2-1;
+    if(rg>TODAY_IDX){
+      p=first+'\u2019s renewal did not come back and the case closed after '+mLabel(t2)+'. As of today, '+first+' is <b>in the gap</b>; the data shows the case reopening in '+mLabel(rg)+'. The Oklahoma mercy: when the paperwork finally lands, the real-time system can say yes the same day.';
+    } else {
+      p=first+' churned: closed at renewal after '+mLabel(t2)+', '+gap+' month'+(gap>1?'s':'')+' in the gap, back on in '+mLabel(rg)+' \u2014 and in this state the return determination may have taken minutes. The gap was the paperwork, not the queue.';
+    }
+  } else if(m.reg==='C'){
+    var s=m.eligSpans[0].start;
+    p=first+' applied and the grant reached backward to '+mLabel(s)+' \u2014 the classic three-month retro \u2014 in the state with the fastest front door in this series: a real-time determination granting coverage that started months ago. The tail ran FFS; '+esc(sysLabel(m.delSpans[m.delSpans.length-1].sys))+' picked '+first+' up prospectively. Two clocks, one record.';
+  } else if(m.reg==='D'){
+    var e1=m.eligSpans[0], move=m.eligSpans[1].start;
+    var story = e1.grp==='PW02' ? 'the twelve-month postpartum period completed' : (m.flags[0].indexOf('turned 18')>=0 ? 'the youngest child turned 18 and the parent category ended' : 'a raise crossed the parent income limit');
+    p='In '+mLabel(move)+', '+story+' \u2014 and <b>State Question 802 caught '+(m.sex==='F'?'her':'him')+'</b>: the record shows a category change into AE02, the expansion group Oklahoma\u2019s voters wrote into the constitution, with the '+esc(sysLabel(m.delSpans[m.delSpans.length-1].sys))+' enrollment running straight through. Three states east, in the Mississippi file, this exact life event is a closure followed by silence. Same 834 standard, same segments \u2014 one row of state policy apart. The mirror register.';
+  } else if(m.reg==='E'){
+    var opted=m.delSpans.some(function(s){return s.sys!=='FFS'});
+    p=first+' is a citizen of the <b>'+esc(m.tribe)+'</b> \u2014 one of thirty-eight nations headquartered in Oklahoma, which holds the largest AI/AN Medicaid population in the country. Federal law makes managed care enrollment voluntary for tribal citizens. '+
+      (opted?first+' <b>opted in</b> to '+esc(sysLabel(m.delSpans[m.delSpans.length-1].sys))+' \u2014 the exemption is a right, and so is waiving it \u2014 with '+esc(IHS_FAC[m.tribe])+' protected in-network under the Indian health provisions.':first+' kept the exemption: fee-for-service, with care through '+esc(IHS_FAC[m.tribe])+'. The gray span is not a fallback; it is a sovereign choice.');
+  } else {
+    var mi=m.medicareIdx, bi=m.buyinIdx, lag=bi-mi;
+    p=(m.ssdi?'Medicare arrived for '+first+' in '+mLabel(mi)+' \u2014 SSDI\u2019s 24-month waiting period ended.':'In '+mLabel(mi)+', '+first+' turned 65 and Medicare arrived.')+' The SoonerSelect enrollment \u2014 born at the April 2024 launch \u2014 ended at '+mLabel(mi-1)+': barely '+(mi-1-(-9)+1)+' months old, among the shortest-lived plan spans in this series. Duals are excluded, so the wrap went fee-for-service, the category moved to ABD, and the buy-in accreted '+mLabel(bi)+' after its '+lag+'-month limbo.'+(m.flags[0].indexOf('ADvantage')===0?' An ADvantage waiver assessment is underway \u2014 personal care at home, the next chapter.':'')+' A young program\u2019s first goodbyes.';
+  }
+  return '<div class="plain"><span class="pe-label">In plain English</span>'+p+'</div>';
+}
+
+/* ---------- modal body ---------- */
+function modalBody(m){
+  var h='';
+  var et=eligToday(m);
+  h+='<div class="kv">'+
+    kv('Status today',statusHtml(m.status))+
+    kv('Coverage group',grpChip(m.grpToday)+' <span style="font-size:.8rem;color:var(--ink-soft)">'+esc(GROUPS[m.grpToday].name)+'</span>')+
+    kv('Delivery today',delChip(m.delTodayCode)+(m.delTodayCode!=='\u2014'?' <span style="font-size:.8rem;color:var(--ink-soft)">'+esc(sysLabel(m.delTodayCode))+'</span>':''))+
+    kv('Date of birth',dobLabel(m.dob)+' <span class="hint">(age '+m.age+')</span>')+
+    kv('Sex',m.sex)+
+    kv('Address',esc(m.street)+', '+esc(m.city)+', OK '+m.zip)+
+    kv('Jurisdiction',esc(m.county))+
+    kv('Phone','<span class="mono">'+m.phone+'</span>')+
+    kv('Preferred language',esc(m.lang))+
+    (m.aian?kv('Tribal citizenship',esc(m.tribe)+' \u2014 '+esc(IHS_FAC[m.tribe])):'')+
+    '</div>';
+  function kv(k,v){return '<div class="k">'+k+'</div><div class="v">'+v+'</div>'}
+  h+='<h4>24-month picture</h4>'+timeline(m);
+  h+=plainFor(m);
+  h+='<h4>Eligibility spans</h4><div class="tblwrap"><table><thead><tr><th>Group</th><th>Begin</th><th>End</th><th>Reason</th></tr></thead><tbody>';
+  m.eligSpans.forEach(function(s){
+    h+='<tr><td>'+grpChip(s.grp)+'</td><td class="nowrap">'+startLabel(s.start)+'</td><td class="nowrap">'+(s.end===null?'<span class="st-act">open</span>':mLabel(s.end))+'</td><td>'+(s.reason?esc(s.reason):'\u2014')+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  h+='<h4>Delivery spans</h4><div class="tblwrap"><table><thead><tr><th>System</th><th>Begin</th><th>End</th><th>Note</th></tr></thead><tbody>';
+  m.delSpans.forEach(function(s){
+    h+='<tr><td>'+delChip(s.sys)+'</td><td class="nowrap">'+startLabel(s.start)+'</td><td class="nowrap">'+(s.end===null?'<span class="st-act">open</span>':mLabel(s.end))+'</td><td>'+(s.note?esc(s.note):'\u2014')+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  if(m.flags.length){
+    h+='<h4>Flags</h4><p>'+m.flags.map(function(f){return '<span class="flag">'+esc(f)+'</span>'}).join(' ')+'</p>';
+  }
+  h+='<h4>See the file</h4><p style="font-size:.84rem;color:var(--ink-soft)">Open <b>What the File Says</b> and choose '+esc(m.first+' '+m.last)+' to read the 834 the plan received for this member\u2019s most recent enrollment event.</p>';
+  return h;
+}
+
+/* ================= navigation & boot ================= */
+function showPage(pg){
+  document.querySelectorAll('nav button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-pg')===pg)});
+  document.querySelectorAll('.page').forEach(function(p){p.classList.toggle('on',p.id==='pg-'+pg)});
+  if(pg==='overview')renderOverview();
+}
+document.getElementById('nav').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b)return; showPage(b.getAttribute('data-pg'));
+});
+document.getElementById('mo-x').addEventListener('click',closeModal);
+document.getElementById('overlay').addEventListener('click',closeModal);
+document.getElementById('mo-prev').addEventListener('click',function(){stepModal(-1)});
+document.getElementById('mo-next').addEventListener('click',function(){stepModal(1)});
+document.addEventListener('keydown',function(e){
+  if(MODAL.ix===null)return;
+  if(e.key==='Escape')closeModal();
+  else if(e.key==='ArrowLeft')stepModal(-1);
+  else if(e.key==='ArrowRight')stepModal(1);
+});
+
+/* boot */
+renderOverview();
+initRosterControls(); renderRoster();
+initSpanControls();  renderSpans();
+initDelControls();   renderDel();
+renderRegisters();
+initFileTab();
+renderReference();
+</script>
+</body>
+</html>

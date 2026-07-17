@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>South Dakota Medicaid Eligibility Central</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@1,8..60,400;1,8..60,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#1E5FCC;
+  --accent-soft:#E8EFFB;
+  --ink:#1b2430;
+  --ink-soft:#4a5568;
+  --ink-faint:#8a94a3;
+  --line:#dde3ea;
+  --line-soft:#eceff3;
+  --bg:#f7f8fa;
+  --card:#ffffff;
+  --serif:'Source Serif 4', Georgia, serif;
+  --sans:'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono:'IBM Plex Mono', 'Consolas', monospace;
+  --g-FC01:#2E7D5B; --g-PG02:#B0568C; --g-CH19:#C98A2B; --g-EA02:#1E5FCC;
+  --g-SI02:#6A4FB6; --g-MN98:#5B8AA6; --g-FF26:#C25B4A; --g-WD02:#3E9C9C; --g-LT01:#7A7A52;
+  --d-mco:#4a7fd6; --d-ffs:#9aa3ad; --d-harp:#8a5fc0; --d-mltc:#2e8f8f;
+  --ok:#2E7D5B; --warn:#C98A2B; --bad:#C0392B;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+
+/* ---------- header ---------- */
+header{background:var(--card);border-bottom:1px solid var(--line);padding:18px 28px 0}
+.brandrow{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.wordmark{font-family:var(--serif);font-style:italic;font-weight:600;font-size:1.65rem;color:var(--accent);letter-spacing:.01em}
+.wordmark .st{color:var(--ink)}
+.tagline{color:var(--ink-faint);font-size:.85rem}
+.credit{margin-left:auto;color:var(--ink-faint);font-size:.78rem}
+nav{display:flex;gap:2px;margin-top:14px;flex-wrap:wrap}
+nav button{appearance:none;border:none;background:none;font:inherit;font-size:.86rem;font-weight:500;color:var(--ink-soft);padding:9px 14px;cursor:pointer;border-bottom:3px solid transparent;border-radius:6px 6px 0 0}
+nav button:hover{background:var(--line-soft)}
+nav button.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+nav button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+/* ---------- layout ---------- */
+main{max-width:1280px;margin:0 auto;padding:24px 28px 80px}
+.page{display:none}
+.page.on{display:block}
+h2{font-size:1.22rem;font-weight:700;margin:4px 0 4px}
+h3{font-size:.98rem;font-weight:600;margin:22px 0 8px}
+.sub{color:var(--ink-soft);font-size:.88rem;margin-bottom:16px;max-width:70ch}
+
+/* ---------- plain english callout ---------- */
+.plain{font-family:var(--serif);font-style:italic;font-size:1.02rem;line-height:1.65;color:#2c3a4d;background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:14px 18px;margin:14px 0 20px;max-width:86ch}
+.plain b{font-style:italic;font-weight:600}
+.plain .pe-label{display:block;font-family:var(--sans);font-style:normal;font-weight:700;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:5px}
+
+/* ---------- cards / stats ---------- */
+.statrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.stat .n{font-family:var(--mono);font-size:1.55rem;font-weight:600;color:var(--ink)}
+.stat .l{font-size:.74rem;color:var(--ink-soft);margin-top:2px;line-height:1.35}
+.stat.acc .n{color:var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:14px 0}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:900px){.twocol{grid-template-columns:1fr}}
+
+/* ---------- legend / bars ---------- */
+.leg{display:flex;flex-direction:column;gap:7px}
+.legrow{display:grid;grid-template-columns:16px 64px 1fr 46px;gap:10px;align-items:center;font-size:.84rem}
+.legrow .swatch{width:14px;height:14px;border-radius:4px}
+.legrow .code{font-family:var(--mono);font-size:.8rem;font-weight:600}
+.legrow .cnt{font-family:var(--mono);text-align:right;color:var(--ink-soft)}
+.barlist{display:flex;flex-direction:column;gap:8px}
+.barrow{display:grid;grid-template-columns:210px 1fr 40px;gap:10px;align-items:center;font-size:.83rem}
+.barrow .track{background:var(--line-soft);border-radius:5px;height:14px;overflow:hidden}
+.barrow .fill{display:block;height:100%;background:var(--d-mco);border-radius:5px;transition:width .8s ease}
+.barrow .bn{font-family:var(--mono);text-align:right;color:var(--ink-soft)}
+@media(max-width:700px){.barrow{grid-template-columns:130px 1fr 36px}}
+
+/* ---------- controls ---------- */
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;align-items:center}
+.controls input[type=search],.controls select{font:inherit;font-size:.85rem;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
+.controls input[type=search]{min-width:220px}
+.controls select:focus,.controls input:focus{outline:2px solid var(--accent);outline-offset:0}
+.hint{font-size:.76rem;color:var(--ink-faint)}
+
+/* ---------- tables ---------- */
+.tblwrap{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:auto;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:.83rem}
+th{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);background:#fbfcfd;white-space:nowrap;position:sticky;top:0}
+th.sortable{cursor:pointer;user-select:none}
+th.sortable:hover{color:var(--accent)}
+th .arr{font-size:.72rem;color:var(--accent)}
+.pager{display:flex;align-items:center;justify-content:center;gap:14px;margin:12px 0 2px}
+.pager button.pg{appearance:none;font:inherit;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:5px 13px;cursor:pointer;font-size:.82rem;color:var(--ink-soft)}
+.pager button.pg:hover:not(:disabled){background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.pager button.pg:disabled{opacity:.35;cursor:default}
+.pager .pgpos{font-size:.78rem;color:var(--ink-faint)}
+td{padding:9px 12px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tbody tr.rowlink{cursor:pointer}
+tbody tr.rowlink:hover{background:var(--accent-soft)}
+tbody tr.hl{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+.mono{font-family:var(--mono);font-size:.8rem}
+.nowrap{white-space:nowrap}
+
+/* ---------- chips ---------- */
+.chip{display:inline-block;font-family:var(--mono);font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:20px;color:#fff;white-space:nowrap}
+.chip.outl{background:none;border:1.5px solid currentColor}
+.dchip{display:inline-block;font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:5px;white-space:nowrap}
+.d-mco{background:#e5edfa;color:#2456a8}
+.d-ffs{background:#eceff2;color:#5c6672}
+.d-harp{background:#efe7f8;color:#6a3fa0}
+.d-mltc{background:#e2f2f2;color:#1f6f6f}
+.st-act{color:var(--ok);font-weight:600}
+.st-gap{color:var(--warn);font-weight:600}
+.st-cls{color:var(--ink-faint);font-weight:600}
+.flag{display:inline-block;font-size:.7rem;font-weight:600;background:#fdf1e0;color:#96660f;border:1px solid #f0d9ae;border-radius:5px;padding:1px 7px;white-space:nowrap}
+
+/* ---------- registers ---------- */
+.reg{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin:12px 0}
+.reg h3{margin:0 0 4px;display:flex;align-items:center;gap:10px}
+.reg .rl{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;background:var(--accent);color:#fff;font-family:var(--mono);font-weight:600;font-size:.85rem;flex:none}
+.reg .q{font-family:var(--serif);font-style:italic;color:#2c3a4d;font-size:.95rem;margin:4px 0 10px}
+.reg .meta{font-size:.78rem;color:var(--ink-faint);margin-bottom:8px}
+
+/* ---------- 834 ---------- */
+.ediwrap{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:12px 0;overflow:hidden}
+.edihead{padding:12px 18px;border-bottom:1px solid var(--line);display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;background:#fbfcfd}
+.edihead .fn{font-family:var(--mono);font-size:.82rem;font-weight:600}
+.edirow{display:grid;grid-template-columns:minmax(300px,46%) 1fr;border-bottom:1px solid var(--line-soft)}
+.edirow:last-child{border-bottom:none}
+.edirow .seg{font-family:var(--mono);font-size:.78rem;padding:8px 16px;background:#f4f7fb;color:#1b3a66;overflow-wrap:anywhere;border-right:1px solid var(--line-soft)}
+.edirow .note{font-size:.8rem;padding:8px 16px;color:var(--ink-soft)}
+.edirow.loop .seg{background:#e8effb;font-weight:600}
+@media(max-width:780px){.edirow{grid-template-columns:1fr}.edirow .seg{border-right:none}}
+
+/* ---------- modal ---------- */
+.overlay{position:fixed;inset:0;background:rgba(20,28,40,.42);opacity:0;pointer-events:none;transition:opacity .22s;z-index:40}
+.overlay.on{opacity:1;pointer-events:auto}
+.slideover{position:fixed;top:0;right:0;bottom:0;width:640px;max-width:94vw;background:var(--card);box-shadow:-12px 0 40px rgba(15,25,45,.22);transform:translateX(102%);transition:transform .26s ease;z-index:50;display:flex;flex-direction:column}
+.slideover.on{transform:translateX(0)}
+.mo-head{padding:16px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+.mo-head .who{min-width:0}
+.mo-head .nm{font-weight:700;font-size:1.05rem}
+.mo-head .idz{font-family:var(--mono);font-size:.76rem;color:var(--ink-soft)}
+.mo-x{margin-left:auto;appearance:none;border:1px solid var(--line);background:none;border-radius:8px;width:32px;height:32px;font-size:1rem;cursor:pointer;color:var(--ink-soft);flex:none}
+.mo-x:hover{background:var(--line-soft)}
+.mo-body{overflow-y:auto;padding:18px 22px;flex:1}
+.mo-foot{border-top:1px solid var(--line);padding:10px 22px;display:flex;align-items:center;gap:12px}
+.mo-foot button{appearance:none;font:inherit;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:.9rem}
+.mo-foot button:hover:not(:disabled){background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.mo-foot button:disabled{opacity:.35;cursor:default}
+.mo-foot .pos{font-family:var(--mono);font-size:.78rem;color:var(--ink-faint);margin-left:auto}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:4px 12px;font-size:.85rem;margin:8px 0 14px}
+.kv .k{color:var(--ink-faint)}
+.kv .v{color:var(--ink)}
+.mo-body h4{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);margin:16px 0 8px}
+.mo-body .plain{font-size:.93rem;padding:12px 15px}
+
+/* ---------- mini timeline ---------- */
+.tl{margin:6px 0 4px}
+.tl .band{display:grid;grid-template-columns:78px 1fr;gap:8px;align-items:center;margin:5px 0}
+.tl .bl{font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-faint);text-align:right}
+.tl .lane{position:relative;height:18px;background:var(--line-soft);border-radius:4px}
+.tl .bar{position:absolute;top:0;bottom:0;border-radius:4px;min-width:3px}
+.tl .bar.striped{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.28) 0 5px,transparent 5px 10px)}
+.tl .axis{display:grid;grid-template-columns:78px 1fr;gap:8px;margin-top:3px}
+.tl .ax{position:relative;height:14px;font-size:.62rem;color:var(--ink-faint);font-family:var(--mono)}
+.tl .ax span{position:absolute;transform:translateX(-50%)}
+.tl .todayline{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--bad);opacity:.7}
+.tl-note{font-size:.7rem;color:var(--ink-faint);margin-top:6px}
+
+/* ---------- reference ---------- */
+.refgrid{display:grid;grid-template-columns:1fr;gap:4px}
+dl.gloss{display:grid;grid-template-columns:200px 1fr;gap:8px 16px;font-size:.85rem}
+dl.gloss dt{font-weight:600}
+dl.gloss dd{color:var(--ink-soft)}
+@media(max-width:700px){dl.gloss{grid-template-columns:1fr}dl.gloss dd{margin-bottom:8px}}
+footer{max-width:1280px;margin:0 auto;padding:0 28px 40px;color:var(--ink-faint);font-size:.75rem;line-height:1.6}
+@media(max-width:700px){header{padding:14px 16px 0}main{padding:18px 14px 60px}.kv{grid-template-columns:120px 1fr}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brandrow">
+    <div class="wordmark">South Dakota Medicaid Eligibility <span class="st">Central</span></div>
+    <div class="tagline">Amendment D, Health Homes, the nations, and the enrollment record &mdash; a synthetic demonstration</div>
+    <div class="credit">Robert Thomas Keyes</div>
+  </div>
+  <nav id="nav" aria-label="Sections">
+    <button data-pg="overview" class="on">Overview</button>
+    <button data-pg="members">Members</button>
+    <button data-pg="spans">Eligibility Spans</button>
+    <button data-pg="delivery">No Plans At All</button>
+    <button data-pg="registers">Scenario Registers</button>
+    <button data-pg="file">What the File Says</button>
+    <button data-pg="reference">Reference Codes</button>
+  </nav>
+</header>
+<main>
+  <section class="page on" id="pg-overview">
+    <h2>Overview</h2>
+    <p class="sub">A synthetic South Dakota Medicaid population across a 24-month window (January 2025 &ndash; December 2026), viewed as of <b>July 2026</b>. Every value is deterministic &mdash; seeded PRNG, identical on every load.</p>
+    <div class="plain" id="ov-plain"></div>
+    <div class="statrow" id="ov-stats"></div>
+    <div class="twocol">
+      <div class="card">
+        <h3 style="margin-top:0">Coverage groups in the population</h3>
+        <div class="leg" id="ov-groups"></div>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Where members get their care today</h3>
+        <div class="barlist" id="ov-mcos"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="pg-members">
+    <h2>Members</h2>
+    <p class="sub">The full synthetic roster. Click any row for the member record; click a column header to sort.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>Every person here has an eight-digit <b>South Dakota Medicaid ID</b> that never changes — and the delivery column has exactly one value: <b>fee-for-service</b>, because South Dakota has no Medicaid managed care at all. This is the series’ second all-gray file — but where Alabama’s gray was the deliberate control group of a state that never expanded, South Dakota’s is <b>gray and young</b>: the newest expansion in the series (Amendment D, July 1, 2023) arrived with no plan layer whatsoever — tens of thousands of new adults, and not one 834 to a plan. Eligibility is the entire event, which makes this the cleanest place in the series to watch eligibility itself.</div>
+    <div class="controls">
+      <input type="search" id="m-search" placeholder="Search name, Medicaid ID, city&hellip;" aria-label="Search members">
+      <select id="m-group" aria-label="Filter by coverage group"></select>
+      <select id="m-del" aria-label="Filter by delivery system"></select>
+      <select id="m-reg" aria-label="Filter by register"></select>
+      <select id="m-status" aria-label="Filter by status">
+        <option value="">Status today: all</option>
+        <option value="Active">Active</option>
+        <option value="Gap">In gap</option>
+        <option value="Closed">Closed</option>
+      </select>
+      <span class="hint" id="m-count"></span>
+    </div>
+    <div class="tblwrap"><table id="m-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">Medicaid ID</th>
+        <th class="sortable" data-k="name">Name</th>
+        <th class="sortable" data-k="age">Age</th>
+        <th class="sortable" data-k="sex">Sex</th>
+        <th class="sortable" data-k="grp">Coverage Group</th>
+        <th class="sortable" data-k="del">Delivery Today</th>
+        <th class="sortable" data-k="county">County</th>
+        <th class="sortable" data-k="reg">Register</th>
+        <th class="sortable" data-k="status">Status Today</th>
+      </tr></thead>
+      <tbody id="m-body"></tbody>
+    </table></div>
+    <div class="pager" id="m-pager"></div>
+  </section>
+
+  <section class="page" id="pg-spans">
+    <h2>Eligibility Spans</h2>
+    <p class="sub">One row per coverage-group span &mdash; the state's answer to <i>&ldquo;from when to when, and under which door did this person enter?&rdquo;</i> Click a row to open the member.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>A span is a promise with dates on it — and this file holds a wall of them: register C’s launch cohort all begin <b>July 1, 2023</b>, the date the voters wrote into the South Dakota Constitution and the state implemented <b>on schedule</b>. The same instrument as Missouri’s expansion, without the standoff — no court ever touched this date. Register B holds the strangest churn in the series: unwinding closures that reopened into a group that <i>didn’t exist when the case closed</i>. And register F’s scheduled goodbyes show a termination visible months in advance — arithmetic, not surprise.</div>
+    <div class="controls">
+      <select id="s-group" aria-label="Filter spans by coverage group"></select>
+      <select id="s-open" aria-label="Filter by open or closed">
+        <option value="">Open + closed</option><option value="open">Open only</option><option value="closed">Closed only</option>
+      </select>
+      <span class="hint" id="s-count"></span>
+    </div>
+    <div class="tblwrap"><table id="s-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">Medicaid ID</th>
+        <th class="sortable" data-k="name">Member</th>
+        <th class="sortable" data-k="grp">Group</th>
+        <th class="sortable" data-k="start">Begin</th>
+        <th class="sortable" data-k="end">End</th>
+        <th class="sortable" data-k="months">Months</th>
+        <th>End Reason</th>
+      </tr></thead>
+      <tbody id="s-body"></tbody>
+    </table></div>
+    <div class="pager" id="s-pager"></div>
+  </section>
+
+  <section class="page" id="pg-delivery">
+    <h2>No Plans At All</h2>
+    <p class="sub">One row per delivery span — and every one of them is fee-for-service, because South Dakota has no Medicaid MCO. What varies is the <b>Health Home</b> overlay: a per-member monthly care-coordination payment to an attributed clinic, with an acuity tier. Click a row to open the member.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>South Dakota pays every claim directly — no capitation, no plan network, no choice window, no 834 stream to plans — which makes it the natural experiment the rest of the series argues about: an expansion with <b>no plan layer at all</b>. The one managed-care-shaped structure is the <b>Health Home</b>: a clinic that agrees to be responsible for a chronically ill or seriously mentally ill member’s coordination, paid per member per month, with an <b>acuity tier</b> setting the rate. Register D reads it closely — attribution with a dial: Colorado’s app taught attribution as regional machinery, Alabama’s as the deliberate not-a-plan, and South Dakota adds tiering, where the payment follows the diagnosis’s weight. Attribution files with money on them get reconciled like enrollment rosters, because they are one.</div>
+    <div class="controls">
+      <select id="d-sys" aria-label="Filter by delivery system"></select>
+      <span class="hint" id="d-count"></span>
+    </div>
+    <div class="tblwrap"><table id="d-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">Medicaid ID</th>
+        <th class="sortable" data-k="name">Member</th>
+        <th class="sortable" data-k="sys">Delivery</th>
+        <th class="sortable" data-k="start">Begin</th>
+        <th class="sortable" data-k="end">End</th>
+        <th class="sortable" data-k="months">Months</th>
+        <th>Begin / End Reason</th>
+      </tr></thead>
+      <tbody id="d-body"></tbody>
+    </table></div>
+    <div class="pager" id="d-pager"></div>
+  </section>
+
+  <section class="page" id="pg-registers">
+    <h2>Scenario Registers</h2>
+    <p class="sub">Six business questions, each answered by a register of members whose data was planted to demonstrate exactly that scenario. Click any member to inspect the record behind the answer.</p>
+    <div id="reg-list"></div>
+  </section>
+
+  <section class="page" id="pg-file">
+    <h2>What the File Says</h2>
+    <p class="sub">South Dakota sends no 834 to any plan — there are none. What follows is the state’s own enrollment record, rendered in standard 834 shape for teaching: the same segments a plan-bound file would carry, addressed to the program itself. Pick a member and read it, segment by segment.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>An 834 is the state telling a health plan: <b>this person is yours now</b> — and South Dakota has no one to tell. Every record below is the file the state keeps for itself: the same shape, the same segments, no receiver but the program. That absence is the teaching — everything the transaction normally negotiates (capitation start dates, plan assignment, switch seasons) simply is not here, and what remains is the eligibility core every other state’s 834 is wrapped around. Register E’s records carry the two facts that do the most work in this state: the tribal affiliation behind the 100% federal share, and — for the Oglala Lakota County cases — a county code whose own history requires an effective date.</div>
+    <div class="controls">
+      <select id="f-member" aria-label="Choose member for 834"></select>
+      <span class="hint">Members are grouped by register; the transaction is rebuilt live from the member's actual spans.</span>
+    </div>
+    <div id="f-out"></div>
+  </section>
+
+  <section class="page" id="pg-reference">
+    <h2>Reference Codes</h2>
+    <p class="sub">The teaching code sets used throughout the app. Codes are patterned on South Dakota's conventions; verify against current South Dakota Department of Social Services publications before any non-demonstration use.</p>
+    <div id="ref-out"></div>
+  </section>
+</main>
+
+<footer>
+  <p><b>South Dakota Medicaid Eligibility Central</b> &mdash; a single-file demonstration app in the Central series. All members, identifiers, addresses, phone numbers, and dates are synthetic and deterministic (seeded PRNG, seed 605001); any resemblance to real persons is coincidental. Program facts reflect public South Dakota Department of Social Services policy of the mid-2020s and change year to year — the Health Home clinic roster is patterned, not literal; verify against current DSS and CMS publications before any non-demonstration use. The 834 rendering is a teaching aid, not an implementation guide. &copy; Robert Thomas Keyes.</p>
+</footer>
+
+<div class="overlay" id="overlay"></div>
+<aside class="slideover" id="modal" role="dialog" aria-modal="true" aria-labelledby="mo-nm">
+  <div class="mo-head">
+    <div class="who">
+      <div class="nm" id="mo-nm"></div>
+      <div class="idz" id="mo-id"></div>
+    </div>
+    <button class="mo-x" id="mo-x" aria-label="Close">&#10005;</button>
+  </div>
+  <div class="mo-body" id="mo-body"></div>
+  <div class="mo-foot">
+    <button id="mo-prev" aria-label="Previous member">&#9664;</button>
+    <button id="mo-next" aria-label="Next member">&#9654;</button>
+    <span class="pos" id="mo-pos"></span>
+  </div>
+</aside>
+<script>
+'use strict';
+/* ============ South Dakota Medicaid Eligibility Central ============
+   Central series -- Robert Thomas Keyes
+   Deterministic synthetic data. Seed 605001 (South Dakota's one area code).
+   Window: Jan 2025 (idx 0) .. Dec 2026 (idx 23). "Today" = Jul 2026 (idx 18).
+================================================================= */
+
+/* ---------- seeded PRNG (mulberry32) ---------- */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+var R = mulberry32(605001);
+function ri(lo,hi){return lo+Math.floor(R()*(hi-lo+1))}
+function pick(arr){return arr[Math.floor(R()*arr.length)]}
+function wpick(pairs){var tot=0,i;for(i=0;i<pairs.length;i++)tot+=pairs[i][1];var x=R()*tot;for(i=0;i<pairs.length;i++){x-=pairs[i][1];if(x<0)return pairs[i][0]}return pairs[pairs.length-1][0]}
+
+/* ---------- window ---------- */
+var WIN_START_Y=2025, WIN_MONTHS=24, TODAY_IDX=18; /* Jul 2026 */
+var LAUNCH_IDX=-18; /* Jul 1, 2023 -- Amendment D takes effect, on schedule */
+var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function mLabel(idx){ if(idx===null||idx===undefined)return '&mdash;';
+  var y=WIN_START_Y+Math.floor(idx/12), m=((idx%12)+12)%12;
+  return MONTHS[m]+' '+y }
+function mFirstD8(idx){var y=WIN_START_Y+Math.floor(idx/12),m=((idx%12)+12)%12;return ''+y+String(m+1).padStart(2,'0')+'01'}
+function mLastD8(idx){var y=WIN_START_Y+Math.floor(idx/12),m=((idx%12)+12)%12;var last=new Date(y,m+1,0).getDate();return ''+y+String(m+1).padStart(2,'0')+String(last).padStart(2,'0')}
+function spanMonths(s,e){var last=(e===null?TODAY_IDX:e);return Math.max(1,last-Math.max(s,-990)+1)}
+
+/* ---------- coverage groups ---------- */
+var GROUPS={
+ CH19:{name:'Children',                  magi:true,  color:'--g-CH19', blurb:'Children through 18 \u2014 CHIP wraps above; fee-for-service, like everything else here.'},
+ AEG:{name:'Adult Expansion (Amendment D, Jul 2023)', magi:true, color:'--g-SI02', blurb:'Adults 19\u201364 to 138% FPL \u2014 the <b>youngest expansion in this series</b>: written into the South Dakota Constitution by the voters (Amendment D, November 2022) and implemented <b>on schedule, July 1, 2023</b>. The same instrument as Missouri\u2019s \u2014 without the standoff: the amendment that simply worked. Register C holds the launch wall; register F holds the members it caught last.'},
+ PW02:{name:'Pregnant & Postpartum',     magi:true,  color:'--g-EA02', blurb:'Pregnancy coverage plus twelve months postpartum.'},
+ FM01:{name:'Parents & Caretakers',      magi:true,  color:'--g-FC01', blurb:'Parents and caretaker relatives \u2014 the old low-income-parent limit sat far below poverty until Amendment D covered the band above it.'},
+ AB03:{name:'Aged / Blind / Disabled',   magi:false, color:'--g-MN98', blurb:'SSI-related budgeting \u2014 fee-for-service, LTSS included.'},
+ FF26:{name:'Former Foster Care',        magi:true,  color:'--g-FF26', blurb:'Young adults formerly in foster care, covered to 26.'}
+};
+var GROUP_KEYS=Object.keys(GROUPS);
+
+/* ---------- delivery: no plans at all -- FFS plus a Health Home overlay ---------- */
+function sysLabel(code){ return code==='FFS'?'Fee-for-Service (the whole program \u2014 South Dakota has no Medicaid MCO)':code }
+function sysKind(code){ return 'FFS' }
+function sysClass(code){ return 'd-ffs' }
+var HHCLINICS=[
+ {code:'FCH', name:'Falls Community Health (Sioux Falls)', kind:'CHRONIC'},
+ {code:'HHC', name:'Horizon Health Care (rural network)',  kind:'CHRONIC'},
+ {code:'RCC', name:'Rapid City Community Care',            kind:'CHRONIC'},
+ {code:'BMS', name:'Behavior Management Systems (Rapid City)', kind:'SMI'},
+ {code:'LSS', name:'Lewis & Clark Behavioral Health (Yankton)', kind:'SMI'},
+ {code:'CBH', name:'Capital Area Counseling (Pierre)',     kind:'SMI'}
+];
+var HHBY={}; HHCLINICS.forEach(function(c){HHBY[c.code]=c});
+
+/* ---------- jurisdictions -- including the county that renamed itself ---------- */
+var COUNTIES=[
+ {name:'Minnehaha',     w:6,  zips:['57104'], city:'Sioux Falls',
+  streets:['N Cliff Ave','E 10th St','N Minnesota Ave','W 12th St']},
+ {name:'Pennington',    w:4,  zips:['57701'], city:'Rapid City',
+  streets:['E North St','Haines Ave','Cambell St','E St Patrick St']},
+ {name:'Oglala Lakota', w:2,  zips:['57770'], city:'Pine Ridge',
+  streets:['Main St','Highway 18','Wolf Creek Rd']},
+ {name:'Todd',          w:1.5,zips:['57555'], city:'Mission',
+  streets:['Main St','SD Highway 18','Antelope Lake Rd']},
+ {name:'Brown',         w:2,  zips:['57401'], city:'Aberdeen',
+  streets:['S Main St','6th Ave SE','N 3rd St']},
+ {name:'Codington',     w:1.5,zips:['57201'], city:'Watertown',
+  streets:['E Kemp Ave','9th Ave SE','3rd St NE']},
+ {name:'Brookings',     w:1.5,zips:['57006'], city:'Brookings',
+  streets:['Main Ave','6th St','22nd Ave S']},
+ {name:'Dewey',         w:1,  zips:['57625'], city:'Eagle Butte',
+  streets:['Main St','US Highway 212','Landmark Ave']},
+ {name:'Yankton',       w:1,  zips:['57078'], city:'Yankton',
+  streets:['Broadway Ave','W 8th St','Douglas Ave']},
+ {name:'Beadle',        w:1,  zips:['57350'], city:'Huron',
+  streets:['Dakota Ave S','3rd St SW','Frank Ave SE']},
+ {name:'Hughes',        w:1,  zips:['57501'], city:'Pierre',
+  streets:['E Sioux Ave','N Euclid Ave','E Capitol Ave']},
+ {name:'Charles Mix',   w:0.8,zips:['57380'], city:'Wagner',
+  streets:['Main Ave SE','SD Highway 46','Walnut Ave SW']}
+];
+var COUNTYBY={}; COUNTIES.forEach(function(c){COUNTYBY[c.name]=c});
+function pickCounty(){return wpick(COUNTIES.map(function(c){return [c,c.w]}))}
+var TRIBEBY={'Oglala Lakota':'Oglala Sioux Tribe (Pine Ridge)','Todd':'Rosebud Sioux Tribe','Dewey':'Cheyenne River Sioux Tribe','Charles Mix':'Yankton Sioux Tribe'};
+var AREA=['605'];
+
+/* ---------- names & languages ---------- */
+var FIRST_F=['Emma','Kaylee','Madison','Brittany','Amber','Dawn','Karen','Linda','Darlene','Beverly','LaVonne','Marlys','Winona','Misty','Autumn','Cheyenne','Maria','Paw','Hazel','June','Delores','Twyla','Joleen','Tammy','Bernice','Renae','Sharon','Peggy','Crystal','Destiny','Mavis','Sita'],
+    FIRST_M=['Gary','Dennis','Larry','Duane','Vernon','Wayne','Dale','Travis','Hunter','Cody','Dakota','Tyler','Wyatt','Colt','Chance','Lane','Jose','Luis','Darrell','Leland','Merle','Clifford','Wilfred','Emil','Elden','Orville','Marlin','Delbert','Saw','Bishal','Curtis','Leroy'];
+var LAST=['Pourier','Janis','Mousseau','LeBeau','DuBray','Dupris','Archambault','Bordeaux','Olson','Hanson','Larson','Jensen','Sorensen','Bertsch','Mehlhaff','Goehring','Vogel','Smith','Johnson','Miller','Nelson','Petersen','Garcia','Hernandez','Htoo','Moo','Gurung','Rai','Anderson','Erickson','Kaul','Weber','Schmidt','Thompson','Two Eagle','Eagleman','Fischer','Braun','Haugen','Lindgren'],
+    LANGS=[['English',91],['Spanish',3],['Lakota',2.5],['Karen',2],['Nepali',1.5]];
+
+/* ---------- end reasons ---------- */
+var ELIG_END={
+ REDET:'Renewal not completed \u2014 case closed at annual renewal',
+ INCOME:'Over income at renewal \u2014 the pre-Amendment D parent limit',
+ MOVED:'Moved out of state',
+ MEDI:'Medicare entitlement \u2014 redetermined under SSI-related rules'
+};
+</script>
+<script>
+'use strict';
+/* ================= population generator ================= */
+var MEMBERS=[];
+var usedIds={};
+function genId(){ var s; do{ s=String(ri(10000000,89999999)) }while(usedIds[s]); usedIds[s]=1; return s } /* 8 digits */
+function genPhone(){ return '(605) '+ri(200,989)+'-'+String(ri(0,9999)).padStart(4,'0') }
+function genAddr(c){ var city=c.city||pick(c.cities); return {street:ri(100,9999)+' '+pick(c.streets), city:city, zip:pick(c.zips)} }
+function genName(sex){ return {first:(sex==='F'?pick(FIRST_F):pick(FIRST_M)), last:pick(LAST)} }
+function dobForAge(age){ var y=2026-age; var m=ri(0,11); if(m>6)y--; return {y:y,m:m,d:ri(1,28)} }
+function dobD8(d){return ''+d.y+String(d.m+1).padStart(2,'0')+String(d.d).padStart(2,'0')}
+function dobLabel(d){return MONTHS[d.m]+' '+d.d+', '+d.y}
+
+function baseMember(reg){
+  var sex=pick(['F','F','F','M','M']);
+  var nm=genName(sex), c=pickCounty(), a=genAddr(c);
+  return { id:genId(), first:nm.first, last:nm.last, sex:sex, county:c.name,
+    street:a.street, city:a.city, zip:a.zip, phone:genPhone(),
+    lang:wpick(LANGS), reg:reg, eligSpans:[], delSpans:[], flags:[],
+    hh:null, hhTier:null, hhOld:null, tierOld:null, hhIdx:null,
+    tribe:null, rename:false, border:false, futureMedi:null };
+}
+function addElig(m,grp,s,e,reason){m.eligSpans.push({grp:grp,start:s,end:e,reason:reason||null})}
+function addDel(m,sys,s,e,note){m.delSpans.push({sys:sys,start:s,end:e,note:note||null})}
+/* There is only one delivery system. Every member gets one FFS span per eligibility span. */
+function enrollSD(m,s,e,note){
+  addDel(m,'FFS',s,(e===undefined?null:e),note||'Fee-for-service \u2014 the whole program: South Dakota has no Medicaid MCO');
+  return 'FFS';
+}
+
+/* ----- Register A: steady state -- all gray, but young (1100) ----- */
+(function(){
+  var grpsA=[['CH19',6],['AEG',5],['FM01',1],['PW02',1],['AB03',2.5],['FF26',1]];
+  for(var i=0;i<1100;i++){
+    var grp=wpick(grpsA);
+    var m=baseMember('A');
+    var age = grp==='CH19'?ri(0,18) : grp==='FF26'?ri(18,25) : grp==='AB03'?ri(28,62) : grp==='PW02'?ri(19,38) : ri(19,60);
+    m.age=age; m.dob=dobForAge(age); if(grp==='PW02')m.sex='F';
+    var s = grp==='AEG'?ri(LAUNCH_IDX,2):ri(-20,2);
+    addElig(m,grp,s,null,null);
+    enrollSD(m,s);
+    if(R()<0.25){
+      var cl=pick(HHCLINICS.filter(function(c){return c.kind==='CHRONIC'}));
+      m.hh=cl.code; m.hhTier=ri(1,3);
+      m.flags.push('Attributed to the <b>'+cl.name+'</b> Health Home (tier '+m.hhTier+') \u2014 the one managed-care-shaped thing in an all-FFS state: a per-member monthly care-coordination payment to a clinic, with an acuity tier turning the dial');
+    } else if(grp==='AEG'&&R()<0.35){
+      m.flags.push('Amendment D adult \u2014 the youngest expansion in this series ('+mLabel(LAUNCH_IDX)+'), delivered with no plan layer at all: eligibility is the entire event');
+    } else if(R()<0.1){
+      m.flags.push('Fee-for-service, like every member in the state \u2014 the second all-gray file in this series, but this one is three years into its expansion: gray, and young');
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register B: churn -- and the closures that reopened into a group that didn't exist (500) ----- */
+(function(){
+  for(var i=0;i<500;i++){
+    var conv=(i>=125&&i<185); /* 60 unwinding-to-AEG conversions */
+    var m=baseMember('B');
+    if(conv){
+      m.age=ri(22,55); m.dob=dobForAge(m.age); m.sex=pick(['F','F','M']);
+      var s=ri(-30,-24);
+      var term=ri(-21,-19); /* closed in the unwinding, just before the launch */
+      var regain=Math.max(LAUNCH_IDX,term+2)+ri(0,2);
+      addElig(m,'FM01',s,term,ELIG_END.INCOME);
+      addElig(m,'AEG',regain,null,null);
+      enrollSD(m,s,term);
+      enrollSD(m,regain);
+      m.flags.push('<b>Closed into a gap; reopened into a group that didn\u2019t exist when the case closed.</b> The unwinding redetermination found this parent over the old FM01 limit \u2014 a limit far below poverty \u2014 and the case closed '+mLabel(term)+'. Weeks later Amendment D took effect, and the reopening ('+mLabel(regain)+') landed in AEG: the strangest churn in this series, where the gap was bridged not by paperwork but by <b>the eligibility rules changing underneath it</b>. South Dakota ran its unwinding and its expansion launch in the same season.');
+    } else {
+      var grp=wpick([['CH19',3],['AEG',5],['FM01',1]]);
+      m.age = grp==='CH19'?ri(1,17):ri(19,60); m.dob=dobForAge(m.age);
+      var s2 = grp==='AEG'?ri(LAUNCH_IDX,-2):ri(-18,-2);
+      var inGapNow=(i<125);
+      var term2=inGapNow?ri(15,16):ri(4,12);
+      var gap=inGapNow?ri(3,4):ri(1,4);
+      var regain2=term2+gap+1;
+      addElig(m,grp,s2,term2,ELIG_END.REDET);
+      addElig(m,grp,regain2,null,null);
+      enrollSD(m,s2,term2);
+      enrollSD(m,regain2);
+      m.flags.push('Gap '+mLabel(term2+1)+'\u2013'+mLabel(regain2-1)+' ('+gap+' mo) \u2014 renewal churn with nothing downstream: no plan to re-assign, no lottery to re-run. In the no-plan state, a gap is purely an eligibility fact.');
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register C: the launch wall -- the amendment that simply worked (375) ----- */
+(function(){
+  for(var i=0;i<375;i++){
+    var wall=(i<200);
+    var m=baseMember('C');
+    m.age=ri(19,58); m.dob=dobForAge(m.age);
+    if(wall){
+      addElig(m,'AEG',LAUNCH_IDX,null,null);
+      enrollSD(m,LAUNCH_IDX);
+      m.flags.push('<b>The launch wall</b> \u2014 eligibility begins exactly '+mLabel(LAUNCH_IDX)+': July 1, 2023, the date the voters wrote into the South Dakota Constitution (Amendment D, November 2022) and the state implemented <b>on schedule</b>. The same instrument as Missouri\u2019s expansion \u2014 a constitutional amendment \u2014 without the standoff, the litigation, or the backdating: no court ever had to touch this date. The dullest launch story in the series, which is exactly what a launch story should be.');
+    } else {
+      var grp=wpick([['AEG',5],['CH19',3],['PW02',2]]);
+      if(grp==='PW02')m.sex='F';
+      m.age = grp==='CH19'?ri(0,16) : grp==='PW02'?ri(19,36) : ri(19,55);
+      m.dob=dobForAge(m.age);
+      var app=ri(4,14), retro=ri(1,3), retroS=Math.max(app-retro, grp==='AEG'?LAUNCH_IDX:app-retro);
+      addElig(m,grp,retroS,null,null);
+      enrollSD(m,retroS);
+      m.flags.push('Retro grant reaching back to '+mLabel(retroS)+' \u2014 the classic three-month machinery, intact \u2014 and in the no-plan state the tail is indistinguishable from the rest of the record: one gray bar, opened '+retro+' month'+(retro>1?'s':'')+' before anyone applied');
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register D: Health Homes -- attribution with an acuity dial (375) ----- */
+(function(){
+  var CHRON=HHCLINICS.filter(function(c){return c.kind==='CHRONIC'});
+  var SMIC=HHCLINICS.filter(function(c){return c.kind==='SMI'});
+  for(var i=0;i<375;i++){
+    var kind = i<150?'CHRONIC' : (i<265?'SMI':'CHANGE');
+    var m=baseMember('D');
+    var grp=wpick([['AEG',4],['AB03',3],['CH19',2],['FM01',1]]);
+    m.age = grp==='CH19'?ri(6,17) : grp==='AB03'?ri(30,62) : ri(19,60);
+    m.dob=dobForAge(m.age);
+    var s = grp==='AEG'?ri(LAUNCH_IDX,-4):ri(-24,-6);
+    addElig(m,grp,s,null,null);
+    enrollSD(m,s);
+    if(kind==='CHRONIC'){
+      var cl=pick(CHRON);
+      m.hh=cl.code; m.hhTier=ri(1,3); m.hhIdx=Math.max(s,ri(-12,8));
+      m.flags.push('Attributed to <b>'+cl.name+'</b> (chronic-condition Health Home, tier '+m.hhTier+') since '+mLabel(m.hhIdx)+' \u2014 South Dakota\u2019s one managed-care-shaped structure: no capitation, no network, no 834; just a per-member monthly payment to the clinic that agrees to be responsible, with an <b>acuity tier</b> setting the rate. Colorado\u2019s app taught attribution as regional assignment; Alabama\u2019s taught it as the deliberate not-a-plan; South Dakota adds the dial.');
+    } else if(kind==='SMI'){
+      var cl2=pick(SMIC);
+      m.hh=cl2.code; m.hhTier=ri(2,3); m.hhIdx=Math.max(s,ri(-12,8));
+      m.flags.push('Attributed to <b>'+cl2.name+'</b> (SMI Health Home, tier '+m.hhTier+') since '+mLabel(m.hhIdx)+' \u2014 the behavioral-health track of the same program: serious mental illness qualifies a member the way diabetes-plus-one does on the chronic track, and the coordination payment follows the diagnosis. In a state with no behavioral carve-out to argue about \u2014 no plans to carve from \u2014 the Health Home is where BH integration actually lives.');
+    } else {
+      var t1=pick(HHCLINICS), t2=pick(HHCLINICS);
+      while(t2.code===t1.code)t2=pick(HHCLINICS);
+      var chg=ri(4,15);
+      m.hhOld=t1.code; m.hh=t2.code; m.tierOld=ri(1,2); m.hhTier=m.tierOld+1; m.hhIdx=chg;
+      m.flags.push('Health Home change in '+mLabel(chg)+': <b>'+HHBY[m.hhOld].name+' (tier '+m.tierOld+') \u2192 '+HHBY[m.hh].name+' (tier '+m.hhTier+')</b> \u2014 the two axes of the program moving at once: the responsible clinic changed, and the acuity dial turned. Neither event touched eligibility or delivery \u2014 there is no plan to notify \u2014 but both changed a monthly payment, which is why the attribution file is reconciled as carefully as any enrollment roster.');
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register E: the nation inside the state -- and the county that renamed itself (325) ----- */
+(function(){
+  for(var i=0;i<325;i++){
+    var kind = i<140?'IHS' : (i<235?'BORDER':'RENAME');
+    var m=baseMember('E');
+    if(kind==='IHS'){
+      var tc=COUNTYBY[pick(['Oglala Lakota','Todd','Dewey','Charles Mix'])];
+      m.county=tc.name; m.tribe=TRIBEBY[tc.name];
+      var a=genAddr(tc); m.street=a.street; m.city=a.city; m.zip=a.zip;
+      var grp=wpick([['CH19',4],['AEG',3],['AB03',2],['PW02',1]]);
+      if(grp==='PW02')m.sex='F';
+      m.age = grp==='CH19'?ri(1,17) : grp==='AB03'?ri(28,62) : ri(19,50);
+      m.dob=dobForAge(m.age);
+      var s = grp==='AEG'?ri(LAUNCH_IDX,-2):ri(-24,-4);
+      addElig(m,grp,s,null,null);
+      enrollSD(m,s,undefined,'FFS with care through IHS and tribal 638 facilities');
+      m.flags.push('<b>'+m.tribe+'</b> \u2014 and the financing teaching: services received through IHS and tribal <b>638</b> doors draw <b>100% federal match</b>, against the state\u2019s ordinary share. Same member, same benefit, same claim format \u2014 the federal percentage turns on <b>which door the service came through</b>, service by service. In the counties this register draws from, that distinction carries much of the program\u2019s economics.');
+    } else if(kind==='BORDER'){
+      var pc=COUNTYBY['Pennington'];
+      m.county=pc.name; m.tribe=pick(['Oglala Sioux Tribe (Pine Ridge)','Rosebud Sioux Tribe','Cheyenne River Sioux Tribe']);
+      var a2=genAddr(pc); m.street=a2.street; m.city=a2.city; m.zip=a2.zip;
+      m.border=true;
+      var grp2=wpick([['AEG',4],['CH19',3],['FM01',1]]);
+      m.age = grp2==='CH19'?ri(1,17):ri(19,55); m.dob=dobForAge(m.age);
+      var s2 = grp2==='AEG'?ri(LAUNCH_IDX,-2):ri(-20,-3);
+      addElig(m,grp2,s2,null,null);
+      enrollSD(m,s2);
+      m.flags.push('<b>Rapid City</b> \u2014 the border town: an enrolled member of the '+m.tribe+' living in Pennington County, with care through the <b>638 facility in the city</b>. The refinement matters: the 100% federal share follows the <b>facility</b>, not the member\u2019s address \u2014 moving off-reservation did not move the FMAP; the door decides, wherever the door stands. Urban Native members are a large share of Rapid City\u2019s Medicaid file, and this rule is why their claims split two ways.');
+    } else {
+      var oc=COUNTYBY['Oglala Lakota'];
+      m.county=oc.name; m.tribe=TRIBEBY['Oglala Lakota'];
+      var a3=genAddr(oc); m.street=a3.street; m.city=a3.city; m.zip=a3.zip;
+      m.rename=true;
+      var grp3=wpick([['AB03',4],['FM01',3],['CH19',2]]); /* no AEG: these cases predate the expansion by a decade */
+      m.age = grp3==='CH19'?ri(12,17) : grp3==='AB03'?ri(35,62) : ri(28,58);
+      m.dob=dobForAge(m.age);
+      var s3=ri(-140,-125); /* a case older than the rename */
+      addElig(m,grp3,s3,null,null);
+      enrollSD(m,s3);
+      m.flags.push('<b>The county that renamed itself</b> \u2014 this case predates May 2015, when Shannon County became <b>Oglala Lakota County</b> by referendum of its own voters: the archive rows say Shannon, the current rows say Oglala Lakota, and both describe the same house on the same road. New Mexico\u2019s app taught the agency that renamed itself; this is the jurisdiction version \u2014 county codes need effective dates too, and every geocoding crosswalk in the state carries this one row of history.');
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register F: the short goodbye, and the scheduled one (325) ----- */
+(function(){
+  for(var i=0;i<325;i++){
+    var m=baseMember('F');
+    var scheduled=(i>=195); /* 130: Medicare visible on the horizon */
+    if(scheduled){
+      var fmedi=ri(19,30); /* after the window's "today" */
+      m.age=64;
+      m.dob={y:WIN_START_Y+Math.floor(fmedi/12)-65, m:fmedi%12, d:ri(1,28)};
+      addElig(m,'AEG',LAUNCH_IDX,null,null);
+      enrollSD(m,LAUNCH_IDX);
+      m.futureMedi=fmedi;
+      m.flags.push('<b>The scheduled goodbye</b> \u2014 '+m.first+' is 64, covered since the launch wall ('+mLabel(LAUNCH_IDX)+'), and the date of birth already fixes the ending: Medicare arrives '+mLabel(fmedi)+', and the AEG span will close then \u2014 <b>a termination you can schedule</b>, visible in the data months before it happens. Most eligibility endings are surprises the file learns about late; this one is arithmetic. A well-run program works this cohort\u2019s MSP screening <i>before</i> the birthday.');
+    } else {
+      var medi=ri(6,16), lag=ri(1,3);
+      m.age=(medi<=TODAY_IDX)?65:64;
+      m.dob={y:WIN_START_Y+Math.floor(medi/12)-65, m:medi%12, d:ri(1,28)};
+      addElig(m,'AEG',LAUNCH_IDX,medi-1,ELIG_END.MEDI);
+      addElig(m,'AB03',medi,null,null);
+      enrollSD(m,LAUNCH_IDX,undefined,'FFS throughout \u2014 the eligibility hinge is the only event; there was never a plan to lose');
+      m.medicareIdx=medi; m.buyinIdx=medi+lag;
+      m.flags.push('<b>The short goodbye</b> \u2014 the twentieth answer. Coverage arrived '+mLabel(LAUNCH_IDX)+', when Amendment D caught this member at '+ri(62,64)+' after decades in the coverage gap \u2014 South Dakota\u2019s expansion came too late to give its oldest adults more than a few years \u2014 and Medicare arrived '+mLabel(medi)+'. The eligibility record hinges (AEG \u2192 AB03, buy-in '+mLabel(medi+lag)+') while the delivery record shows <b>nothing at all</b>: one gray bar, because there was never a plan to lose. The shortest expansion spans in this series, ending the ordinary way.');
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ---------- derived member state ---------- */
+function eligToday(m){ for(var i=0;i<m.eligSpans.length;i++){var s=m.eligSpans[i]; if(s.start<=TODAY_IDX&&(s.end===null||s.end>=TODAY_IDX))return s} return null }
+function delToday(m){ for(var i=0;i<m.delSpans.length;i++){var s=m.delSpans[i]; if(s.start<=TODAY_IDX&&(s.end===null||s.end>=TODAY_IDX))return s} return null }
+function lastElig(m){ return m.eligSpans[m.eligSpans.length-1] }
+function statusToday(m){
+  if(eligToday(m))return 'Active';
+  var le=lastElig(m);
+  if(le.end!==null&&le.end<TODAY_IDX){
+    for(var i=0;i<m.eligSpans.length;i++){ if(m.eligSpans[i].start>TODAY_IDX)return 'Gap' }
+    return 'Closed';
+  }
+  return 'Gap';
+}
+MEMBERS.forEach(function(m,ix){
+  m.ix=ix;
+  /* name/sex coherence: deterministic, PRNG-free remap */
+  if(m.sex==='F'&&FIRST_F.indexOf(m.first)<0)m.first=FIRST_F[(m.first.length*7+m.last.length)%FIRST_F.length];
+  if(m.sex==='M'&&FIRST_M.indexOf(m.first)<0)m.first=FIRST_M[(m.first.length*7+m.last.length)%FIRST_M.length];
+  m.name=m.last+', '+m.first;
+  var et=eligToday(m), le=lastElig(m);
+  m.grpToday = et?et.grp:le.grp;
+  var dt=delToday(m);
+  m.delTodayCode = dt?'FFS':'\u2014';
+  m.status=statusToday(m);
+});
+</script>
+<script>
+'use strict';
+/* ================= shared render helpers ================= */
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function grpChip(g){ if(!GROUPS[g])return esc(g);
+  return '<span class="chip" style="background:var('+GROUPS[g].color+')" title="'+esc(GROUPS[g].name)+'">'+g+'</span>' }
+function delChip(code){ if(code==='\u2014')return '<span class="st-cls">\u2014</span>';
+  var cls=sysClass(code), lbl=code;
+  return '<span class="dchip '+cls+'" title="'+esc(sysLabel(code))+'">'+esc(lbl)+'</span>' }
+function statusHtml(st){ return st==='Active'?'<span class="st-act">Active</span>':(st==='Gap'?'<span class="st-gap">In gap</span>':'<span class="st-cls">Closed</span>') }
+function regBadge(r){return '<span class="mono" style="font-weight:600;color:var(--accent)">'+r+'</span>'}
+
+/* ================= overview ================= */
+function renderOverview(){
+  var n=MEMBERS.length, act=0, aeg=0, hh=0, wall=0, sched=0, conv=0, gaps=0;
+  MEMBERS.forEach(function(m){
+    if(m.status==='Active')act++;
+    if(m.status==='Gap')gaps++;
+    if(m.grpToday==='AEG'&&m.status==='Active')aeg++;
+    if(m.hh)hh++;
+    if(m.eligSpans[0].start===LAUNCH_IDX&&m.eligSpans[0].grp==='AEG')wall++;
+    if(m.futureMedi)sched++;
+    if(m.reg==='B'&&m.eligSpans.length===2&&m.eligSpans[0].grp==='FM01'&&m.eligSpans[1].grp==='AEG')conv++;
+  });
+  var st=document.getElementById('ov-stats');
+  st.innerHTML =
+    stat(n,'Synthetic members',true)+
+    stat(act,'Eligible today (Jul 2026)')+
+    stat(n-0,'Fee-for-service \u2014 every member: no MCO exists', false).replace('>'+(n-0).toLocaleString()+'<','>100%<')+
+    stat(aeg,'Amendment D adults today \u2014 the youngest expansion')+
+    stat(wall,'The launch wall \u2014 spans that begin July 1, 2023')+
+    stat(hh,'In a Health Home \u2014 attribution with an acuity dial')+
+    stat(conv,'Closed in the unwinding; reopened into a new group')+
+    stat(sched,'Scheduled goodbyes \u2014 Medicare visible on the horizon')+
+    stat(gaps,'In an eligibility gap today');
+  function stat(nv,l,acc){return '<div class="stat'+(acc?' acc':'')+'"><div class="n">'+(typeof nv==='number'?nv.toLocaleString():nv)+'</div><div class="l">'+l+'</div></div>'}
+
+  /* group legend with counts (by current/last group) */
+  var gc={}; MEMBERS.forEach(function(m){gc[m.grpToday]=(gc[m.grpToday]||0)+1});
+  var lg=document.getElementById('ov-groups'); lg.innerHTML='';
+  GROUP_KEYS.forEach(function(g){
+    var c=gc[g]||0;
+    lg.innerHTML+='<div class="legrow"><span class="swatch" style="background:var('+GROUPS[g].color+')"></span>'+
+      '<span class="code">'+g+'</span><span>'+esc(GROUPS[g].name)+'</span>'+
+      '<span class="cnt">'+c+'</span></div>';
+  });
+
+  /* delivery distribution today */
+  var hc={}; var noHH=0;
+  MEMBERS.forEach(function(m){ if(m.status!=='Active')return; if(m.hh)hc[m.hh]=(hc[m.hh]||0)+1; else noHH++ });
+  var rows=HHCLINICS.map(function(c){return {label:'Health Home \u2014 '+c.name+(c.kind==='SMI'?' (SMI track)':' (chronic track)'), code:c.code, n:hc[c.code]||0, cls:c.kind==='SMI'?'var(--d-harp)':'var(--d-mco)'}});
+  rows.sort(function(a,b){return b.n-a.n});
+  rows.push({label:'FFS, no Health Home \u2014 the plain-gray majority', code:'FFS', n:noHH, cls:'var(--d-ffs)'});
+  var mx=rows.reduce(function(a,r){return Math.max(a,r.n)},1);
+  var bl=document.getElementById('ov-mcos'); bl.innerHTML='';
+  rows.forEach(function(r){
+    bl.innerHTML+='<div class="barrow"><span title="'+esc(r.label)+'">'+esc(r.label)+'</span>'+
+      '<span class="track"><span class="fill" style="width:0;background:'+r.cls+'" data-w="'+(100*r.n/mx)+'"></span></span>'+
+      '<span class="bn">'+r.n+'</span></div>';
+  });
+  requestAnimationFrame(function(){ setTimeout(function(){
+    bl.querySelectorAll('.fill').forEach(function(f){f.style.width=f.getAttribute('data-w')+'%'}) },60) });
+
+  document.getElementById('ov-plain').innerHTML='<span class="pe-label">In plain English</span>'+
+    'South Dakota is the series\u2019 natural experiment: the <b>youngest expansion</b> (Amendment D \u2014 the same constitutional instrument as Missouri\u2019s, implemented <b>on schedule</b>, July 1, 2023, with no standoff and no court) delivered into a state with <b>no managed care at all</b>. Tens of thousands of new adults, and not one 834 to a plan: eligibility is the entire event, which makes this the cleanest file in the series for watching eligibility itself \u2014 the launch wall in register C, the strangest churn in the series in register B (unwinding closures that reopened into a group that didn\u2019t exist when the case closed), and the twentieth Medicare answer in register F: <b>the short goodbye</b> \u2014 members the amendment caught at 62 after decades in the gap, whose coverage ends at 65 with the delivery record showing nothing at all \u2014 alongside the <b>scheduled goodbye</b>, the termination visible in the data months before it happens. '+
+    'The one managed-care-shaped structure is the <b>Health Home</b> \u2014 attribution with an acuity dial \u2014 and register E holds the state\u2019s deepest facts: the nations, the 100% federal share that follows the <b>door</b> a service comes through (Rapid City\u2019s 638 clinic proves it follows the facility, not the address), and <b>the county that renamed itself</b>: Shannon became Oglala Lakota by its own voters\u2019 referendum in 2015, leaving every archive row and geocoding crosswalk in the state carrying one row of history.';
+}
+
+/* ================= reference ================= */
+function renderReference(){
+  var h='';
+  h+='<div class="card"><h3 style="margin-top:0">Coverage groups (teaching set)</h3>'+
+     '<div class="tblwrap"><table><thead><tr><th>Code</th><th>Name</th><th>Determination</th><th>What it means</th></tr></thead><tbody>';
+  GROUP_KEYS.forEach(function(g){var G=GROUPS[g];
+    h+='<tr'+(g==='AEG'?' style="background:#f8f6f2"':'')+'><td>'+grpChip(g)+'</td><td>'+esc(G.name)+'</td><td>'+(G.magi?'MAGI (Department of Social Services)':'Non-MAGI')+'</td><td>'+G.blurb+'</td></tr>'});
+  h+='</tbody></table></div></div>';
+
+  h+='<div class="card"><h3 style="margin-top:0">Delivery \u2014 there is no plan table</h3>'+
+     '<p class="sub" style="margin-bottom:8px">South Dakota has no Medicaid MCO: every claim pays fee-for-service. The one managed-care-shaped structure is the Health Home \u2014 an attributed clinic paid per member per month, with an acuity tier.</p>'+
+     '<div class="tblwrap"><table><thead><tr><th>Code</th><th>Health Home (patterned)</th><th>Track</th></tr></thead><tbody>';
+  HHCLINICS.forEach(function(c){
+    h+='<tr'+(c.kind==='SMI'?' style="background:#f6f2fa"':'')+'><td class="mono">'+c.code+'</td><td>'+esc(c.name)+'</td><td>'+(c.kind==='SMI'?'Serious mental illness':'Chronic conditions')+'</td></tr>';
+  });
+  h+='<tr><td class="mono">FFS</td><td>No Health Home</td><td>The plain-gray majority \u2014 fee-for-service with no overlay</td></tr>'+
+     '</tbody></table></div></div>';
+
+  h+='<div class="card"><h3 style="margin-top:0">834 maintenance codes used in this app</h3>'+
+     '<p class="sub" style="margin-bottom:8px">No plan receives these \u2014 they are the state\u2019s own records, in standard shape. The vocabulary survives; the receiver doesn\u2019t.</p>'+
+     '<div class="tblwrap"><table><thead><tr><th>INS03</th><th>Meaning</th><th>Where you\u2019ll see it</th></tr></thead><tbody>'+
+     '<tr><td class="mono">021</td><td>Addition</td><td>New eligibility \u2014 including the launch wall, 200 spans opening the same morning</td></tr>'+
+     '<tr><td class="mono">024</td><td>Cancellation / termination</td><td>Renewal churn, the unwinding closures of register B, and register F\u2019s short goodbyes \u2014 including the scheduled ones, visible months in advance</td></tr>'+
+     '<tr><td class="mono">001</td><td>Change</td><td>Demographic changes and Health Home attribution/tier moves \u2014 which touch a monthly payment without touching coverage</td></tr>'+
+     '</tbody></table></div></div>';
+
+  h+='<div class="card"><h3 style="margin-top:0">Glossary</h3><dl class="gloss">'+
+    gl('Amendment D','November 2022: South Dakota\u2019s voters wrote Medicaid expansion into the state constitution \u2014 the same instrument Missouri\u2019s voters used \u2014 and the state implemented it <b>on schedule</b>, July 1, 2023. No refused appropriation, no litigation, no backdating: the amendment that simply worked. The dullest launch in the series, which is what launches should be.')+
+    gl('The launch wall','Register C\u2019s 200 spans all begin July 1, 2023. A wall of identical dates always means something happened that day \u2014 Missouri\u2019s wall was a ruling, Louisiana\u2019s a go-live, and South Dakota\u2019s a constitutional effective date that held.')+
+    gl('The no-plan expansion','Tens of thousands of new adults and not one 834 to a plan: South Dakota expanded with no managed care layer at all, making it the natural experiment for what an expansion is when eligibility is the entire event.')+
+    gl('Health Home','The one managed-care-shaped structure: a clinic that agrees to be responsible for a chronically ill or seriously mentally ill member\u2019s care coordination, paid per member per month, with an <b>acuity tier</b> setting the rate. Attribution with a dial \u2014 and an attribution file with money on it gets reconciled like an enrollment roster, because it is one.')+
+    gl('The unwinding conversion','Register B\u2019s strangest churn: parents closed over the old FM01 limit during the unwinding, whose cases reopened weeks later into AEG \u2014 <b>a group that didn\u2019t exist when the case closed</b>. South Dakota ran its unwinding and its expansion launch in the same season, and these records are the seam.')+
+    gl('The county that renamed itself','May 2015: Shannon County became <b>Oglala Lakota County</b> by referendum of its own voters \u2014 the only U.S. county renamed this century by the people who live in it. Archive rows say Shannon; current rows say Oglala Lakota; both describe the same houses. County codes need effective dates, and every geocoding crosswalk in the state carries this row of history.')+
+    gl('100% FMAP \u2014 and the door rule','Services received through IHS and tribal <b>638</b> facilities draw a 100% federal match. The share follows the <b>facility</b>, not the member\u2019s address \u2014 which is why Rapid City\u2019s urban Native members (register E\u2019s border-town cohort) split their claims two ways: the door decides, wherever the door stands.')+
+    gl('The nations','The Oglala Sioux Tribe (Pine Ridge), Rosebud Sioux Tribe, Cheyenne River Sioux Tribe, and Yankton Sioux Tribe anchor this file\u2019s tribal registers. The Pouriers, Mousseaus, DuBrays, and Bordeauxs of this roster carry the French-Lakota surnames of the treaty era.')+
+    gl('The short goodbye','The twentieth Medicare answer: Amendment D caught its oldest adults at 62, 63, 64 \u2014 after decades in the coverage gap \u2014 and Medicare arrived a few years later. The shortest expansion spans in the series, ending the ordinary way, with a delivery record that shows nothing at all.')+
+    gl('The scheduled goodbye','Register F\u2019s other half: members who are 64 today, whose date of birth already fixes the AEG end date months out. Most eligibility endings are surprises the file learns about late; this one is arithmetic \u2014 and a well-run program works the MSP screening before the birthday.')+
+    gl('Karen and Nepali','Huron\u2019s Karen community and the Bhutanese-Nepali resettlement \u2014 Beadle County\u2019s working languages, carried in this roster\u2019s LUI segments and in the Htoo and Moo surnames.')+
+    gl('834','The X12N enrollment transaction \u2014 rendered here with no receiver but the program itself, so the eligibility core shows through.')+
+    '</dl></div>';
+  function gl(t,d){return '<dt>'+t+'</dt><dd>'+d+'</dd>'}
+
+  h+='<div class="card"><h3 style="margin-top:0">Counties in this population</h3><p class="sub" style="margin-bottom:8px">Twelve counties, Sioux Falls to Pine Ridge \u2014 including Oglala Lakota County, renamed by its own voters in 2015, and among the counties with the deepest poverty and the highest Medicaid reliance in the nation.</p><p style="font-size:.85rem">'+COUNTIES.map(function(c){return esc(c.name)}).join(' \u00b7 ')+'</p></div>';
+
+  document.getElementById('ref-out').innerHTML=h;
+}
+</script>
+<script>
+'use strict';
+/* ================= generic sortable table state ================= */
+var SORT={};
+function bindSort(tblId, renderFn){
+  document.querySelectorAll('#'+tblId+' th.sortable').forEach(function(th){
+    th.addEventListener('click',function(){
+      var k=th.getAttribute('data-k');
+      var cur=SORT[tblId]||{};
+      SORT[tblId]={k:k, dir:(cur.k===k&&cur.dir==='asc')?'desc':'asc'};
+      renderFn();
+    });
+  });
+}
+function sortRows(tblId, rows){
+  var s=SORT[tblId]; if(!s)return rows;
+  var dir=s.dir==='asc'?1:-1;
+  rows.sort(function(a,b){
+    var x=a[s.k],y=b[s.k];
+    if(x===null||x===undefined)x=-Infinity; if(y===null||y===undefined)y=-Infinity;
+    if(typeof x==='string'){x=x.toLowerCase();y=String(y).toLowerCase();return x<y?-dir:(x>y?dir:0)}
+    return (x-y)*dir;
+  });
+  return rows;
+}
+function sortMarks(tblId){
+  var s=SORT[tblId];
+  document.querySelectorAll('#'+tblId+' th.sortable').forEach(function(th){
+    var base=th.textContent.replace(/[\u25b2\u25bc]\s*$/,'').trim();
+    th.innerHTML=esc(base)+(s&&s.k===th.getAttribute('data-k')?' <span class="arr">'+(s.dir==='asc'?'\u25b2':'\u25bc')+'</span>':'');
+  });
+}
+
+/* ================= pagination ================= */
+var PAGE={}, PAGE_SIZE=50;
+function pager(tblId, total, renderFn, pagerId){
+  var pages=Math.max(1,Math.ceil(total/PAGE_SIZE));
+  var p=Math.min(PAGE[tblId]||1,pages); if(p<1)p=1; PAGE[tblId]=p;
+  var el=document.getElementById(pagerId);
+  if(el){
+    if(pages===1){ el.innerHTML=''; }
+    else{
+      el.innerHTML='<button class="pg"'+(p<=1?' disabled':'')+' data-d="-1">\u25c0 Prev</button>'+
+        '<span class="mono pgpos">page '+p+' of '+pages.toLocaleString()+'</span>'+
+        '<button class="pg"'+(p>=pages?' disabled':'')+' data-d="1">Next \u25b6</button>';
+      el.querySelectorAll('button.pg').forEach(function(b){
+        b.addEventListener('click',function(){ PAGE[tblId]=p+parseInt(b.getAttribute('data-d'),10); renderFn(); });
+      });
+    }
+  }
+  return {from:(p-1)*PAGE_SIZE, to:Math.min(total,p*PAGE_SIZE)};
+}
+function resetPage(tblId){ PAGE[tblId]=1 }
+
+/* ================= members roster ================= */
+var ROSTER_VIEW=[]; /* current filtered order (all pages), for modal nav */
+function fillSelect(id, opts, allLabel){
+  var el=document.getElementById(id);
+  el.innerHTML='<option value="">'+allLabel+'</option>'+opts.map(function(o){return '<option value="'+o[0]+'">'+o[1]+'</option>'}).join('');
+}
+function initRosterControls(){
+  fillSelect('m-group',GROUP_KEYS.map(function(g){return[g,g+' \u2014 '+GROUPS[g].name]}),'Coverage group: all');
+  var dopts=[['FFS','Fee-for-Service \u2014 the whole program']];
+  fillSelect('m-del',dopts,'Delivery today: all');
+  fillSelect('m-reg',['A','B','C','D','E','F'].map(function(r){return[r,'Register '+r]}),'Register: all');
+  ['m-search','m-group','m-del','m-reg','m-status'].forEach(function(id){
+    document.getElementById(id).addEventListener('input',function(){resetPage('m-tbl');renderRoster()});
+  });
+  bindSort('m-tbl',renderRoster);
+}
+function renderRoster(){
+  var q=document.getElementById('m-search').value.trim().toLowerCase();
+  var fg=document.getElementById('m-group').value, fd=document.getElementById('m-del').value,
+      fr=document.getElementById('m-reg').value, fs=document.getElementById('m-status').value;
+  var rows=MEMBERS.filter(function(m){
+    if(fg&&m.grpToday!==fg)return false;
+    if(fd&&m.delTodayCode!==fd)return false;
+    if(fr&&m.reg!==fr)return false;
+    if(fs&&m.status!==fs)return false;
+    if(q){ var hay=(m.name+' '+m.id+' '+m.city+' '+m.county).toLowerCase(); if(hay.indexOf(q)<0)return false }
+    return true;
+  }).map(function(m){return {ix:m.ix,id:m.id,name:m.name,age:m.age,sex:m.sex,grp:m.grpToday,del:m.delTodayCode,county:m.county,reg:m.reg,status:m.status}});
+  rows=sortRows('m-tbl',rows); sortMarks('m-tbl');
+  ROSTER_VIEW=rows.map(function(r){return r.ix});
+  var pg=pager('m-tbl',rows.length,renderRoster,'m-pager');
+  var tb=document.getElementById('m-body'); tb.innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+r.age+'</td><td>'+r.sex+'</td>'+
+    '<td>'+grpChip(r.grp)+'</td><td>'+delChip(r.del)+'</td><td class="nowrap">'+esc(r.county)+'</td><td>'+regBadge(r.reg)+'</td><td>'+statusHtml(r.status)+'</td></tr>'}).join('');
+  document.getElementById('m-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' matching (population '+MEMBERS.length.toLocaleString()+')';
+  tb.querySelectorAll('tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'roster')})});
+}
+
+/* ================= eligibility spans ================= */
+var SPAN_VIEW=[];
+function initSpanControls(){
+  fillSelect('s-group',GROUP_KEYS.map(function(g){return[g,g+' \u2014 '+GROUPS[g].name]}),'Coverage group: all');
+  ['s-group','s-open'].forEach(function(id){document.getElementById(id).addEventListener('input',function(){resetPage('s-tbl');renderSpans()})});
+  bindSort('s-tbl',renderSpans);
+}
+function renderSpans(){
+  var fg=document.getElementById('s-group').value, fo=document.getElementById('s-open').value;
+  var rows=[];
+  MEMBERS.forEach(function(m){ m.eligSpans.forEach(function(s){
+    if(fg&&s.grp!==fg)return;
+    if(fo==='open'&&s.end!==null)return;
+    if(fo==='closed'&&s.end===null)return;
+    rows.push({ix:m.ix,id:m.id,name:m.name,grp:s.grp,start:s.start,end:(s.end===null?9999:s.end),endRaw:s.end,
+      months:spanMonths(s.start,s.end),reason:s.reason});
+  })});
+  rows=sortRows('s-tbl',rows); sortMarks('s-tbl');
+  SPAN_VIEW=[]; var seenS={}; rows.forEach(function(r){ if(!seenS[r.ix]){seenS[r.ix]=1;SPAN_VIEW.push(r.ix)} });
+  var pg=pager('s-tbl',rows.length,renderSpans,'s-pager');
+  document.getElementById('s-body').innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+grpChip(r.grp)+'</td>'+
+    '<td class="nowrap">'+startLabel(r.start)+'</td><td class="nowrap">'+(r.endRaw===null?'<span class="st-act">open</span>':mLabel(r.endRaw))+'</td>'+
+    '<td class="mono">'+r.months+(r.start<0?'+':'')+'</td><td>'+(r.reason?esc(r.reason):'\u2014')+'</td></tr>'}).join('');
+  document.getElementById('s-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' spans';
+  document.querySelectorAll('#s-body tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'spans')})});
+}
+function startLabel(s){ return s<0 ? mLabel(s)+' <span class="hint">(pre-window)</span>' : mLabel(s) }
+
+/* ================= delivery spans ================= */
+var DEL_VIEW=[];
+function initDelControls(){
+  var dopts=[['FFS','Fee-for-Service \u2014 the whole program']];
+  fillSelect('d-sys',dopts,'Delivery system: all');
+  document.getElementById('d-sys').addEventListener('input',function(){resetPage('d-tbl');renderDel()});
+  bindSort('d-tbl',renderDel);
+}
+function renderDel(){
+  var fd=document.getElementById('d-sys').value;
+  var rows=[];
+  MEMBERS.forEach(function(m){ m.delSpans.forEach(function(s){
+    if(fd&&s.sys!==fd)return;
+    rows.push({ix:m.ix,id:m.id,name:m.name,sys:s.sys,start:s.start,end:(s.end===null?9999:s.end),endRaw:s.end,
+      months:spanMonths(s.start,s.end),note:s.note});
+  })});
+  rows=sortRows('d-tbl',rows); sortMarks('d-tbl');
+  DEL_VIEW=[]; var seenD={}; rows.forEach(function(r){ if(!seenD[r.ix]){seenD[r.ix]=1;DEL_VIEW.push(r.ix)} });
+  var pg=pager('d-tbl',rows.length,renderDel,'d-pager');
+  document.getElementById('d-body').innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+delChip(r.sys)+'</td>'+
+    '<td class="nowrap">'+startLabel(r.start)+'</td><td class="nowrap">'+(r.endRaw===null?'<span class="st-act">open</span>':mLabel(r.endRaw))+'</td>'+
+    '<td class="mono">'+r.months+(r.start<0?'+':'')+'</td><td>'+(r.note?esc(r.note):'\u2014')+'</td></tr>'}).join('');
+  document.getElementById('d-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' delivery spans';
+  document.querySelectorAll('#d-body tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'delivery')})});
+}
+</script>
+<script>
+'use strict';
+/* ================= scenario registers ================= */
+var REGDEFS={
+ A:{title:'Steady state \u2014 all gray, but young', q:'What does the series\u2019 second all-FFS file teach that the first couldn\u2019t?',
+    body:'Every member in this file is fee-for-service, because South Dakota has no Medicaid MCO \u2014 but where Alabama\u2019s all-gray file was the control group of a state that never expanded, this one is <b>gray and young</b>: Amendment D adults are threaded through the baseline, three years into the newest expansion in the series, delivered with no plan layer at all. About a quarter of the register carries the <b>Health Home</b> overlay \u2014 an attributed clinic, an acuity tier, a monthly coordination payment: the one managed-care-shaped thing in the state.'},
+ B:{title:'Churn \u2014 and the closures that reopened into a new group', q:'What happens when the rules change while the case is closed?',
+    body:'Ordinary renewal churn fills most of this register \u2014 125 members in the gap today, with nothing downstream of any gap: no plan to reassign, no lottery to re-run. But 60 members carry the strangest churn in the series: parents closed <i>over income</i> during the unwinding \u2014 against the old FM01 limit, which sat far below poverty \u2014 whose cases reopened weeks later into <b>AEG, a group that did not exist when the case closed</b>. South Dakota ran its unwinding and its expansion launch in the same season, and these records are the seam: a gap bridged not by paperwork but by the eligibility rules changing underneath it.'},
+ C:{title:'The launch wall \u2014 the amendment that simply worked', q:'What does a constitutional expansion look like when nothing goes wrong?',
+    body:'200 spans in this register begin the same morning: <b>July 1, 2023</b> \u2014 the effective date South Dakota\u2019s voters wrote into their constitution (Amendment D, November 2022) and the state implemented <b>on schedule</b>. This is Missouri\u2019s instrument without Missouri\u2019s standoff: no refused appropriation, no Cole County, no Supreme Court, no backdating \u2014 a wall of identical dates set by a ballot measure that was simply obeyed. The dullest launch story in the series, which is exactly what a launch story should be; the drama in this register is its absence. The other 175 carry the classic three-month retro \u2014 and in the no-plan state, the retro tail is indistinguishable from everything after it: one gray bar that happens to start before the application did.'},
+ D:{title:'Health Homes \u2014 attribution with an acuity dial', q:'What is the managed-care-shaped thing in a state with no managed care?',
+    body:'South Dakota\u2019s Health Home program: a clinic agrees to be responsible for a member\u2019s care coordination and is paid <b>per member per month, by acuity tier</b>. 150 members ride the <b>chronic-condition track</b> (diabetes-plus-one and its cousins), 115 the <b>SMI track</b> \u2014 where behavioral health integration actually lives in a state with no carve-out to argue about, because there are no plans to carve from \u2014 and 110 show the two axes moving: clinic transfers and tier changes, neither of which touches eligibility or delivery, both of which change a payment. Colorado\u2019s app taught attribution as regional machinery; Alabama\u2019s taught the deliberate not-a-plan; South Dakota adds the <b>dial</b> \u2014 and the reminder that an attribution file with money on it is reconciled like an enrollment roster, because it is one.'},
+ E:{title:'The nation inside the state \u2014 and the county that renamed itself', q:'Where does the federal share double, and what happens when a county changes its name?',
+    body:'South Dakota\u2019s tribal registers carry the deepest facts in the file. 140 members receive care through <b>IHS and tribal 638 facilities</b> on Pine Ridge, Rosebud, Cheyenne River, and Yankton lands \u2014 where services draw <b>100% federal match</b>, the percentage decided service by service by <b>which door the care came through</b>. 95 are Rapid City\u2019s <b>border-town</b> cohort: urban Native members in Pennington County whose care through the city\u2019s 638 clinic proves the refinement \u2014 <b>the share follows the facility, not the address</b>. And 90 carry <b>the county that renamed itself</b>: cases in Oglala Lakota County old enough to remember when it was Shannon County \u2014 renamed in May 2015 by referendum of its own voters, the only U.S. county renamed this century by the people who live in it. Archive rows say Shannon; current rows say Oglala Lakota; both describe the same house. New Mexico\u2019s app taught the agency rename; this is the jurisdiction version: county codes need effective dates too.'},
+ F:{title:'Medicare arrives \u2014 the short goodbye, and the scheduled one', q:'The twentieth answer: what does the youngest expansion owe its oldest adults?',
+    body:'Amendment D caught its oldest members at 62, 63, 64 \u2014 after <b>decades in the coverage gap</b>, because South Dakota\u2019s pre-2023 parent limit sat far below poverty and childless adults had nothing at all. 195 members here show <b>the short goodbye</b>: coverage that began at the launch wall and ended at Medicare a few years later \u2014 the shortest expansion spans in the series, hinging AEG \u2192 AB03 with the buy-in accreting on schedule, while the delivery record shows <b>nothing at all</b>: one gray bar, because there was never a plan to lose. The other 130 are <b>the scheduled goodbye</b>: members who are 64 today, whose dates of birth already fix the ending \u2014 Medicare visible on the horizon, months out, a termination you can compute from the roster itself. Most eligibility endings are surprises the file learns about late; these are arithmetic \u2014 and the register\u2019s working lesson is that the MSP screening for this cohort should start before the birthday, not after the 024.'}
+};
+function renderRegisters(){
+  var out=document.getElementById('reg-list'); var h='';
+  ['A','B','C','D','E','F'].forEach(function(r){
+    var d=REGDEFS[r], list=MEMBERS.filter(function(m){return m.reg===r});
+    var sample=list.slice(0,12);
+    h+='<div class="reg"><h3><span class="rl">'+r+'</span>'+esc(d.title)+'<span class="meta" style="margin-left:auto">'+list.length.toLocaleString()+' members</span></h3>'+
+       '<div class="q">'+d.q+'</div><p class="sub" style="margin-bottom:10px">'+d.body+'</p>'+
+       '<div class="tblwrap"><table><thead><tr><th>Medicaid ID</th><th>Member</th><th>Group</th><th>Delivery today</th><th>The planted story</th></tr></thead><tbody>';
+    sample.forEach(function(m){
+      h+='<tr class="rowlink" data-ix="'+m.ix+'"><td class="mono">'+m.id+'</td><td class="nowrap">'+esc(m.name)+'</td><td>'+grpChip(m.grpToday)+'</td><td>'+delChip(m.delTodayCode)+'</td>'+
+         '<td>'+(m.flags.length?m.flags[0]:'Clean spans \u2014 the control group')+'</td></tr>';
+    });
+    h+='</tbody></table></div>';
+    if(list.length>sample.length){
+      h+='<div class="hint" style="margin-top:8px">Showing the first '+sample.length+' of '+list.length.toLocaleString()+'. Open any row \u2014 the \u25c0 \u25b6 arrows walk the entire register \u2014 or filter the Members tab by register for the full list.</div>';
+    }
+    h+='</div>';
+  });
+  out.innerHTML=h;
+  out.querySelectorAll('tr.rowlink').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'register')})});
+}
+
+/* ================= 834-shaped state record builder ================= */
+function lastDelEvent(m){
+  if(m.reg==='F'&&m.futureMedi){
+    return {kind:'021',why:'The scheduled goodbye, before it happens: this member is 64, the date of birth fixes the AEG end date at '+mLabel(m.futureMedi)+', and the termination is already computable from the roster. Most endings are surprises; this one is arithmetic \u2014 the MSP screening should start now.'};
+  }
+  if(m.reg==='F'){
+    return {kind:'024',why:'The short goodbye: coverage that began at the launch wall ends at Medicare a few years later \u2014 the shortest expansion spans in the series. The eligibility record hinges; the delivery record has nothing to say, because there was never a plan to lose.'};
+  }
+  if(m.reg==='C'&&m.eligSpans[0].start===LAUNCH_IDX&&m.eligSpans[0].grp==='AEG'&&m.reg==='C'){
+    return {kind:'021',why:'A launch-wall addition \u2014 the DTP*356 below is July 1, 2023: written by the voters into the state constitution and implemented on schedule. No court, no standoff, no backdating: the date simply held.'};
+  }
+  if(m.reg==='B'&&m.eligSpans.length===2&&m.eligSpans[0].grp==='FM01'&&m.eligSpans[1].grp==='AEG'){
+    return {kind:'021',why:'The reopening half of the unwinding conversion: closed over the old parent limit, reopened weeks later into AEG \u2014 a group that did not exist when the case closed. The gap was bridged by the rules changing underneath it.'};
+  }
+  if(m.reg==='D'&&m.hhOld){
+    return {kind:'001',why:'A Health Home change: clinic and tier moved together \u2014 no coverage event, but two payment events. The attribution file is reconciled like an enrollment roster because money rides on it.'};
+  }
+  if(m.reg==='B'&&m.eligSpans[1].start>TODAY_IDX){
+    return {kind:'024',why:'Eligibility closed at renewal; the member is in the gap today. Nothing else happened, because nothing else exists to happen.'};
+  }
+  return {kind:'021',why:'The state\u2019s own enrollment record \u2014 standard 834 shape, no receiver but the program: what remains when the plan layer is subtracted is the eligibility core.'};
+}
+function ediRow(seg,note,loop){return '<div class="edirow'+(loop?' loop':'')+'"><div class="seg">'+esc(seg)+'</div><div class="note">'+note+'</div></div>'}
+function build834(m){
+  var ev=lastDelEvent(m);
+  var eligSpan=m.eligSpans[m.eligSpans.length-1];
+  var eligBegin=m.eligSpans[0].start;
+  var ctl=String(605000+m.ix*7);
+  var kindLabel={ '021':'Addition','001':'Change','024':'Termination' }[ev.kind];
+  var out='<div class="ediwrap"><div class="edihead"><span class="fn">834-shaped state record \u2014 '+kindLabel+'</span><span class="hint">'+ev.why+'</span></div>';
+  out+=ediRow('ISA*00*          *00*          *ZZ*SDMEDICAID     *ZZ*SDDSS          *260701*0800*^*00501*'+ctl.padStart(9,'0')+'*0*P*:~','Interchange envelope \u2014 sender and receiver are the same enterprise: the Department of Social Services, keeping its own record. There is no plan to address.');
+  out+=ediRow('GS*BE*SDMEDICAID*SDDSS*20260701*0800*'+ctl+'*X*005010X220A1~','Functional group: <b>BE</b> = benefit enrollment \u2014 the vocabulary survives even where the trading partner doesn\u2019t.');
+  out+=ediRow('ST*834*'+ctl.slice(-4)+'*005010X220A1~','Transaction set header. One ST/SE per batch; this rendering shows a single member for teaching.');
+  out+=ediRow('BGN*00*'+m.id.slice(-6)+'-'+ctl.slice(-3)+'*20260701*0800****4~','Beginning segment. Purpose 00 = original. Action 4 = verify/full audit.');
+  out+=ediRow('N1*P5*SOUTH DAKOTA DEPARTMENT OF SOCIAL SERVICES*FI*466000364~','Loop 1000A \u2014 plan sponsor: DSS, which is also the only audience.', true);
+  out+=ediRow('N1*IN*SD MEDICAID (STATE RECORD)*FI*'+String(460000000+m.ix*13)+'~','Loop 1000B \u2014 the receiver slot, filled by the program itself: the segment every other state uses to name a plan.', true);
+  out+=ediRow('INS*Y*18*'+ev.kind+'*'+(ev.kind==='024'?'07':(ev.kind==='001'?'43':'28'))+'*A***FT~','Loop 2000. Subscriber (Y/18). Maintenance <b>'+ev.kind+'</b>.', true);
+  out+=ediRow('REF*0F*'+m.id+'~','The <b>South Dakota Medicaid ID</b> \u2014 eight digits: the person, permanently.');
+  out+=ediRow('DTP*356*D8*'+mFirstD8(Math.max(eligBegin,-24))+'~','<b>Eligibility</b> begin date'+(m.eligSpans[0].start===LAUNCH_IDX&&m.eligSpans[0].grp==='AEG'?' \u2014 <b>July 1, 2023</b>: the constitutional effective date that held. Missouri\u2019s wall was a ruling, Louisiana\u2019s a go-live; this one is a ballot measure, simply obeyed.':'.'));
+  out+=ediRow('NM1*IL*1*'+m.last.toUpperCase()+'*'+m.first.toUpperCase()+'****34*'+String(504000000+m.ix*311)+'~','Member name. The 34 qualifier carries an SSN in real files; synthetic here.');
+  out+=ediRow('PER*IP**TE*'+m.phone.replace(/\D/g,'')+'~','Contact telephone \u2014 area code 605, like every other one in the state.');
+  out+=ediRow('N3*'+m.street.toUpperCase()+'~','Street address.');
+  out+=ediRow('N4*'+m.city.toUpperCase()+'*SD*'+m.zip+'~','City/state/ZIP: '+esc(m.city)+', '+esc(m.county)+' County'+(m.rename?' \u2014 which the archive knows as <b>Shannon County</b>: renamed Oglala Lakota by its own voters in May 2015. Same house, two county names; the geocoding crosswalk carries the history.':'.'));
+  out+=ediRow('DMG*D8*'+dobD8(m.dob)+'*'+m.sex+'~','Date of birth and sex'+(m.futureMedi?' \u2014 the field that already contains this record\u2019s ending: Medicare arrives '+mLabel(m.futureMedi)+', computable today.':'.'));
+  if(m.lang!=='English') out+=ediRow('LUI*LD*'+({'Spanish':'SPA','Lakota':'LKT','Karen':'KAR','Nepali':'NEP'}[m.lang]||'ENG')+'**6~','Preferred language: '+esc(m.lang)+'.'+(m.lang==='Karen'?' Huron\u2019s Karen community \u2014 Beadle County\u2019s working language.':(m.lang==='Lakota'?' Lak\u021f\u00f3tiyapi \u2014 living language of the nations this file draws from.':'')));
+  out+=ediRow('HD*'+ev.kind+'**HLT*SDFFS~','Loop 2300 \u2014 the \u201cplan code\u201d names fee-for-service: the whole program. Every other app in this series puts a plan here; the absence is the teaching.', true);
+  out+=ediRow('DTP*348*D8*'+mFirstD8(Math.max(eligBegin,-24))+'~','Coverage begin \u2014 identical to the eligibility date, because with no plan layer the two clocks collapse into one.');
+  out+=ediRow('LS*2700~','Open the member-reporting loop.', true);
+  out+=ediRow('LX*1~ N1*75*COVERAGE GROUP~ REF*ZZ*'+eligSpan.grp+'~','The coverage group ('+esc(GROUPS[eligSpan.grp].name)+').');
+  if(m.hh) out+=ediRow('LX*2~ N1*75*HEALTH HOME~ REF*ZZ*'+m.hh+'~ REF*9V*TIER'+m.hhTier+'~','Health Home attribution: '+esc(HHBY[m.hh].name)+', acuity tier '+m.hhTier+(m.hhOld?' \u2014 changed from '+esc(HHBY[m.hhOld].name)+' (tier '+m.tierOld+') in '+mLabel(m.hhIdx)+': two payment events, zero coverage events.':' \u2014 the per-member monthly coordination payment rides on this segment.'));
+  if(m.tribe) out+=ediRow('LX*3~ N1*75*TRIBAL AFFILIATION~ REF*ZZ*AIAN~','Enrolled member, '+esc(m.tribe)+' \u2014 services through IHS/638 doors draw 100% federal match'+(m.border?'; the Rapid City 638 clinic proves the share follows the facility, not the address.':'; the door decides, service by service.'));
+  if(m.reg==='F'&&!m.futureMedi) out+=ediRow('LX*4~ N1*75*MEDICARE STATUS~ REF*ZZ*AB~','Medicare A+B from '+mLabel(m.medicareIdx)+' \u2014 buy-in accreted '+mLabel(m.buyinIdx)+'.');
+  out+=ediRow('LE*2700~','Close the reporting loop.', true);
+  out+=ediRow('SE*'+ri(15,21)+'*'+ctl.slice(-4)+'~ GE*1*'+ctl+'~ IEA*1*'+ctl.padStart(9,'0')+'~','Trailers: segment count, group close, interchange close. Counts must reconcile or the whole file bounces.');
+  out+='</div>';
+  if(m.reg==='F'&&m.futureMedi){
+    out+='<div class="plain" style="margin-top:14px"><span class="pe-label">Worth noticing</span>This record contains its own ending. The date of birth fixes the Medicare month; the Medicare month fixes the AEG termination; and both are computable today, from the roster alone \u2014 no external event required. Eligibility systems spend most of their machinery reacting to surprises: renewals that don\u2019t return, wages that appear, custody orders, diagnoses. The 65th birthday is the one major eligibility event that is <b>pure arithmetic</b> \u2014 which means the outreach, the MSP screening, and the buy-in paperwork can all run before the termination instead of after it. A caseload\u2019s scheduled goodbyes are the cheapest transitions it will ever get to do well.</div>';
+  }
+  return out;
+}
+function initFileTab(){
+  var sel=document.getElementById('f-member');
+  var h='';
+  ['A','B','C','D','E','F'].forEach(function(r){
+    h+='<optgroup label="Register '+r+' \u2014 '+esc(REGDEFS[r].title)+'">';
+    MEMBERS.filter(function(m){return m.reg===r}).slice().sort(function(a,b){return a.name.localeCompare(b.name)}).forEach(function(m){
+      h+='<option value="'+m.ix+'">'+esc(m.name)+' \u2014 '+m.id+'</option>';
+    });
+    h+='</optgroup>';
+  });
+  sel.innerHTML=h;
+  sel.addEventListener('input',function(){renderFile(+sel.value)});
+  renderFile(+sel.value);
+}
+function renderFile(ix){
+  document.getElementById('f-out').innerHTML=build834(MEMBERS[ix]);
+}
+</script>
+<script>
+'use strict';
+/* ================= modal ================= */
+var MODAL={ix:null, ctx:'roster'};
+function navList(){
+  if(MODAL.ctx==='spans'&&SPAN_VIEW.length)return SPAN_VIEW;
+  if(MODAL.ctx==='delivery'&&DEL_VIEW.length)return DEL_VIEW;
+  if(MODAL.ctx==='register'&&MODAL.ix!==null){
+    var r=MEMBERS[MODAL.ix].reg;
+    return MEMBERS.filter(function(m){return m.reg===r}).map(function(m){return m.ix});
+  }
+  return ROSTER_VIEW.length?ROSTER_VIEW:MEMBERS.map(function(m){return m.ix});
+}
+function openModal(ix,ctx){
+  MODAL.ix=ix; if(ctx)MODAL.ctx=ctx;
+  var m=MEMBERS[ix];
+  document.getElementById('mo-nm').textContent=m.first+' '+m.last;
+  document.getElementById('mo-id').textContent='Medicaid ID '+m.id+'  \u00b7  Register '+m.reg;
+  document.getElementById('mo-body').innerHTML=modalBody(m);
+  var list=navList(), pos=list.indexOf(ix);
+  document.getElementById('mo-pos').textContent=(pos+1)+' / '+list.length+' ('+MODAL.ctx+')';
+  document.getElementById('mo-prev').disabled=pos<=0;
+  document.getElementById('mo-next').disabled=pos<0||pos>=list.length-1;
+  document.getElementById('overlay').classList.add('on');
+  document.getElementById('modal').classList.add('on');
+  highlightRow(ix);
+  document.getElementById('mo-x').focus();
+}
+function closeModal(){
+  document.getElementById('overlay').classList.remove('on');
+  document.getElementById('modal').classList.remove('on');
+  highlightRow(null);
+  MODAL.ix=null;
+}
+function stepModal(d){
+  var list=navList(), pos=list.indexOf(MODAL.ix), np=pos+d;
+  if(np<0||np>=list.length)return;
+  openModal(list[np]);
+}
+function highlightRow(ix){
+  document.querySelectorAll('tr.hl').forEach(function(tr){tr.classList.remove('hl')});
+  if(ix===null)return;
+  document.querySelectorAll('tr.rowlink[data-ix="'+ix+'"]').forEach(function(tr){tr.classList.add('hl')});
+}
+
+/* ---------- mini two-band timeline ---------- */
+function tlBar(startIdx,endIdx,color,striped,title){
+  var s=Math.max(startIdx,0), e=(endIdx===null?WIN_MONTHS-1:Math.min(endIdx,WIN_MONTHS-1));
+  if(e<0||s>WIN_MONTHS-1)return '';
+  var l=100*s/WIN_MONTHS, w=100*(e-s+1)/WIN_MONTHS;
+  return '<span class="bar'+(striped?' striped':'')+'" style="left:'+l+'%;width:'+w+'%;background:'+color+'" title="'+esc(title)+'"></span>';
+}
+function timeline(m){
+  var h='<div class="tl">';
+  h+='<div class="band"><span class="bl">Eligibility</span><span class="lane">';
+  m.eligSpans.forEach(function(s){
+    h+=tlBar(s.start,s.end,'var('+GROUPS[s.grp].color+')',false,s.grp+' '+mLabel(s.start)+' \u2013 '+(s.end===null?'open':mLabel(s.end)));
+  });
+  h+='<span class="todayline" style="left:'+(100*(TODAY_IDX+0.5)/WIN_MONTHS)+'%"></span></span></div>';
+  h+='<div class="band"><span class="bl">Delivery</span><span class="lane">';
+  m.delSpans.forEach(function(s){
+    var col = 'var(--d-ffs)';
+    h+=tlBar(s.start,s.end,col,false,sysLabel(s.sys)+' '+mLabel(s.start)+' \u2013 '+(s.end===null?'open':mLabel(s.end)));
+  });
+  h+='<span class="todayline" style="left:'+(100*(TODAY_IDX+0.5)/WIN_MONTHS)+'%"></span></span></div>';
+  h+='<div class="axis"><span></span><span class="ax">'+
+     '<span style="left:2%">Jan 25</span><span style="left:27%">Jul 25</span><span style="left:52%">Jan 26</span><span style="left:77%">Jul 26</span></span></div>';
+  h+='<div class="tl-note">Every delivery bar in this app is solid gray \u2014 fee-for-service, the whole program: South Dakota has no Medicaid MCO. When something interesting happens in a South Dakota record, it happens in the <b>eligibility</b> lane. Red line = today (Jul 2026). Bars clamp to the 24-month window; pre-window starts are noted in the span tables.</div></div>';
+  return h;
+}
+
+/* ---------- per-member plain english ---------- */
+function plainFor(m){
+  var p='';
+  var first=m.first;
+  if(m.reg==='A'){
+    if(m.hh){
+      p=first+' is fee-for-service like every member in the state \u2014 with the one overlay South Dakota runs: attribution to the <b>'+esc(HHBY[m.hh].name)+'</b> Health Home at acuity tier '+m.hhTier+'. No capitation, no network, no card \u2014 a monthly coordination payment to the clinic that agreed to be responsible.';
+    } else if(m.grpToday==='AEG'){
+      p=first+' is an <b>Amendment D adult</b> \u2014 the youngest expansion in this series, three years old, delivered with no plan layer at all. Eligibility is the entire event in '+first+'\u2019s record, which is exactly what makes this file the cleanest place in the series to watch eligibility itself.';
+    } else {
+      p=first+' is the modal South Dakota record: <b>'+m.grpToday+' ('+esc(GROUPS[m.grpToday].name)+')</b>, fee-for-service \u2014 the second all-gray file in this series, but gray and young: the state around this record expanded in 2023 without adding a single plan.';
+    }
+  } else if(m.reg==='B'){
+    if(m.eligSpans[0].grp==='FM01'&&m.eligSpans[1].grp==='AEG'){
+      var t0=m.eligSpans[0].end, r0=m.eligSpans[1].start;
+      p=first+'\u2019s unwinding redetermination found income over the <b>old parent limit</b> \u2014 a line far below poverty \u2014 and the case closed '+mLabel(t0)+'. Then the rules changed underneath the gap: Amendment D took effect, and the reopening ('+mLabel(r0)+') landed in <b>AEG, a group that did not exist when the case closed</b>. The strangest churn in this series \u2014 South Dakota ran its unwinding and its launch in the same season, and '+first+'\u2019s record is the seam.';
+    } else {
+      var t2=m.eligSpans[0].end, rg=m.eligSpans[1].start, gap=rg-t2-1;
+      if(rg>TODAY_IDX){
+        p=first+'\u2019s renewal did not come back and the case closed after '+mLabel(t2)+'. As of today '+first+' is <b>in the gap</b>; the case reopens '+mLabel(rg)+' \u2014 and nothing else happens on the return, because nothing else exists to happen.';
+      } else {
+        p=first+' churned: closed at renewal after '+mLabel(t2)+', '+gap+' month'+(gap>1?'s':'')+' in the gap, back on in '+mLabel(rg)+'. In the no-plan state, a gap is purely an eligibility fact \u2014 the cleanest churn in the series to study, for the same reason it is the most consequential: coverage was the only thing there was to lose.';
+      }
+    }
+  } else if(m.reg==='C'){
+    if(m.eligSpans[0].start===LAUNCH_IDX&&m.eligSpans[0].grp==='AEG'){
+      p=first+'\u2019s eligibility begins exactly <b>July 1, 2023</b> \u2014 the date South Dakota\u2019s voters wrote into their constitution and the state implemented on schedule. Missouri\u2019s app has this instrument with a standoff, a court, and a backdated wall; '+first+'\u2019s record is the same instrument working the way instruments are supposed to: no litigation, no drama, a date that simply held. The dullest launch in the series, which is what launches should be.';
+    } else {
+      var s=m.eligSpans[0].start;
+      p=first+'\u2019s grant reached backward to '+mLabel(s)+' \u2014 the classic three-month retro, intact \u2014 and in the no-plan state the tail is invisible: one gray bar that happens to begin before anyone applied. Other states\u2019 apps show the retro as FFS-before-the-plan; here there is no \u201cbefore,\u201d because there is no plan.';
+    }
+  } else if(m.reg==='D'){
+    if(m.hhOld){
+      p='In '+mLabel(m.hhIdx)+', '+first+'\u2019s Health Home changed: <b>'+esc(HHBY[m.hhOld].name)+' (tier '+m.tierOld+') \u2192 '+esc(HHBY[m.hh].name)+' (tier '+m.hhTier+')</b> \u2014 the program\u2019s two axes moving at once. Neither event touched eligibility or delivery; both changed a monthly payment \u2014 which is why the attribution file is reconciled as carefully as any enrollment roster. It is one, with a dial.';
+    } else if(HHBY[m.hh].kind==='SMI'){
+      p=first+' is attributed to <b>'+esc(HHBY[m.hh].name)+'</b> on the <b>SMI track</b>, tier '+m.hhTier+', since '+mLabel(m.hhIdx)+' \u2014 where behavioral health integration actually lives in this state: with no plans, there is no carve-out to argue about, and the coordination payment simply follows the diagnosis to the clinic that agreed to be responsible.';
+    } else {
+      p=first+' is attributed to <b>'+esc(HHBY[m.hh].name)+'</b> on the chronic-condition track, tier '+m.hhTier+', since '+mLabel(m.hhIdx)+' \u2014 South Dakota\u2019s one managed-care-shaped structure: per member, per month, by acuity. Colorado\u2019s app taught attribution as regional assignment; Alabama\u2019s as the deliberate not-a-plan; '+first+'\u2019s record adds the dial.';
+    }
+  } else if(m.reg==='E'){
+    if(m.rename){
+      p=first+'\u2019s case is old enough to remember when the county had a different name: the archive rows say <b>Shannon County</b>; the current rows say <b>Oglala Lakota County</b> \u2014 renamed in May 2015 by referendum of its own voters, the only U.S. county renamed this century by the people who live in it. Same house, same road, two county codes \u2014 and every geocoding crosswalk in the state carries that one row of history. New Mexico\u2019s app taught the agency rename; '+first+'\u2019s record is the jurisdiction version.';
+    } else if(m.border){
+      p=first+', an enrolled member of the '+esc(m.tribe)+', lives in <b>Rapid City</b> \u2014 the border town \u2014 with care through the city\u2019s <b>638 facility</b>. The record proves the refinement: the 100% federal share follows the <b>facility, not the address</b> \u2014 moving off-reservation moved nothing about the FMAP. The door decides, wherever the door stands, and Rapid City\u2019s Medicaid file splits its claims accordingly.';
+    } else {
+      p=first+' is an enrolled member of the <b>'+esc(m.tribe)+'</b>, fee-for-service with care through IHS and tribal 638 facilities \u2014 where the financing quietly doubles: those services draw <b>100% federal match</b> against the state\u2019s ordinary share. Same member, same benefit, same claim format; the federal percentage turns on which door the service came through, service by service. In '+esc(m.county)+' County, that distinction carries much of the program\u2019s economics.';
+    }
+  } else {
+    if(m.futureMedi){
+      p=first+' is 64, covered since the launch wall ('+mLabel(LAUNCH_IDX)+') \u2014 and this record already contains its own ending: the date of birth fixes Medicare\u2019s arrival at '+mLabel(m.futureMedi)+', and the AEG span will close then. <b>The scheduled goodbye</b> \u2014 a termination that is pure arithmetic, visible months out, computable from the roster alone. The working lesson: run the MSP screening before the birthday, not after the 024.';
+    } else {
+      var mi=m.medicareIdx, bi=m.buyinIdx;
+      p='Amendment D caught '+first+' late \u2014 in '+(m.sex==='F'?'her':'his')+' sixties, after <b>decades in the coverage gap</b> \u2014 and Medicare arrived '+mLabel(mi)+', a few years into the first coverage of '+(m.sex==='F'?'her':'his')+' adult life. <b>The short goodbye</b>, the twentieth answer: the eligibility record hinges (AEG \u2192 AB03, buy-in '+mLabel(bi)+') while the delivery record shows <b>nothing at all</b> \u2014 one gray bar, because there was never a plan to lose. The shortest expansion spans in the series, ending the ordinary way.';
+    }
+  }
+  return '<div class="plain"><span class="pe-label">In plain English</span>'+p+'</div>';
+}
+
+/* ---------- modal body ---------- */
+function modalBody(m){
+  var h='';
+  var et=eligToday(m);
+  h+='<div class="kv">'+
+    kv('Status today',statusHtml(m.status))+
+    kv('Coverage group',grpChip(m.grpToday)+' <span style="font-size:.8rem;color:var(--ink-soft)">'+esc(GROUPS[m.grpToday].name)+'</span>')+
+    kv('Delivery today',delChip(m.delTodayCode)+(m.delTodayCode!=='\u2014'?' <span style="font-size:.8rem;color:var(--ink-soft)">'+esc(sysLabel(m.delTodayCode))+'</span>':''))+
+    kv('Date of birth',dobLabel(m.dob)+' <span class="hint">(age '+m.age+')</span>')+
+    kv('Sex',m.sex)+
+    kv('Address',esc(m.street)+', '+esc(m.city)+', SD '+m.zip)+
+    kv('County',esc(m.county)+(m.rename?' (archive: Shannon)':''))+
+    kv('Phone','<span class="mono">'+m.phone+'</span>')+
+    kv('Preferred language',esc(m.lang))+
+    (m.hh?kv('Health Home',esc(HHBY[m.hh].name)+' \u2014 tier '+m.hhTier+(m.hhOld?' (was '+esc(HHBY[m.hhOld].name)+', tier '+m.tierOld+')':'')):'')+(m.tribe?kv('Tribal affiliation',esc(m.tribe)+(m.border?' \u2014 border town: the share follows the facility':'')):'')+(m.futureMedi?kv('Medicare (scheduled)',mLabel(m.futureMedi)+' \u2014 already computable from this record'):'')+
+    '</div>';
+  function kv(k,v){return '<div class="k">'+k+'</div><div class="v">'+v+'</div>'}
+  h+='<h4>24-month picture</h4>'+timeline(m);
+  h+=plainFor(m);
+  h+='<h4>Eligibility spans</h4><div class="tblwrap"><table><thead><tr><th>Group</th><th>Begin</th><th>End</th><th>Reason</th></tr></thead><tbody>';
+  m.eligSpans.forEach(function(s){
+    h+='<tr><td>'+grpChip(s.grp)+'</td><td class="nowrap">'+startLabel(s.start)+'</td><td class="nowrap">'+(s.end===null?'<span class="st-act">open</span>':mLabel(s.end))+'</td><td>'+(s.reason?esc(s.reason):'\u2014')+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  h+='<h4>Delivery spans</h4><div class="tblwrap"><table><thead><tr><th>System</th><th>Begin</th><th>End</th><th>Note</th></tr></thead><tbody>';
+  m.delSpans.forEach(function(s){
+    h+='<tr><td>'+delChip(s.sys)+'</td><td class="nowrap">'+startLabel(s.start)+'</td><td class="nowrap">'+(s.end===null?'<span class="st-act">open</span>':mLabel(s.end))+'</td><td>'+(s.note?esc(s.note):'\u2014')+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  if(m.flags.length){
+    h+='<h4>Flags</h4><p>'+m.flags.map(function(f){return '<span class="flag">'+esc(f)+'</span>'}).join(' ')+'</p>';
+  }
+  h+='<h4>See the file</h4><p style="font-size:.84rem;color:var(--ink-soft)">Open <b>What the File Says</b> and choose '+esc(m.first+' '+m.last)+' to read the 834 the plan received for this member\u2019s most recent enrollment event.</p>';
+  return h;
+}
+
+/* ================= navigation & boot ================= */
+function showPage(pg){
+  document.querySelectorAll('nav button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-pg')===pg)});
+  document.querySelectorAll('.page').forEach(function(p){p.classList.toggle('on',p.id==='pg-'+pg)});
+  if(pg==='overview')renderOverview();
+}
+document.getElementById('nav').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b)return; showPage(b.getAttribute('data-pg'));
+});
+document.getElementById('mo-x').addEventListener('click',closeModal);
+document.getElementById('overlay').addEventListener('click',closeModal);
+document.getElementById('mo-prev').addEventListener('click',function(){stepModal(-1)});
+document.getElementById('mo-next').addEventListener('click',function(){stepModal(1)});
+document.addEventListener('keydown',function(e){
+  if(MODAL.ix===null)return;
+  if(e.key==='Escape')closeModal();
+  else if(e.key==='ArrowLeft')stepModal(-1);
+  else if(e.key==='ArrowRight')stepModal(1);
+});
+
+/* boot */
+renderOverview();
+initRosterControls(); renderRoster();
+initSpanControls();  renderSpans();
+initDelControls();   renderDel();
+renderRegisters();
+initFileTab();
+renderReference();
+</script>
+</body>
+</html>

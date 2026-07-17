@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maine Medicaid Eligibility Central</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,600;1,400;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#1E5FCC; --accent-soft:#E8EFFA; --ink:#1A2233; --sub:#5A6478;
+  --line:#DDE3EC; --bg:#F7F9FC; --card:#FFFFFF; --warn:#B4540A; --ok:#1F7A3D;
+  --g-cfc:#4C7FB8; --g-hst:#B85C8A; --g-v8:#3D8F6E; --g-abd:#8A6FB8;
+  --g-mbw:#B08A3D; --g-dua:#B4540A; --g-wvr:#5C8A99; --g-rise:#7A5CB8; --g-ffs:#7A8299;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.55}
+.mono{font-family:'IBM Plex Mono',monospace;font-size:.85em}
+header{background:var(--card);border-bottom:1px solid var(--line);padding:22px 28px 0}
+.wordmark{font-size:1.55rem;font-weight:600}
+.wordmark .central{font-family:'Source Serif 4',serif;font-style:italic;color:var(--accent);font-weight:600}
+.tagline{color:var(--sub);font-size:.9rem;margin:4px 0 14px;max-width:70ch}
+nav{display:flex;gap:2px;flex-wrap:wrap}
+nav button{border:none;background:none;font:inherit;font-size:.88rem;font-weight:500;color:var(--sub);
+  padding:9px 14px;cursor:pointer;border-bottom:3px solid transparent}
+nav button:hover{color:var(--ink)}
+nav button.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+nav button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+main{max-width:1240px;margin:0 auto;padding:24px 28px 80px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px 20px;margin-bottom:16px}
+.card h3{font-size:1.02rem;margin-bottom:10px}
+.grid{display:grid;gap:14px}
+.grid.stats{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px}
+.stat .n{font-size:1.7rem;font-weight:700;letter-spacing:-.01em}
+.stat .l{color:var(--sub);font-size:.8rem;margin-top:2px}
+.plain{font-family:'Source Serif 4',serif;font-style:italic;font-size:1.02rem;line-height:1.6;
+  background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;
+  padding:14px 18px;margin:14px 0;color:#22304a}
+.plain.small{font-size:.94rem;padding:11px 14px}
+.plain b{font-style:normal}
+.tblwrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.86rem}
+th{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--sub);text-align:left;
+  padding:8px 10px;border-bottom:2px solid var(--line);white-space:nowrap;cursor:pointer;user-select:none}
+th.nosort{cursor:default}
+th .arr{color:var(--accent)}
+td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+tbody tr.rowbtn{cursor:pointer}
+tbody tr.rowbtn:hover{background:var(--accent-soft)}
+tbody tr.hl{background:var(--accent-soft);box-shadow:inset 4px 0 0 var(--accent)}
+.pill{display:inline-block;font-size:.72rem;font-weight:600;padding:2px 9px;border-radius:99px;
+  color:#fff;white-space:nowrap}
+.pill.outline{background:none;border:1.5px solid var(--line);color:var(--sub)}
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.controls input[type=search],.controls select{font:inherit;font-size:.86rem;padding:7px 10px;
+  border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink)}
+.controls input[type=search]{min-width:230px}
+.pager{display:flex;gap:8px;align-items:center;margin-top:12px;font-size:.84rem;color:var(--sub)}
+.pager button{font:inherit;font-size:.82rem;border:1px solid var(--line);background:var(--card);
+  border-radius:6px;padding:5px 12px;cursor:pointer}
+.pager button:disabled{opacity:.4;cursor:default}
+button.linkish{border:none;background:none;color:var(--accent);font:inherit;font-size:.85rem;
+  cursor:pointer;text-decoration:underline;padding:0}
+.regcard{border:1px solid var(--line);border-radius:8px;background:var(--card);padding:18px 20px;margin-bottom:18px}
+.regcard .regletter{font-family:'Source Serif 4',serif;font-style:italic;color:var(--accent);
+  font-size:1.5rem;font-weight:600;margin-right:8px}
+.regcard .q{font-weight:600;font-size:1rem;margin-bottom:8px}
+.regcard .body{color:#2a3448;font-size:.92rem;max-width:88ch}
+.answerno{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:.78rem;
+  background:var(--ink);color:#fff;border-radius:4px;padding:2px 8px;margin-left:8px;vertical-align:2px}
+/* slide-over modal */
+.overlay{position:fixed;inset:0;background:rgba(20,28,45,.35);opacity:0;pointer-events:none;transition:opacity .18s;z-index:40}
+.overlay.open{opacity:1;pointer-events:auto}
+.slide{position:fixed;top:0;right:0;bottom:0;width:min(560px,94vw);background:var(--card);
+  border-left:1px solid var(--line);box-shadow:-12px 0 32px rgba(20,28,45,.14);
+  transform:translateX(102%);transition:transform .2s ease;z-index:50;overflow-y:auto;padding:20px 24px 40px}
+.slide.open{transform:none}
+.slide .close{position:absolute;top:14px;right:16px;border:none;background:none;font-size:1.3rem;
+  cursor:pointer;color:var(--sub)}
+.slide .navrow{display:flex;align-items:center;gap:10px;margin:2px 0 14px}
+.slide .navrow button{border:1px solid var(--line);background:var(--card);border-radius:6px;
+  font-size:1rem;padding:3px 12px;cursor:pointer}
+.slide .navrow button:disabled{opacity:.35;cursor:default}
+.slide .pos{font-family:'IBM Plex Mono',monospace;font-size:.76rem;color:var(--sub)}
+.slide h2{font-size:1.25rem;margin-bottom:2px}
+.slide .sub,p.sub{color:var(--sub);font-size:.85rem}
+.slide dl.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;font-size:.86rem;margin:12px 0}
+.slide dl.kv dt{color:var(--sub)}
+.slide dl.kv dd{font-weight:500}
+.slide h4{font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;color:var(--sub);margin:16px 0 6px}
+/* 834 viewer */
+.x12{display:grid;grid-template-columns:minmax(280px,44%) 1fr;font-size:.8rem;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.x12 .seg{font-family:'IBM Plex Mono',monospace;padding:6px 10px;border-bottom:1px solid var(--line);white-space:pre-wrap;word-break:break-all}
+.x12 .exp{padding:6px 10px;border-bottom:1px solid var(--line);color:#2a3448}
+.x12 .loop .seg,.x12 .loop .exp{background:var(--accent-soft);font-weight:600}
+.x12 .teach .exp{border-left:3px solid var(--warn)}
+dl.gloss dt{font-weight:600;margin-top:10px}
+dl.gloss dd{color:#2a3448;font-size:.9rem;max-width:90ch}
+.chron td:first-child{white-space:nowrap;font-weight:600}
+footer{border-top:1px solid var(--line);color:var(--sub);font-size:.8rem;padding:18px 28px;max-width:1240px;margin:0 auto}
+.testpass{color:var(--ok);font-weight:600}.testfail{color:#B00020;font-weight:600}
+@media (prefers-reduced-motion:reduce){.slide,.overlay{transition:none}}
+@media (max-width:720px){.x12{grid-template-columns:1fr}.x12 .seg{border-bottom:none;padding-bottom:0}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wordmark">Maine Medicaid Eligibility <span class="central">Central</span></div>
+  <p class="tagline">Eligibility, enrollment, and the file that carries both — 3,000 synthetic members of MaineCare: an expansion ordered by the voters and granted by the courts, income that comes in with the lobster boats and takes the coverage out with it, and a Medicare register where the only loud file goes to the pharmacy. All data is seeded and deterministic; nothing here is real.</p>
+  <nav id="tabs" role="tablist"></nav>
+</header>
+<main id="main"></main>
+<footer>
+  <b>Maine Medicaid Eligibility Central</b> — a single-file demonstration by <b>Robert Thomas Keyes</b>.
+  All members, identifiers, spans, and files are synthetic, generated in the browser from a fixed seed (207001);
+  no PHI, no network calls, no storage. Policy landscape described as of early 2026; verify currency before relying on any detail.
+</footer>
+<div class="overlay" id="overlay"></div>
+<aside class="slide" id="slide" role="dialog" aria-modal="true" aria-label="Member record"></aside>
+</file_text><script>
+'use strict';
+/* ================= seeded PRNG ================= */
+var SEED=207001; /* Maine's one statewide area code + 001, house convention */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);
+  t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+var rng=mulberry32(SEED);
+function ri_(n){return Math.floor(rng()*n)}
+function pick(a){return a[ri_(a.length)]}
+function chance(p){return rng()<p}
+
+/* ================= time model =================
+   Month index 0 = January 2014. NOW = June 2026 = 149. */
+var EPOCH_Y=2014, NOW=149;
+var MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+function mLabel(i){return MONTHS[((i%12)+12)%12]+' '+(EPOCH_Y+Math.floor(i/12))}
+function mYYYYMMDD(i,last){var y=EPOCH_Y+Math.floor(i/12),m=i%12+1,d=last?new Date(y,m,0).getDate():1;
+  return ''+y+String(m).padStart(2,'0')+String(d).padStart(2,'0')}
+var Q2VOTE=46;  /* Nov 2017 - Question 2 passes: the nation's first citizen-initiated Medicaid expansion */
+var STAT0=54;   /* Jul 2018 - the statutory coverage start the referendum's law required */
+var IMPL=60;    /* Jan 2019 - a new governor implements by executive order on day one */
+var UNWIND=112; /* May 2023 - first unwinding terminations */
+
+/* ================= coverage groups ================= */
+var GROUPS={
+ FAM:{name:'Families (parents & children)',color:'var(--g-cfc)',blurb:'Parents, caretakers, and children.'},
+ CHP:{name:'CubCare (CHIP)',color:'var(--g-mbw)',blurb:'Maine\u2019s CHIP, named in 1998 and never renamed \u2014 the friendliest program name in the series.'},
+ PRG:{name:'Pregnancy',color:'var(--g-hst)',blurb:'Pregnancy coverage with 12-month postpartum continuation.'},
+ EXP:{name:'Expansion adults (Question 2)',color:'var(--g-v8)',blurb:'The expansion the voters ordered \u2014 November 2017, by referendum, first in the nation. Register D carries how it actually arrived.'},
+ ABD:{name:'Aged, Blind, or Disabled',color:'var(--g-abd)',blurb:'Non-MAGI eligibility in the oldest state in the nation.'},
+ LTS:{name:'LTSS & waivers',color:'var(--g-wvr)',blurb:'Long-term services and supports \u2014 the oldest-state demographics press hardest here.'},
+ DUA:{name:'Dual (Medicare + Medicaid)',color:'var(--g-dua)',blurb:'Full and partial duals \u2014 entered through the widest Medicare Savings Program door in the nation. Register F\u2019s subject.'}
+};
+/* ================= delivery: fee-for-service, by tradition ================= */
+var FFS_MED='MaineCare fee-for-service';
+var RX_MCD='MaineCare pharmacy (PBM-administered)';
+var PDP='Part D benchmark plan (LIS deemed)';
+
+/* ================= geography & communities =================
+   Roster texture: Lewiston\u2019s Somali community, two decades rooted; the Acadian
+   St. John Valley \u2014 Madawaska and Fort Kent, where French never left; Portland\u2019s
+   newcomers; Biddeford\u2019s Franco mill families; Penobscot Indian Island by Old Town;
+   Passamaquoddy country near Calais; and Downeast \u2014 Machias, Jonesport, Beals \u2014
+   where the lobster boats set register E\u2019s clock. One area code covers it all. */
+var COUNTIES=[
+ {name:'Cumberland',  city:'Portland',    zip:'04101',ac:'207',w:16},
+ {name:'Androscoggin',city:'Lewiston',    zip:'04240',ac:'207',w:12},
+ {name:'Penobscot',   city:'Bangor',      zip:'04401',ac:'207',w:10},
+ {name:'Penobscot',   city:'Old Town',    zip:'04468',ac:'207',w:6},
+ {name:'Kennebec',    city:'Augusta',     zip:'04330',ac:'207',w:8},
+ {name:'York',        city:'Biddeford',   zip:'04005',ac:'207',w:9},
+ {name:'Aroostook',   city:'Madawaska',   zip:'04756',ac:'207',w:7},
+ {name:'Aroostook',   city:'Presque Isle',zip:'04769',ac:'207',w:7},
+ {name:'Washington',  city:'Machias',     zip:'04654',ac:'207',w:9},
+ {name:'Washington',  city:'Jonesport',   zip:'04649',ac:'207',w:8},
+ {name:'Washington',  city:'Calais',      zip:'04619',ac:'207',w:8}
+];
+var CPOOL=[];COUNTIES.forEach(function(c){for(var i=0;i<c.w;i++)CPOOL.push(c)});
+var NAMES={
+ general:{f:['James','Mary','Robert','Patricia','John','Jennifer','Michael','Linda','David','Elizabeth','William','Barbara','Richard','Susan','Joseph','Jessica','Thomas','Sarah','Christopher','Karen','Daniel','Lisa','Matthew','Nancy','Anthony','Betty','Mark','Margaret','Donald','Sandra','Steven','Ashley','Paul','Kimberly','Andrew','Emily','Joshua','Donna','Kenneth','Michelle','Kevin','Carol','Brian','Amanda'],
+  l:['Smith','Johnson','Williams','Brown','Jones','Miller','Davis','Wilson','Anderson','Taylor','Moore','Jackson','Martin','Lee','Thompson','White','Harris','Clark','Lewis','Walker','Hall','Young','Allen','King','Wright','Scott','Green','Baker','Adams','Nelson','Carter','Mitchell','Additon','Gerrish','Pinkham','Verrill']},
+ acadian:{f:['Norman','Claire','Gerard','Pauline','Roland','Yvette','Armand','Cecile','Raymond','Jeannette','Leo','Therese','Lucien','Rita'],
+  l:['Cyr','Ouellette','Pelletier','Michaud','Thibodeau','Levesque','Daigle','Gagnon','Sirois','Albert','Dub\u00e9','Martin']},
+ somali:{f:['Mohamed','Fatuma','Abdi','Halima','Hassan','Amina','Omar','Sahra','Ahmed','Khadija','Abdullahi','Maryan'],
+  l:['Mohamed','Hassan','Ali','Abdi','Omar','Farah','Hussein','Ahmed','Warsame','Yusuf']},
+ downeast:{f:['Earl','Doris','Vernal','Thelma','Harold','Arlene','Merton','Gladys','Dwight','Elva','Carroll','Beatrice'],
+  l:['Beal','Alley','Lunt','Faulkingham','Kelley','Look','Crowley','Sprague','Norton','Feeney','Preston','Woodward']},
+ penobscot:{f:['Joseph','Susan','Charles','Molly','Andrew','Theresa','Louis','Beatrice','Peter','Christine'],
+  l:['Francis','Neptune','Mitchell','Attean','Sockalexis','Loring','Shay','Paul']},
+ passamaquoddy:{f:['David','Mary','Wayne','Alice','George','Donna','Albert','Grace','Ralph','Elizabeth'],
+  l:['Newell','Socoby','Dana','Sockabasin','Nicholas','Lola','Moore','Bassett']}
+};
+var STREETS=['Congress St','Lisbon St','Main St','Water St','Alfred St','US Route 1','Ohio St','State St','Bridge Ave','Center St','Sawyer Square','Snare Creek Ln','North St','Elm St','Acadia Rd','Court St'];
+
+function namePoolFor(county){
+  if(county.city==='Lewiston'){if(chance(.35))return['somali','SOM','Somali'];if(chance(.25))return['acadian',null,null];return['general',null,null]}
+  if(county.city==='Madawaska'){if(chance(.6))return['acadian','FRE','French (Acadian)'];return['general',null,null]}
+  if(county.city==='Presque Isle'){if(chance(.3))return['acadian',null,null];return['general',null,null]}
+  if(county.city==='Biddeford'){if(chance(.35))return['acadian',null,null];return['general',null,null]}
+  if(county.city==='Portland'){if(chance(.12))return['somali','SOM','Somali'];return['general',null,null]}
+  if(county.city==='Old Town'){if(chance(.35))return['penobscot',null,null];return['general',null,null]}
+  if(county.city==='Calais'){if(chance(.3))return['passamaquoddy',null,null];return['general',null,null]}
+  if(county.city==='Machias'||county.city==='Jonesport'){if(chance(.55))return['downeast',null,null];return['general',null,null]}
+  return['general',null,null];
+}
+
+/* ================= registers ================= */
+var REGCOUNT={A:1500,B:500,C:250,D:250,E:350,F:150};
+
+/* ================= member generation ================= */
+var MEMBERS=[];
+function pad(n,w){return String(n).padStart(w,'0')}
+function newMedicaidId(i){ /* nine-digit MaineCare ID, synthetic */
+  return pad(207000000+i*2+ri_(2),9)}
+function mkSpan(cat,b,e,notes,extra){var s={cat:cat,b:b,e:e,notes:notes||''};
+  if(extra)Object.keys(extra).forEach(function(k){s[k]=extra[k]});return s}
+function ffsRow(b,e,why){return {sys:'FFS',plan:FFS_MED,b:Math.max(b,0),e:e,
+  why:why||'Fee-for-service \u2014 Maine never adopted capitated managed care; the state pays every claim, by tradition rather than by revolution'}}
+
+function genMember(i,reg){
+  var county=pick(CPOOL);
+  var np=namePoolFor(county), pool=NAMES[np[0]];
+  var m={
+    id:'M'+pad(i+1,4), mid:newMedicaidId(i), reg:reg,
+    first:pick(pool.f), last:pick(pool.l),
+    sex:chance(.52)?'F':'M',
+    county:county.name, city:county.city, zip:county.zip,
+    addr:(100+ri_(8900))+' '+pick(STREETS),
+    phone:'('+county.ac+') 555-'+pad(ri_(10000),4),
+    lang:np[1], langName:np[2],
+    spans:[], dspans:[]
+  };
+  var b,e,g;
+  if(reg==='A'){
+    g=pick(['FAM','FAM','CHP','PRG','EXP','EXP','ABD','LTS']);
+    b=60+ri_(70); m.dob=dobFor(g);
+    m.spans.push(mkSpan(g,b,null,'Ongoing; renewal passed '+mLabel(NOW-ri_(10))));
+    m.dspans.push(ffsRow(b,null));
+  }else if(reg==='B'){
+    g=pick(['FAM','CHP','EXP','PRG']); m.dob=dobFor(g);
+    b=80+ri_(28); var gap=1+ri_(3), closed=UNWIND+ri_(16);
+    m.spans.push(mkSpan(g,b,closed,'Terminated \u2014 procedural (annual renewal not completed)'));
+    m.spans.push(mkSpan(g,closed+gap+1,null,'Reapplied and approved; coverage restored after '+gap+'-month gap'));
+    m.gap=gap; m.closedAt=closed;
+    m.dspans.push(ffsRow(b,closed)); m.dspans.push(ffsRow(closed+gap+1,null));
+  }else if(reg==='C'){
+    g=pick(['FAM','PRG','EXP']); m.dob=dobFor(g);
+    var app=120+ri_(26), retro=1+ri_(3);
+    m.spans.push(mkSpan(g,app-retro,null,'Application '+mLabel(app)+'; granted '+retro+' retroactive month'+(retro>1?'s':''),{retro:true,app:app,retroN:retro}));
+    m.dspans.push(ffsRow(app-retro,null));
+  }else if(reg==='D'){ /* the expansion the voters ordered */
+    g='EXP'; m.dob=dobAdult();
+    var appAt=STAT0+ri_(5);        /* applied Jul\u2013Nov 2018, during the refusal */
+    m.grantedAt=IMPL+ri_(3);       /* granted Jan\u2013Mar 2019, after the executive order */
+    m.spans.push(mkSpan(g,appAt,null,'Applied '+mLabel(appAt)+' under the referendum\u2019s statute; granted '+mLabel(m.grantedAt)+' after the executive order \u2014 coverage backdated to the application',{q2:true,app:appAt}));
+    m.dspans.push(ffsRow(appAt,null));
+  }else if(reg==='E'){ /* the tide in the income column */
+    g=pick(['EXP','EXP','FAM']); m.dob=dobAdult();
+    m.city=pick(['Machias','Jonesport','Machias','Jonesport','Portland']);
+    m.county=m.city==='Portland'?'Cumberland':'Washington';
+    m.zip=m.city==='Machias'?'04654':m.city==='Jonesport'?'04649':'04101';
+    var pool2=m.county==='Washington'?NAMES.downeast:NAMES.general;
+    m.first=pick(pool2.f); m.last=pick(pool2.l); m.lang=null; m.langName=null;
+    m.trade=pick(['lobstering','lobstering','sternman work','clamming and wreaths','summer tourism work','blueberry raking and wreaths']);
+    var y0=2021+ri_(2); /* first observed cycle begins Oct 2021 or Oct 2022 */
+    var oct1=(y0-2014)*12+9, oct2=oct1+12, oct3=141; /* Oct 2025 */
+    m.spans.push(mkSpan(g,oct1,oct1+7,'Eligible over the winter \u2014 closed in '+mLabel(oct1+7)+' when the season\u2019s income arrived',{tide:true}));
+    m.spans.push(mkSpan(g,oct2,oct2+7,'The same tide, one year on \u2014 eligible by Christmas, over-income by June',{tide:true}));
+    m.spans.push(mkSpan(g,oct3,null,'Eligible again since '+mLabel(oct3)+' \u2014 the cycle will repeat unless the counting method changes first',{tide:true}));
+    m.cycles=[oct1,oct2,oct3];
+    m.dspans.push(ffsRow(oct1,oct1+7)); m.dspans.push(ffsRow(oct2,oct2+7)); m.dspans.push(ffsRow(oct3,null));
+  }else{ /* F: Medicare arrives \u2014 answer #43 */
+    g=pick(['EXP','ABD','ABD','LTS']); m.dob=dob65();
+    var t65=130+ri_(19); m.t65=t65;
+    b=30+ri_(80); if(b>=t65-6)b=t65-6-ri_(12);
+    m.msp=pick(['QMB','QMB','QMB','SLMB','full dual']);
+    m.spans.push(mkSpan(g,b,t65-1,'Group closed at Medicare entitlement \u2014 redetermined, not terminated'));
+    m.spans.push(mkSpan('DUA',t65,null,'Dual eligibility begins ('+m.msp+') \u2014 through the widest Medicare Savings Program door in the nation: the highest income limits of any state, and no asset test'));
+    m.dspans.push(ffsRow(b,null,'Medical stays exactly where it was \u2014 fee-for-service, the state paying, Medicare now primary. Nothing to terminate, nothing to join: the quiet Connecticut reached by revolution, Maine was born with'));
+    m.dspans.push({sys:'RX',plan:RX_MCD,b:Math.max(b,0),e:t65-1,
+      why:'Medicaid drug coverage ends at Medicare entitlement \u2014 by federal design, drugs move to Part D'});
+    m.dspans.push({sys:'PDP',plan:PDP,b:t65,e:null,
+      why:'The one enrollment Medicare creates in a no-plan state \u2014 auto-enrolled by CMS into a benchmark drug plan, Low-Income Subsidy deemed'});
+    m.group='DUA';
+    return m;
+  }
+  m.group=m.group||g;
+  return m;
+}
+function dobFor(g){return g==='CHP'?dobKid():g==='FAM'?(chance(.6)?dobKid():dobAdult()):g==='PRG'?dobAdultYoung():g==='ABD'||g==='LTS'?dobOlder():dobAdult()}
+function dobKid(){return (2009+ri_(15))+'-'+pad(1+ri_(12),2)+'-'+pad(1+ri_(28),2)}
+function dobAdultYoung(){return (1990+ri_(15))+'-'+pad(1+ri_(12),2)+'-'+pad(1+ri_(28),2)}
+function dobAdult(){return (1975+ri_(28))+'-'+pad(1+ri_(12),2)+'-'+pad(1+ri_(28),2)}
+function dobOlder(){return (1950+ri_(25))+'-'+pad(1+ri_(12),2)+'-'+pad(1+ri_(28),2)}
+function dob65(){return (1959+ri_(3))+'-'+pad(1+ri_(12),2)+'-'+pad(1+ri_(28),2)}
+
+/* build the population */
+(function(){
+  var i=0;
+  ['A','B','C','D','E','F'].forEach(function(reg){
+    for(var k=0;k<REGCOUNT[reg];k++){MEMBERS.push(genMember(i,reg));i++}
+  });
+})();
+/* derived tables */
+var SPANS=[],DSPANS=[];
+MEMBERS.forEach(function(m){
+  m.spans.forEach(function(s){SPANS.push({m:m,s:s})});
+  m.dspans.forEach(function(d){DSPANS.push({m:m,d:d})});
+});
+function eligNow(m){return m.spans.some(function(s){return s.b<=NOW&&(s.e===null||s.e>=NOW)})}
+function inGapNow(m){return !eligNow(m)&&m.spans.length>1}
+function sysNow(m){var d=m.dspans.filter(function(x){return x.b<=NOW&&(x.e===null||x.e>=NOW)});return d}
+</script>
+<script>
+'use strict';
+/* ================= tab framework ================= */
+var TABS=[
+ {id:'overview',label:'Overview'},
+ {id:'members',label:'Members'},
+ {id:'spans',label:'Eligibility Spans'},
+ {id:'delivery',label:'MCO Enrollment'},
+ {id:'registers',label:'Scenario Registers'},
+ {id:'file',label:'What the File Says'},
+ {id:'reference',label:'Reference'}
+];
+var activeTab='overview';
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function renderTabs(){
+  var n=document.getElementById('tabs');n.innerHTML='';
+  TABS.forEach(function(t){
+    var b=document.createElement('button');b.textContent=t.label;b.setAttribute('role','tab');
+    if(t.id===activeTab)b.className='active';
+    b.onclick=function(){activeTab=t.id;renderTabs();renderMain()};n.appendChild(b)});
+}
+function renderMain(){
+  var el=document.getElementById('main');
+  ({overview:rOverview,members:rMembers,spans:rSpans,delivery:rDelivery,
+    registers:rRegisters,file:rFile,reference:rReference})[activeTab](el);
+  window.scrollTo(0,0);
+}
+function pillFor(g){return '<span class="pill" style="background:'+GROUPS[g].color+'">'+g+'</span>'}
+function sortable(rows,cols,state,onchange){
+  /* returns thead html + attaches click sort via delegation key */
+  return cols.map(function(c,i){
+    var arr=state.col===i?(state.dir>0?' <span class="arr">\u25B2</span>':' <span class="arr">\u25BC</span>'):'';
+    return '<th data-si="'+i+'"'+(c.nosort?' class="nosort"':'')+'>'+c.h+arr+'</th>'}).join('');
+}
+function bindSort(theadEl,state,rerender){
+  theadEl.querySelectorAll('th[data-si]').forEach(function(th){
+    if(th.classList.contains('nosort'))return;
+    th.onclick=function(){var i=+th.dataset.si;
+      if(state.col===i)state.dir=-state.dir;else{state.col=i;state.dir=1}
+      state.page=0;rerender()}});
+}
+
+/* ================= Overview ================= */
+function rOverview(el){
+  var elig=0,ffs=0,duals=0,gap=0,backdated=0,tidecloses=0,pdp=0;
+  MEMBERS.forEach(function(m){
+    if(eligNow(m))elig++; else if(inGapNow(m))gap++;
+    if(m.group==='DUA')duals++;
+    if(m.reg==='D')backdated+=(m.grantedAt-m.spans[0].b);
+    if(m.reg==='E')tidecloses+=m.spans.filter(function(s){return s.e!==null}).length;
+    m.dspans.forEach(function(d){if(d.sys==='PDP')pdp++});
+    sysNow(m).forEach(function(d){if(d.sys==='FFS')ffs++});
+  });
+  var h='<div class="grid stats">'+
+    stat(MEMBERS.length.toLocaleString(),'members in population')+
+    stat(elig.toLocaleString(),'eligible today')+
+    stat(ffs.toLocaleString(),'in fee-for-service today')+
+    stat('0','capitated plans, ever')+
+    stat(backdated.toLocaleString(),'docket-backdated months in register D')+
+    stat(tidecloses.toLocaleString(),'closures the tide has filed in register E')+
+    stat(pdp.toLocaleString(),'Part D auto-enrollments (LIS deemed)')+
+    stat(duals.toLocaleString(),'duals (Medicare + Medicaid)')+
+    '</div>';
+  h+='<div class="plain">Maine is the series\u2019 second quiet state \u2014 fee-for-service by tradition, where '+
+   'Connecticut got there by revolution \u2014 and the oldest state in the nation. Its registers carry an expansion '+
+   'the voters ordered and the courts delivered, an income tide that files terminations on a lobster-season '+
+   'schedule, and \u2014 answer #43 \u2014 a Medicare arrival whose only loud file goes to the pharmacy. Everything '+
+   'is synthetic and seeded: reload it anywhere and you get exactly these people, exactly these dates.</div>';
+  h+='<div class="card"><h3>Coverage groups in this population</h3><div class="tblwrap"><table><tbody>';
+  Object.keys(GROUPS).forEach(function(g){
+    var n=MEMBERS.filter(function(m){return m.group===g}).length;
+    h+='<tr><td>'+pillFor(g)+'</td><td><b>'+esc(GROUPS[g].name)+'</b></td><td>'+GROUPS[g].blurb+'</td><td class="mono" style="text-align:right">'+n.toLocaleString()+'</td></tr>'});
+  h+='</tbody></table></div></div>';
+  h+='<div class="card"><h3>Delivery \u2014 there are no plans here either</h3><div class="tblwrap"><table><thead><tr><th class="nosort">Entity</th><th class="nosort">Role</th></tr></thead><tbody>'+
+   '<tr><td><b>MaineCare fee-for-service</b></td><td>The state pays every claim \u2014 no capitation, no risk transfer, by tradition rather than revolution</td></tr>'+
+   '<tr><td><b>Pharmacy benefit administrator</b></td><td>Administers the drug benefit \u2014 and receives register F\u2019s one loud file at 65</td></tr>'+
+   '<tr><td><b>Part D benchmark plans</b> <span class="pill" style="background:var(--g-dua)">Medicare side</span></td><td>Where the drug benefit goes at entitlement \u2014 auto-enrolled by CMS, Low-Income Subsidy deemed, in a file the state\u2019s 834 never meets</td></tr>'+
+   '</tbody></table></div></div>';
+  el.innerHTML=h;
+  function stat(n,l){return '<div class="stat"><div class="n">'+n+'</div><div class="l">'+l+'</div></div>'}
+}
+
+/* ================= Members ================= */
+var mState={q:'',grp:'',reg:'',st:'',page:0,col:0,dir:1};
+function memberRows(){
+  var q=mState.q.toLowerCase();
+  var rows=MEMBERS.filter(function(m){
+    if(mState.grp&&m.group!==mState.grp)return false;
+    if(mState.reg&&m.reg!==mState.reg)return false;
+    if(mState.st){var s=eligNow(m)?'A':(inGapNow(m)?'G':'C');if(s!==mState.st)return false}
+    if(q){var hay=(m.first+' '+m.last+' '+m.mid+' '+m.city+' '+m.county).toLowerCase();
+      if(hay.indexOf(q)<0)return false}
+    return true});
+  var key=[function(m){return m.last+m.first},function(m){return m.mid},function(m){return m.group},
+           function(m){return m.county},function(m){return m.reg},function(m){return eligNow(m)?0:inGapNow(m)?1:2}][mState.col];
+  rows.sort(function(a,b){var x=key(a),y=key(b);return (x<y?-1:x>y?1:0)*mState.dir});
+  return rows;
+}
+function rMembers(el){
+  var rows=memberRows(), per=50, pages=Math.max(1,Math.ceil(rows.length/per));
+  mState.page=Math.min(mState.page,pages-1);
+  var slice=rows.slice(mState.page*per,mState.page*per+per);
+  var h='<div class="plain small">Every column sorts; search covers name, Medicaid ID, city, and county. Click any row for the member record \u2014 the \u25C0 \u25B6 arrows there walk this exact filtered order.</div>';
+  h+='<div class="controls">'+
+   '<input type="search" id="mq" placeholder="Search 3,000 members\u2026" value="'+esc(mState.q)+'">'+
+   sel('mgrp','All coverage groups',Object.keys(GROUPS).map(function(g){return[g,GROUPS[g].name]}),mState.grp)+
+   sel('mreg','All registers',['A','B','C','D','E','F'].map(function(r){return[r,'Register '+r]}),mState.reg)+
+   sel('mst','Any status',[['A','Active'],['G','In gap'],['C','Closed']],mState.st)+
+   '</div>';
+  var cols=[{h:'Member'},{h:'Medicaid ID'},{h:'Group'},{h:'County'},{h:'Reg'},{h:'Status'}];
+  h+='<div class="card"><div class="tblwrap"><table><thead id="mth"><tr>'+sortable(rows,cols,mState)+'</tr></thead><tbody>';
+  slice.forEach(function(m){
+    var st=eligNow(m)?'<span class="pill" style="background:var(--ok)">Active</span>':
+      inGapNow(m)?'<span class="pill" style="background:var(--warn)">In gap</span>':
+      '<span class="pill outline">Closed</span>';
+    h+='<tr class="rowbtn" data-mid="'+m.id+'"><td><b>'+esc(m.last)+', '+esc(m.first)+'</b><br><span class="sub">'+esc(m.city)+'</span></td>'+
+      '<td class="mono">'+m.mid+'</td><td>'+pillFor(m.group)+'</td><td>'+esc(m.county)+'</td>'+
+      '<td class="mono">'+m.reg+'</td><td>'+st+'</td></tr>'});
+  h+='</tbody></table></div>'+pager(rows.length,per,mState)+'</div>';
+  el.innerHTML=h;
+  bindSort(document.getElementById('mth'),mState,function(){rMembers(el)});
+  document.getElementById('mq').oninput=function(){mState.q=this.value;mState.page=0;
+    var y=this.selectionStart;rMembers(el);var q=document.getElementById('mq');q.focus();q.setSelectionRange(y,y)};
+  ['mgrp','mreg','mst'].forEach(function(id,ix){document.getElementById(id).onchange=function(){
+    mState[['grp','reg','st'][ix]]=this.value;mState.page=0;rMembers(el)}});
+  bindPager(el,mState,function(){rMembers(el)});
+  bindRows(el,rows.map(function(m){return{m:m}}),'roster');
+}
+function sel(id,none,opts,cur){return '<select id="'+id+'"><option value="">'+none+'</option>'+
+  opts.map(function(o){return '<option value="'+o[0]+'"'+(cur===o[0]?' selected':'')+'>'+esc(o[1])+'</option>'}).join('')+'</select>'}
+function pager(total,per,state){
+  var a=state.page*per+1,b=Math.min(total,a+per-1);
+  if(!total)return '<p class="sub" style="margin-top:10px">No rows match \u2014 clear a filter to widen the view.</p>';
+  return '<div class="pager"><button data-pg="-1"'+(state.page===0?' disabled':'')+'>\u25C0 Prev</button>'+
+   '<span>showing '+a.toLocaleString()+'\u2013'+b.toLocaleString()+' of '+total.toLocaleString()+' matching (population '+MEMBERS.length.toLocaleString()+')</span>'+
+   '<button data-pg="1"'+(b>=total?' disabled':'')+'>Next \u25B6</button></div>'}
+function bindPager(el,state,rerender){el.querySelectorAll('[data-pg]').forEach(function(b){
+  b.onclick=function(){state.page+=+b.dataset.pg;rerender()}})}
+function bindRows(el,navList,ctx){el.querySelectorAll('tr[data-mid]').forEach(function(tr){
+  tr.onclick=function(){openMember(tr.dataset.mid,navList.map(function(x){return x.m.id}),ctx)}})}
+
+/* ================= Eligibility Spans ================= */
+var sState={grp:'',open:'',page:0,col:1,dir:1};
+function rSpans(el){
+  var rows=SPANS.filter(function(r){
+    if(sState.grp&&r.s.cat!==sState.grp)return false;
+    if(sState.open==='O'&&r.s.e!==null)return false;
+    if(sState.open==='C'&&r.s.e===null)return false;return true});
+  var key=[function(r){return r.m.last+r.m.first},function(r){return r.s.b},
+    function(r){return r.s.e===null?9999:r.s.e},function(r){return (r.s.e===null?NOW:r.s.e)-r.s.b},
+    function(r){return r.s.cat}][sState.col];
+  rows.sort(function(a,b){var x=key(a),y=key(b);return (x<y?-1:x>y?1:0)*sState.dir});
+  var per=50,pages=Math.max(1,Math.ceil(rows.length/per));sState.page=Math.min(sState.page,pages-1);
+  var slice=rows.slice(sState.page*per,sState.page*per+per);
+  var h='<div class="plain small">'+SPANS.length.toLocaleString()+' eligibility spans across the population \u2014 each row one continuous stretch in one coverage group. The end-reason column is where the registers live: procedural closures, Medicare redeterminations, retro grants whose begin dates precede their applications.</div>';
+  h+='<div class="controls">'+sel('sgrp','All coverage groups',Object.keys(GROUPS).map(function(g){return[g,GROUPS[g].name]}),sState.grp)+
+    sel('sopen','Open + closed',[['O','Open only'],['C','Closed only']],sState.open)+'</div>';
+  var cols=[{h:'Member'},{h:'Begin'},{h:'End'},{h:'Months'},{h:'Group'},{h:'Note',nosort:true}];
+  h+='<div class="card"><div class="tblwrap"><table><thead id="sth"><tr>'+sortable(rows,cols,sState)+'</tr></thead><tbody>';
+  slice.forEach(function(r){
+    h+='<tr class="rowbtn" data-mid="'+r.m.id+'"><td><b>'+esc(r.m.last)+', '+esc(r.m.first)+'</b></td>'+
+     '<td class="mono">'+mLabel(r.s.b)+'</td><td class="mono">'+(r.s.e===null?'\u2014 open \u2014':mLabel(r.s.e))+'</td>'+
+     '<td class="mono">'+((r.s.e===null?NOW:r.s.e)-r.s.b+1)+'</td><td>'+pillFor(r.s.cat)+'</td>'+
+     '<td style="max-width:340px">'+esc(r.s.notes)+'</td></tr>'});
+  h+='</tbody></table></div>'+pager(rows.length,per,sState)+'</div>';
+  el.innerHTML=h;
+  bindSort(document.getElementById('sth'),sState,function(){rSpans(el)});
+  ['sgrp','sopen'].forEach(function(id,ix){document.getElementById(id).onchange=function(){
+    sState[['grp','open'][ix]]=this.value;sState.page=0;rSpans(el)}});
+  bindPager(el,sState,function(){rSpans(el)});
+  bindRows(el,dedupeByMember(rows),'spans');
+}
+function dedupeByMember(rows){var seen={},out=[];rows.forEach(function(r){if(!seen[r.m.id]){seen[r.m.id]=1;out.push(r)}});return out}
+
+/* ================= Next Gen Enrollment (delivery spans) ================= */
+var dState={sys:'',plan:'',page:0,col:1,dir:1};
+function rDelivery(el){
+  var plans={};DSPANS.forEach(function(r){plans[r.d.plan]=1});
+  var rows=DSPANS.filter(function(r){
+    if(dState.sys&&r.d.sys!==dState.sys)return false;
+    if(dState.plan&&r.d.plan!==dState.plan)return false;return true});
+  var key=[function(r){return r.m.last+r.m.first},function(r){return r.d.b},
+    function(r){return r.d.e===null?9999:r.d.e},function(r){return r.d.plan},function(r){return r.d.sys}][dState.col];
+  rows.sort(function(a,b){var x=key(a),y=key(b);return (x<y?-1:x>y?1:0)*dState.dir});
+  var per=50,pages=Math.max(1,Math.ceil(rows.length/per));dState.page=Math.min(dState.page,pages-1);
+  var slice=rows.slice(dState.page*per,dState.page*per+per);
+  var h='<div class="plain small">The second clock, as a first-class table: '+DSPANS.length.toLocaleString()+' delivery spans, none of them capitated \u2014 fee-for-service rows that carry information, never risk. Register E\u2019s rows open and close on the lobster season\u2019s schedule; register F\u2019s pharmacy rows end at 65 while their Part D successors live in a CMS enrollment stream this table can only represent, never receive.</div>';
+  h+='<div class="controls">'+
+    sel('dsys','All systems',[['FFS','MaineCare fee-for-service'],['RX','MaineCare pharmacy (PBM)'],['PDP','Part D (LIS deemed)']],dState.sys)+
+    sel('dplan','All plans',Object.keys(plans).sort().map(function(p){return[p,p]}),dState.plan)+'</div>';
+  var cols=[{h:'Member'},{h:'Begin'},{h:'End'},{h:'Plan'},{h:'System'},{h:'Why',nosort:true}];
+  h+='<div class="card"><div class="tblwrap"><table><thead id="dth"><tr>'+sortable(rows,cols,dState)+'</tr></thead><tbody>';
+  slice.forEach(function(r){
+    var sysPill={FFS:'var(--g-ffs)',RX:'var(--g-rise)',PDP:'var(--g-dua)'}[r.d.sys];
+    h+='<tr class="rowbtn" data-mid="'+r.m.id+'"><td><b>'+esc(r.m.last)+', '+esc(r.m.first)+'</b></td>'+
+     '<td class="mono">'+mLabel(r.d.b)+'</td><td class="mono">'+(r.d.e===null?'\u2014 open \u2014':mLabel(r.d.e))+'</td>'+
+     '<td>'+esc(r.d.plan)+'</td><td><span class="pill" style="background:'+sysPill+'">'+r.d.sys+'</span></td>'+
+     '<td style="max-width:330px">'+esc(r.d.why)+'</td></tr>'});
+  h+='</tbody></table></div>'+pager(rows.length,per,dState)+'</div>';
+  el.innerHTML=h;
+  bindSort(document.getElementById('dth'),dState,function(){rDelivery(el)});
+  ['dsys','dplan'].forEach(function(id,ix){document.getElementById(id).onchange=function(){
+    dState[['sys','plan'][ix]]=this.value;dState.page=0;rDelivery(el)}});
+  bindPager(el,dState,function(){rDelivery(el)});
+  bindRows(el,dedupeByMember(rows),'delivery');
+}
+</script>
+<script>
+'use strict';
+/* ================= scenario registers ================= */
+var REGDEFS={
+ A:{title:'Steady state \u2014 MaineCare, fee-for-service by tradition',
+    q:'What does Medicaid look like in a state that never invited the plans in?',
+    body:`1,500 members simply covered \u2014 and, as in Connecticut one app ago, not one of them is enrolled in a risk-bearing plan. But where Connecticut left managed care by revolution in 2012, Maine never adopted it at all: MaineCare has paid its own claims, fee-for-service, from the beginning \u2014 the quiet by tradition. The roster carries the oldest state in the nation: Lewiston\u2019s Somali community two decades rooted beside three-generation Franco mill families; the Acadian St. John Valley, where Madawaska\u2019s French never left; Penobscot Indian Island off Old Town and Passamaquoddy country near Calais; and Downeast Washington County, where the Beals and Alleys of Jonesport set register E\u2019s clock by the lobster season. CubCare \u2014 CHIP\u2019s friendliest name \u2014 rides along unrenamed since 1998.`},
+ B:{title:'Churn \u2014 the annual renewal',
+    q:'What does unwinding-era churn look like in a span table?',
+    body:`500 members closed procedurally at renewal, sat uncovered one to three months, reapplied, and returned. Every reopened span is a new span, not a correction of the old one: the gap stays in the history because it happened, and the history is the audit.`},
+ C:{title:'Retroactive grant \u2014 the begin date that precedes the application',
+    q:'How does a span honestly show coverage that was granted backwards?',
+    body:`250 members applied and received up to three retroactive months \u2014 the series\u2019 baseline lesson, and in a fee-for-service state it arrives without its usual seam: as in Connecticut, there is no capitation boundary between the retro months and the rest, so the two dates that fight in forty-one other apps simply coexist here. The begin date still precedes the application; it just doesn\u2019t change who pays. Register D is this lesson at referendum scale.`},
+ D:{title:'Question 2 \u2014 the expansion the voters ordered',
+    q:'What does a court-ordered begin date look like in a span table?',
+    body:`In November 2017, Maine became the first state in the nation to expand Medicaid by citizen referendum. The statute set coverage to begin July 2, 2018. The sitting governor refused to implement it \u2014 through the summer, through the litigation, through court orders \u2014 and these 250 members applied anyway, into a program that legally existed and administratively didn\u2019t. In January 2019 a new governor signed the implementing order on her first day, and the grants came through that winter, <b>backdated to each application.</b> Read the record\u2019s two timelines: coverage true from mid-2018, system saying so in 2019. Rhode Island\u2019s register D was this same bitemporal tear caused by a broken computer \u2014 <i>latency with a release number</i>. Maine\u2019s was caused by a constitutional standoff: <b>latency with a docket number.</b> The data lesson is identical and the files look identical, which is itself the point: the span table records that the gap happened and cannot record why. Causes live in chronicles; tables carry only consequences.`},
+ E:{title:'The tide in the income column',
+    q:'Why does the same member become ineligible every June, forever?',
+    body:`Washington County runs on lobster, wreaths, blueberries, and summer visitors \u2014 income that arrives in one great wave and recedes. MAGI eligibility counts income when it flows, so these 350 members ride a tide: eligible over the winter, over-income by June when the season pays out, back by fall \u2014 two full cycles in these records and a third span open now, <b>the same person, the same boat, the same result, every year.</b> Nothing about anyone\u2019s life changes; only the month you ask the question changes. This register is the standing argument for reasonable-projection income counting and continuous-eligibility policy: a rule tuned for steady paychecks meets a seasonal economy and manufactures churn on a calendar schedule. A pipeline that flags these closures as \u201closs of coverage events\u201d will rediscover the lobster season annually and learn nothing; the pattern is the finding.`},
+ F:{title:'Medicare arrives \u2014 the answer at the pharmacy counter',
+    q:'What happens to these 150 members the month they turn 65?',
+    body:`Answer #43. Connecticut just showed that with no plans, Medicare\u2019s arrival is an eligibility event the delivery table never feels \u2014 and Maine, quiet by tradition rather than revolution, confirms it: the medical row runs straight through the birthday, fee-for-service before, fee-for-service wrapping after. But watch the drug benefit. <b>By federal design, Medicaid pharmacy coverage ends at Medicare entitlement</b> \u2014 drugs move to Part D, the member is auto-enrolled by CMS into a benchmark plan, Low-Income Subsidy deemed \u2014 and so the one file that speaks loudly this month is the one to the PBM: a termination with its successor created in a CMS enrollment stream the state\u2019s 834 never meets. West Virginia\u2019s half pair, relocated to the pharmacy counter. Every MCO state has this exact transition too \u2014 it hides inside the plan changes the last thirteen answers taxonomized. Strip the plans away and there it is, exposed: the smallest, most universal answer in the series, standing alone at the drug counter in the oldest state in the nation \u2014 where the door it walks through, Maine\u2019s Medicare Savings Program, is the widest in the country: the highest income limits of any state, and no asset test.`}
+};
+function rRegisters(el){
+  var h='<div class="plain">Six planted business questions \u2014 the registers are the population\u2019s table of contents. Each shows a 12-member sample; open any row and the \u25C0 \u25B6 arrows walk the <i>entire</i> register in order. For the complete list, filter the Members tab by register.</div>';
+  ['A','B','C','D','E','F'].forEach(function(r){
+    var d=REGDEFS[r], members=MEMBERS.filter(function(m){return m.reg===r});
+    h+='<div class="regcard"><div class="q"><span class="regletter">'+r+'</span>'+esc(d.title)+
+      (r==='F'?'<span class="answerno">answer #43</span>':'')+
+      ' <span class="sub" style="font-weight:400">\u2014 '+members.length.toLocaleString()+' members</span></div>'+
+      '<p class="body" style="margin-bottom:6px"><b>'+esc(d.q)+'</b></p>'+
+      '<p class="body">'+d.body+'</p>'+
+      '<div class="tblwrap" style="margin-top:12px"><table><thead><tr><th class="nosort">Member</th><th class="nosort">Group</th><th class="nosort">City</th><th class="nosort">Story in one line</th></tr></thead><tbody>';
+    members.slice(0,12).forEach(function(m){
+      h+='<tr class="rowbtn" data-mid="'+m.id+'" data-reg="'+r+'"><td><b>'+esc(m.last)+', '+esc(m.first)+'</b></td>'+
+        '<td>'+pillFor(m.group)+'</td><td>'+esc(m.city)+'</td><td>'+esc(oneLiner(m))+'</td></tr>'});
+    h+='</tbody></table></div></div>';
+  });
+  el.innerHTML=h;
+  el.querySelectorAll('tr[data-mid]').forEach(function(tr){
+    tr.onclick=function(){var r=tr.dataset.reg;
+      openMember(tr.dataset.mid,MEMBERS.filter(function(m){return m.reg===r}).map(function(m){return m.id}),'register')}});
+}
+function oneLiner(m){
+  switch(m.reg){
+   case 'A':return 'Covered since '+mLabel(m.spans[0].b)+', no story \u2014 which is the story.';
+   case 'B':return 'Closed '+mLabel(m.closedAt)+' for paperwork; back after '+m.gap+' month'+(m.gap>1?'s':'')+'.';
+   case 'C':return 'Applied '+mLabel(m.spans[0].app)+'; coverage reaches back to '+mLabel(m.spans[0].b)+'.';
+   case 'D':return 'Applied '+mLabel(m.spans[0].app)+' under the statute; granted '+mLabel(m.grantedAt)+', backdated.';
+   case 'E':return 'Third span open now \u2014 the tide will take it in June, as always.';
+   default:return 'Turned 65 '+mLabel(m.t65)+'; only the pharmacy noticed.'}
+}
+
+/* ================= What the File Says (annotated 834) ================= */
+var fileSel=null;
+function rFile(el){
+  if(!fileSel)fileSel=MEMBERS.filter(function(m){return m.reg==='F'})[0].id;
+  var opts='';['A','B','C','D','E','F'].forEach(function(r){
+    opts+='<optgroup label="Register '+r+' \u2014 '+esc(REGDEFS[r].title)+'">'+
+     MEMBERS.filter(function(m){return m.reg===r}).slice(0,40).map(function(m){
+       return '<option value="'+m.id+'"'+(m.id===fileSel?' selected':'')+'>'+esc(m.last)+', '+esc(m.first)+' \u2014 '+m.mid+'</option>'}).join('')+'</optgroup>'});
+  var m=MEMBERS.find(function(x){return x.id===fileSel});
+  var h='<div class="plain small">Pick a member and the app builds their most recent X12N 834 with every segment explained. A no-plan state still speaks 834 \u2014 to its pharmacy benefit administrator, its dental and transportation vendors \u2014 which is its own lesson: the transaction outlives the premise it was named for. The planted teaches: register D\u2019s grant that arrives half a year after the coverage it announces, register E\u2019s reopen that the tide will file again next year, and register F \u2014 the pharmacy termination whose successor lives in a CMS file.</div>'+
+   '<div class="controls"><select id="fsel" style="max-width:480px">'+opts+'</select></div>'+
+   '<div class="card"><div class="x12">'+build834(m).map(function(row){
+     return '<div class="seg'+(row.loop?' loop':'')+'">'+esc(row.seg)+'</div>'+
+            '<div class="exp'+(row.loop?' loop':'')+(row.teach?' teach':'')+'">'+row.exp+'</div>'}).join('')+
+   '</div></div>';
+  el.innerHTML=h;
+  document.getElementById('fsel').onchange=function(){fileSel=this.value;rFile(el)};
+}
+function build834(m){
+  var rows=[];
+  var evt={A:'021',B:'021',C:'021',D:'021',E:'021',F:'024'}[m.reg];
+  function seg(s,e,o){rows.push({seg:s,exp:e,loop:o&&o.loop,teach:o&&o.teach})}
+  var bgnDate=m.reg==='D'?mYYYYMMDD(m.grantedAt):'20260601';
+  seg('ISA*00*          *00*          *ZZ*MEDHHSSENDER   *ZZ*VENDORRCVR     *260601*0800*^*00501*000020700*0*P*:~',
+    'Interchange envelope \u2014 sender is the state; the receiver is a benefit vendor, because a no-plan state still has a PBM, a dental administrator, and a ride broker to keep informed.');
+  seg('GS*BE*MEDHHSSENDER*VENDORRCVR*'+(m.reg==='D'?bgnDate:'20260601')+'*0800*207*X*005010X220A1~','Functional group: BE = benefit enrollment \u2014 spoken here to vendors, the transaction outliving the managed-care premise it was named for.');
+  seg('ST*834*0001*005010X220A1~','Transaction set header.');
+  seg('BGN*00*'+m.id+'FILE*'+bgnDate+'*0800****4~',m.reg==='D'?
+    '<b>The processing timeline:</b> this transaction is dated '+mLabel(m.grantedAt)+' \u2014 the winter the executive order finally let the grants through. Hold this date and read DTP*356 below.':
+    'Original transaction (BGN01=00), reference keyed to the member for this demo.',{teach:m.reg==='D'});
+  seg('INS*Y*18*'+evt+'*XN*A***FT~','Loop 2000 \u2014 member level. INS03='+evt+' ('+({'021':'addition','024':'termination'})[evt]+'): '+insStory(m),{loop:true,teach:m.reg==='F'});
+  seg('REF*0F*'+m.mid+'~','Subscriber identifier \u2014 the nine-digit MaineCare ID.');
+  seg('REF*3H*'+m.reg+m.id.slice(1)+'~','Case/agency reference \u2014 synthetic, keyed to the register.');
+  if(m.reg==='C'){
+    seg('DTP*356*D8*'+mYYYYMMDD(m.spans[0].b)+'~','Member-level eligibility begin \u2014 <b>the retroactive date</b>: '+mLabel(m.spans[0].b)+'. In a fee-for-service state the seam this date usually creates is absent: the state pays the retro months and the prospective months alike.',{teach:true});
+  }else if(m.reg==='D'){
+    seg('DTP*356*D8*'+mYYYYMMDD(m.spans[0].b)+'~','<b>The event timeline:</b> coverage begins '+mLabel(m.spans[0].b)+' \u2014 '+(m.grantedAt-m.spans[0].b)+' months <i>before</i> the BGN date above, because the grant was backdated to an application filed under a statute the administration refused to run. Rhode Island tore these two timelines apart with a broken computer \u2014 latency with a release number; Maine tore them with a constitutional standoff \u2014 <b>latency with a docket number.</b> The files look identical, and that is the lesson: the table records that the gap happened and cannot record why. Causes live in chronicles; tables carry consequences.',{teach:true});
+  }else if(m.reg==='E'){
+    seg('DTP*356*D8*'+mYYYYMMDD(m.spans[2].b)+'~','Eligibility begin '+mLabel(m.spans[2].b)+' \u2014 the third such begin in this record. Two spans before it opened each October and closed each June when the season\u2019s income arrived. <b>This file will be sent again next fall</b>, and a termination will be sent next summer, and neither will mean anything changed in '+esc(m.first)+'\u2019s life: a monthly-income rule met a seasonal economy, and the tide does the rest. The pattern \u2014 not any single file \u2014 is the finding.',{teach:true});
+  }else{
+    seg('DTP*356*D8*'+mYYYYMMDD(m.spans[m.spans.length-1].b)+'~','Member-level eligibility begin: '+mLabel(m.spans[m.spans.length-1].b)+'.');
+  }
+  if(m.reg==='F')seg('DTP*357*D8*'+mYYYYMMDD(m.t65-1,true)+'~','Member-level eligibility end for the <i>pre-Medicare group</i> \u2014 the seam itself, as ordinary here as in every state. What follows is where Maine speaks.',{teach:true});
+  seg('NM1*IL*1*'+m.last.toUpperCase()+'*'+m.first.toUpperCase()+'~','Member name.');
+  seg('PER*IP**TE*'+m.phone.replace(/\D/g,'')+'~','Contact telephone.');
+  seg('N3*'+m.addr.toUpperCase()+'~','Street address \u2014 '+esc(m.city)+' texture from the seeded roster.');
+  seg('N4*'+m.city.toUpperCase()+'*ME*'+m.zip+'~','City / state / ZIP.');
+  seg('DMG*D8*'+m.dob.replace(/-/g,'')+'*'+m.sex+'~','Demographics: date of birth and sex.');
+  if(m.lang)seg('LUI*LE*'+m.lang+'**7~','Preferred language: '+m.langName+' \u2014 '+(m.lang==='SOM'?'Lewiston, where the Somali community is two decades rooted.':'the St. John Valley, where Acadian French never left.'));
+  /* health coverage loops */
+  if(m.reg==='F'){
+    seg('HD*024**HLT*'+RX_MCD.toUpperCase()+'~','Loop 2300 \u2014 <b>the pharmacy termination.</b> By federal design, Medicaid drug coverage ends at Medicare entitlement: this is the one loud segment of the month, sent to the PBM. The medical benefit files nothing at all \u2014 fee-for-service before, fee-for-service wrapping after; Connecticut\u2019s lesson, reached by tradition instead of revolution.',{loop:true,teach:true});
+    seg('DTP*349*D8*'+mYYYYMMDD(m.t65-1,true)+'~','Pharmacy coverage-end '+mLabel(m.t65-1)+'.');
+    seg('COB*P*'+m.mid+'*1~','Medicare primary \u2014 and the successor to the terminated loop above is nowhere in this file: <b>a Part D benchmark plan, auto-enrolled by CMS, Low-Income Subsidy deemed</b>, created in a Medicare enrollment stream the state\u2019s 834 never meets. West Virginia\u2019s half pair, relocated to the pharmacy counter \u2014 and hiding inside every plan transition the last thirteen answers described. '+esc(m.first)+' entered dual status as '+m.msp+' through the widest MSP door in the nation. Answer #43.',{teach:true});
+  }else{
+    seg('HD*'+evt+'**HLT*'+FFS_MED.toUpperCase()+'~','Loop 2300 \u2014 fee-for-service, informational to the vendor: no risk moves anywhere in this state, ever.'+(m.reg==='E'?' The tide\u2019s files all look exactly like this one \u2014 the reopen and the closure are indistinguishable from any other churn except by their calendar rhythm.':''),{loop:true,teach:m.reg==='E'});
+    var covB=m.reg==='C'?m.spans[0].b:Math.max(m.spans[m.spans.length-1].b,0);
+    seg('DTP*348*D8*'+mYYYYMMDD(covB)+'~','Coverage begin '+mLabel(covB)+'.'+(m.reg==='C'?' Equal to DTP*356 \u2014 no capitation, no seam; the agreement is honest here, as it was in Connecticut.':''));
+  }
+  seg('REF*CE*'+m.group+'~','Reporting category \u2014 the coverage group riding with the enrollment ('+esc(GROUPS[m.group]?GROUPS[m.group].name:m.group)+').');
+  seg('SE*'+(rows.length+2)+'*0001~','Transaction trailer with segment count.');
+  seg('GE*1*207~','Functional group trailer.');
+  seg('IEA*1*000020700~','Interchange trailer.');
+  return rows;
+}
+function insStory(m){
+  return {A:'routine maintenance to a vendor \u2014 information, never risk.',B:'the reapproval after the renewal gap \u2014 a brand-new addition, not a correction.',
+   C:'an addition whose dates teach the retro lesson, minus the seam.',
+   D:'an addition that arrived half a year after the coverage it announces \u2014 read the BGN and DTP*356 together.',
+   E:'the third addition in this record; the tide filed the first two and closed them both.',
+   F:'<b>the pharmacy termination</b> \u2014 the one loud file of the month. Its successor was created by CMS, out of frame.'}[m.reg];
+}
+
+/* ================= Reference ================= */
+function rReference(el){
+  var h='<div class="card"><h3>The oldest state\u2019s timeline</h3>'+
+   '<div class="tblwrap"><table class="chron"><tbody>'+
+   '<tr><td class="mono">1998</td><td>CubCare \u2014 Maine\u2019s CHIP, still the friendliest program name in the series. MaineCare pays fee-for-service from the start: no capitated plans, then or since.</td></tr>'+
+   '<tr><td class="mono">Nov 2017</td><td>Question 2 passes \u2014 the first citizen-initiated Medicaid expansion in the nation. The statute sets coverage to begin July 2, 2018.</td></tr>'+
+   '<tr><td class="mono">2018</td><td>The refusal: the sitting administration declines to implement through the summer and the litigation. Applications are filed anyway, into a program that legally exists and administratively doesn\u2019t.</td></tr>'+
+   '<tr><td class="mono">Jan 2019</td><td>A new governor signs the implementing executive order on her first day; the winter\u2019s grants are backdated to their applications. Register D: latency with a docket number.</td></tr>'+
+   '<tr><td class="mono">Ongoing</td><td>The widest Medicare Savings Program door in the nation \u2014 the highest income limits of any state, no asset test \u2014 in the state with the nation\u2019s oldest median age. Register F\u2019s doorway. Verify currency; this landscape moves.</td></tr>'+
+   '</tbody></table></div></div>';
+  h+='<div class="card"><h3>834 maintenance codes used in this app</h3><div class="tblwrap"><table><thead><tr><th class="nosort">INS03</th><th class="nosort">Meaning</th><th class="nosort">Where you\u2019ll see it</th></tr></thead><tbody>'+
+   '<tr><td class="mono">021</td><td>Addition</td><td>New members, register B\u2019s returns, register D\u2019s backdated grants, register E\u2019s annual reopens \u2014 the tide\u2019s own paperwork</td></tr>'+
+   '<tr><td class="mono">024</td><td>Cancellation / termination</td><td>Register B\u2019s closures, register E\u2019s June closures \u2014 and register F\u2019s pharmacy loop, the month\u2019s one loud file</td></tr>'+
+   '<tr><td class="mono">001</td><td>Change</td><td>Ordinary maintenance</td></tr>'+
+   '</tbody></table></div></div>';
+  h+='<div class="card"><h3>Glossary</h3><dl class="gloss">'+
+   gl('MaineCare','Maine Medicaid \u2014 fee-for-service by tradition: the state never adopted capitated managed care, making it the series\u2019 second quiet state, by the opposite road from Connecticut\u2019s.')+
+   gl('CubCare','Maine\u2019s CHIP, named 1998, never renamed.')+
+   gl('Question 2','November 2017 \u2014 the nation\u2019s first citizen-initiated Medicaid expansion. Statutory start July 2, 2018; implemented January 2019; grants backdated. Register D.')+
+   gl('Latency with a docket number','Register D\u2019s lesson, completing a rhyme: Kentucky\u2019s churn had a release number, Rhode Island\u2019s latency had one too \u2014 Maine\u2019s had a docket. The files look identical; causes live in chronicles, tables carry consequences.')+
+   gl('The tide','Register E: seasonal income meeting a monthly counting rule \u2014 eligible each winter, over-income each June, forever. The standing argument for reasonable-projection counting and continuous eligibility.')+
+   gl('The Medicare Savings Program door','The nation\u2019s widest: the highest MSP income limits of any state and no asset test \u2014 how register F\u2019s members enter dual status.')+
+   gl('The pharmacy counter','The forty-third Medicare answer: with no plans to file anything, the one loud file at 65 is the PBM termination \u2014 drugs move to Part D by federal design, auto-enrolled, LIS deemed, the successor created in a CMS stream the state never sees. The half pair, relocated \u2014 and present, hidden, in every MCO state too.')+
+   gl('Wabanaki','The Penobscot, Passamaquoddy, Maliseet, and Mi\u2019kmaq \u2014 Indian Island\u2019s Francises and Neptunes, Passamaquoddy country\u2019s Newells and Danas in these rows.')+
+   gl('834','The X12N benefit enrollment transaction \u2014 spoken here to vendors rather than plans, outliving the premise it was named for.')+
+   '</dl></div>';
+  h+='<div class="card"><h3>Cities in this population</h3><p style="font-size:.85rem">'+
+   Array.from(new Set(COUNTIES.map(function(c){return c.city}))).join(' \u00b7 ')+'</p>'+
+   '<p class="sub" style="margin-top:8px">The Mohameds and Hassans carry Lewiston; the Cyrs, Pelletiers, and Michauds, the Acadian St. John Valley and Biddeford\u2019s mill blocks; the Beals, Alleys, and Lunts, Downeast Jonesport and Machias, where register E keeps time; the Francises and Neptunes, Penobscot Indian Island; the Newells and Danas, Passamaquoddy country near Calais.</p></div>';
+  el.innerHTML=h;
+  function gl(t,d){return '<dt>'+t+'</dt><dd>'+d+'</dd>'}
+}
+</script>
+<script>
+'use strict';
+/* ================= slide-over member record ================= */
+var nav={list:[],ix:-1,ctx:''};
+function openMember(id,list,ctx){
+  nav.list=list||[id];nav.ix=nav.list.indexOf(id);nav.ctx=ctx||'';
+  paintMember();document.getElementById('overlay').classList.add('open');
+  var s=document.getElementById('slide');s.classList.add('open');
+  highlightRow(id);s.focus&&s.focus();
+}
+function closeMember(){
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('slide').classList.remove('open');
+  highlightRow(null);
+}
+function stepMember(d){var n=nav.ix+d;if(n<0||n>=nav.list.length)return;nav.ix=n;paintMember();highlightRow(nav.list[n])}
+function highlightRow(id){document.querySelectorAll('tr.hl').forEach(function(t){t.classList.remove('hl')});
+  if(id){var tr=document.querySelector('tr[data-mid="'+id+'"]');if(tr)tr.classList.add('hl')}}
+function paintMember(){
+  var m=MEMBERS.find(function(x){return x.id===nav.list[nav.ix]});
+  var s=document.getElementById('slide');
+  var ctxLabel={roster:'filtered roster',spans:'spans view',delivery:'enrollment view',register:'register'}[nav.ctx]||'list';
+  var h='<button class="close" aria-label="Close">\u00d7</button>'+
+   '<div class="navrow"><button id="mprev"'+(nav.ix===0?' disabled':'')+' aria-label="Previous member">\u25C0</button>'+
+   '<button id="mnext"'+(nav.ix>=nav.list.length-1?' disabled':'')+' aria-label="Next member">\u25B6</button>'+
+   '<span class="pos">'+(nav.ix+1)+' / '+nav.list.length+' ('+ctxLabel+')</span></div>'+
+   '<h2>'+esc(m.last)+', '+esc(m.first)+'</h2>'+
+   '<p class="sub">'+pillFor(m.group)+' &nbsp; Register '+m.reg+' \u2014 '+esc(REGDEFS[m.reg].title)+'</p>'+
+   '<dl class="kv">'+
+   kv('Medicaid ID','<span class="mono">'+m.mid+'</span>')+
+   kv('Born',esc(m.dob)+' ('+m.sex+')')+
+   kv('Address',esc(m.addr)+', '+esc(m.city)+', OH '+m.zip+' \u2014 '+esc(m.county)+' County')+
+   kv('Phone','<span class="mono">'+esc(m.phone)+'</span>')+
+   (m.lang?kv('Language',esc(m.langName)+' <span class="mono">('+m.lang+')</span>'):'')+
+   '</dl>'+
+   '<div class="plain small">'+plainEnglish(m)+'</div>'+
+   '<h4>Eligibility spans</h4><div class="tblwrap"><table><thead><tr><th class="nosort">Group</th><th class="nosort">Begin</th><th class="nosort">End</th><th class="nosort">Note</th></tr></thead><tbody>'+
+   (m.spans.length===0?'<tr><td colspan="4" class="sub">No eligibility spans \u2014 this member has never been eligible. The empty table is the record.</td></tr>':'')+
+   m.spans.map(function(x){return '<tr><td>'+pillFor(x.cat)+'</td><td class="mono">'+mLabel(x.b)+'</td>'+
+     '<td class="mono">'+(x.e===null?'\u2014 open \u2014':mLabel(x.e))+'</td><td>'+esc(x.notes)+'</td></tr>'}).join('')+
+   '</tbody></table></div>'+
+   '<h4>Delivery spans</h4><div class="tblwrap"><table><thead><tr><th class="nosort">Plan</th><th class="nosort">Begin</th><th class="nosort">End</th><th class="nosort">Why</th></tr></thead><tbody>'+
+   (m.dspans.length===0?'<tr><td colspan="4" class="sub">No delivery spans \u2014 no plan was ever asked to carry this member.</td></tr>':'')+
+   (m.dspans.length===0?'<tr><td colspan="4" class="sub">No delivery spans on record.</td></tr>':'')+
+   m.dspans.map(function(x){return '<tr><td><b>'+esc(x.plan)+'</b></td><td class="mono">'+mLabel(x.b)+'</td>'+
+     '<td class="mono">'+(x.e===null?'\u2014 open \u2014':mLabel(x.e))+'</td><td>'+esc(x.why)+'</td></tr>'}).join('')+
+   '</tbody></table></div>'+
+   '<p style="margin-top:14px"><button class="linkish" id="see834">Read this member\u2019s 834 \u2192</button></p>';
+  s.innerHTML=h;
+  s.querySelector('.close').onclick=closeMember;
+  document.getElementById('mprev').onclick=function(){stepMember(-1)};
+  document.getElementById('mnext').onclick=function(){stepMember(1)};
+  document.getElementById('see834').onclick=function(){fileSel=m.id;closeMember();activeTab='file';renderTabs();renderMain()};
+  function kv(k,v){return '<dt>'+k+'</dt><dd>'+v+'</dd>'}
+}
+function plainEnglish(m){
+  var first=m.spans[0];
+  switch(m.reg){
+   case 'A':return esc(m.first)+' has been covered under '+esc(GROUPS[m.group].name)+' since '+mLabel(first.b)+
+     ' \u2014 '+(NOW-first.b+1)+' straight months of fee-for-service, the state paying every claim, because MaineCare never '+
+     'adopted plans to begin with. The most recent renewal passed without incident.';
+   case 'B':return esc(m.first)+'\u2019s renewal was never completed, so coverage closed at the end of '+mLabel(m.closedAt)+
+     ' \u2014 not because anything about '+(m.sex==='F'?'her':'him')+' changed, but because paperwork lapsed. After '+m.gap+
+     ' uncovered month'+(m.gap>1?'s':'')+', a new application was approved and a new span opened '+mLabel(m.closedAt+m.gap+1)+
+     '. The gap stays in the record; that is the point.';
+   case 'C':return esc(m.first)+' applied in '+mLabel(first.app)+' and was granted '+first.retroN+' retroactive month'+
+     (first.retroN>1?'s':'')+', so eligibility begins '+mLabel(first.b)+' \u2014 before the application existed. And as in Connecticut, '+
+     'the seam that date usually creates is missing: with no capitation anywhere, the retro months are paid like all the others.';
+   case 'D':return esc(m.first)+' applied in '+mLabel(first.app)+', under a statute the voters had passed and the administration '+
+     'refused to run. The grant came '+mLabel(m.grantedAt)+' \u2014 after a new governor\u2019s first-day executive order \u2014 backdated '+
+     'to the application. On the coverage timeline nothing is wrong with this record; on the processing timeline a constitutional '+
+     'standoff sits in the gap. Rhode Island\u2019s version of this tear was latency with a release number; Maine\u2019s is latency with '+
+     'a docket number \u2014 and the files look identical, because tables carry consequences, never causes.';
+   case 'E':return esc(m.first)+' works '+esc(m.trade)+' out of '+esc(m.city)+', and the income arrives in one wave and recedes. '+
+     'The record shows the result: eligible each winter, over-income each June when the season pays out, back by fall \u2014 two full '+
+     'cycles closed and a third span open now, which the tide will take like the others. Nothing about '+(m.sex==='F'?'her':'his')+
+     ' life changes; only the month the question is asked changes. This is the standing case for reasonable-projection income counting '+
+     'and continuous eligibility, written in spans.';
+   default:
+     return esc(m.first)+' turned 65 and Medicare arrived '+mLabel(m.t65)+' \u2014 and the medical side never made a sound: fee-for-service '+
+     'before, fee-for-service wrapping after, the quiet Connecticut reached by revolution and Maine was born with. The one loud file went '+
+     'to the pharmacy: Medicaid drug coverage ends at entitlement by federal design, and '+esc(m.first)+' was auto-enrolled by CMS into a '+
+     'Part D benchmark plan, Low-Income Subsidy deemed \u2014 a termination whose successor lives in a file the state never sees. '+
+     esc(m.first)+' entered dual status as '+m.msp+' through the widest Medicare Savings Program door in the nation. Answer #43: the '+
+     'half pair, relocated to the pharmacy counter \u2014 and hiding inside every plan transition the series has described.';
+  }
+}
+function currentPlan(m){var d=sysNow(m).find(function(x){return x.sys==='MCO'||x.sys==='MYC'});
+  return d?d.plan:'fee-for-service'}
+
+/* ================= internal invariant suite (headless harness calls runTests) ================= */
+function runTests(){
+  var out=[],pass=0;
+  function t(name,fn){try{var r=fn();out.push([!!r,name+(typeof r==='string'?' \u2014 '+r:'')]);if(r)pass++}
+    catch(e){out.push([false,name+' \u2014 threw: '+e.message])}}
+  t('Population is exactly 3,000 members',function(){return MEMBERS.length===3000});
+  t('Register counts are exactly as planted (1500/500/250/250/350/150)',function(){
+    return ['A','B','C','D','E','F'].every(function(r){
+      return MEMBERS.filter(function(m){return m.reg===r}).length===REGCOUNT[r]})});
+  t('No span ends before it begins',function(){
+    return SPANS.every(function(r){return r.s.e===null||r.s.e>=r.s.b})&&
+           DSPANS.every(function(r){return r.d.e===null||r.d.e>=r.d.b})});
+  t('Register D: applied under the statute, granted after the order, backdated to the application',function(){
+    return MEMBERS.filter(function(m){return m.reg==='D'}).every(function(m){
+      var lag=m.grantedAt-m.spans[0].b;
+      return m.spans.length===1&&m.spans[0].e===null&&m.spans[0].b===m.spans[0].app&&
+        m.spans[0].b>=STAT0&&m.spans[0].b<STAT0+5&&m.grantedAt>=IMPL&&lag>=2&&lag<=8})});
+  t('Register E: two closed October-to-May cycles and a third span open now',function(){
+    return MEMBERS.filter(function(m){return m.reg==='E'}).every(function(m){
+      if(m.spans.length!==3)return false;
+      var a=m.spans[0],b=m.spans[1],c=m.spans[2];
+      return a.e===a.b+7&&b.e===b.b+7&&b.b===a.b+12&&c.b===141&&c.e===null})});
+  t('Register F: seam exact; medical FFS runs through; pharmacy ends at 65; Part D opens at 65',function(){
+    return MEMBERS.filter(function(m){return m.reg==='F'}).every(function(m){
+      if(!(m.spans.length===2&&m.spans[0].e===m.spans[1].b-1&&m.spans[1].cat==='DUA'))return false;
+      if(m.dspans.length!==3)return false;
+      var med=m.dspans[0],rx=m.dspans[1],pd=m.dspans[2];
+      return med.sys==='FFS'&&med.e===null&&med.b<m.t65&&
+        rx.sys==='RX'&&rx.e===m.t65-1&&pd.sys==='PDP'&&pd.b===m.t65&&pd.e===null})});
+  t('Every retro grant begins before its application month',function(){
+    return MEMBERS.filter(function(m){return m.reg==='C'}).every(function(m){
+      return m.spans[0].b<m.spans[0].app})});
+  
+  t('Every member renders an 834 without error',function(){
+    var n=0;MEMBERS.forEach(function(m){n+=build834(m).length});return n>0?String(n)+' segments built':false});
+  t('Dataset checksum (FNV-1a over the serialized population)',function(){
+    var s='';MEMBERS.forEach(function(m){s+=m.mid+m.last+m.first+m.reg+m.group+
+      m.spans.map(function(x){return x.cat+x.b+'/'+x.e}).join('|')+
+      m.dspans.map(function(x){return x.sys+x.b+'/'+x.e}).join('|')});
+    var hv=0x811c9dc5;
+    for(var i=0;i<s.length;i++){hv^=s.charCodeAt(i);hv=Math.imul(hv,0x01000193)}
+    return 'FNV 0x'+(hv>>>0).toString(16).toUpperCase()});
+  var h='<table><tbody>'+out.map(function(r){
+    return '<tr><td class="'+(r[0]?'testpass':'testfail')+'">'+(r[0]?'PASS':'FAIL')+'</td><td>'+esc(r[1])+'</td></tr>'}).join('')+
+    '</tbody></table><p class="sub" style="margin-top:10px">'+pass+' / '+out.length+' checks passed.</p>';
+  var out_el=document.getElementById('testout');if(out_el)out_el.innerHTML=h;
+  return pass===out.length;
+}
+
+/* ================= keyboard & overlay ================= */
+document.getElementById('overlay').onclick=closeMember;
+document.addEventListener('keydown',function(e){
+  var open=document.getElementById('slide').classList.contains('open');
+  if(!open)return;
+  if(e.key==='Escape')closeMember();
+  if(e.key==='ArrowLeft')stepMember(-1);
+  if(e.key==='ArrowRight')stepMember(1);
+});
+
+/* ================= boot ================= */
+renderTabs();renderMain();
+</script>
+</body>
+</html>

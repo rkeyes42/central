@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Florida Medicaid Eligibility Central</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@1,8..60,400;1,8..60,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#1E5FCC;
+  --accent-soft:#E8EFFB;
+  --ink:#1b2430;
+  --ink-soft:#4a5568;
+  --ink-faint:#8a94a3;
+  --line:#dde3ea;
+  --line-soft:#eceff3;
+  --bg:#f7f8fa;
+  --card:#ffffff;
+  --serif:'Source Serif 4', Georgia, serif;
+  --sans:'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono:'IBM Plex Mono', 'Consolas', monospace;
+  --g-FC01:#2E7D5B; --g-PG02:#B0568C; --g-CH19:#C98A2B; --g-EA02:#1E5FCC;
+  --g-SI02:#6A4FB6; --g-MN98:#5B8AA6; --g-FF26:#C25B4A; --g-WD02:#3E9C9C; --g-LT01:#7A7A52;
+  --d-mco:#4a7fd6; --d-ffs:#9aa3ad; --d-harp:#8a5fc0; --d-mltc:#2e8f8f;
+  --ok:#2E7D5B; --warn:#C98A2B; --bad:#C0392B;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+
+/* ---------- header ---------- */
+header{background:var(--card);border-bottom:1px solid var(--line);padding:18px 28px 0}
+.brandrow{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.wordmark{font-family:var(--serif);font-style:italic;font-weight:600;font-size:1.65rem;color:var(--accent);letter-spacing:.01em}
+.wordmark .st{color:var(--ink)}
+.tagline{color:var(--ink-faint);font-size:.85rem}
+.credit{margin-left:auto;color:var(--ink-faint);font-size:.78rem}
+nav{display:flex;gap:2px;margin-top:14px;flex-wrap:wrap}
+nav button{appearance:none;border:none;background:none;font:inherit;font-size:.86rem;font-weight:500;color:var(--ink-soft);padding:9px 14px;cursor:pointer;border-bottom:3px solid transparent;border-radius:6px 6px 0 0}
+nav button:hover{background:var(--line-soft)}
+nav button.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+nav button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+/* ---------- layout ---------- */
+main{max-width:1280px;margin:0 auto;padding:24px 28px 80px}
+.page{display:none}
+.page.on{display:block}
+h2{font-size:1.22rem;font-weight:700;margin:4px 0 4px}
+h3{font-size:.98rem;font-weight:600;margin:22px 0 8px}
+.sub{color:var(--ink-soft);font-size:.88rem;margin-bottom:16px;max-width:70ch}
+
+/* ---------- plain english callout ---------- */
+.plain{font-family:var(--serif);font-style:italic;font-size:1.02rem;line-height:1.65;color:#2c3a4d;background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:14px 18px;margin:14px 0 20px;max-width:86ch}
+.plain b{font-style:italic;font-weight:600}
+.plain .pe-label{display:block;font-family:var(--sans);font-style:normal;font-weight:700;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:5px}
+
+/* ---------- cards / stats ---------- */
+.statrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.stat .n{font-family:var(--mono);font-size:1.55rem;font-weight:600;color:var(--ink)}
+.stat .l{font-size:.74rem;color:var(--ink-soft);margin-top:2px;line-height:1.35}
+.stat.acc .n{color:var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:14px 0}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:900px){.twocol{grid-template-columns:1fr}}
+
+/* ---------- legend / bars ---------- */
+.leg{display:flex;flex-direction:column;gap:7px}
+.legrow{display:grid;grid-template-columns:16px 64px 1fr 46px;gap:10px;align-items:center;font-size:.84rem}
+.legrow .swatch{width:14px;height:14px;border-radius:4px}
+.legrow .code{font-family:var(--mono);font-size:.8rem;font-weight:600}
+.legrow .cnt{font-family:var(--mono);text-align:right;color:var(--ink-soft)}
+.barlist{display:flex;flex-direction:column;gap:8px}
+.barrow{display:grid;grid-template-columns:210px 1fr 40px;gap:10px;align-items:center;font-size:.83rem}
+.barrow .track{background:var(--line-soft);border-radius:5px;height:14px;overflow:hidden}
+.barrow .fill{display:block;height:100%;background:var(--d-mco);border-radius:5px;transition:width .8s ease}
+.barrow .bn{font-family:var(--mono);text-align:right;color:var(--ink-soft)}
+@media(max-width:700px){.barrow{grid-template-columns:130px 1fr 36px}}
+
+/* ---------- controls ---------- */
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;align-items:center}
+.controls input[type=search],.controls select{font:inherit;font-size:.85rem;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
+.controls input[type=search]{min-width:220px}
+.controls select:focus,.controls input:focus{outline:2px solid var(--accent);outline-offset:0}
+.hint{font-size:.76rem;color:var(--ink-faint)}
+
+/* ---------- tables ---------- */
+.tblwrap{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:auto;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:.83rem}
+th{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);background:#fbfcfd;white-space:nowrap;position:sticky;top:0}
+th.sortable{cursor:pointer;user-select:none}
+th.sortable:hover{color:var(--accent)}
+th .arr{font-size:.72rem;color:var(--accent)}
+.pager{display:flex;align-items:center;justify-content:center;gap:14px;margin:12px 0 2px}
+.pager button.pg{appearance:none;font:inherit;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:5px 13px;cursor:pointer;font-size:.82rem;color:var(--ink-soft)}
+.pager button.pg:hover:not(:disabled){background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.pager button.pg:disabled{opacity:.35;cursor:default}
+.pager .pgpos{font-size:.78rem;color:var(--ink-faint)}
+td{padding:9px 12px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tbody tr.rowlink{cursor:pointer}
+tbody tr.rowlink:hover{background:var(--accent-soft)}
+tbody tr.hl{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+.mono{font-family:var(--mono);font-size:.8rem}
+.nowrap{white-space:nowrap}
+
+/* ---------- chips ---------- */
+.chip{display:inline-block;font-family:var(--mono);font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:20px;color:#fff;white-space:nowrap}
+.chip.outl{background:none;border:1.5px solid currentColor}
+.dchip{display:inline-block;font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:5px;white-space:nowrap}
+.d-mco{background:#e5edfa;color:#2456a8}
+.d-ffs{background:#eceff2;color:#5c6672}
+.d-harp{background:#efe7f8;color:#6a3fa0}
+.d-mltc{background:#e2f2f2;color:#1f6f6f}
+.st-act{color:var(--ok);font-weight:600}
+.st-gap{color:var(--warn);font-weight:600}
+.st-cls{color:var(--ink-faint);font-weight:600}
+.flag{display:inline-block;font-size:.7rem;font-weight:600;background:#fdf1e0;color:#96660f;border:1px solid #f0d9ae;border-radius:5px;padding:1px 7px;white-space:nowrap}
+
+/* ---------- registers ---------- */
+.reg{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin:12px 0}
+.reg h3{margin:0 0 4px;display:flex;align-items:center;gap:10px}
+.reg .rl{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;background:var(--accent);color:#fff;font-family:var(--mono);font-weight:600;font-size:.85rem;flex:none}
+.reg .q{font-family:var(--serif);font-style:italic;color:#2c3a4d;font-size:.95rem;margin:4px 0 10px}
+.reg .meta{font-size:.78rem;color:var(--ink-faint);margin-bottom:8px}
+
+/* ---------- 834 ---------- */
+.ediwrap{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:12px 0;overflow:hidden}
+.edihead{padding:12px 18px;border-bottom:1px solid var(--line);display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;background:#fbfcfd}
+.edihead .fn{font-family:var(--mono);font-size:.82rem;font-weight:600}
+.edirow{display:grid;grid-template-columns:minmax(300px,46%) 1fr;border-bottom:1px solid var(--line-soft)}
+.edirow:last-child{border-bottom:none}
+.edirow .seg{font-family:var(--mono);font-size:.78rem;padding:8px 16px;background:#f4f7fb;color:#1b3a66;overflow-wrap:anywhere;border-right:1px solid var(--line-soft)}
+.edirow .note{font-size:.8rem;padding:8px 16px;color:var(--ink-soft)}
+.edirow.loop .seg{background:#e8effb;font-weight:600}
+@media(max-width:780px){.edirow{grid-template-columns:1fr}.edirow .seg{border-right:none}}
+
+/* ---------- modal ---------- */
+.overlay{position:fixed;inset:0;background:rgba(20,28,40,.42);opacity:0;pointer-events:none;transition:opacity .22s;z-index:40}
+.overlay.on{opacity:1;pointer-events:auto}
+.slideover{position:fixed;top:0;right:0;bottom:0;width:640px;max-width:94vw;background:var(--card);box-shadow:-12px 0 40px rgba(15,25,45,.22);transform:translateX(102%);transition:transform .26s ease;z-index:50;display:flex;flex-direction:column}
+.slideover.on{transform:translateX(0)}
+.mo-head{padding:16px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+.mo-head .who{min-width:0}
+.mo-head .nm{font-weight:700;font-size:1.05rem}
+.mo-head .idz{font-family:var(--mono);font-size:.76rem;color:var(--ink-soft)}
+.mo-x{margin-left:auto;appearance:none;border:1px solid var(--line);background:none;border-radius:8px;width:32px;height:32px;font-size:1rem;cursor:pointer;color:var(--ink-soft);flex:none}
+.mo-x:hover{background:var(--line-soft)}
+.mo-body{overflow-y:auto;padding:18px 22px;flex:1}
+.mo-foot{border-top:1px solid var(--line);padding:10px 22px;display:flex;align-items:center;gap:12px}
+.mo-foot button{appearance:none;font:inherit;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:.9rem}
+.mo-foot button:hover:not(:disabled){background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.mo-foot button:disabled{opacity:.35;cursor:default}
+.mo-foot .pos{font-family:var(--mono);font-size:.78rem;color:var(--ink-faint);margin-left:auto}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:4px 12px;font-size:.85rem;margin:8px 0 14px}
+.kv .k{color:var(--ink-faint)}
+.kv .v{color:var(--ink)}
+.mo-body h4{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);margin:16px 0 8px}
+.mo-body .plain{font-size:.93rem;padding:12px 15px}
+
+/* ---------- mini timeline ---------- */
+.tl{margin:6px 0 4px}
+.tl .band{display:grid;grid-template-columns:78px 1fr;gap:8px;align-items:center;margin:5px 0}
+.tl .bl{font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-faint);text-align:right}
+.tl .lane{position:relative;height:18px;background:var(--line-soft);border-radius:4px}
+.tl .bar{position:absolute;top:0;bottom:0;border-radius:4px;min-width:3px}
+.tl .bar.striped{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.28) 0 5px,transparent 5px 10px)}
+.tl .axis{display:grid;grid-template-columns:78px 1fr;gap:8px;margin-top:3px}
+.tl .ax{position:relative;height:14px;font-size:.62rem;color:var(--ink-faint);font-family:var(--mono)}
+.tl .ax span{position:absolute;transform:translateX(-50%)}
+.tl .todayline{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--bad);opacity:.7}
+.tl-note{font-size:.7rem;color:var(--ink-faint);margin-top:6px}
+
+/* ---------- reference ---------- */
+.refgrid{display:grid;grid-template-columns:1fr;gap:4px}
+dl.gloss{display:grid;grid-template-columns:200px 1fr;gap:8px 16px;font-size:.85rem}
+dl.gloss dt{font-weight:600}
+dl.gloss dd{color:var(--ink-soft)}
+@media(max-width:700px){dl.gloss{grid-template-columns:1fr}dl.gloss dd{margin-bottom:8px}}
+footer{max-width:1280px;margin:0 auto;padding:0 28px 40px;color:var(--ink-faint);font-size:.75rem;line-height:1.6}
+@media(max-width:700px){header{padding:14px 16px 0}main{padding:18px 14px 60px}.kv{grid-template-columns:120px 1fr}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brandrow">
+    <div class="wordmark">Florida Medicaid Eligibility <span class="st">Central</span></div>
+    <div class="tagline">SMMC 3.0, Share of Cost, the wait list, and the 834 &mdash; a synthetic demonstration</div>
+    <div class="credit">Robert Thomas Keyes</div>
+  </div>
+  <nav id="nav" aria-label="Sections">
+    <button data-pg="overview" class="on">Overview</button>
+    <button data-pg="members">Members</button>
+    <button data-pg="spans">Eligibility Spans</button>
+    <button data-pg="delivery">Statewide Medicaid Managed Care</button>
+    <button data-pg="registers">Scenario Registers</button>
+    <button data-pg="file">What the File Says</button>
+    <button data-pg="reference">Reference Codes</button>
+  </nav>
+</header>
+<main>
+  <section class="page on" id="pg-overview">
+    <h2>Overview</h2>
+    <p class="sub">A synthetic Florida Medicaid population across a 24-month window (January 2025 &ndash; December 2026), viewed as of <b>July 2026</b>. Every value is deterministic &mdash; seeded PRNG, identical on every load.</p>
+    <div class="plain" id="ov-plain"></div>
+    <div class="statrow" id="ov-stats"></div>
+    <div class="twocol">
+      <div class="card">
+        <h3 style="margin-top:0">Coverage groups in the population</h3>
+        <div class="leg" id="ov-groups"></div>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Where members get their care today</h3>
+        <div class="barlist" id="ov-mcos"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="pg-members">
+    <h2>Members</h2>
+    <p class="sub">The full synthetic roster. Click any row for the member record; click a column header to sort.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>Every person here has a ten-digit <b>Florida Medicaid ID</b> that never changes — and this file catches Florida at a rare moment: <b>SMMC 3.0 went live February 1, 2025, one month inside this window</b>. Every prior re-procurement in this series happened off-stage, before the data begins; Florida’s is on-stage — two plans’ purple spans end in January 2025, eleven regions become nine, and the seam is visible on the timelines themselves. The other thing to know: this is the largest state that never expanded. There is no AE02 chip anywhere in this roster — the adult door is parents at roughly 30% FPL, disability, or register C’s monthly meter.</div>
+    <div class="controls">
+      <input type="search" id="m-search" placeholder="Search name, Medicaid ID, city&hellip;" aria-label="Search members">
+      <select id="m-group" aria-label="Filter by coverage group"></select>
+      <select id="m-del" aria-label="Filter by delivery system"></select>
+      <select id="m-reg" aria-label="Filter by register"></select>
+      <select id="m-status" aria-label="Filter by status">
+        <option value="">Status today: all</option>
+        <option value="Active">Active</option>
+        <option value="Gap">In gap</option>
+        <option value="Closed">Closed</option>
+      </select>
+      <span class="hint" id="m-count"></span>
+    </div>
+    <div class="tblwrap"><table id="m-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">Medicaid ID</th>
+        <th class="sortable" data-k="name">Name</th>
+        <th class="sortable" data-k="age">Age</th>
+        <th class="sortable" data-k="sex">Sex</th>
+        <th class="sortable" data-k="grp">Coverage Group</th>
+        <th class="sortable" data-k="del">Delivery Today</th>
+        <th class="sortable" data-k="county">County</th>
+        <th class="sortable" data-k="reg">Register</th>
+        <th class="sortable" data-k="status">Status Today</th>
+      </tr></thead>
+      <tbody id="m-body"></tbody>
+    </table></div>
+    <div class="pager" id="m-pager"></div>
+  </section>
+
+  <section class="page" id="pg-spans">
+    <h2>Eligibility Spans</h2>
+    <p class="sub">One row per coverage-group span &mdash; the state's answer to <i>&ldquo;from when to when, and under which door did this person enter?&rdquo;</i> Click a row to open the member.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>A span is a promise with dates on it — and Florida’s file contains the shortest promises in this series: register C’s <b>Share of Cost</b> months, single-month eligibility spans that switch on the day incurred bills cross the member’s monthly threshold and off with the calendar. Watch the <b>LT01</b> rows too: 95 of them begin mid-window not with a determination but with a <b>wait-list rank coming up</b> — Florida’s HCBS waiver is a scored queue released in funded batches. And register F holds a negative-space teaching: eligibility spans that do not move at Medicare, because in a non-expansion state there is no expansion category to age out of.</div>
+    <div class="controls">
+      <select id="s-group" aria-label="Filter spans by coverage group"></select>
+      <select id="s-open" aria-label="Filter by open or closed">
+        <option value="">Open + closed</option><option value="open">Open only</option><option value="closed">Closed only</option>
+      </select>
+      <span class="hint" id="s-count"></span>
+    </div>
+    <div class="tblwrap"><table id="s-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">Medicaid ID</th>
+        <th class="sortable" data-k="name">Member</th>
+        <th class="sortable" data-k="grp">Group</th>
+        <th class="sortable" data-k="start">Begin</th>
+        <th class="sortable" data-k="end">End</th>
+        <th class="sortable" data-k="months">Months</th>
+        <th>End Reason</th>
+      </tr></thead>
+      <tbody id="s-body"></tbody>
+    </table></div>
+    <div class="pager" id="s-pager"></div>
+  </section>
+
+  <section class="page" id="pg-delivery">
+    <h2>Statewide Medicaid Managed Care</h2>
+    <p class="sub">One row per delivery span: an SMMC 3.0 plan — Sunshine, Humana, Simply, Community Care Plan (provider-owned), or Florida Community Care (the LTC specialist, teal) — fee-for-service for the Share of Cost months and dual wraps, or the purple rows: <b>Molina and Aetna</b>, whose spans all end January 2025, when SMMC 3.0 arrived without them. Click a row to open the member.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>Florida has run Statewide Medicaid Managed Care since 2014 and re-procures it in cycles — and this window catches a cycle landing: <b>SMMC 3.0, live February 1, 2025</b>. Three things happened at once, and register D separates them cleanly. Plans <b>departed</b> — Molina and Aetna were not awarded contracts, and 150 members here moved, chosen or auto-assigned. The <b>map was redrawn</b> — eleven regions consolidated to nine, so 115 members’ spans run unbroken while the region code beneath them changed meaning overnight: the rename beneath an unbroken span, and every rate cell and report keyed on region needed an effective-dated crosswalk. And plans <b>continued</b> — 110 members whose only trace of February 2025 is a new contract number. One procurement, three data signatures, all inside the window where you can see them.</div>
+    <div class="controls">
+      <select id="d-sys" aria-label="Filter by delivery system"></select>
+      <span class="hint" id="d-count"></span>
+    </div>
+    <div class="tblwrap"><table id="d-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">Medicaid ID</th>
+        <th class="sortable" data-k="name">Member</th>
+        <th class="sortable" data-k="sys">Delivery</th>
+        <th class="sortable" data-k="start">Begin</th>
+        <th class="sortable" data-k="end">End</th>
+        <th class="sortable" data-k="months">Months</th>
+        <th>Begin / End Reason</th>
+      </tr></thead>
+      <tbody id="d-body"></tbody>
+    </table></div>
+    <div class="pager" id="d-pager"></div>
+  </section>
+
+  <section class="page" id="pg-registers">
+    <h2>Scenario Registers</h2>
+    <p class="sub">Six business questions, each answered by a register of members whose data was planted to demonstrate exactly that scenario. Click any member to inspect the record behind the answer.</p>
+    <div id="reg-list"></div>
+  </section>
+
+  <section class="page" id="pg-file">
+    <h2>What the File Says</h2>
+    <p class="sub">Florida really does speak X12N 834 — AHCA’s roster files to the SMMC plans, at some of the highest volumes in the country. Pick a member and read the transaction the plan would receive for that member's most recent enrollment event, segment by segment, with a plain-language note on every line.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>An 834 is the state telling a health plan: <b>this person is yours now</b> (or isn't anymore) — and Florida’s stream teaches with volume and with edge cases. February 2025 was a coordinated burst: termination waves to two departing receivers and addition waves to the survivors, all effective the same day — a re-procurement is, at the wire level, the largest choreographed 834 event a state can produce. Register C’s members generate no plan file at all: coverage that flickers month to month cannot be capitated, so the Share of Cost record below is the state’s own, in standard shape — with begin and end dates <b>inside the same month</b>, the shortest DTP pairs in this series.</div>
+    <div class="controls">
+      <select id="f-member" aria-label="Choose member for 834"></select>
+      <span class="hint">Members are grouped by register; the transaction is rebuilt live from the member's actual spans.</span>
+    </div>
+    <div id="f-out"></div>
+  </section>
+
+  <section class="page" id="pg-reference">
+    <h2>Reference Codes</h2>
+    <p class="sub">The teaching code sets used throughout the app. Codes are patterned on Florida's conventions; verify against current Agency for Health Care Administration publications before any non-demonstration use.</p>
+    <div id="ref-out"></div>
+  </section>
+</main>
+
+<footer>
+  <p><b>Florida Medicaid Eligibility Central</b> &mdash; a single-file demonstration app in the Central series. All members, identifiers, addresses, phone numbers, and dates are synthetic and deterministic (seeded PRNG, seed 305001); any resemblance to real persons is coincidental. Program facts reflect public Florida Agency for Health Care Administration policy of the mid-2020s and change year to year — the SMMC 3.0 plan roster and region map are teaching simplifications of a complex procurement; verify against current AHCA and CMS publications before any non-demonstration use. The 834 rendering is a teaching aid, not an implementation guide. &copy; Robert Thomas Keyes.</p>
+</footer>
+
+<div class="overlay" id="overlay"></div>
+<aside class="slideover" id="modal" role="dialog" aria-modal="true" aria-labelledby="mo-nm">
+  <div class="mo-head">
+    <div class="who">
+      <div class="nm" id="mo-nm"></div>
+      <div class="idz" id="mo-id"></div>
+    </div>
+    <button class="mo-x" id="mo-x" aria-label="Close">&#10005;</button>
+  </div>
+  <div class="mo-body" id="mo-body"></div>
+  <div class="mo-foot">
+    <button id="mo-prev" aria-label="Previous member">&#9664;</button>
+    <button id="mo-next" aria-label="Next member">&#9654;</button>
+    <span class="pos" id="mo-pos"></span>
+  </div>
+</aside>
+<script>
+'use strict';
+/* ============ Florida Medicaid Eligibility Central ============
+   Central series -- Robert Thomas Keyes
+   Deterministic synthetic data. Seed 305001 (Miami's area code).
+   Window: Jan 2025 (idx 0) .. Dec 2026 (idx 23). "Today" = Jul 2026 (idx 18).
+================================================================= */
+
+/* ---------- seeded PRNG (mulberry32) ---------- */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+var R = mulberry32(305001);
+function ri(lo,hi){return lo+Math.floor(R()*(hi-lo+1))}
+function pick(arr){return arr[Math.floor(R()*arr.length)]}
+function wpick(pairs){var tot=0,i;for(i=0;i<pairs.length;i++)tot+=pairs[i][1];var x=R()*tot;for(i=0;i<pairs.length;i++){x-=pairs[i][1];if(x<0)return pairs[i][0]}return pairs[pairs.length-1][0]}
+
+/* ---------- window ---------- */
+var WIN_START_Y=2025, WIN_MONTHS=24, TODAY_IDX=18; /* Jul 2026 */
+var SMMC3_IDX=1; /* Feb 1, 2025 -- SMMC 3.0 goes live ONE MONTH INSIDE this window */
+var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function mLabel(idx){ if(idx===null||idx===undefined)return '&mdash;';
+  var y=WIN_START_Y+Math.floor(idx/12), m=((idx%12)+12)%12;
+  return MONTHS[m]+' '+y }
+function mFirstD8(idx){var y=WIN_START_Y+Math.floor(idx/12),m=((idx%12)+12)%12;return ''+y+String(m+1).padStart(2,'0')+'01'}
+function mLastD8(idx){var y=WIN_START_Y+Math.floor(idx/12),m=((idx%12)+12)%12;var last=new Date(y,m+1,0).getDate();return ''+y+String(m+1).padStart(2,'0')+String(last).padStart(2,'0')}
+function spanMonths(s,e){var last=(e===null?TODAY_IDX:e);return Math.max(1,last-Math.max(s,-990)+1)}
+
+/* ---------- coverage groups ---------- */
+var GROUPS={
+ CH19:{name:'Children',                  magi:true,  color:'--g-CH19', blurb:'Children through 18 \u2014 Florida KidCare wraps the CHIP tiers above; below the line, straight Medicaid.'},
+ PW02:{name:'Pregnant & Postpartum',     magi:true,  color:'--g-EA02', blurb:'Pregnancy coverage plus twelve months postpartum \u2014 extended in 2022, one of Florida\u2019s quiet broadenings.'},
+ FM01:{name:'Parents & Caretakers',      magi:true,  color:'--g-FC01', blurb:'Parents and caretaker relatives \u2014 to roughly <b>30% FPL</b>, one of the lowest thresholds in the nation. In the largest non-expansion state, this is the only income door for most adults, and it is barely ajar.'},
+ AB03:{name:'Aged / Blind / Disabled (SSI-related)', magi:false, color:'--g-MN98', blurb:'SSI recipients and SSI-related budgeting \u2014 in a non-expansion state, disability is the adult pathway that remains.'},
+ FF26:{name:'Former Foster Care',        magi:true,  color:'--g-FF26', blurb:'Young adults formerly in foster care, covered to 26 regardless of income.'},
+ MN98:{name:'Medically Needy \u2014 Share of Cost', magi:false, color:'--g-SI02', blurb:'Florida\u2019s spend-down program, and register C\u2019s whole story: each month the member owes a <b>share of cost</b> \u2014 the gap between income and the medically needy limit \u2014 and eligibility switches ON only in months where incurred bills cross it. Coverage that flickers.'},
+ LT01:{name:'Long-Term Care program',    magi:false, color:'--g-LT01', blurb:'Nursing-home level of care \u2014 capitated LTSS through the SMMC Long-Term Care program, reached, for HCBS, through a <b>priority-ranked wait list</b>: scored, ranked, and released in batches as slots fund.'}
+};
+var GROUP_KEYS=Object.keys(GROUPS);
+
+/* ---------- SMMC 3.0 plans (live Feb 1, 2025) ---------- */
+var FLPLANS=[
+ {code:'SUN',    name:'Sunshine Health',              kind:'MMA', note:'Centene \u2014 the largest; Comprehensive (MMA + LTC)'},
+ {code:'HUM',    name:'Humana Healthy Horizons',      kind:'MMA', note:'Comprehensive (MMA + LTC)'},
+ {code:'SIMPLY', name:'Simply Healthcare',            kind:'MMA', note:'Elevance'},
+ {code:'CCP',    name:'Community Care Plan',          kind:'MMA', note:'Provider-owned \u2014 the safety-net plan of Broward Health and Memorial Healthcare System; South Florida'},
+ {code:'FCC',    name:'Florida Community Care',       kind:'LTC', note:'The LTC specialist \u2014 long-term care only'}
+];
+var DEPARTED=[
+ {code:'MOLINA', name:'Molina Healthcare of Florida (departed Jan 2025)'},
+ {code:'AETNA',  name:'Aetna Better Health of Florida (departed Jan 2025)'}
+];
+var PLANBY={}; FLPLANS.forEach(function(p){PLANBY[p.code]=p}); DEPARTED.forEach(function(p){PLANBY[p.code]=p});
+function sysLabel(code){ return code==='FFS'?'Fee-for-Service':(PLANBY[code]?PLANBY[code].name:code) }
+function sysKind(code){
+  if(code==='FFS')return 'FFS';
+  if(code==='MOLINA'||code==='AETNA')return 'GONE';
+  if(code==='FCC')return 'LTC';
+  return 'MMA';
+}
+function sysClass(code){ var k=sysKind(code); return k==='FFS'?'d-ffs':(k==='GONE'?'d-harp':(k==='LTC'?'d-mltc':'d-mco')) }
+function pickPlan(){ return wpick([['SUN',3.5],['HUM',3],['SIMPLY',2],['CCP',1.5]]) }
+function pickLtcPlan(){ return wpick([['FCC',4],['SUN',3],['HUM',3]]) }
+function pickDeparted(){ return pick(['MOLINA','AETNA']) }
+
+/* ---------- jurisdictions (SMMC 3.0 regions simplified) ---------- */
+var COUNTIES=[
+ {name:'Miami-Dade', w:12, region:'I', zips:['33125','33012'], city:null, cities:['Miami','Hialeah'],
+  streets:['W Flagler St','SW 8th St','NW 7th Ave','W 49th St','E 4th Ave']},
+ {name:'Broward',    w:8,  region:'H', zips:['33311'], city:'Fort Lauderdale',
+  streets:['NW 19th St','Sistrunk Blvd','W Sunrise Blvd','NW 31st Ave']},
+ {name:'Orange',     w:6,  region:'G', zips:['32808','32811'], city:'Orlando',
+  streets:['N Pine Hills Rd','Silver Star Rd','W Colonial Dr','Raleigh St']},
+ {name:'Hillsborough', w:6, region:'E', zips:['33612','33610'], city:'Tampa',
+  streets:['N Nebraska Ave','E Fletcher Ave','N 22nd St','E Hillsborough Ave']},
+ {name:'Duval',      w:5,  region:'C', zips:['32209','32210'], city:'Jacksonville',
+  streets:['Moncrief Rd','W 45th St','Lenox Ave','Soutel Dr']},
+ {name:'Palm Beach', w:4,  region:'H', zips:['33407'], city:'West Palm Beach',
+  streets:['N Tamarind Ave','Broadway','45th St','N Dixie Hwy']},
+ {name:'Pinellas',   w:3,  region:'E', zips:['33712'], city:'St. Petersburg',
+  streets:['18th Ave S','34th St S','9th Ave N']},
+ {name:'Polk',       w:3,  region:'F', zips:['33805'], city:'Lakeland',
+  streets:['N Florida Ave','W 10th St','Kathleen Rd']},
+ {name:'Osceola',    w:2,  region:'G', zips:['34741'], city:'Kissimmee',
+  streets:['W Vine St','N Main St','Michigan Ave']},
+ {name:'Lee',        w:2,  region:'F', zips:['33916'], city:'Fort Myers',
+  streets:['Palm Beach Blvd','Ortiz Ave','Dr Martin Luther King Jr Blvd']},
+ {name:'Escambia',   w:2,  region:'A', zips:['32505'], city:'Pensacola',
+  streets:['W Fairfield Dr','N Pace Blvd','Mobile Hwy']},
+ {name:'Alachua',    w:1,  region:'C', zips:['32609'], city:'Gainesville',
+  streets:['NE Waldo Rd','NW 13th St','SE Hawthorne Rd']}
+];
+var COUNTYBY={}; COUNTIES.forEach(function(c){COUNTYBY[c.name]=c});
+function pickCounty(){return wpick(COUNTIES.map(function(c){return [c,c.w]}))}
+var AREA=['305','786','954','407','813','904','727','863','239','850'];
+
+/* ---------- names & languages ---------- */
+var FIRST_F=['Maria','Barbara','Caridad','Odalys','Yamile','Milagros','Lazara','Marisol','Yolanda','Daniela','Ashley','Madison','Brittany','Dawn','Crystal','Amber','Latoya','Keisha','Shanice','Fabiola','Nadege','Marie','Guerline','Roseline','Edwidge','Yesenia','Alondra','Linh','Svetlana','June','Pearl','Gladys'],
+    FIRST_M=['Jose','Luis','Carlos','Lazaro','Osvaldo','Reinaldo','Yoel','Orlando','Miguel','Rafael','Tyler','Hunter','Brandon','Cody','Darnell','Jamal','Tremaine','Willie','Jean','Frantz','Wesley','Dieudonne','Emmanuel','Pierre','Jacques','Minh','Dmitri','Robert','Billy','Ray','Earl','Alton'];
+var LAST=['Garcia','Rodriguez','Hernandez','Perez','Gonzalez','Fernandez','Diaz','Morales','Castillo','Alvarez','Suarez','Machado','Smith','Johnson','Williams','Brown','Jones','Davis','Jackson','Robinson','JeanBaptiste','Pierre','Joseph','Charles','Louis','Etienne','Augustin','Cadet','Delva','Desir','Francois','Moise','Nguyen','Tran','Petrov','Rivera','Santiago','Colon','Vazquez','Ortiz'];
+var LANGS=[['English',55],['Spanish',32],['Haitian Creole',8],['Portuguese',2],['Vietnamese',1.5],['Russian',1.5]];
+
+/* ---------- end reasons ---------- */
+var ELIG_END={
+ REDET:'Renewal not completed \u2014 case closed at annual renewal',
+ INCOME:'Over income at renewal',
+ MOVED:'Moved out of state',
+ SOC:'Share of cost not met \u2014 eligibility ends with the month',
+ MEDI:'Medicare entitlement \u2014 MMA enrollment ends; the eligibility category, in a non-expansion state, does not even change'
+};
+</script>
+<script>
+'use strict';
+/* ================= population generator ================= */
+var MEMBERS=[];
+var usedIds={};
+function genId(){ var s; do{ s=String(ri(1000000000,8999999999)) }while(usedIds[s]); usedIds[s]=1; return s }
+function genPhone(){ return '('+pick(AREA)+') '+ri(200,989)+'-'+String(ri(0,9999)).padStart(4,'0') }
+function genAddr(c){ var city=c.city||pick(c.cities); return {street:ri(100,19999)+' '+pick(c.streets), city:city, zip:pick(c.zips)} }
+function genName(sex){ return {first:(sex==='F'?pick(FIRST_F):pick(FIRST_M)), last:pick(LAST)} }
+function dobForAge(age){ var y=2026-age; var m=ri(0,11); if(m>6)y--; return {y:y,m:m,d:ri(1,28)} }
+function dobD8(d){return ''+d.y+String(d.m+1).padStart(2,'0')+String(d.d).padStart(2,'0')}
+function dobLabel(d){return MONTHS[d.m]+' '+d.d+', '+d.y}
+
+function baseMember(reg){
+  var sex=pick(['F','F','F','M','M']);
+  var nm=genName(sex), c=pickCounty(), a=genAddr(c);
+  return { id:genId(), first:nm.first, last:nm.last, sex:sex, county:c.name, region:c.region,
+    street:a.street, city:a.city, zip:a.zip, phone:genPhone(),
+    lang:wpick(LANGS), reg:reg, eligSpans:[], delSpans:[], flags:[], soc:null };
+}
+function addElig(m,grp,s,e,reason){m.eligSpans.push({grp:grp,start:s,end:e,reason:reason||null})}
+function addDel(m,sys,s,e,note){m.delSpans.push({sys:sys,start:s,end:e,note:note||null})}
+/* Enrollment honoring the SMMC 3.0 boundary: a pre-Feb-2025 start that runs
+   into the window means the member crossed the re-procurement. Most crossed
+   inside a surviving plan (register D owns the departures explicitly). */
+function enrollMMA(m,s,e,note){
+  var plan=pickPlan();
+  addDel(m,plan,s,(e===undefined?null:e),note||null);
+  return plan;
+}
+
+/* ----- Register A: steady state -- the largest non-expansion program (1100) ----- */
+(function(){
+  var grpsA=[['CH19',9],['FM01',2],['PW02',1.5],['AB03',3],['FF26',1]];
+  for(var i=0;i<1100;i++){
+    var grp=wpick(grpsA);
+    var m=baseMember('A');
+    var age = grp==='CH19'?ri(0,18) : grp==='FF26'?ri(18,25) : grp==='AB03'?ri(28,62) : grp==='PW02'?ri(19,38) : ri(19,58);
+    m.age=age; m.dob=dobForAge(age); if(grp==='PW02')m.sex='F';
+    var s=ri(-20,2);
+    addElig(m,grp,s,null,null);
+    var plan=enrollMMA(m,s);
+    if(plan==='CCP'&&(m.region==='H'||m.region==='I')&&R()<0.6){
+      m.flags.push('Enrolled with Community Care Plan \u2014 the provider-owned safety-net plan of Broward Health and Memorial Healthcare: two public hospital systems insuring their own patients');
+    } else if(grp==='FM01'&&R()<0.5){
+      m.flags.push('A parent inside the ~30% FPL door \u2014 in the largest non-expansion state, the parent threshold is one of the lowest in the nation; a part-time job can close it');
+    } else if(s<SMMC3_IDX&&R()<0.2){
+      m.flags.push('Crossed the SMMC 3.0 boundary (Feb 2025) inside a surviving plan \u2014 new contract, renumbered region, same card in the wallet');
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register B: renewal churn (500) ----- */
+(function(){
+  for(var i=0;i<500;i++){
+    var grp=wpick([['CH19',5],['FM01',2],['PW02',1]]);
+    var m=baseMember('B');
+    if(grp==='PW02')m.sex='F';
+    m.age = grp==='CH19'?ri(1,17):ri(19,55); m.dob=dobForAge(m.age);
+    var s=ri(-18,-2);
+    var inGapNow=(i<125);
+    var term=inGapNow?ri(15,16):ri(4,12);
+    var gap=inGapNow?ri(3,4):ri(1,4);
+    var regain=term+gap+1;
+    addElig(m,grp,s,term,ELIG_END.REDET);
+    addElig(m,grp,regain,null,null);
+    enrollMMA(m,s,term);
+    enrollMMA(m,regain,undefined,R()<0.4?'Auto-assignment landed differently on return':null);
+    m.flags.push('Gap '+mLabel(term+1)+'\u2013'+mLabel(regain-1)+' ('+gap+' mo) \u2014 renewal through DCF ACCESS; in a non-expansion state a churned parent has no fallback category waiting');
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register C: Share of Cost -- coverage that flickers (375) ----- */
+(function(){
+  for(var i=0;i<375;i++){
+    var m=baseMember('C');
+    m.age=ri(24,62); m.dob=dobForAge(m.age);
+    var soc=ri(3,19)*100+ri(0,99); /* monthly share of cost, dollars */
+    m.soc=soc;
+    /* choose 4-7 "met" months scattered across 0..18; ~80 members met July 2026 */
+    var metToday=(i<80);
+    var months=[], pool=[];
+    for(var k=0;k<18;k++)pool.push(k);
+    var nMet=ri(4,7);
+    while(months.length<nMet-(metToday?1:0)&&pool.length){
+      var ix2=ri(0,pool.length-1); months.push(pool.splice(ix2,1)[0]);
+    }
+    if(metToday)months.push(18);
+    months.sort(function(a,b){return a-b});
+    months.forEach(function(mo){
+      var day=ri(3,27);
+      addElig(m,'MN98',mo,mo,'Share of cost met on day '+day+' \u2014 eligibility switches on for the remainder of the month, then off');
+      addDel(m,'FFS',mo,mo,'Medically Needy months pay fee-for-service \u2014 no plan can be capitated for coverage that flickers');
+    });
+    m.flags.push('Share of cost <b>$'+soc.toLocaleString()+'</b>/month \u2014 eligible only in the '+months.length+' months where incurred bills crossed it'+(metToday?', including this month':'; not met this month')+'. The dialysis schedule, the insulin price, and the ER visit decide the eligibility span. Coverage as a monthly meter.');
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register D: SMMC 3.0 -- the re-procurement lands inside the window (375) ----- */
+(function(){
+  for(var i=0;i<375;i++){
+    var grp=wpick([['CH19',5],['FM01',1.5],['AB03',2],['PW02',1]]);
+    var m=baseMember('D');
+    if(grp==='PW02')m.sex='F';
+    m.age = grp==='CH19'?ri(3,17) : grp==='AB03'?ri(28,62) : ri(19,55);
+    m.dob=dobForAge(m.age);
+    var s=ri(-28,-6);
+    addElig(m,grp,s,null,null);
+    var kind = i<150?'EXIT' : (i<265?'REGION':'CONT');
+    if(kind==='EXIT'){
+      var gone=pickDeparted();
+      var newPlan=pickPlan();
+      addDel(m,gone,s,SMMC3_IDX-1,sysLabel(gone)+' \u2014 not awarded an SMMC 3.0 contract; last day January 31, 2025');
+      addDel(m,newPlan,SMMC3_IDX,null,(i%3===0?'Member chose '+sysLabel(newPlan)+' during the transition window':'Auto-assigned to '+sysLabel(newPlan)+' \u2014 no choice returned before the deadline'));
+      m.flags.push('SMMC 3.0 departure \u2014 '+sysLabel(gone).replace(' (departed Jan 2025)','')+' was not awarded a new contract, and this member\u2019s purple span ends January 2025, <b>one month inside this window</b>. '+(i%3===0?'The member chose the successor.':'The algorithm chose the successor.')+' Watch the timelines in this register: the seam is visible, dated, and shared.');
+    } else if(kind==='REGION'){
+      enrollMMA(m,s,undefined,'Same plan across the SMMC 3.0 boundary \u2014 but the region beneath the span was renumbered: eleven regions became nine, February 2025');
+      m.regionOld=String(ri(1,11));
+      m.flags.push('The rename beneath an unbroken span \u2014 same plan, same member, same card; but on February 1, 2025, Region '+m.regionOld+' of eleven became Region '+m.region+' of nine. Every rate cell, report, and file layout keyed on region needed an effective-dated crosswalk. The member noticed nothing; the data warehouse noticed everything.');
+    } else {
+      enrollMMA(m,s,undefined,'Same plan, new SMMC 3.0 contract \u2014 continuity award');
+      m.flags.push('Continuity across the re-procurement \u2014 the plan won again, and the only trace of February 2025 is a new contract number behind an unbroken span. The quietest outcome a procurement can have, and the control case for this register.');
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register E: Long-Term Care -- the wait list with a ranking (325) ----- */
+(function(){
+  for(var i=0;i<325;i++){
+    var m=baseMember('E');
+    m.age=R()<0.75?ri(66,97):ri(48,64);
+    m.dob=dobForAge(m.age);
+    var released=(i>=230); /* 95 released from the wait list mid-window */
+    if(released){
+      var rel=ri(2,14);
+      var score=ri(48,60), waitYr=ri(1,4);
+      addElig(m,'LT01',rel,null,null);
+      addDel(m,pickLtcPlan(),rel,null,'LTC enrollment following wait-list release \u2014 the CARES assessment confirmed nursing-home level of care');
+      m.flags.push('<b>Released from the LTC wait list</b> in '+mLabel(rel)+' \u2014 priority score '+score+', after roughly '+waitYr+' year'+(waitYr>1?'s':'')+' waiting. Florida\u2019s HCBS waiver is reached through a scored, ranked queue released in batches as the Legislature funds slots: eligibility that begins not with a determination, but with a <b>rank coming up</b>.');
+    } else {
+      var s=ri(-30,-4);
+      addElig(m,'LT01',s,null,null);
+      var plan=pickLtcPlan();
+      addDel(m,plan,s,null,plan==='FCC'?'Florida Community Care \u2014 the LTC specialist plan':'Comprehensive plan \u2014 the LTC component of an MMA+LTC award');
+      m.flags.push((R()<0.6?'HCBS at home \u2014 personal care, respite, adult day':'Nursing facility resident')+' \u2014 capitated long-term care under the SMMC LTC program, through '+(plan==='FCC'?'the LTC specialist':'a Comprehensive plan holding both sides of the SMMC 3.0 award'));
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register F: Medicare arrives -- the birthday that can't change the category (325) ----- */
+(function(){
+  for(var i=0;i<325;i++){
+    var m=baseMember('F');
+    var ltc=(i>=195); /* 130 LTC members for whom dual is the expected state */
+    var ssdi=(R()<0.7);
+    var medi=ri(6,16), lag=ri(1,3);
+    if(ssdi){ m.age=ri(38,62); m.dob=dobForAge(m.age); }
+    else { m.age=(medi<=TODAY_IDX)?65:64; m.dob={y:WIN_START_Y+Math.floor(medi/12)-65, m:medi%12, d:ri(1,28)}; }
+    var s=ri(-20,-8);
+    if(ltc){
+      addElig(m,'LT01',s,null,null);
+      addDel(m,pickLtcPlan(),s,null,'LTC program enrollment \u2014 unbroken across Medicare: in this program, duals were always the point');
+      m.flags.push((ssdi?'Medicare via SSDI ':'Turned 65 ')+mLabel(medi)+' \u2014 and the LTC record did not move, because Florida\u2019s LTC program is overwhelmingly dual already: Medicare arriving is the <b>expected state</b>, not an event. The plan keeps coordinating, Medicare pays the acute side, and the span never blinks.');
+    } else {
+      addElig(m,'AB03',s,null,null); /* one span -- the category does not change */
+      var plan=pickPlan();
+      addDel(m,plan,s,medi-1,'MMA enrollment ends at Medicare \u2014 acute duals sit outside MMA');
+      addDel(m,'FFS',medi,null,'FFS wrap \u2014 Medicare primary, Medicaid paying cost sharing; the D-SNP market takes it from here');
+      m.flags.push((ssdi?'Medicare via SSDI (24-month clock) ':'Turned 65 ')+mLabel(medi)+' \u2014 the MMA plan let go, the wrap went FFS \u2014 and look at the eligibility span: <b>it never moved</b>. In a non-expansion state there is no expansion group to age out of; this member was SSI-related before the birthday and SSI-related after. The twelfth Medicare answer: the birthday that cannot even change the category.');
+    }
+    m.medicareIdx=medi; m.buyinIdx=medi+lag; m.ssdi=ssdi; m.ltc=ltc;
+    m.flags.push('Buy-in effective '+mLabel(medi+lag)+' \u2014 the '+lag+'-month accretion limbo'+(ltc?'':'; Florida\u2019s D-SNP market, the largest in the nation, is where this member\u2019s Medicare side almost certainly lands'));
+    MEMBERS.push(m);
+  }
+})();
+
+/* ---------- derived member state ---------- */
+function eligToday(m){ for(var i=0;i<m.eligSpans.length;i++){var s=m.eligSpans[i]; if(s.start<=TODAY_IDX&&(s.end===null||s.end>=TODAY_IDX))return s} return null }
+function delToday(m){ for(var i=0;i<m.delSpans.length;i++){var s=m.delSpans[i]; if(s.start<=TODAY_IDX&&(s.end===null||s.end>=TODAY_IDX))return s} return null }
+function lastElig(m){ return m.eligSpans[m.eligSpans.length-1] }
+function statusToday(m){
+  if(eligToday(m))return 'Active';
+  var le=lastElig(m);
+  if(le.end!==null&&le.end<TODAY_IDX){
+    for(var i=0;i<m.eligSpans.length;i++){ if(m.eligSpans[i].start>TODAY_IDX)return 'Gap' }
+    return m.reg==='C'?'Gap':'Closed';
+  }
+  return 'Gap';
+}
+MEMBERS.forEach(function(m,ix){
+  m.ix=ix;
+  /* name/sex coherence: deterministic, PRNG-free remap */
+  if(m.sex==='F'&&FIRST_F.indexOf(m.first)<0)m.first=FIRST_F[(m.first.length*7+m.last.length)%FIRST_F.length];
+  if(m.sex==='M'&&FIRST_M.indexOf(m.first)<0)m.first=FIRST_M[(m.first.length*7+m.last.length)%FIRST_M.length];
+  m.name=m.last+', '+m.first;
+  var et=eligToday(m), le=lastElig(m);
+  m.grpToday = et?et.grp:le.grp;
+  var dt=delToday(m);
+  m.delTodayCode = dt?dt.sys:'\u2014';
+  m.status=statusToday(m);
+});
+</script>
+<script>
+'use strict';
+/* ================= shared render helpers ================= */
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function grpChip(g){ if(!GROUPS[g])return esc(g);
+  return '<span class="chip" style="background:var('+GROUPS[g].color+')" title="'+esc(GROUPS[g].name)+'">'+g+'</span>' }
+function delChip(code){ if(code==='\u2014')return '<span class="st-cls">\u2014</span>';
+  var cls=sysClass(code), lbl=code;
+  return '<span class="dchip '+cls+'" title="'+esc(sysLabel(code))+'">'+esc(lbl)+'</span>' }
+function statusHtml(st){ return st==='Active'?'<span class="st-act">Active</span>':(st==='Gap'?'<span class="st-gap">In gap</span>':'<span class="st-cls">Closed</span>') }
+function regBadge(r){return '<span class="mono" style="font-weight:600;color:var(--accent)">'+r+'</span>'}
+
+/* ================= overview ================= */
+function renderOverview(){
+  var n=MEMBERS.length, act=0, mma=0, ltc=0, socMet=0, socAll=0, moved=0, rel=0, gaps=0;
+  MEMBERS.forEach(function(m){
+    if(m.status==='Active')act++;
+    if(m.status==='Gap')gaps++;
+    var d=m.delTodayCode;
+    if(d!=='\u2014'){ var k=sysKind(d); if(k==='MMA')mma++; else if(k==='LTC')ltc++; }
+    if(m.reg==='C'){ socAll++; if(m.status==='Active')socMet++; }
+    if(m.delSpans.some(function(s){return sysKind(s.sys)==='GONE'}))moved++;
+    if(m.reg==='E'&&m.flags[0].indexOf('Released')>=0)rel++;
+  });
+  var st=document.getElementById('ov-stats');
+  st.innerHTML =
+    stat(n,'Synthetic members',true)+
+    stat(act,'Eligible today (Jul 2026)')+
+    stat(mma,'In an SMMC plan today')+
+    stat(ltc,'In the LTC specialist today')+
+    stat(moved,'Moved by SMMC 3.0 departures (Feb 2025)')+
+    stat(socAll,'Share of Cost members \u2014 the flicker file')+
+    stat(socMet,'\u2026 who met their share THIS month')+
+    stat(rel,'Released from the LTC wait list mid-window')+
+    stat(gaps,'In an eligibility gap today');
+  function stat(nv,l,acc){return '<div class="stat'+(acc?' acc':'')+'"><div class="n">'+(typeof nv==='number'?nv.toLocaleString():nv)+'</div><div class="l">'+l+'</div></div>'}
+
+  /* group legend with counts (by current/last group) */
+  var gc={}; MEMBERS.forEach(function(m){gc[m.grpToday]=(gc[m.grpToday]||0)+1});
+  var lg=document.getElementById('ov-groups'); lg.innerHTML='';
+  GROUP_KEYS.forEach(function(g){
+    var c=gc[g]||0;
+    lg.innerHTML+='<div class="legrow"><span class="swatch" style="background:var('+GROUPS[g].color+')"></span>'+
+      '<span class="code">'+g+'</span><span>'+esc(GROUPS[g].name)+'</span>'+
+      '<span class="cnt">'+c+'</span></div>';
+  });
+
+  /* delivery distribution today */
+  var dc={}; MEMBERS.forEach(function(m){ if(m.delTodayCode!=='\u2014') dc[m.delTodayCode]=(dc[m.delTodayCode]||0)+1 });
+  var goneHist=MEMBERS.filter(function(m){return m.delSpans.some(function(s){return sysKind(s.sys)==='GONE'})}).length;
+  var rows=FLPLANS.map(function(p){return {label:p.name+(p.code==='CCP'?' \u2014 provider-owned (safety net)':(p.code==='FCC'?' \u2014 LTC specialist':'')), code:p.code, n:dc[p.code]||0, cls:(p.kind==='LTC'?'var(--d-mltc)':'var(--d-mco)')}});
+  rows.push({label:'Molina + Aetna \u2014 departed Jan 2025 (historical members)', code:'GONE', n:goneHist, cls:'var(--d-harp)'});
+  rows.push({label:'Fee-for-service (Share of Cost months, dual wraps)', code:'FFS', n:dc.FFS||0, cls:'var(--d-ffs)'});
+  rows.sort(function(a,b){return b.n-a.n});
+  var mx=rows.reduce(function(a,r){return Math.max(a,r.n)},1);
+  var bl=document.getElementById('ov-mcos'); bl.innerHTML='';
+  rows.forEach(function(r){
+    bl.innerHTML+='<div class="barrow"><span title="'+esc(r.label)+'">'+esc(r.label)+'</span>'+
+      '<span class="track"><span class="fill" style="width:0;background:'+r.cls+'" data-w="'+(100*r.n/mx)+'"></span></span>'+
+      '<span class="bn">'+r.n+'</span></div>';
+  });
+  requestAnimationFrame(function(){ setTimeout(function(){
+    bl.querySelectorAll('.fill').forEach(function(f){f.style.width=f.getAttribute('data-w')+'%'}) },60) });
+
+  document.getElementById('ov-plain').innerHTML='<span class="pe-label">In plain English</span>'+
+    'Florida is the biggest program in this series and the one caught mid-motion: <b>SMMC 3.0 went live February 1, 2025 \u2014 one month inside this window</b> \u2014 so for the first time, a full re-procurement is visible on the timelines rather than buried in pre-window history. Register D separates its three signatures: plans that <b>departed</b> (Molina and Aetna, purple spans all ending January 2025), the <b>map redrawn</b> (eleven regions to nine \u2014 a rename beneath unbroken spans), and plans that simply <b>continued</b>. '+
+    'Around the seam, two structures no other state app has: register C\u2019s <b>Share of Cost flicker file</b> \u2014 the Medically Needy program of the largest non-expansion state, where eligibility switches on only in months when incurred bills cross a personal monthly threshold, producing the shortest spans in this series \u2014 and register E\u2019s <b>wait-list releases</b>, where LTC eligibility begins not with a determination but with a scored rank coming up in a funded batch. Register F closes with the twelfth Medicare answer, told in negative space: the eligibility span that <b>cannot even change category</b>, because there is no expansion group to age out of.';
+}
+
+/* ================= reference ================= */
+function renderReference(){
+  var h='';
+  h+='<div class="card"><h3 style="margin-top:0">Coverage groups (teaching set)</h3>'+
+     '<p class="sub" style="margin-bottom:8px">Patterned on Florida categories \u2014 with one deliberate absence marked below.</p>'+
+     '<div class="tblwrap"><table><thead><tr><th>Code</th><th>Name</th><th>Determination</th><th>What it means</th></tr></thead><tbody>';
+  GROUP_KEYS.forEach(function(g){var G=GROUPS[g];
+    h+='<tr><td>'+grpChip(g)+'</td><td>'+esc(G.name)+'</td><td>'+(G.magi?'MAGI (DCF ACCESS)':'Non-MAGI')+'</td><td>'+G.blurb+'</td></tr>'});
+  h+='<tr style="opacity:.55"><td class="mono" style="text-decoration:line-through">AE02</td><td style="text-decoration:line-through">Adult Expansion</td><td>\u2014</td><td>Not in Florida. The largest state never to expand \u2014 an estimated several hundred thousand adults sit between the ~30% FPL parent line and the marketplace floor. Register C\u2019s monthly meter is where many of them surface.</td></tr>';
+  h+='</tbody></table></div></div>';
+
+  h+='<div class="card"><h3 style="margin-top:0">SMMC 3.0 \u2014 the plans, and the two that left</h3>'+
+     '<p class="sub" style="margin-bottom:8px">Live February 1, 2025 \u2014 inside this window. Regions simplified to a single letter per county (the real map consolidated eleven numbered regions into nine lettered ones).</p>'+
+     '<div class="tblwrap"><table><thead><tr><th>Code</th><th>Plan</th><th>Worth knowing</th></tr></thead><tbody>';
+  FLPLANS.forEach(function(p){
+    h+='<tr'+(p.kind==='LTC'?' style="background:#eef6f6"':'')+'><td class="mono">'+p.code+'</td><td>'+esc(p.name)+'</td><td>'+esc(p.note)+'</td></tr>';
+  });
+  DEPARTED.forEach(function(p){
+    h+='<tr style="background:#f6f2fa"><td class="mono">'+p.code+'</td><td>'+esc(p.name)+'</td><td><b>Departed.</b> Not awarded an SMMC 3.0 contract; every span ends January 31, 2025 \u2014 one month inside this window</td></tr>';
+  });
+  h+='<tr><td class="mono">FFS</td><td>Fee-for-service</td><td>Share of Cost months (coverage that flickers cannot be capitated) and dual acute wraps</td></tr>'+
+     '</tbody></table></div></div>';
+
+  h+='<div class="card"><h3 style="margin-top:0">834 maintenance codes used in this app</h3>'+
+     '<div class="tblwrap"><table><thead><tr><th>INS03</th><th>Meaning</th><th>Where you\u2019ll see it</th></tr></thead><tbody>'+
+     '<tr><td class="mono">021</td><td>Addition</td><td>New enrollments, wait-list releases (E), and the February 2025 addition wave \u2014 the receiving half of the largest choreographed 834 event a state can produce</td></tr>'+
+     '<tr><td class="mono">024</td><td>Cancellation / termination</td><td>Renewal churn (B), the Medicare exclusion (F), and the departure wave to Molina and Aetna \u2014 terminations flowing to receivers in their final weeks</td></tr>'+
+     '<tr><td class="mono">001</td><td>Change</td><td>Demographic and region changes within continuing enrollment \u2014 including the eleven-to-nine region renumber beneath unbroken spans</td></tr>'+
+     '</tbody></table></div></div>';
+
+  h+='<div class="card"><h3 style="margin-top:0">Glossary</h3><dl class="gloss">'+
+    gl('SMMC','Statewide Medicaid Managed Care \u2014 Florida\u2019s program since 2014, re-procured in cycles: MMA (Managed Medical Assistance) for acute care, LTC for long-term care, and in 3.0, Comprehensive awards holding both.')+
+    gl('SMMC 3.0','The third procurement cycle, live February 1, 2025 \u2014 inside this window. Plans departed (Molina, Aetna), the map consolidated from eleven regions to nine, and Comprehensive plans took both sides of the program. Register D separates the three data signatures.')+
+    gl('Share of Cost','Florida\u2019s Medically Needy mechanism: each month the member owes the gap between income and the medically needy income limit; eligibility switches on the day incurred bills cross it and off with the calendar. Coverage as a monthly meter \u2014 the shortest spans in this series, and in the largest non-expansion state, a heavily traveled door.')+
+    gl('The flicker problem','Share of Cost coverage cannot be capitated \u2014 no plan can hold monthly risk for eligibility that may not exist next month \u2014 so Medically Needy months pay fee-for-service, and every warehouse aggregating \u201cmember months\u201d must decide whether five flickers equal five members or one.')+
+    gl('The LTC wait list','Florida\u2019s HCBS waiver is reached through a scored priority queue \u2014 CARES assessment, priority rank, release in batches as the Legislature funds slots. Register E\u2019s 95 releases show eligibility that begins with a rank coming up, not an application going in.')+
+    gl('CARES','Comprehensive Assessment and Review for Long-Term Care Services \u2014 the assessment arm that scores nursing-home level of care and feeds the wait-list ranking.')+
+    gl('The non-expansion fact','Florida is the largest state never to adopt the ACA expansion: parents to roughly 30% FPL, childless adults with no income pathway at all. Register F\u2019s negative-space teaching \u2014 eligibility spans that cannot change category at Medicare \u2014 follows directly from it.')+
+    gl('Community Care Plan','The provider-owned entrant \u2014 Broward Health and Memorial Healthcare System, two public safety-net hospital districts, insuring their own patients in South Florida.')+
+    gl('DCF ACCESS','The Department of Children and Families\u2019 eligibility system and portal \u2014 the front door of every span in this file, at some of the highest application volumes in the nation.')+
+    gl('Buy-in','The state paying a dual member\u2019s Medicare Part B premium; accretion runs one to three months behind entitlement. Florida\u2019s D-SNP market \u2014 the largest in the country \u2014 is where register F\u2019s acute duals almost certainly land.')+
+    gl('834','The X12N enrollment and maintenance transaction \u2014 which in February 2025 carried a full re-procurement in a single coordinated burst: the largest choreographed enrollment event a state can produce, preserved in register D.')+
+    '</dl></div>';
+  function gl(t,d){return '<dt>'+t+'</dt><dd>'+d+'</dd>'}
+
+  h+='<div class="card"><h3 style="margin-top:0">Counties in this population</h3><p class="sub" style="margin-bottom:8px">Florida has 67 counties; this roster draws from twelve \u2014 Miami-Dade and Broward (where the Haitian Creole and Cuban Spanish of this file\u2019s LUI segments mostly live), the I-4 corridor, Jacksonville, and the Panhandle. Region letters are simplified.</p><p style="font-size:.85rem">'+COUNTIES.map(function(c){return esc(c.name)+' ('+c.region+')'}).join(' \u00b7 ')+'</p></div>';
+
+  document.getElementById('ref-out').innerHTML=h;
+}
+</script>
+<script>
+'use strict';
+/* ================= generic sortable table state ================= */
+var SORT={};
+function bindSort(tblId, renderFn){
+  document.querySelectorAll('#'+tblId+' th.sortable').forEach(function(th){
+    th.addEventListener('click',function(){
+      var k=th.getAttribute('data-k');
+      var cur=SORT[tblId]||{};
+      SORT[tblId]={k:k, dir:(cur.k===k&&cur.dir==='asc')?'desc':'asc'};
+      renderFn();
+    });
+  });
+}
+function sortRows(tblId, rows){
+  var s=SORT[tblId]; if(!s)return rows;
+  var dir=s.dir==='asc'?1:-1;
+  rows.sort(function(a,b){
+    var x=a[s.k],y=b[s.k];
+    if(x===null||x===undefined)x=-Infinity; if(y===null||y===undefined)y=-Infinity;
+    if(typeof x==='string'){x=x.toLowerCase();y=String(y).toLowerCase();return x<y?-dir:(x>y?dir:0)}
+    return (x-y)*dir;
+  });
+  return rows;
+}
+function sortMarks(tblId){
+  var s=SORT[tblId];
+  document.querySelectorAll('#'+tblId+' th.sortable').forEach(function(th){
+    var base=th.textContent.replace(/[\u25b2\u25bc]\s*$/,'').trim();
+    th.innerHTML=esc(base)+(s&&s.k===th.getAttribute('data-k')?' <span class="arr">'+(s.dir==='asc'?'\u25b2':'\u25bc')+'</span>':'');
+  });
+}
+
+/* ================= pagination ================= */
+var PAGE={}, PAGE_SIZE=50;
+function pager(tblId, total, renderFn, pagerId){
+  var pages=Math.max(1,Math.ceil(total/PAGE_SIZE));
+  var p=Math.min(PAGE[tblId]||1,pages); if(p<1)p=1; PAGE[tblId]=p;
+  var el=document.getElementById(pagerId);
+  if(el){
+    if(pages===1){ el.innerHTML=''; }
+    else{
+      el.innerHTML='<button class="pg"'+(p<=1?' disabled':'')+' data-d="-1">\u25c0 Prev</button>'+
+        '<span class="mono pgpos">page '+p+' of '+pages.toLocaleString()+'</span>'+
+        '<button class="pg"'+(p>=pages?' disabled':'')+' data-d="1">Next \u25b6</button>';
+      el.querySelectorAll('button.pg').forEach(function(b){
+        b.addEventListener('click',function(){ PAGE[tblId]=p+parseInt(b.getAttribute('data-d'),10); renderFn(); });
+      });
+    }
+  }
+  return {from:(p-1)*PAGE_SIZE, to:Math.min(total,p*PAGE_SIZE)};
+}
+function resetPage(tblId){ PAGE[tblId]=1 }
+
+/* ================= members roster ================= */
+var ROSTER_VIEW=[]; /* current filtered order (all pages), for modal nav */
+function fillSelect(id, opts, allLabel){
+  var el=document.getElementById(id);
+  el.innerHTML='<option value="">'+allLabel+'</option>'+opts.map(function(o){return '<option value="'+o[0]+'">'+o[1]+'</option>'}).join('');
+}
+function initRosterControls(){
+  fillSelect('m-group',GROUP_KEYS.map(function(g){return[g,g+' \u2014 '+GROUPS[g].name]}),'Coverage group: all');
+  var dopts=FLPLANS.map(function(m){return[m.code,m.name]})
+    .concat(DEPARTED.map(function(m){return[m.code,m.name]}));
+  dopts.push(['FFS','Fee-for-Service']);
+  fillSelect('m-del',dopts,'Delivery today: all');
+  fillSelect('m-reg',['A','B','C','D','E','F'].map(function(r){return[r,'Register '+r]}),'Register: all');
+  ['m-search','m-group','m-del','m-reg','m-status'].forEach(function(id){
+    document.getElementById(id).addEventListener('input',function(){resetPage('m-tbl');renderRoster()});
+  });
+  bindSort('m-tbl',renderRoster);
+}
+function renderRoster(){
+  var q=document.getElementById('m-search').value.trim().toLowerCase();
+  var fg=document.getElementById('m-group').value, fd=document.getElementById('m-del').value,
+      fr=document.getElementById('m-reg').value, fs=document.getElementById('m-status').value;
+  var rows=MEMBERS.filter(function(m){
+    if(fg&&m.grpToday!==fg)return false;
+    if(fd&&m.delTodayCode!==fd)return false;
+    if(fr&&m.reg!==fr)return false;
+    if(fs&&m.status!==fs)return false;
+    if(q){ var hay=(m.name+' '+m.id+' '+m.city+' '+m.county).toLowerCase(); if(hay.indexOf(q)<0)return false }
+    return true;
+  }).map(function(m){return {ix:m.ix,id:m.id,name:m.name,age:m.age,sex:m.sex,grp:m.grpToday,del:m.delTodayCode,county:m.county,reg:m.reg,status:m.status}});
+  rows=sortRows('m-tbl',rows); sortMarks('m-tbl');
+  ROSTER_VIEW=rows.map(function(r){return r.ix});
+  var pg=pager('m-tbl',rows.length,renderRoster,'m-pager');
+  var tb=document.getElementById('m-body'); tb.innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+r.age+'</td><td>'+r.sex+'</td>'+
+    '<td>'+grpChip(r.grp)+'</td><td>'+delChip(r.del)+'</td><td class="nowrap">'+esc(r.county)+'</td><td>'+regBadge(r.reg)+'</td><td>'+statusHtml(r.status)+'</td></tr>'}).join('');
+  document.getElementById('m-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' matching (population '+MEMBERS.length.toLocaleString()+')';
+  tb.querySelectorAll('tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'roster')})});
+}
+
+/* ================= eligibility spans ================= */
+var SPAN_VIEW=[];
+function initSpanControls(){
+  fillSelect('s-group',GROUP_KEYS.map(function(g){return[g,g+' \u2014 '+GROUPS[g].name]}),'Coverage group: all');
+  ['s-group','s-open'].forEach(function(id){document.getElementById(id).addEventListener('input',function(){resetPage('s-tbl');renderSpans()})});
+  bindSort('s-tbl',renderSpans);
+}
+function renderSpans(){
+  var fg=document.getElementById('s-group').value, fo=document.getElementById('s-open').value;
+  var rows=[];
+  MEMBERS.forEach(function(m){ m.eligSpans.forEach(function(s){
+    if(fg&&s.grp!==fg)return;
+    if(fo==='open'&&s.end!==null)return;
+    if(fo==='closed'&&s.end===null)return;
+    rows.push({ix:m.ix,id:m.id,name:m.name,grp:s.grp,start:s.start,end:(s.end===null?9999:s.end),endRaw:s.end,
+      months:spanMonths(s.start,s.end),reason:s.reason});
+  })});
+  rows=sortRows('s-tbl',rows); sortMarks('s-tbl');
+  SPAN_VIEW=[]; var seenS={}; rows.forEach(function(r){ if(!seenS[r.ix]){seenS[r.ix]=1;SPAN_VIEW.push(r.ix)} });
+  var pg=pager('s-tbl',rows.length,renderSpans,'s-pager');
+  document.getElementById('s-body').innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+grpChip(r.grp)+'</td>'+
+    '<td class="nowrap">'+startLabel(r.start)+'</td><td class="nowrap">'+(r.endRaw===null?'<span class="st-act">open</span>':mLabel(r.endRaw))+'</td>'+
+    '<td class="mono">'+r.months+(r.start<0?'+':'')+'</td><td>'+(r.reason?esc(r.reason):'\u2014')+'</td></tr>'}).join('');
+  document.getElementById('s-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' spans';
+  document.querySelectorAll('#s-body tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'spans')})});
+}
+function startLabel(s){ return s<0 ? mLabel(s)+' <span class="hint">(pre-window)</span>' : mLabel(s) }
+
+/* ================= delivery spans ================= */
+var DEL_VIEW=[];
+function initDelControls(){
+  var dopts=FLPLANS.map(function(m){return[m.code,m.name]})
+    .concat(DEPARTED.map(function(m){return[m.code,m.name]}));
+  dopts.push(['FFS','Fee-for-Service']);
+  fillSelect('d-sys',dopts,'Delivery system: all');
+  document.getElementById('d-sys').addEventListener('input',function(){resetPage('d-tbl');renderDel()});
+  bindSort('d-tbl',renderDel);
+}
+function renderDel(){
+  var fd=document.getElementById('d-sys').value;
+  var rows=[];
+  MEMBERS.forEach(function(m){ m.delSpans.forEach(function(s){
+    if(fd&&s.sys!==fd)return;
+    rows.push({ix:m.ix,id:m.id,name:m.name,sys:s.sys,start:s.start,end:(s.end===null?9999:s.end),endRaw:s.end,
+      months:spanMonths(s.start,s.end),note:s.note});
+  })});
+  rows=sortRows('d-tbl',rows); sortMarks('d-tbl');
+  DEL_VIEW=[]; var seenD={}; rows.forEach(function(r){ if(!seenD[r.ix]){seenD[r.ix]=1;DEL_VIEW.push(r.ix)} });
+  var pg=pager('d-tbl',rows.length,renderDel,'d-pager');
+  document.getElementById('d-body').innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+delChip(r.sys)+'</td>'+
+    '<td class="nowrap">'+startLabel(r.start)+'</td><td class="nowrap">'+(r.endRaw===null?'<span class="st-act">open</span>':mLabel(r.endRaw))+'</td>'+
+    '<td class="mono">'+r.months+(r.start<0?'+':'')+'</td><td>'+(r.note?esc(r.note):'\u2014')+'</td></tr>'}).join('');
+  document.getElementById('d-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' delivery spans';
+  document.querySelectorAll('#d-body tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'delivery')})});
+}
+</script>
+<script>
+'use strict';
+/* ================= scenario registers ================= */
+var REGDEFS={
+ A:{title:'Steady state \u2014 the largest non-expansion program', q:'Who is simply covered \u2014 and which adults are conspicuously not?',
+    body:'The baseline of the biggest program in this series \u2014 and the most child-heavy roster yet, because in a non-expansion state the adult doors are narrow: parents to roughly <b>30% FPL</b>, disability, and register C\u2019s monthly meter. Threaded through: <b>Community Care Plan</b> members on the provider-owned plan of Broward Health and Memorial Healthcare \u2014 two public safety-net hospital districts insuring their own patients \u2014 and members who crossed the SMMC 3.0 boundary inside a surviving plan, carrying a new contract and a renumbered region beneath an unbroken span.'},
+ B:{title:'Renewal churn', q:'What does a paperwork gap mean when there is no fallback category?',
+    body:'Cases close at renewal, sit in a gap, and reopen \u2014 125 members are in the gap right now, their renewals moving through DCF ACCESS at some of the highest volumes in the nation. The Florida edge: a churned parent has no expansion group waiting underneath \u2014 the ~30% FPL door they fell through is the only income door there is.'},
+ C:{title:'Share of Cost \u2014 coverage that flickers', q:'What does eligibility look like when it is metered monthly against medical bills?',
+    body:'375 Medically Needy members, and the strangest timelines in this series: <b>single-month eligibility spans</b>, scattered. Each member owes a monthly <b>share of cost</b> \u2014 the gap between income and the medically needy limit \u2014 and coverage switches on the day incurred bills cross it, then off with the calendar. The dialysis schedule decides the span. Only 80 of these members met their share this month; the rest are off until the next bad month, which is the only kind of month that helps. No plan can be capitated for coverage that may not exist in thirty days, so every flicker pays fee-for-service \u2014 and every warehouse counting \u201cmember months\u201d meets its philosophical limit here: are five flickers five members, or one?'},
+ D:{title:'SMMC 3.0 \u2014 the re-procurement lands inside the window', q:'One procurement, three data signatures \u2014 can you tell them apart on a timeline?',
+    body:'February 1, 2025 \u2014 one month inside this window \u2014 SMMC 3.0 went live, and for the first time in this series a full re-procurement is on-stage rather than buried in pre-window history. Three signatures, cleanly separated: 150 <b>departures</b> \u2014 Molina and Aetna were not awarded contracts, their purple spans all end January 2025, and their members moved, chosen or auto-assigned; 115 <b>renumbered</b> \u2014 same plan, unbroken span, but eleven regions became nine beneath it, and every rate cell, report, and file layout keyed on region needed an effective-dated crosswalk overnight; and 110 <b>continuities</b> \u2014 the plan won again, and the only trace is a contract number. The member experience ranged from a new card to nothing at all; the data experience was seismic in every case.'},
+ E:{title:'Long-Term Care \u2014 the wait list with a ranking', q:'What does eligibility look like when it begins with a rank coming up?',
+    body:'325 members in the SMMC Long-Term Care program \u2014 capitated LTSS through the specialist (Florida Community Care) or the Comprehensive plans holding both sides of the 3.0 award. 230 are settled: HCBS at home or nursing facilities. The other 95 carry Florida\u2019s signature LTSS structure: <b>released from the wait list mid-window</b> \u2014 the HCBS waiver is reached through a scored priority queue (CARES assessment, priority rank, batches released as the Legislature funds slots), so their eligibility spans begin not with a determination but with a <b>number coming up</b>. The waiting was real \u2014 one to four years of it \u2014 and none of it appears in the span, which is precisely the lesson: the queue is upstream of the data.'},
+ F:{title:'Medicare arrives \u2014 the birthday that can\u2019t change the category', q:'The twelfth answer, told in negative space: what happens when there is nothing to age out of?',
+    body:'Eleven states have answered the Medicare question with movement \u2014 categories hinging from expansion to ABD, plans handing off, systems switching. Florida\u2019s answer is stillness, twice over. 195 acute members: the MMA plan lets go and the wrap goes FFS \u2014 the familiar goodbye \u2014 but the <b>eligibility span never moves</b>, because in a non-expansion state these members were SSI-related before the birthday and SSI-related after; there is no AE02 to age out of. The nation\u2019s largest D-SNP market takes the Medicare side from there. And 130 LTC members: <b>nothing moves at all</b>, because Florida\u2019s LTC program is overwhelmingly dual already \u2014 Medicare arriving is the expected state, not an event. The twelfth answer: where the ladder has no expansion rung, the birthday has nothing to knock over.'}
+};
+function renderRegisters(){
+  var out=document.getElementById('reg-list'); var h='';
+  ['A','B','C','D','E','F'].forEach(function(r){
+    var d=REGDEFS[r], list=MEMBERS.filter(function(m){return m.reg===r});
+    var sample=list.slice(0,12);
+    h+='<div class="reg"><h3><span class="rl">'+r+'</span>'+esc(d.title)+'<span class="meta" style="margin-left:auto">'+list.length.toLocaleString()+' members</span></h3>'+
+       '<div class="q">'+d.q+'</div><p class="sub" style="margin-bottom:10px">'+d.body+'</p>'+
+       '<div class="tblwrap"><table><thead><tr><th>Medicaid ID</th><th>Member</th><th>Group</th><th>Delivery today</th><th>The planted story</th></tr></thead><tbody>';
+    sample.forEach(function(m){
+      h+='<tr class="rowlink" data-ix="'+m.ix+'"><td class="mono">'+m.id+'</td><td class="nowrap">'+esc(m.name)+'</td><td>'+grpChip(m.grpToday)+'</td><td>'+delChip(m.delTodayCode)+'</td>'+
+         '<td>'+(m.flags.length?m.flags[0]:'Clean spans \u2014 the control group')+'</td></tr>';
+    });
+    h+='</tbody></table></div>';
+    if(list.length>sample.length){
+      h+='<div class="hint" style="margin-top:8px">Showing the first '+sample.length+' of '+list.length.toLocaleString()+'. Open any row \u2014 the \u25c0 \u25b6 arrows walk the entire register \u2014 or filter the Members tab by register for the full list.</div>';
+    }
+    h+='</div>';
+  });
+  out.innerHTML=h;
+  out.querySelectorAll('tr.rowlink').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'register')})});
+}
+
+/* ================= 834 builder ================= */
+function lastDelEvent(m){
+  var spans=m.delSpans.filter(function(s){return s.sys!=='FFS'});
+  if(m.reg==='C'){
+    var lastSoc=m.delSpans[m.delSpans.length-1];
+    return {kind:'021',del:lastSoc,soc:true,why:'A Share of Cost month \u2014 the state\u2019s own record: coverage that flickers cannot be capitated, so no plan file exists. Note the begin and end dates below: the same month. The shortest DTP pair in this series.'};
+  }
+  if(!spans.length)return null;
+  var last=spans[spans.length-1];
+  if(m.reg==='D'&&sysKind(m.delSpans[0].sys)==='GONE'){
+    return {kind:'021',del:last,pair:m.delSpans[0],why:'The addition half of an SMMC 3.0 departure pair \u2014 the termination went to '+sysLabel(m.delSpans[0].sys).replace(' (departed Jan 2025)','')+' in its final operational weeks. February 2025 was the largest choreographed 834 event this file\u2019s sender ever produced.'};
+  }
+  if(m.reg==='E'&&m.flags[0].indexOf('Released')>=0){
+    return {kind:'021',del:last,why:'LTC enrollment following a wait-list release \u2014 this addition exists because a priority rank came up in a funded batch. The years of waiting are upstream of the file.'};
+  }
+  if(m.reg==='F'&&!m.ltc){
+    return {kind:'024',del:spans[0],why:'Terminated at Medicare entitlement \u2014 acute duals sit outside MMA. But read the eligibility date below against the category: nothing changed there. The twelfth answer, in negative space.'};
+  }
+  if(m.reg==='F'){
+    return {kind:'001',del:last,why:'Medicare arrived \u2014 and the LTC record reports it as a change and nothing more: in this program, duals were always the point.'};
+  }
+  if(m.reg==='B'&&last.start>TODAY_IDX){
+    return {kind:'024',del:spans[0],why:'Eligibility closed at renewal; the plan received a clean termination. The member is in the gap today \u2014 with no fallback category beneath.'};
+  }
+  return {kind:'021',del:last,why:(m.reg==='B'?'Re-enrollment after the renewal gap.':(m.reg==='E'?'LTC program enrollment \u2014 capitated long-term care through the specialist or a Comprehensive award.':'Enrollment addition under SMMC 3.0.'))};
+}
+function ediRow(seg,note,loop){return '<div class="edirow'+(loop?' loop':'')+'"><div class="seg">'+esc(seg)+'</div><div class="note">'+note+'</div></div>'}
+function build834(m){
+  var ev=lastDelEvent(m);
+  var eligSpan=m.eligSpans[m.eligSpans.length-1];
+  var eligBegin=m.eligSpans[0].start;
+  var ctl=String(305000+m.ix*7);
+  var kindLabel={ '021':'Addition','001':'Change','024':'Termination' }[ev.kind];
+  var out='<div class="ediwrap"><div class="edihead"><span class="fn">834 \u2014 '+kindLabel+(ev.soc?' (state record \u2014 Share of Cost month)':(ev.pair?' (half of a departure pair)':''))+'</span><span class="hint">'+esc(ev.why)+'</span></div>';
+  var recvName = ev.soc?'AHCA (STATE RECORD)':sysLabel(ev.del.sys).toUpperCase().replace(/\(.*\)/,'').trim();
+  var recvId = ev.soc?'FLAHCA':ev.del.sys;
+  out+=ediRow('ISA*00*          *00*          *ZZ*FLAHCA         *ZZ*'+(recvId+'          ').slice(0,10)+'    *260701*0800*^*00501*'+ctl.padStart(9,'0')+'*0*P*:~','Interchange envelope: the Agency for Health Care Administration to <b>'+esc(recvName)+'</b>.');
+  out+=ediRow('GS*BE*FLAHCA*'+recvId+'*20260701*0800*'+ctl+'*X*005010X220A1~','Functional group: <b>BE</b> = benefit enrollment.');
+  out+=ediRow('ST*834*'+ctl.slice(-4)+'*005010X220A1~','Transaction set header. One ST/SE per batch; this rendering shows a single member for teaching.');
+  out+=ediRow('BGN*00*'+m.id.slice(-6)+'-'+ctl.slice(-3)+'*20260701*0800****4~','Beginning segment. Purpose 00 = original. Action 4 = verify/full audit.');
+  out+=ediRow('N1*P5*FLORIDA AGENCY FOR HEALTH CARE ADMINISTRATION*FI*596001874~','Loop 1000A \u2014 plan sponsor: AHCA.', true);
+  out+=ediRow('N1*IN*'+recvName+'*FI*'+String(590000000+m.ix*13)+'~','Loop 1000B \u2014 the receiver'+(ev.del&&ev.del.sys==='CCP'?' \u2014 provider-owned: two public safety-net hospital districts insuring their own patients.':(ev.del&&ev.del.sys==='FCC'?' \u2014 the LTC specialist: long-term care is its whole book.':'.')), true);
+  out+=ediRow('INS*Y*18*'+ev.kind+'*'+(ev.kind==='024'?'07':(ev.kind==='001'?'43':'28'))+'*A***FT~','Loop 2000. Subscriber (Y/18). Maintenance <b>'+ev.kind+'</b>'+(ev.pair?' \u2014 the paired termination flowed to a receiver being decommissioned: response files that would never come.':(m.reg==='F'&&m.ltc?' \u2014 reason 43: Medicare entitlement, and nothing else.':'.')), true);
+  out+=ediRow('REF*0F*'+m.id+'~','The <b>Florida Medicaid ID</b> \u2014 ten digits. The person, permanently.');
+  out+=ediRow('DTP*356*D8*'+mFirstD8(Math.max(eligSpan.start,-24))+'~','<b>Eligibility</b> begin date'+(ev.soc?' \u2014 the first of the met month. Share of Cost eligibility is granted for the month the bills crossed the threshold.':(m.reg==='F'&&!m.ltc?' \u2014 and note: this date and this category survived the Medicare event untouched. No expansion group existed to age out of.':(m.reg==='E'&&m.flags[0].indexOf('Released')>=0?' \u2014 the month the wait-list rank came up. The years in the queue are invisible to this segment.':'.'))));
+  if(ev.soc) out+=ediRow('DTP*357*D8*'+mLastD8(eligSpan.start)+'~','<b>Eligibility end date \u2014 the same month.</b> The meter resets with the calendar; next month\u2019s coverage depends on next month\u2019s bills. The shortest promise in this series.');
+  else if(ev.kind==='024'&&ev.del.end!==null) out+=ediRow('DTP*357*D8*'+mLastD8(ev.del.end)+'~',(ev.pair?'January 31, 2025 \u2014 the departed plan\u2019s last day, shared by every termination in the wave.':'End date \u2014 last day of the final capitated month.'));
+  out+=ediRow('NM1*IL*1*'+m.last.toUpperCase()+'*'+m.first.toUpperCase()+'****34*'+String(595000000+m.ix*311)+'~','Member name. The 34 qualifier carries an SSN in real files; synthetic here.');
+  out+=ediRow('PER*IP**TE*'+m.phone.replace(/\D/g,'')+'~','Contact telephone.');
+  out+=ediRow('N3*'+m.street.toUpperCase()+'~','Street address.');
+  out+=ediRow('N4*'+m.city.toUpperCase()+'*FL*'+m.zip+'~','City/state/ZIP: '+esc(m.city)+', '+esc(m.county)+' County \u2014 SMMC Region '+m.region+'.');
+  out+=ediRow('DMG*D8*'+dobD8(m.dob)+'*'+m.sex+'~','Date of birth and sex.');
+  if(m.lang!=='English') out+=ediRow('LUI*LD*'+({'Spanish':'SPA','Haitian Creole':'HAT','Portuguese':'POR','Vietnamese':'VIE','Russian':'RUS'}[m.lang]||'ENG')+'**6~','Preferred language: '+esc(m.lang)+'.'+(m.lang==='Haitian Creole'?' Krey\u00f2l ayisyen \u2014 South Florida holds the largest Haitian community in the country; this language code is a daily operational fact in Region I.':(m.lang==='Spanish'?' From Hialeah\u2019s Cuban Spanish to Osceola\u2019s Puerto Rican Spanish \u2014 one code, many Floridas.':'')));
+  if(!ev.soc){
+    out+=ediRow('HD*'+ev.kind+'**HLT*'+ev.del.sys+'~','Loop 2300 \u2014 '+(sysKind(ev.del.sys)==='LTC'?'the LTC program: capitated long-term care.':'SMMC coverage under a 3.0 contract.'), true);
+    out+=ediRow('DTP*348*D8*'+mFirstD8(Math.max(ev.del.start,-24))+'~','<b>Plan</b> begin date'+(ev.pair?' \u2014 February 1, 2025: the day SMMC 3.0 went live. Shared by every addition in the wave.':' \u2014 first of the month, always prospective.'));
+    if(ev.del.end!==null&&ev.kind!=='024') out+=ediRow('DTP*349*D8*'+mLastD8(ev.del.end)+'~','Plan end date \u2014 last day of the final capitated month.');
+  } else {
+    out+=ediRow('HD*021**HLT*FLMN~','Loop 2300 \u2014 the \u201cplan code\u201d names the Medically Needy program itself: fee-for-service, by necessity.', true);
+    out+=ediRow('DTP*348*D8*'+mFirstD8(Math.max(eligSpan.start,-24))+'~','Coverage begin \u2014 same month as above. One flicker, fully described.');
+  }
+  out+=ediRow('LS*2700~','Open the member-reporting loop.', true);
+  out+=ediRow('LX*1~ N1*75*COVERAGE GROUP~ REF*ZZ*'+eligSpan.grp+'~','The coverage group ('+esc(GROUPS[eligSpan.grp].name)+').');
+  if(m.soc) out+=ediRow('LX*2~ N1*75*SHARE OF COST~ REF*ZZ*SOC~ AMT*R*'+m.soc+'~','The monthly share: <b>$'+m.soc.toLocaleString()+'</b> \u2014 the number the bills must cross before the state pays. The AMT segment is the meter.');
+  if(m.reg==='D'&&m.regionOld) out+=ediRow('LX*2~ N1*75*REGION CROSSWALK~ REF*ZZ*R'+m.regionOld+'-'+m.region+'~','Region '+m.regionOld+' of eleven became Region '+m.region+' of nine on February 1, 2025 \u2014 the rename beneath the unbroken span, carried here as an effective-dated crosswalk fact.');
+  if(m.reg==='F') out+=ediRow('LX*3~ N1*75*MEDICARE STATUS~ REF*ZZ*AB~','Medicare A+B from '+mLabel(m.medicareIdx)+(m.ltc?' \u2014 the expected state, finally arrived.':' \u2014 the event the eligibility span ignored.'));
+  out+=ediRow('LE*2700~','Close the reporting loop.', true);
+  out+=ediRow('SE*'+ri(16,22)+'*'+ctl.slice(-4)+'~ GE*1*'+ctl+'~ IEA*1*'+ctl.padStart(9,'0')+'~','Trailers: segment count, group close, interchange close. Counts must reconcile or the whole file bounces.');
+  out+='</div>';
+  if(m.reg==='C'){
+    out+='<div class="plain" style="margin-top:14px"><span class="pe-label">Worth noticing</span>Every architecture decision about this member is downstream of one fact: the eligibility span and the calendar month are the same object. Continuity logic, span merging, member-month counts, retro adjustments \u2014 all of it needs a special case for coverage whose natural unit is the flicker. Systems that merge adjacent spans must not merge across unmet months; systems that count members must decide what five flickers are. The Medically Needy file is small in most states\u2019 data and philosophically enormous in all of them.</div>';
+  }
+  return out;
+}
+function initFileTab(){
+  var sel=document.getElementById('f-member');
+  var h='';
+  ['A','B','C','D','E','F'].forEach(function(r){
+    h+='<optgroup label="Register '+r+' \u2014 '+esc(REGDEFS[r].title)+'">';
+    MEMBERS.filter(function(m){return m.reg===r}).slice().sort(function(a,b){return a.name.localeCompare(b.name)}).forEach(function(m){
+      h+='<option value="'+m.ix+'">'+esc(m.name)+' \u2014 '+m.id+'</option>';
+    });
+    h+='</optgroup>';
+  });
+  sel.innerHTML=h;
+  sel.addEventListener('input',function(){renderFile(+sel.value)});
+  renderFile(+sel.value);
+}
+function renderFile(ix){
+  document.getElementById('f-out').innerHTML=build834(MEMBERS[ix]);
+}
+</script>
+<script>
+'use strict';
+/* ================= modal ================= */
+var MODAL={ix:null, ctx:'roster'};
+function navList(){
+  if(MODAL.ctx==='spans'&&SPAN_VIEW.length)return SPAN_VIEW;
+  if(MODAL.ctx==='delivery'&&DEL_VIEW.length)return DEL_VIEW;
+  if(MODAL.ctx==='register'&&MODAL.ix!==null){
+    var r=MEMBERS[MODAL.ix].reg;
+    return MEMBERS.filter(function(m){return m.reg===r}).map(function(m){return m.ix});
+  }
+  return ROSTER_VIEW.length?ROSTER_VIEW:MEMBERS.map(function(m){return m.ix});
+}
+function openModal(ix,ctx){
+  MODAL.ix=ix; if(ctx)MODAL.ctx=ctx;
+  var m=MEMBERS[ix];
+  document.getElementById('mo-nm').textContent=m.first+' '+m.last;
+  document.getElementById('mo-id').textContent='Medicaid ID '+m.id+'  \u00b7  Register '+m.reg;
+  document.getElementById('mo-body').innerHTML=modalBody(m);
+  var list=navList(), pos=list.indexOf(ix);
+  document.getElementById('mo-pos').textContent=(pos+1)+' / '+list.length+' ('+MODAL.ctx+')';
+  document.getElementById('mo-prev').disabled=pos<=0;
+  document.getElementById('mo-next').disabled=pos<0||pos>=list.length-1;
+  document.getElementById('overlay').classList.add('on');
+  document.getElementById('modal').classList.add('on');
+  highlightRow(ix);
+  document.getElementById('mo-x').focus();
+}
+function closeModal(){
+  document.getElementById('overlay').classList.remove('on');
+  document.getElementById('modal').classList.remove('on');
+  highlightRow(null);
+  MODAL.ix=null;
+}
+function stepModal(d){
+  var list=navList(), pos=list.indexOf(MODAL.ix), np=pos+d;
+  if(np<0||np>=list.length)return;
+  openModal(list[np]);
+}
+function highlightRow(ix){
+  document.querySelectorAll('tr.hl').forEach(function(tr){tr.classList.remove('hl')});
+  if(ix===null)return;
+  document.querySelectorAll('tr.rowlink[data-ix="'+ix+'"]').forEach(function(tr){tr.classList.add('hl')});
+}
+
+/* ---------- mini two-band timeline ---------- */
+function tlBar(startIdx,endIdx,color,striped,title){
+  var s=Math.max(startIdx,0), e=(endIdx===null?WIN_MONTHS-1:Math.min(endIdx,WIN_MONTHS-1));
+  if(e<0||s>WIN_MONTHS-1)return '';
+  var l=100*s/WIN_MONTHS, w=100*(e-s+1)/WIN_MONTHS;
+  return '<span class="bar'+(striped?' striped':'')+'" style="left:'+l+'%;width:'+w+'%;background:'+color+'" title="'+esc(title)+'"></span>';
+}
+function timeline(m){
+  var h='<div class="tl">';
+  h+='<div class="band"><span class="bl">Eligibility</span><span class="lane">';
+  m.eligSpans.forEach(function(s){
+    h+=tlBar(s.start,s.end,'var('+GROUPS[s.grp].color+')',false,s.grp+' '+mLabel(s.start)+' \u2013 '+(s.end===null?'open':mLabel(s.end)));
+  });
+  h+='<span class="todayline" style="left:'+(100*(TODAY_IDX+0.5)/WIN_MONTHS)+'%"></span></span></div>';
+  h+='<div class="band"><span class="bl">Delivery</span><span class="lane">';
+  m.delSpans.forEach(function(s){
+    var k=sysKind(s.sys);
+    var col = k==='FFS'?'var(--d-ffs)':(k==='GONE'?'var(--d-harp)':(k==='LTC'?'var(--d-mltc)':'var(--d-mco)'));
+    h+=tlBar(s.start,s.end,col,s.sys!=='FFS',sysLabel(s.sys)+' '+mLabel(s.start)+' \u2013 '+(s.end===null?'open':mLabel(s.end)));
+  });
+  h+='<span class="todayline" style="left:'+(100*(TODAY_IDX+0.5)/WIN_MONTHS)+'%"></span></span></div>';
+  h+='<div class="axis"><span></span><span class="ax">'+
+     '<span style="left:2%">Jan 25</span><span style="left:27%">Jul 25</span><span style="left:52%">Jan 26</span><span style="left:77%">Jul 26</span></span></div>';
+  h+='<div class="tl-note">Striped blue = SMMC plan \u00b7 striped teal = LTC program \u00b7 striped purple = Molina/Aetna, the plans SMMC 3.0 left behind \u2014 every purple bar ends January 2025 \u00b7 solid gray = fee-for-service, including register C\u2019s single-month Share of Cost flickers \u00b7 red line = today (Jul 2026). Bars clamp to the 24-month window; pre-window starts are noted in the span tables.</div></div>';
+  return h;
+}
+
+/* ---------- per-member plain english ---------- */
+function plainFor(m){
+  var p='';
+  var first=m.first;
+  var last=m.delSpans[m.delSpans.length-1];
+  if(m.reg==='A'){
+    if(m.delTodayCode==='CCP'){
+      p=first+' is enrolled with <b>Community Care Plan</b> \u2014 the provider-owned plan of Broward Health and Memorial Healthcare: two public safety-net hospital districts insuring the patients they were built to serve. The hospital of last resort, holding the capitation.';
+    } else if(m.grpToday==='FM01'){
+      p=first+' is a parent inside the ~30% FPL door \u2014 in the largest non-expansion state, the parent threshold is one of the lowest in the nation. Look at what is NOT in this roster: no AE02 chip exists anywhere in this file. '+first+'\u2019s eligibility survives on a margin a part-time job could erase.';
+    } else {
+      p=first+' is the modal Florida record: eligible under <b>'+m.grpToday+' ('+esc(GROUPS[m.grpToday].name)+')</b>, enrolled with '+esc(sysLabel(m.delTodayCode))+' under an SMMC 3.0 contract, in SMMC Region '+m.region+'. The biggest program in this series \u2014 and the most child-heavy, because the adult doors are the narrow part.';
+    }
+  } else if(m.reg==='B'){
+    var t2=m.eligSpans[0].end, rg=m.eligSpans[1].start, gap=rg-t2-1;
+    if(rg>TODAY_IDX){
+      p=first+'\u2019s renewal did not come back through DCF ACCESS and the case closed after '+mLabel(t2)+'. As of today '+first+' is <b>in the gap</b>; the data shows the case reopening in '+mLabel(rg)+'. In a non-expansion state, the gap has no floor beneath it.';
+    } else {
+      p=first+' churned: closed at renewal after '+mLabel(t2)+', '+gap+' month'+(gap>1?'s':'')+' in the gap, back on in '+mLabel(rg)+'. Ordinary paperwork churn \u2014 with the Florida edge that the door '+first+' fell through is the only income door there is.';
+    }
+  } else if(m.reg==='C'){
+    var met=m.eligSpans.length, metNow=(m.status==='Active');
+    p=first+' owes a share of cost of <b>$'+m.soc.toLocaleString()+'</b> every month \u2014 the gap between income and the medically needy limit \u2014 and has crossed it in '+met+' of the last nineteen months'+(metNow?', including this one':'; not this one')+'. Look at the timeline: coverage that <b>flickers</b> \u2014 single-month spans, each switched on the day the bills crossed the meter and off with the calendar. '+(metNow?'This month the state is paying.':'This month '+first+' is uninsured, and will be until the next bad month \u2014 which is the only kind of month that helps.')+' In the largest non-expansion state, this meter is a main adult door.';
+  } else if(m.reg==='D'){
+    if(sysKind(m.delSpans[0].sys)==='GONE'){
+      var gone=sysLabel(m.delSpans[0].sys).replace(' (departed Jan 2025)','');
+      var chose=(last.note&&last.note.indexOf('Member chose')===0);
+      p='Until January 2025, '+first+' was enrolled with '+esc(gone)+' \u2014 and then SMMC 3.0 arrived without '+esc(gone)+': not awarded a contract, gone at the end of the month, <b>one month inside this window</b>. '+(chose?first+' chose '+esc(sysLabel(last.sys))+' during the transition.':'No choice came back before the deadline, so the algorithm assigned '+esc(sysLabel(last.sys))+'.')+' For the first time in this series, a plan exit is on-stage \u2014 the purple ends where you can see it.';
+    } else if(m.regionOld){
+      p=first+'\u2019s span is unbroken \u2014 same plan, same card, nothing for the member to notice \u2014 and on February 1, 2025, <b>Region '+m.regionOld+' of eleven became Region '+m.region+' of nine</b> beneath it. The rename beneath the unbroken span: every rate cell, every report, every file layout keyed on region changed meaning overnight, and the crosswalk had to be effective-dated or two years of history silently misfiled. The member noticed nothing; the data warehouse noticed everything.';
+    } else {
+      p=first+'\u2019s plan won its SMMC 3.0 contract again \u2014 continuity \u2014 and the only trace of February 2025 in this record is a new contract number behind an unbroken span. The quietest outcome a procurement can have, and this register\u2019s control case: hold it against the departures and the renumbers to see what the seam did and did not touch.';
+    }
+  } else if(m.reg==='E'){
+    if(m.flags[0].indexOf('Released')>=0){
+      p=first+' is '+m.age+', and '+(m.sex==='F'?'her':'his')+' eligibility began in '+mLabel(m.eligSpans[0].start)+' \u2014 not with a determination, but with a <b>wait-list rank coming up</b>. Florida\u2019s HCBS waiver runs through a scored priority queue: CARES assessment, priority ranking, releases in batches as the Legislature funds slots. The years of waiting are real and entirely upstream of this span \u2014 the data begins where the queue ends, which is precisely the lesson.';
+    } else {
+      p=first+' is '+m.age+' and in the SMMC <b>Long-Term Care program</b> \u2014 '+(m.flags[0].indexOf('Nursing facility')===0?'a nursing facility resident':'served at home through HCBS')+', capitated through '+esc(sysLabel(m.delTodayCode))+(m.delTodayCode==='FCC'?', the specialist whose whole book is long-term care':', a Comprehensive plan holding both sides of the 3.0 award')+'. Florida capitated LTSS statewide in 2014 \u2014 the settled half of a register whose other half is still arriving from the queue.';
+    }
+  } else {
+    var mi=m.medicareIdx, bi=m.buyinIdx, lag=bi-mi;
+    if(m.ltc){
+      p=(m.ssdi?'Medicare arrived for '+first+' in '+mLabel(mi)+'.':'In '+mLabel(mi)+', '+first+' turned 65 and Medicare arrived.')+' And nothing in this record moved \u2014 because Florida\u2019s LTC program is overwhelmingly dual already: Medicare arriving is the <b>expected state</b>, not an event. The plan keeps coordinating, Medicare pays the acute side, the buy-in accreted '+mLabel(bi)+', and the span never blinked. In this program, duals were always the point.';
+    } else {
+      p=(m.ssdi?'Medicare arrived for '+first+' in '+mLabel(mi)+' \u2014 SSDI\u2019s 24-month waiting period ended.':'In '+mLabel(mi)+', '+first+' turned 65 and Medicare arrived.')+' The MMA plan let go and the wrap went fee-for-service \u2014 the familiar half of the story. The Florida half is the negative space: <b>the eligibility span never moved</b>. No category change, no hinge, no AE02-to-ABD redetermination \u2014 because in a non-expansion state there is no expansion group to age out of. '+first+' was SSI-related before the birthday and after it. The buy-in accreted '+mLabel(bi)+' ('+lag+'-month limbo), and the nation\u2019s largest D-SNP market takes the Medicare side from here. The twelfth answer: where the ladder has no expansion rung, the birthday has nothing to knock over.';
+    }
+  }
+  return '<div class="plain"><span class="pe-label">In plain English</span>'+p+'</div>';
+}
+
+/* ---------- modal body ---------- */
+function modalBody(m){
+  var h='';
+  var et=eligToday(m);
+  h+='<div class="kv">'+
+    kv('Status today',statusHtml(m.status))+
+    kv('Coverage group',grpChip(m.grpToday)+' <span style="font-size:.8rem;color:var(--ink-soft)">'+esc(GROUPS[m.grpToday].name)+'</span>')+
+    kv('Delivery today',delChip(m.delTodayCode)+(m.delTodayCode!=='\u2014'?' <span style="font-size:.8rem;color:var(--ink-soft)">'+esc(sysLabel(m.delTodayCode))+'</span>':''))+
+    kv('Date of birth',dobLabel(m.dob)+' <span class="hint">(age '+m.age+')</span>')+
+    kv('Sex',m.sex)+
+    kv('Address',esc(m.street)+', '+esc(m.city)+', FL '+m.zip)+
+    kv('County',esc(m.county)+' \u2014 SMMC Region '+m.region)+
+    kv('Phone','<span class="mono">'+m.phone+'</span>')+
+    kv('Preferred language',esc(m.lang))+
+    (m.soc?kv('Share of cost','$'+m.soc.toLocaleString()+'/month \u2014 the meter'):'')+(m.regionOld?kv('Region crosswalk','Region '+m.regionOld+' of 11 \u2192 Region '+m.region+' of 9 (Feb 1, 2025)'):'')+
+    '</div>';
+  function kv(k,v){return '<div class="k">'+k+'</div><div class="v">'+v+'</div>'}
+  h+='<h4>24-month picture</h4>'+timeline(m);
+  h+=plainFor(m);
+  h+='<h4>Eligibility spans</h4><div class="tblwrap"><table><thead><tr><th>Group</th><th>Begin</th><th>End</th><th>Reason</th></tr></thead><tbody>';
+  m.eligSpans.forEach(function(s){
+    h+='<tr><td>'+grpChip(s.grp)+'</td><td class="nowrap">'+startLabel(s.start)+'</td><td class="nowrap">'+(s.end===null?'<span class="st-act">open</span>':mLabel(s.end))+'</td><td>'+(s.reason?esc(s.reason):'\u2014')+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  h+='<h4>Delivery spans</h4><div class="tblwrap"><table><thead><tr><th>System</th><th>Begin</th><th>End</th><th>Note</th></tr></thead><tbody>';
+  m.delSpans.forEach(function(s){
+    h+='<tr><td>'+delChip(s.sys)+'</td><td class="nowrap">'+startLabel(s.start)+'</td><td class="nowrap">'+(s.end===null?'<span class="st-act">open</span>':mLabel(s.end))+'</td><td>'+(s.note?esc(s.note):'\u2014')+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  if(m.flags.length){
+    h+='<h4>Flags</h4><p>'+m.flags.map(function(f){return '<span class="flag">'+esc(f)+'</span>'}).join(' ')+'</p>';
+  }
+  h+='<h4>See the file</h4><p style="font-size:.84rem;color:var(--ink-soft)">Open <b>What the File Says</b> and choose '+esc(m.first+' '+m.last)+' to read the 834 the plan received for this member\u2019s most recent enrollment event.</p>';
+  return h;
+}
+
+/* ================= navigation & boot ================= */
+function showPage(pg){
+  document.querySelectorAll('nav button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-pg')===pg)});
+  document.querySelectorAll('.page').forEach(function(p){p.classList.toggle('on',p.id==='pg-'+pg)});
+  if(pg==='overview')renderOverview();
+}
+document.getElementById('nav').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b)return; showPage(b.getAttribute('data-pg'));
+});
+document.getElementById('mo-x').addEventListener('click',closeModal);
+document.getElementById('overlay').addEventListener('click',closeModal);
+document.getElementById('mo-prev').addEventListener('click',function(){stepModal(-1)});
+document.getElementById('mo-next').addEventListener('click',function(){stepModal(1)});
+document.addEventListener('keydown',function(e){
+  if(MODAL.ix===null)return;
+  if(e.key==='Escape')closeModal();
+  else if(e.key==='ArrowLeft')stepModal(-1);
+  else if(e.key==='ArrowRight')stepModal(1);
+});
+
+/* boot */
+renderOverview();
+initRosterControls(); renderRoster();
+initSpanControls();  renderSpans();
+initDelControls();   renderDel();
+renderRegisters();
+initFileTab();
+renderReference();
+</script>
+</body>
+</html>

@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Connecticut Medicaid Eligibility Central</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,600;1,400;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#1E5FCC; --accent-soft:#E8EFFA; --ink:#1A2233; --sub:#5A6478;
+  --line:#DDE3EC; --bg:#F7F9FC; --card:#FFFFFF; --warn:#B4540A; --ok:#1F7A3D;
+  --g-cfc:#4C7FB8; --g-hst:#B85C8A; --g-v8:#3D8F6E; --g-abd:#8A6FB8;
+  --g-mbw:#B08A3D; --g-dua:#B4540A; --g-wvr:#5C8A99; --g-rise:#7A5CB8; --g-ffs:#7A8299;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.55}
+.mono{font-family:'IBM Plex Mono',monospace;font-size:.85em}
+header{background:var(--card);border-bottom:1px solid var(--line);padding:22px 28px 0}
+.wordmark{font-size:1.55rem;font-weight:600}
+.wordmark .central{font-family:'Source Serif 4',serif;font-style:italic;color:var(--accent);font-weight:600}
+.tagline{color:var(--sub);font-size:.9rem;margin:4px 0 14px;max-width:70ch}
+nav{display:flex;gap:2px;flex-wrap:wrap}
+nav button{border:none;background:none;font:inherit;font-size:.88rem;font-weight:500;color:var(--sub);
+  padding:9px 14px;cursor:pointer;border-bottom:3px solid transparent}
+nav button:hover{color:var(--ink)}
+nav button.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+nav button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+main{max-width:1240px;margin:0 auto;padding:24px 28px 80px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px 20px;margin-bottom:16px}
+.card h3{font-size:1.02rem;margin-bottom:10px}
+.grid{display:grid;gap:14px}
+.grid.stats{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px}
+.stat .n{font-size:1.7rem;font-weight:700;letter-spacing:-.01em}
+.stat .l{color:var(--sub);font-size:.8rem;margin-top:2px}
+.plain{font-family:'Source Serif 4',serif;font-style:italic;font-size:1.02rem;line-height:1.6;
+  background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;
+  padding:14px 18px;margin:14px 0;color:#22304a}
+.plain.small{font-size:.94rem;padding:11px 14px}
+.plain b{font-style:normal}
+.tblwrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.86rem}
+th{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--sub);text-align:left;
+  padding:8px 10px;border-bottom:2px solid var(--line);white-space:nowrap;cursor:pointer;user-select:none}
+th.nosort{cursor:default}
+th .arr{color:var(--accent)}
+td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+tbody tr.rowbtn{cursor:pointer}
+tbody tr.rowbtn:hover{background:var(--accent-soft)}
+tbody tr.hl{background:var(--accent-soft);box-shadow:inset 4px 0 0 var(--accent)}
+.pill{display:inline-block;font-size:.72rem;font-weight:600;padding:2px 9px;border-radius:99px;
+  color:#fff;white-space:nowrap}
+.pill.outline{background:none;border:1.5px solid var(--line);color:var(--sub)}
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.controls input[type=search],.controls select{font:inherit;font-size:.86rem;padding:7px 10px;
+  border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink)}
+.controls input[type=search]{min-width:230px}
+.pager{display:flex;gap:8px;align-items:center;margin-top:12px;font-size:.84rem;color:var(--sub)}
+.pager button{font:inherit;font-size:.82rem;border:1px solid var(--line);background:var(--card);
+  border-radius:6px;padding:5px 12px;cursor:pointer}
+.pager button:disabled{opacity:.4;cursor:default}
+button.linkish{border:none;background:none;color:var(--accent);font:inherit;font-size:.85rem;
+  cursor:pointer;text-decoration:underline;padding:0}
+.regcard{border:1px solid var(--line);border-radius:8px;background:var(--card);padding:18px 20px;margin-bottom:18px}
+.regcard .regletter{font-family:'Source Serif 4',serif;font-style:italic;color:var(--accent);
+  font-size:1.5rem;font-weight:600;margin-right:8px}
+.regcard .q{font-weight:600;font-size:1rem;margin-bottom:8px}
+.regcard .body{color:#2a3448;font-size:.92rem;max-width:88ch}
+.answerno{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:.78rem;
+  background:var(--ink);color:#fff;border-radius:4px;padding:2px 8px;margin-left:8px;vertical-align:2px}
+/* slide-over modal */
+.overlay{position:fixed;inset:0;background:rgba(20,28,45,.35);opacity:0;pointer-events:none;transition:opacity .18s;z-index:40}
+.overlay.open{opacity:1;pointer-events:auto}
+.slide{position:fixed;top:0;right:0;bottom:0;width:min(560px,94vw);background:var(--card);
+  border-left:1px solid var(--line);box-shadow:-12px 0 32px rgba(20,28,45,.14);
+  transform:translateX(102%);transition:transform .2s ease;z-index:50;overflow-y:auto;padding:20px 24px 40px}
+.slide.open{transform:none}
+.slide .close{position:absolute;top:14px;right:16px;border:none;background:none;font-size:1.3rem;
+  cursor:pointer;color:var(--sub)}
+.slide .navrow{display:flex;align-items:center;gap:10px;margin:2px 0 14px}
+.slide .navrow button{border:1px solid var(--line);background:var(--card);border-radius:6px;
+  font-size:1rem;padding:3px 12px;cursor:pointer}
+.slide .navrow button:disabled{opacity:.35;cursor:default}
+.slide .pos{font-family:'IBM Plex Mono',monospace;font-size:.76rem;color:var(--sub)}
+.slide h2{font-size:1.25rem;margin-bottom:2px}
+.slide .sub,p.sub{color:var(--sub);font-size:.85rem}
+.slide dl.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;font-size:.86rem;margin:12px 0}
+.slide dl.kv dt{color:var(--sub)}
+.slide dl.kv dd{font-weight:500}
+.slide h4{font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;color:var(--sub);margin:16px 0 6px}
+/* 834 viewer */
+.x12{display:grid;grid-template-columns:minmax(280px,44%) 1fr;font-size:.8rem;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.x12 .seg{font-family:'IBM Plex Mono',monospace;padding:6px 10px;border-bottom:1px solid var(--line);white-space:pre-wrap;word-break:break-all}
+.x12 .exp{padding:6px 10px;border-bottom:1px solid var(--line);color:#2a3448}
+.x12 .loop .seg,.x12 .loop .exp{background:var(--accent-soft);font-weight:600}
+.x12 .teach .exp{border-left:3px solid var(--warn)}
+dl.gloss dt{font-weight:600;margin-top:10px}
+dl.gloss dd{color:#2a3448;font-size:.9rem;max-width:90ch}
+.chron td:first-child{white-space:nowrap;font-weight:600}
+footer{border-top:1px solid var(--line);color:var(--sub);font-size:.8rem;padding:18px 28px;max-width:1240px;margin:0 auto}
+.testpass{color:var(--ok);font-weight:600}.testfail{color:#B00020;font-weight:600}
+@media (prefers-reduced-motion:reduce){.slide,.overlay{transition:none}}
+@media (max-width:720px){.x12{grid-template-columns:1fr}.x12 .seg{border-bottom:none;padding-bottom:0}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wordmark">Connecticut Medicaid Eligibility <span class="central">Central</span></div>
+  <p class="tagline">Eligibility, enrollment, and the file that carries both — 3,000 synthetic members of Connecticut Medicaid: the only state that ever left managed care, a delivery table whose meaning changed while its columns did not, coverage split by a funding flag no span carries, and a Medicare register where nothing files because there was never a plan to leave. All data is seeded and deterministic; nothing here is real.</p>
+  <nav id="tabs" role="tablist"></nav>
+</header>
+<main id="main"></main>
+<footer>
+  <b>Connecticut Medicaid Eligibility Central</b> — a single-file demonstration by <b>Robert Thomas Keyes</b>.
+  All members, identifiers, spans, and files are synthetic, generated in the browser from a fixed seed (860001);
+  no PHI, no network calls, no storage. Policy landscape described as of early 2026; verify currency before relying on any detail.
+</footer>
+<div class="overlay" id="overlay"></div>
+<aside class="slide" id="slide" role="dialog" aria-modal="true" aria-label="Member record"></aside>
+</file_text><script>
+'use strict';
+/* ================= seeded PRNG ================= */
+var SEED=860001; /* Hartford's area code + 001, house convention */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);
+  t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+var rng=mulberry32(SEED);
+function ri_(n){return Math.floor(rng()*n)}
+function pick(a){return a[ri_(a.length)]}
+function chance(p){return rng()<p}
+
+/* ================= time model =================
+   Month index 0 = January 2014. NOW = June 2026 = 149.
+   Connecticut's defining architecture predates this window twice over: HUSKY D opened
+   in April 2010 as the nation's first early expansion, and in January 2012 the state
+   terminated its capitated MCO contracts outright \u2014 the only full de-privatization
+   in the country. Every file in this app was born into the world those events made. */
+var EPOCH_Y=2014, NOW=149;
+var MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+function mLabel(i){return MONTHS[((i%12)+12)%12]+' '+(EPOCH_Y+Math.floor(i/12))}
+function mYYYYMMDD(i,last){var y=EPOCH_Y+Math.floor(i/12),m=i%12+1,d=last?new Date(y,m,0).getDate():1;
+  return ''+y+String(m).padStart(2,'0')+String(d).padStart(2,'0')}
+var KIDS0=108;   /* Jan 2023 - state-funded HUSKY opens to children regardless of immigration status */
+var UNWIND=112;  /* May 2023 - first unwinding terminations */
+
+/* ================= coverage groups ================= */
+var GROUPS={
+ HKA:{name:'HUSKY A (families & children)',color:'var(--g-cfc)',blurb:'The 1997 original \u2014 parents, caretakers, and children.'},
+ HKB:{name:'HUSKY B (CHIP)',color:'var(--g-mbw)',blurb:'Connecticut\u2019s CHIP \u2014 same ASO roof, its own letter.'},
+ HKC:{name:'HUSKY C (Aged, Blind, or Disabled)',color:'var(--g-abd)',blurb:'Non-MAGI eligibility, including long-term services and supports.'},
+ HKD:{name:'HUSKY D (expansion adults)',color:'var(--g-v8)',blurb:'April 2010 \u2014 the first early expansion in the nation, nearly four years before this timeline begins. Day one here was 2010.'},
+ PRG:{name:'Pregnancy',color:'var(--g-hst)',blurb:'Pregnancy coverage with 12-month postpartum continuation.'},
+ KID:{name:'HUSKY (state-funded, children)',color:'var(--g-rise)',blurb:'Coverage for children regardless of immigration status \u2014 identical benefits, state dollars only. Register E\u2019s subject.'},
+ DUA:{name:'Dual (Medicare + Medicaid)',color:'var(--g-dua)',blurb:'Full and partial duals \u2014 in a state with no plans, the seam at 65 belongs to eligibility alone. Register F\u2019s subject.'}
+};
+/* ================= delivery: ASOs, not plans ================= */
+var ASO_MED='HUSKY Health \u2014 CHNCT (medical ASO)';
+var ASOS=[
+ {name:'Community Health Network of Connecticut (CHNCT)',role:'Medical ASO \u2014 administrative fee only; the state holds all risk'},
+ {name:'Carelon Behavioral Health (CT BHP)',role:'Behavioral health ASO'},
+ {name:'Connecticut Dental Health Partnership',role:'Dental ASO'},
+ {name:'Transportation broker',role:'Non-emergency medical transportation'}
+];
+var PCPS=['Dr. Okafor','Dr. Nguyen','Dr. Rosario','Dr. Blum','Dr. Kowalczyk','Dr. Andrade','Dr. Petit','Dr. Marino','Dr. Boateng','Dr. Castillo','Dr. Levin','Dr. Fernandez'];
+
+/* ================= geography & communities =================
+   Roster texture: Hartford holds one of the highest Puerto Rican concentrations on the
+   mainland; New Britain is Little Poland; Danbury is Brazilian and Ecuadorian; New Haven
+   and Bridgeport carry the Black neighborhoods and Fair Haven\u2019s Spanish; Willimantic
+   is Puerto Rican mill-town; Uncasville and Ledyard sit on Mohegan and Pequot land. */
+var COUNTIES=[
+ {name:'Hartford',  city:'Hartford',    zip:'06106',ac:'860',w:16},
+ {name:'Hartford',  city:'New Britain', zip:'06051',ac:'860',w:9},
+ {name:'New Haven', city:'New Haven',   zip:'06511',ac:'203',w:13},
+ {name:'New Haven', city:'Waterbury',   zip:'06704',ac:'203',w:10},
+ {name:'New Haven', city:'Meriden',     zip:'06450',ac:'203',w:6},
+ {name:'Fairfield', city:'Bridgeport',  zip:'06608',ac:'203',w:13},
+ {name:'Fairfield', city:'Danbury',     zip:'06810',ac:'203',w:9},
+ {name:'Fairfield', city:'Stamford',    zip:'06902',ac:'203',w:7},
+ {name:'Windham',   city:'Willimantic', zip:'06226',ac:'860',w:6},
+ {name:'New London',city:'Norwich',     zip:'06360',ac:'860',w:6}
+];
+var CPOOL=[];COUNTIES.forEach(function(c){for(var i=0;i<c.w;i++)CPOOL.push(c)});
+var NAMES={
+ general:{f:['James','Mary','Robert','Patricia','John','Jennifer','Michael','Linda','David','Elizabeth','William','Barbara','Richard','Susan','Joseph','Jessica','Thomas','Sarah','Christopher','Karen','Daniel','Lisa','Matthew','Nancy','Anthony','Betty','Mark','Margaret','Donald','Sandra','Steven','Ashley','Paul','Kimberly','Andrew','Emily','Joshua','Donna','Kenneth','Michelle','Kevin','Carol','Brian','Amanda','Marcus','Keisha','Darnell','Latoya','Jamal','Tamika'],
+  l:['Smith','Johnson','Williams','Brown','Jones','Miller','Davis','Wilson','Anderson','Taylor','Moore','Jackson','Martin','Lee','Thompson','White','Harris','Clark','Lewis','Walker','Hall','Young','Allen','King','Wright','Scott','Green','Baker','Adams','Nelson','Carter','Mitchell','Booker','Staples','DeLuca','Esposito']},
+ puertorican:{f:['Jos\u00e9','Carmen','Luis','Milagros','\u00c1ngel','Iris','H\u00e9ctor','Yolanda','Rafael','Migdalia','Edwin','Awilda','Ram\u00f3n','Luz'],
+  l:['Rivera','Ortiz','Santiago','Col\u00f3n','V\u00e1zquez','Cruz','Rosado','Feliciano','Mel\u00e9ndez','Burgos','Torres','Delgado']},
+ polish:{f:['Stanley','Janina','Henry','Zofia','Walter','Halina','Edward','Krystyna','Chester','Wanda','Frank','Danuta'],
+  l:['Kowalski','Nowak','Wi\u015bniewski','Zieli\u0144ski','Szyma\u0144ski','W\u00f3jcik','Kami\u0144ski','Lewandowski','D\u0105browski','Jankowski']},
+ brazilian:{f:['Jo\u00e3o','Ana','Carlos','M\u00e1rcia','Paulo','Fernanda','Rafael','Juliana','Marcos','Beatriz','Andr\u00e9','Camila'],
+  l:['Silva','Santos','Oliveira','Souza','Pereira','Costa','Almeida','Ribeiro','Carvalho','Gomes']},
+ mohegan:{f:['Samuel','Ella','Walter','Alice','Ray','Ruth','George','Hazel','Lloyd','Dora'],
+  l:['Fielding','Tantaquidgeon','Baker','Fowler','Harris','Skeesucks','Hopkins','Sebastian']}
+};
+var STREETS=['Park St','Broad St','Main St','Farmington Ave','Grand Ave','Dixwell Ave','East Main St','North Ave','Madison Ave','White St','Osgood Ave','Valley St','Franklin Ave','Congress Ave','Bank St','West Thames St'];
+
+function namePoolFor(county){
+  if(county.city==='Hartford'||county.city==='Willimantic'){if(chance(.42))return['puertorican','SPA','Spanish'];return['general',null,null]}
+  if(county.city==='New Britain'){if(chance(.35))return['polish','POL','Polish'];if(chance(.2))return['puertorican','SPA','Spanish'];return['general',null,null]}
+  if(county.city==='Danbury'){var r=rng();if(r<.3)return['brazilian','POR','Portuguese (Brazilian)'];if(r<.45)return['puertorican','SPA','Spanish'];return['general',null,null]}
+  if(county.city==='Bridgeport'||county.city==='Waterbury'||county.city==='Meriden'){if(chance(.3))return['puertorican','SPA','Spanish'];return['general',null,null]}
+  if(county.city==='New Haven'){if(chance(.22))return['puertorican','SPA','Spanish'];return['general',null,null]}
+  if(county.city==='Norwich'){if(chance(.18))return['mohegan',null,null];return['general',null,null]}
+  return['general',null,null];
+}
+
+/* ================= registers ================= */
+var REGCOUNT={A:1500,B:500,C:250,D:250,E:350,F:150};
+
+/* ================= member generation ================= */
+var MEMBERS=[];
+function pad(n,w){return String(n).padStart(w,'0')}
+function newMedicaidId(i){ /* nine-digit Connecticut client ID, synthetic */
+  return pad(860000000+i*2+ri_(2),9)}
+function mkSpan(cat,b,e,notes,extra){var s={cat:cat,b:b,e:e,notes:notes||''};
+  if(extra)Object.keys(extra).forEach(function(k){s[k]=extra[k]});return s}
+function asoRow(b,e){return {sys:'ASO',plan:ASO_MED,b:Math.max(b,0),e:e,
+  why:'Administrative services only \u2014 CHNCT is paid a fee to administer; the state holds every dollar of risk. No capitation, no enrollment in the risk-bearing sense: since January 2012, this row is attribution wearing enrollment\u2019s schema'}}
+
+function genMember(i,reg){
+  var county=pick(CPOOL);
+  var np=namePoolFor(county), pool=NAMES[np[0]];
+  var m={
+    id:'M'+pad(i+1,4), mid:newMedicaidId(i), reg:reg,
+    first:pick(pool.f), last:pick(pool.l),
+    sex:chance(.52)?'F':'M',
+    county:county.name, city:county.city, zip:county.zip,
+    addr:(100+ri_(8900))+' '+pick(STREETS),
+    phone:'('+county.ac+') 555-'+pad(ri_(10000),4),
+    lang:np[1], langName:np[2],
+    spans:[], dspans:[]
+  };
+  var b,e,g;
+  if(reg==='A'){
+    g=pick(['HKA','HKA','HKA','HKB','HKD','HKD','HKD','HKC','PRG']);
+    b=60+ri_(70); m.dob=dobFor(g);
+    m.spans.push(mkSpan(g,b,null,'Ongoing; renewal passed '+mLabel(NOW-ri_(10))+(g==='HKD'?'. HUSKY D members with the longest histories have been covered since April 2010 \u2014 before this window opens':'')));
+    m.dspans.push(asoRow(b,null));
+  }else if(reg==='B'){
+    g=pick(['HKA','HKB','HKD','PRG']); m.dob=dobFor(g);
+    b=80+ri_(28); var gap=1+ri_(3), closed=UNWIND+ri_(16);
+    m.spans.push(mkSpan(g,b,closed,'Terminated \u2014 procedural (annual renewal not completed)'));
+    m.spans.push(mkSpan(g,closed+gap+1,null,'Reapplied and approved; coverage restored after '+gap+'-month gap'));
+    m.gap=gap; m.closedAt=closed;
+    m.dspans.push(asoRow(b,closed)); m.dspans.push(asoRow(closed+gap+1,null));
+  }else if(reg==='C'){
+    g=pick(['HKA','PRG','HKD']); m.dob=dobFor(g);
+    var app=120+ri_(26), retro=1+ri_(3);
+    m.spans.push(mkSpan(g,app-retro,null,'Application '+mLabel(app)+'; granted '+retro+' retroactive month'+(retro>1?'s':''),{retro:true,app:app,retroN:retro}));
+    m.dspans.push(asoRow(app-retro,null));
+    m.retroNote='In a state with no capitation, even the retro months and the prospective months are paid the same way \u2014 the state\u2019s own claims system, end to end';
+  }else if(reg==='D'){ /* the table that survived its meaning */
+    g=pick(['HKA','HKD','HKD','HKC']); m.dob=dobFor(g);
+    b=60+ri_(60);
+    m.spans.push(mkSpan(g,b,null,'One continuous eligibility span \u2014 while the attribution rows below churn freely, because attribution is not enrollment'));
+    m.dspans.push(asoRow(b,null));
+    var a1=b+4+ri_(20), a2=a1+8+ri_(24);
+    if(a2>=NOW-2)a2=NOW-2-ri_(6); if(a2<=a1)a2=a1+4;
+    var docs=[];while(docs.length<3){var d=pick(PCPS);if(docs.indexOf(d)<0)docs.push(d)}
+    m.pcps=docs;
+    m.dspans.push({sys:'PCP',plan:'Attributed PCP \u2014 '+docs[0]+' (PCMH)',b:Math.max(b,0),e:a1-1,
+      why:'PCMH attribution \u2014 looks like an enrollment row, carries no risk and no capitation'});
+    m.dspans.push({sys:'PCP',plan:'Attributed PCP \u2014 '+docs[1]+' (PCMH)',b:a1,e:a2-1,
+      why:'The member changed practices \u2014 an attribution change with zero coverage meaning'});
+    m.dspans.push({sys:'PCP',plan:'Attributed PCP \u2014 '+docs[2]+' (PCMH)',b:a2,e:null,
+      why:'Third attribution \u2014 the delivery table churns; nothing about coverage or risk moves an inch'});
+  }else if(reg==='E'){ /* the coverage without a match */
+    g='KID'; m.dob=dobKidRecent();
+    b=KIDS0+ri_(36);
+    m.fundSrc='STATE';
+    m.spans.push(mkSpan(g,b,null,'State-funded HUSKY \u2014 coverage for children regardless of immigration status. The span is indistinguishable from its federally matched twin; the funding is not',{state:true}));
+    m.dspans.push(asoRow(b,null));
+  }else{ /* F: Medicare arrives \u2014 answer #42 */
+    g=pick(['HKC','HKC','HKD']); m.dob=dob65();
+    var t65=130+ri_(19); m.t65=t65;
+    b=30+ri_(80); if(b>=t65-6)b=t65-6-ri_(12);
+    m.spans.push(mkSpan(g,b,t65-1,'Group closed at Medicare entitlement \u2014 redetermined, not terminated'));
+    m.spans.push(mkSpan('DUA',t65,null,'Dual eligibility begins; Part B buy-in accreted '+mLabel(t65+1)+' \u2014 the only file that spoke this month runs between the state and CMS'));
+    m.dspans.push(asoRow(b,null));
+    m.group='DUA';
+    return m;
+  }
+  m.group=m.group||g;
+  return m;
+}
+function dobFor(g){return g==='HKB'?dobKid():g==='HKA'?(chance(.6)?dobKid():dobAdult()):g==='PRG'?dobAdultYoung():g==='HKC'?dobOlder():dobAdult()}
+function dobKid(){return (2009+ri_(15))+'-'+pad(1+ri_(12),2)+'-'+pad(1+ri_(28),2)}
+function dobKidRecent(){return (2011+ri_(9))+'-'+pad(1+ri_(12),2)+'-'+pad(1+ri_(28),2)}
+function dobAdultYoung(){return (1990+ri_(15))+'-'+pad(1+ri_(12),2)+'-'+pad(1+ri_(28),2)}
+function dobAdult(){return (1975+ri_(28))+'-'+pad(1+ri_(12),2)+'-'+pad(1+ri_(28),2)}
+function dobOlder(){return (1950+ri_(25))+'-'+pad(1+ri_(12),2)+'-'+pad(1+ri_(28),2)}
+function dob65(){return (1959+ri_(3))+'-'+pad(1+ri_(12),2)+'-'+pad(1+ri_(28),2)}
+
+/* build the population */
+(function(){
+  var i=0;
+  ['A','B','C','D','E','F'].forEach(function(reg){
+    for(var k=0;k<REGCOUNT[reg];k++){MEMBERS.push(genMember(i,reg));i++}
+  });
+})();
+/* derived tables */
+var SPANS=[],DSPANS=[];
+MEMBERS.forEach(function(m){
+  m.spans.forEach(function(s){SPANS.push({m:m,s:s})});
+  m.dspans.forEach(function(d){DSPANS.push({m:m,d:d})});
+});
+function eligNow(m){return m.spans.some(function(s){return s.b<=NOW&&(s.e===null||s.e>=NOW)})}
+function inGapNow(m){return !eligNow(m)&&m.spans.length>1}
+function sysNow(m){var d=m.dspans.filter(function(x){return x.b<=NOW&&(x.e===null||x.e>=NOW)});return d}
+</script>
+<script>
+'use strict';
+/* ================= tab framework ================= */
+var TABS=[
+ {id:'overview',label:'Overview'},
+ {id:'members',label:'Members'},
+ {id:'spans',label:'Eligibility Spans'},
+ {id:'delivery',label:'MCO Enrollment'},
+ {id:'registers',label:'Scenario Registers'},
+ {id:'file',label:'What the File Says'},
+ {id:'reference',label:'Reference'}
+];
+var activeTab='overview';
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function renderTabs(){
+  var n=document.getElementById('tabs');n.innerHTML='';
+  TABS.forEach(function(t){
+    var b=document.createElement('button');b.textContent=t.label;b.setAttribute('role','tab');
+    if(t.id===activeTab)b.className='active';
+    b.onclick=function(){activeTab=t.id;renderTabs();renderMain()};n.appendChild(b)});
+}
+function renderMain(){
+  var el=document.getElementById('main');
+  ({overview:rOverview,members:rMembers,spans:rSpans,delivery:rDelivery,
+    registers:rRegisters,file:rFile,reference:rReference})[activeTab](el);
+  window.scrollTo(0,0);
+}
+function pillFor(g){return '<span class="pill" style="background:'+GROUPS[g].color+'">'+g+'</span>'}
+function sortable(rows,cols,state,onchange){
+  /* returns thead html + attaches click sort via delegation key */
+  return cols.map(function(c,i){
+    var arr=state.col===i?(state.dir>0?' <span class="arr">\u25B2</span>':' <span class="arr">\u25BC</span>'):'';
+    return '<th data-si="'+i+'"'+(c.nosort?' class="nosort"':'')+'>'+c.h+arr+'</th>'}).join('');
+}
+function bindSort(theadEl,state,rerender){
+  theadEl.querySelectorAll('th[data-si]').forEach(function(th){
+    if(th.classList.contains('nosort'))return;
+    th.onclick=function(){var i=+th.dataset.si;
+      if(state.col===i)state.dir=-state.dir;else{state.col=i;state.dir=1}
+      state.page=0;rerender()}});
+}
+
+/* ================= Overview ================= */
+function rOverview(el){
+  var elig=0,aso=0,duals=0,gap=0,attrib=0,statekids=0;
+  MEMBERS.forEach(function(m){
+    if(eligNow(m))elig++; else if(inGapNow(m))gap++;
+    if(m.group==='DUA')duals++;
+    if(m.reg==='E')statekids++;
+    m.dspans.forEach(function(d){if(d.sys==='PCP')attrib++});
+    sysNow(m).forEach(function(d){if(d.sys==='ASO')aso++});
+  });
+  var h='<div class="grid stats">'+
+    stat(MEMBERS.length.toLocaleString(),'members in population')+
+    stat(elig.toLocaleString(),'eligible today')+
+    stat(aso.toLocaleString(),'administered by the ASO today')+
+    stat('0','enrolled in a risk-bearing plan')+
+    stat(attrib.toLocaleString(),'PCP attribution rows in register D')+
+    stat(statekids.toLocaleString(),'state-funded children (no federal match)')+
+    stat(duals.toLocaleString(),'duals (Medicare + Medicaid)')+
+    stat(gap.toLocaleString(),'in a churn gap')+
+    '</div>';
+  h+='<div class="plain">Connecticut is the series\u2019 control group: in January 2012 it terminated its capitated '+
+   'MCO contracts \u2014 the only state ever to leave managed care \u2014 and has run everything since through ASOs paid '+
+   'fees while the state holds every dollar of risk. Its registers are about meaning rather than motion: a delivery '+
+   'table whose schema survived its contract, spans split by a funding flag they don\u2019t carry, and \u2014 answer '+
+   '#42 \u2014 a Medicare arrival that the delivery table never feels at all. Everything is synthetic and seeded: '+
+   'reload it anywhere and you get exactly these people, exactly these dates.</div>';
+  h+='<div class="card"><h3>Coverage groups in this population</h3><div class="tblwrap"><table><tbody>';
+  Object.keys(GROUPS).forEach(function(g){
+    var n=MEMBERS.filter(function(m){return m.group===g}).length;
+    h+='<tr><td>'+pillFor(g)+'</td><td><b>'+esc(GROUPS[g].name)+'</b></td><td>'+GROUPS[g].blurb+'</td><td class="mono" style="text-align:right">'+n.toLocaleString()+'</td></tr>'});
+  h+='</tbody></table></div></div>';
+  h+='<div class="card"><h3>The ASOs \u2014 there are no plans</h3><div class="tblwrap"><table><thead><tr><th class="nosort">Entity</th><th class="nosort">Role</th></tr></thead><tbody>'+
+   ASOS.map(function(p){return '<tr><td><b>'+esc(p.name)+'</b></td><td>'+esc(p.role)+'</td></tr>'}).join('')+
+   '<tr><td><b>The state</b> <span class="pill" style="background:var(--g-dua)">risk holder</span></td><td>Pays every claim from its own system and sees every row of its own data \u2014 which was the entire point of January 2012</td></tr>'+
+   '</tbody></table></div></div>';
+  el.innerHTML=h;
+  function stat(n,l){return '<div class="stat"><div class="n">'+n+'</div><div class="l">'+l+'</div></div>'}
+}
+
+/* ================= Members ================= */
+var mState={q:'',grp:'',reg:'',st:'',page:0,col:0,dir:1};
+function memberRows(){
+  var q=mState.q.toLowerCase();
+  var rows=MEMBERS.filter(function(m){
+    if(mState.grp&&m.group!==mState.grp)return false;
+    if(mState.reg&&m.reg!==mState.reg)return false;
+    if(mState.st){var s=eligNow(m)?'A':(inGapNow(m)?'G':'C');if(s!==mState.st)return false}
+    if(q){var hay=(m.first+' '+m.last+' '+m.mid+' '+m.city+' '+m.county).toLowerCase();
+      if(hay.indexOf(q)<0)return false}
+    return true});
+  var key=[function(m){return m.last+m.first},function(m){return m.mid},function(m){return m.group},
+           function(m){return m.county},function(m){return m.reg},function(m){return eligNow(m)?0:inGapNow(m)?1:2}][mState.col];
+  rows.sort(function(a,b){var x=key(a),y=key(b);return (x<y?-1:x>y?1:0)*mState.dir});
+  return rows;
+}
+function rMembers(el){
+  var rows=memberRows(), per=50, pages=Math.max(1,Math.ceil(rows.length/per));
+  mState.page=Math.min(mState.page,pages-1);
+  var slice=rows.slice(mState.page*per,mState.page*per+per);
+  var h='<div class="plain small">Every column sorts; search covers name, Medicaid ID, city, and county. Click any row for the member record \u2014 the \u25C0 \u25B6 arrows there walk this exact filtered order.</div>';
+  h+='<div class="controls">'+
+   '<input type="search" id="mq" placeholder="Search 3,000 members\u2026" value="'+esc(mState.q)+'">'+
+   sel('mgrp','All coverage groups',Object.keys(GROUPS).map(function(g){return[g,GROUPS[g].name]}),mState.grp)+
+   sel('mreg','All registers',['A','B','C','D','E','F'].map(function(r){return[r,'Register '+r]}),mState.reg)+
+   sel('mst','Any status',[['A','Active'],['G','In gap'],['C','Closed']],mState.st)+
+   '</div>';
+  var cols=[{h:'Member'},{h:'Medicaid ID'},{h:'Group'},{h:'County'},{h:'Reg'},{h:'Status'}];
+  h+='<div class="card"><div class="tblwrap"><table><thead id="mth"><tr>'+sortable(rows,cols,mState)+'</tr></thead><tbody>';
+  slice.forEach(function(m){
+    var st=eligNow(m)?'<span class="pill" style="background:var(--ok)">Active</span>':
+      inGapNow(m)?'<span class="pill" style="background:var(--warn)">In gap</span>':
+      '<span class="pill outline">Closed</span>';
+    h+='<tr class="rowbtn" data-mid="'+m.id+'"><td><b>'+esc(m.last)+', '+esc(m.first)+'</b><br><span class="sub">'+esc(m.city)+'</span></td>'+
+      '<td class="mono">'+m.mid+'</td><td>'+pillFor(m.group)+'</td><td>'+esc(m.county)+'</td>'+
+      '<td class="mono">'+m.reg+'</td><td>'+st+'</td></tr>'});
+  h+='</tbody></table></div>'+pager(rows.length,per,mState)+'</div>';
+  el.innerHTML=h;
+  bindSort(document.getElementById('mth'),mState,function(){rMembers(el)});
+  document.getElementById('mq').oninput=function(){mState.q=this.value;mState.page=0;
+    var y=this.selectionStart;rMembers(el);var q=document.getElementById('mq');q.focus();q.setSelectionRange(y,y)};
+  ['mgrp','mreg','mst'].forEach(function(id,ix){document.getElementById(id).onchange=function(){
+    mState[['grp','reg','st'][ix]]=this.value;mState.page=0;rMembers(el)}});
+  bindPager(el,mState,function(){rMembers(el)});
+  bindRows(el,rows.map(function(m){return{m:m}}),'roster');
+}
+function sel(id,none,opts,cur){return '<select id="'+id+'"><option value="">'+none+'</option>'+
+  opts.map(function(o){return '<option value="'+o[0]+'"'+(cur===o[0]?' selected':'')+'>'+esc(o[1])+'</option>'}).join('')+'</select>'}
+function pager(total,per,state){
+  var a=state.page*per+1,b=Math.min(total,a+per-1);
+  if(!total)return '<p class="sub" style="margin-top:10px">No rows match \u2014 clear a filter to widen the view.</p>';
+  return '<div class="pager"><button data-pg="-1"'+(state.page===0?' disabled':'')+'>\u25C0 Prev</button>'+
+   '<span>showing '+a.toLocaleString()+'\u2013'+b.toLocaleString()+' of '+total.toLocaleString()+' matching (population '+MEMBERS.length.toLocaleString()+')</span>'+
+   '<button data-pg="1"'+(b>=total?' disabled':'')+'>Next \u25B6</button></div>'}
+function bindPager(el,state,rerender){el.querySelectorAll('[data-pg]').forEach(function(b){
+  b.onclick=function(){state.page+=+b.dataset.pg;rerender()}})}
+function bindRows(el,navList,ctx){el.querySelectorAll('tr[data-mid]').forEach(function(tr){
+  tr.onclick=function(){openMember(tr.dataset.mid,navList.map(function(x){return x.m.id}),ctx)}})}
+
+/* ================= Eligibility Spans ================= */
+var sState={grp:'',open:'',page:0,col:1,dir:1};
+function rSpans(el){
+  var rows=SPANS.filter(function(r){
+    if(sState.grp&&r.s.cat!==sState.grp)return false;
+    if(sState.open==='O'&&r.s.e!==null)return false;
+    if(sState.open==='C'&&r.s.e===null)return false;return true});
+  var key=[function(r){return r.m.last+r.m.first},function(r){return r.s.b},
+    function(r){return r.s.e===null?9999:r.s.e},function(r){return (r.s.e===null?NOW:r.s.e)-r.s.b},
+    function(r){return r.s.cat}][sState.col];
+  rows.sort(function(a,b){var x=key(a),y=key(b);return (x<y?-1:x>y?1:0)*sState.dir});
+  var per=50,pages=Math.max(1,Math.ceil(rows.length/per));sState.page=Math.min(sState.page,pages-1);
+  var slice=rows.slice(sState.page*per,sState.page*per+per);
+  var h='<div class="plain small">'+SPANS.length.toLocaleString()+' eligibility spans across the population \u2014 each row one continuous stretch in one coverage group. The end-reason column is where the registers live: procedural closures, Medicare redeterminations, retro grants whose begin dates precede their applications.</div>';
+  h+='<div class="controls">'+sel('sgrp','All coverage groups',Object.keys(GROUPS).map(function(g){return[g,GROUPS[g].name]}),sState.grp)+
+    sel('sopen','Open + closed',[['O','Open only'],['C','Closed only']],sState.open)+'</div>';
+  var cols=[{h:'Member'},{h:'Begin'},{h:'End'},{h:'Months'},{h:'Group'},{h:'Note',nosort:true}];
+  h+='<div class="card"><div class="tblwrap"><table><thead id="sth"><tr>'+sortable(rows,cols,sState)+'</tr></thead><tbody>';
+  slice.forEach(function(r){
+    h+='<tr class="rowbtn" data-mid="'+r.m.id+'"><td><b>'+esc(r.m.last)+', '+esc(r.m.first)+'</b></td>'+
+     '<td class="mono">'+mLabel(r.s.b)+'</td><td class="mono">'+(r.s.e===null?'\u2014 open \u2014':mLabel(r.s.e))+'</td>'+
+     '<td class="mono">'+((r.s.e===null?NOW:r.s.e)-r.s.b+1)+'</td><td>'+pillFor(r.s.cat)+'</td>'+
+     '<td style="max-width:340px">'+esc(r.s.notes)+'</td></tr>'});
+  h+='</tbody></table></div>'+pager(rows.length,per,sState)+'</div>';
+  el.innerHTML=h;
+  bindSort(document.getElementById('sth'),sState,function(){rSpans(el)});
+  ['sgrp','sopen'].forEach(function(id,ix){document.getElementById(id).onchange=function(){
+    sState[['grp','open'][ix]]=this.value;sState.page=0;rSpans(el)}});
+  bindPager(el,sState,function(){rSpans(el)});
+  bindRows(el,dedupeByMember(rows),'spans');
+}
+function dedupeByMember(rows){var seen={},out=[];rows.forEach(function(r){if(!seen[r.m.id]){seen[r.m.id]=1;out.push(r)}});return out}
+
+/* ================= Next Gen Enrollment (delivery spans) ================= */
+var dState={sys:'',plan:'',page:0,col:1,dir:1};
+function rDelivery(el){
+  var plans={};DSPANS.forEach(function(r){plans[r.d.plan]=1});
+  var rows=DSPANS.filter(function(r){
+    if(dState.sys&&r.d.sys!==dState.sys)return false;
+    if(dState.plan&&r.d.plan!==dState.plan)return false;return true});
+  var key=[function(r){return r.m.last+r.m.first},function(r){return r.d.b},
+    function(r){return r.d.e===null?9999:r.d.e},function(r){return r.d.plan},function(r){return r.d.sys}][dState.col];
+  rows.sort(function(a,b){var x=key(a),y=key(b);return (x<y?-1:x>y?1:0)*dState.dir});
+  var per=50,pages=Math.max(1,Math.ceil(rows.length/per));dState.page=Math.min(dState.page,pages-1);
+  var slice=rows.slice(dState.page*per,dState.page*per+per);
+  var h='<div class="plain small">The second clock, as a first-class table: '+DSPANS.length.toLocaleString()+' delivery spans \u2014 and in Connecticut, not one of them is an enrollment. ASO rows are administration; PCP rows are attribution; the risk lives with the state and never moves. Forty-one other apps in this series carry this same table meaning something else \u2014 which is register D\u2019s whole lesson, and the reason a cross-state pipeline must carry per-state semantics beside its shared schema.</div>';
+  h+='<div class="controls">'+
+    sel('dsys','All systems',[['ASO','HUSKY Health (ASO administration)'],['PCP','PCP attribution (PCMH)']],dState.sys)+
+    sel('dplan','All plans',Object.keys(plans).sort().map(function(p){return[p,p]}),dState.plan)+'</div>';
+  var cols=[{h:'Member'},{h:'Begin'},{h:'End'},{h:'Plan'},{h:'System'},{h:'Why',nosort:true}];
+  h+='<div class="card"><div class="tblwrap"><table><thead id="dth"><tr>'+sortable(rows,cols,dState)+'</tr></thead><tbody>';
+  slice.forEach(function(r){
+    var sysPill={ASO:'var(--g-cfc)',PCP:'var(--g-rise)'}[r.d.sys];
+    h+='<tr class="rowbtn" data-mid="'+r.m.id+'"><td><b>'+esc(r.m.last)+', '+esc(r.m.first)+'</b></td>'+
+     '<td class="mono">'+mLabel(r.d.b)+'</td><td class="mono">'+(r.d.e===null?'\u2014 open \u2014':mLabel(r.d.e))+'</td>'+
+     '<td>'+esc(r.d.plan)+'</td><td><span class="pill" style="background:'+sysPill+'">'+r.d.sys+'</span></td>'+
+     '<td style="max-width:330px">'+esc(r.d.why)+'</td></tr>'});
+  h+='</tbody></table></div>'+pager(rows.length,per,dState)+'</div>';
+  el.innerHTML=h;
+  bindSort(document.getElementById('dth'),dState,function(){rDelivery(el)});
+  ['dsys','dplan'].forEach(function(id,ix){document.getElementById(id).onchange=function(){
+    dState[['sys','plan'][ix]]=this.value;dState.page=0;rDelivery(el)}});
+  bindPager(el,dState,function(){rDelivery(el)});
+  bindRows(el,dedupeByMember(rows),'delivery');
+}
+</script>
+<script>
+'use strict';
+/* ================= scenario registers ================= */
+var REGDEFS={
+ A:{title:'Steady state \u2014 HUSKY Health, the state that took the risk back',
+    q:'What does Medicaid look like with no plans in it?',
+    body:`1,500 members simply covered \u2014 and not one of them is enrolled in a managed-care plan, because Connecticut has none. In January 2012 the state terminated its capitated MCO contracts outright \u2014 the only full de-privatization in the nation \u2014 after years of fighting its plans for the encounter data they insisted was proprietary. What replaced them: administrative services organizations. CHNCT administers medical, Carelon the behavioral carve-out, a dental partnership, a transportation broker \u2014 all paid fees, none holding risk. The state pays every claim from its own system and sees every line of its own data, which was the entire point. HUSKY D adds the other superlative: April 2010, the first early expansion in the nation \u2014 day one here came four years before day one anywhere else, and before this timeline opens.`},
+ B:{title:'Churn \u2014 the annual renewal',
+    q:'What does unwinding-era churn look like in a span table?',
+    body:`500 members closed procedurally at renewal, sat uncovered one to three months, reapplied, and returned. Every reopened span is a new span, not a correction of the old one: the gap stays in the history because it happened, and the history is the audit.`},
+ C:{title:'Retroactive grant \u2014 the begin date that precedes the application',
+    q:'How does a span honestly show coverage that was granted backwards?',
+    body:`250 members applied and received up to three retroactive months. The eligibility span begins before the application date \u2014 the series\u2019 baseline lesson, with a Connecticut footnote: in every capitated state, the retro months run fee-for-service because you cannot retroactively capitate, making retro coverage the odd one out. Here there is nothing to be odd against. The retro months and the prospective months are paid identically, by the state\u2019s own claims system, end to end \u2014 the one state where register C\u2019s two dates have no payment seam between them.`},
+ D:{title:'Attribution \u2014 the table that survived its meaning',
+    q:'When the plans left in 2012, why didn\u2019t the delivery table?',
+    body:`Look at these 250 members\u2019 delivery spans: an ASO row, then primary-care attribution rows \u2014 begin dates, end dates, names in the plan column, everything an enrollment table has. <b>None of it is enrollment.</b> CHNCT holds no risk; the PCMH attribution rows churn freely as members change practices, and not a dollar of capitation, not an ounce of risk, moves when they do. The schema survived January 2012 intact; the <i>contract behind it</i> did not \u2014 and that is the register\u2019s data lesson: a table\u2019s meaning is not in its columns. Forty-one apps in this series carry a delivery table where an open row means a plan is at risk for this member tonight; this one carries the same table where an open row means a fee is being paid and a report is being filed. Any analyst, any pipeline, any consultant who joins these rows the way they joined the other forty-one states\u2019 will produce numbers that are precisely, silently wrong. Schemas travel; semantics don\u2019t.`},
+ E:{title:'State-funded HUSKY \u2014 the coverage without a match',
+    q:'What separates two identical spans?',
+    body:`Since January 2023, Connecticut has covered children regardless of immigration status \u2014 state dollars, no federal match. These 350 children\u2019s spans are indistinguishable from HUSKY A\u2019s: same benefits, same ASO, same renewal calendar, same shape in every table this app has. What separates them exists in no span at all: <b>the funding dimension.</b> Every federal artifact downstream \u2014 the CMS-64 claiming, T-MSIS reporting, match-rate arithmetic \u2014 must split these members from their federally matched twins, and nothing on the eligibility record does the splitting; a fund-source flag carried beside the spans does. It is the quietest dimension in Medicaid data and among the most consequential: two children, identical coverage, one flag apart \u2014 and a state budget line where a federal match would otherwise be.`},
+ F:{title:'Medicare arrives \u2014 the arrival only eligibility could see',
+    q:'What happens to these 150 members the month they turn 65?',
+    body:`Answer #42, and it removes the premise underneath the last five. The taxonomy the series just completed \u2014 the pair, the missing pair, the half pair, the same-name pair, the added row \u2014 was a taxonomy of what <i>plans</i> do when Medicare arrives. Connecticut has no plans. So: nothing terminates, because nothing was enrolled; nothing opens, because there is nothing to open. The eligibility side seams exactly as it has in every state \u2014 the HUSKY group closes, dual status begins, the buy-in accretes \u2014 and the delivery table registers <b>nothing whatsoever</b>: one ASO attribution row, open before, open after, meaning what it always meant. The 834 to CHNCT this month is the most boring file in the series, deliberately. The file that actually speaks runs between the state and CMS \u2014 the buy-in exchange, South Carolina\u2019s fixed-width old-timer \u2014 and the drama the series spent five answers taxonomizing turns out to have been, all along, a story about risk-bearing plans. Remove the plans, and Medicare\u2019s arrival becomes what it was underneath everything: an eligibility event, wearing whatever delivery clothes the state put on it.`}
+};
+function rRegisters(el){
+  var h='<div class="plain">Six planted business questions \u2014 the registers are the population\u2019s table of contents. Each shows a 12-member sample; open any row and the \u25C0 \u25B6 arrows walk the <i>entire</i> register in order. For the complete list, filter the Members tab by register.</div>';
+  ['A','B','C','D','E','F'].forEach(function(r){
+    var d=REGDEFS[r], members=MEMBERS.filter(function(m){return m.reg===r});
+    h+='<div class="regcard"><div class="q"><span class="regletter">'+r+'</span>'+esc(d.title)+
+      (r==='F'?'<span class="answerno">answer #42</span>':'')+
+      ' <span class="sub" style="font-weight:400">\u2014 '+members.length.toLocaleString()+' members</span></div>'+
+      '<p class="body" style="margin-bottom:6px"><b>'+esc(d.q)+'</b></p>'+
+      '<p class="body">'+d.body+'</p>'+
+      '<div class="tblwrap" style="margin-top:12px"><table><thead><tr><th class="nosort">Member</th><th class="nosort">Group</th><th class="nosort">City</th><th class="nosort">Story in one line</th></tr></thead><tbody>';
+    members.slice(0,12).forEach(function(m){
+      h+='<tr class="rowbtn" data-mid="'+m.id+'" data-reg="'+r+'"><td><b>'+esc(m.last)+', '+esc(m.first)+'</b></td>'+
+        '<td>'+pillFor(m.group)+'</td><td>'+esc(m.city)+'</td><td>'+esc(oneLiner(m))+'</td></tr>'});
+    h+='</tbody></table></div></div>';
+  });
+  el.innerHTML=h;
+  el.querySelectorAll('tr[data-mid]').forEach(function(tr){
+    tr.onclick=function(){var r=tr.dataset.reg;
+      openMember(tr.dataset.mid,MEMBERS.filter(function(m){return m.reg===r}).map(function(m){return m.id}),'register')}});
+}
+function oneLiner(m){
+  switch(m.reg){
+   case 'A':return 'Covered since '+mLabel(m.spans[0].b)+', no story \u2014 which is the story.';
+   case 'B':return 'Closed '+mLabel(m.closedAt)+' for paperwork; back after '+m.gap+' month'+(m.gap>1?'s':'')+'.';
+   case 'C':return 'Applied '+mLabel(m.spans[0].app)+'; coverage reaches back to '+mLabel(m.spans[0].b)+'.';
+   case 'D':return 'Three attributions, zero enrollment events \u2014 by design.';
+   case 'E':return 'Identical span, state dollars \u2014 one flag apart from HUSKY A.';
+   default:return 'Turned 65 '+mLabel(m.t65)+'; the delivery table never noticed.'}
+}
+
+/* ================= What the File Says (annotated 834) ================= */
+var fileSel=null;
+function rFile(el){
+  if(!fileSel)fileSel=MEMBERS.filter(function(m){return m.reg==='F'})[0].id;
+  var opts='';['A','B','C','D','E','F'].forEach(function(r){
+    opts+='<optgroup label="Register '+r+' \u2014 '+esc(REGDEFS[r].title)+'">'+
+     MEMBERS.filter(function(m){return m.reg===r}).slice(0,40).map(function(m){
+       return '<option value="'+m.id+'"'+(m.id===fileSel?' selected':'')+'>'+esc(m.last)+', '+esc(m.first)+' \u2014 '+m.mid+'</option>'}).join('')+'</optgroup>'});
+  var m=MEMBERS.find(function(x){return x.id===fileSel});
+  var h='<div class="plain small">Pick a member and the app builds their most recent X12N 834 with every segment explained \u2014 remembering that in Connecticut the receiver is an ASO, not a plan, which changes what every segment means without changing how any segment looks. The planted lessons: register D\u2019s HD loop that isn\u2019t an enrollment, register E\u2019s file that never mentions its own funding, and register F \u2014 deliberately the most boring file in the series.</div>'+
+   '<div class="controls"><select id="fsel" style="max-width:480px">'+opts+'</select></div>'+
+   '<div class="card"><div class="x12">'+build834(m).map(function(row){
+     return '<div class="seg'+(row.loop?' loop':'')+'">'+esc(row.seg)+'</div>'+
+            '<div class="exp'+(row.loop?' loop':'')+(row.teach?' teach':'')+'">'+row.exp+'</div>'}).join('')+
+   '</div></div>';
+  el.innerHTML=h;
+  document.getElementById('fsel').onchange=function(){fileSel=this.value;rFile(el)};
+}
+function build834(m){
+  var rows=[];
+  var evt={A:'021',B:'021',C:'021',D:'001',E:'021',F:'001'}[m.reg];
+  function seg(s,e,o){rows.push({seg:s,exp:e,loop:o&&o.loop,teach:o&&o.teach})}
+  seg('ISA*00*          *00*          *ZZ*CTDSSSENDER    *ZZ*ASORCVR        *260601*0800*^*00501*000086000*0*P*:~',
+    'Interchange envelope \u2014 sender is the state; the receiver is an ASO, not a plan. Same envelope as forty-one other states; different relationship inside it.');
+  seg('GS*BE*CTDSSSENDER*ASORCVR*20260601*0800*860*X*005010X220A1~','Functional group: BE = benefit enrollment \u2014 a family name this file wears loosely, since nothing in Connecticut is enrolled in the risk-bearing sense.');
+  seg('ST*834*0001*005010X220A1~','Transaction set header.');
+  seg('BGN*00*'+m.id+'FILE*20260601*0800****4~','Original transaction (BGN01=00), reference keyed to the member for this demo.');
+  seg('INS*Y*18*'+evt+'*XN*A***FT~','Loop 2000 \u2014 member level. INS03='+evt+' ('+({'021':'addition','001':'change'})[evt]+'): '+insStory(m),{loop:true,teach:m.reg==='F'});
+  seg('REF*0F*'+m.mid+'~','Subscriber identifier \u2014 the nine-digit Connecticut client ID.');
+  seg('REF*3H*'+m.reg+m.id.slice(1)+'~','Case/agency reference \u2014 synthetic, keyed to the register.');
+  if(m.reg==='C'){
+    seg('DTP*356*D8*'+mYYYYMMDD(m.spans[0].b)+'~','Member-level eligibility begin \u2014 <b>the retroactive date</b>: '+mLabel(m.spans[0].b)+'. And here Connecticut retires the series\u2019 oldest seam: with no capitation anywhere, the retro months are paid exactly like every other month \u2014 the state\u2019s own claims system, end to end. Two dates remain; the payment cliff between them is gone.',{teach:true});
+  }else{
+    seg('DTP*356*D8*'+mYYYYMMDD(m.spans[m.spans.length-1].b)+'~','Member-level eligibility begin: '+mLabel(m.spans[m.spans.length-1].b)+'.');
+  }
+  if(m.reg==='F')seg('DTP*357*D8*'+mYYYYMMDD(m.t65-1,true)+'~','Member-level eligibility end for the <i>pre-Medicare group</i> \u2014 the eligibility seam, exactly as it looks in every state. This segment is the entire event.',{teach:true});
+  seg('NM1*IL*1*'+m.last.toUpperCase()+'*'+m.first.toUpperCase()+'~','Member name.');
+  seg('PER*IP**TE*'+m.phone.replace(/\D/g,'')+'~','Contact telephone.');
+  seg('N3*'+m.addr.toUpperCase()+'~','Street address \u2014 '+esc(m.city)+' texture from the seeded roster.');
+  seg('N4*'+m.city.toUpperCase()+'*CT*'+m.zip+'~','City / state / ZIP.');
+  seg('DMG*D8*'+m.dob.replace(/-/g,'')+'*'+m.sex+'~','Demographics: date of birth and sex.');
+  if(m.lang)seg('LUI*LE*'+m.lang+'**7~','Preferred language: '+m.langName+' \u2014 '+(m.lang==='POL'?'New Britain\u2019s Little Poland, three generations deep on Broad Street.':m.lang==='POR'?'Danbury\u2019s Brazilian community.':'Hartford and the mill cities \u2014 among the highest Puerto Rican concentrations on the mainland.'));
+  /* health coverage loop \u2014 always the ASO */
+  if(m.reg==='F'){
+    seg('HD*001**HLT*'+ASO_MED.toUpperCase()+'~','Loop 2300 \u2014 and here is answer #42: <b>nothing happens.</b> No 024, because no plan enrollment exists to terminate; no successor loop, because there is nothing to succeed. The attribution row this segment maintains was open before the birthday and is open after it, meaning what it always meant \u2014 a fee paid, a report filed, zero risk held. Five answers of taxonomy \u2014 pair, no pair, half pair, same-name pair, added row \u2014 and Connecticut reveals the premise under all of them: that was a taxonomy of <i>plans</i>. Remove the plans and Medicare\u2019s arrival is what it always was underneath: an eligibility event.',{loop:true,teach:true});
+    seg('COB*P*'+m.mid+'*1~','Medicare primary; Medicaid wraps \u2014 through the state\u2019s own claims system, as everything here is. The file that actually spoke this month is not this one: it is the buy-in exchange between the state and CMS \u2014 the fixed-width old-timer South Carolina\u2019s app read aloud \u2014 accreting Part B '+mLabel(m.t65+1)+'. In the one state with no plans, the only enrollment Medicare changes is the member\u2019s enrollment with Medicare itself.',{teach:true});
+  }else if(m.reg==='D'){
+    seg('HD*001**HLT*'+ASO_MED.toUpperCase()+'~','Loop 2300 \u2014 read this segment twice. In forty-one other apps in this series, an HD loop like this one means a plan is at risk for this member tonight. Here it means CHNCT is paid a fee to administer \u2014 <b>the schema survived January 2012; the contract behind it did not.</b> Below this row, '+esc(m.first)+'\u2019s PCMH attribution has changed twice ('+m.pcps.join(', ')+') with zero coverage meaning. A pipeline that joins this table like the other forty-one produces numbers that are precisely, silently wrong. Schemas travel; semantics don\u2019t.',{loop:true,teach:true});
+  }else if(m.reg==='E'){
+    seg('HD*021**HLT*'+ASO_MED.toUpperCase()+'~','Loop 2300 \u2014 identical to a HUSKY A child\u2019s in every character. <b>Nothing in this file says state-funded.</b> The dimension that separates this member from a federally matched twin \u2014 the CMS-64 claiming line, the T-MSIS fund-source split, the match arithmetic \u2014 rides no 834 segment at all; it lives in the claiming layer, carried beside the spans, not inside them. The quietest dimension in Medicaid data, and among the most consequential.',{loop:true,teach:true});
+    seg('DTP*348*D8*'+mYYYYMMDD(Math.max(m.spans[0].b,0))+'~','Coverage begin '+mLabel(m.spans[0].b)+' \u2014 the program for children regardless of status opened January 2023.');
+  }else{
+    seg('HD*'+evt+'**HLT*'+ASO_MED.toUpperCase()+'~','Loop 2300 \u2014 the ASO attribution row: administration, not risk. The delivery span, distinct from eligibility \u2014 and in Connecticut, distinct from enrollment too.',{loop:true});
+    var covB=m.reg==='C'?m.spans[0].b:Math.max(m.spans[m.spans.length-1].b,0);
+    seg('DTP*348*D8*'+mYYYYMMDD(covB)+'~','Coverage begin '+mLabel(covB)+'.'+(m.reg==='C'?' Note it equals DTP*356 above \u2014 with no capitation, attribution starts when eligibility starts, retro months included. The two dates that disagreed in forty-one states agree here, and this time the agreement is honest.':''),{teach:m.reg==='C'});
+  }
+  seg('REF*CE*'+m.group+'~','Reporting category \u2014 the coverage group riding with the enrollment ('+esc(GROUPS[m.group]?GROUPS[m.group].name:m.group)+').');
+  seg('SE*'+(rows.length+2)+'*0001~','Transaction trailer with segment count.');
+  seg('GE*1*860~','Functional group trailer.');
+  seg('IEA*1*000086000~','Interchange trailer.');
+  return rows;
+}
+function insStory(m){
+  return {A:'routine maintenance to the ASO \u2014 attribution, not enrollment.',B:'the reapproval after the renewal gap \u2014 a brand-new addition, not a correction.',
+   C:'an addition whose dates teach the retro lesson below \u2014 minus the payment seam every other state has.',
+   D:'a change maintaining an attribution row \u2014 read the HD annotation for why this file means less than it looks like it means.',
+   E:'an addition indistinguishable from a federally matched one \u2014 the funding dimension does not ride this file.',
+   F:'<b>a change, and barely that.</b> The group seam updates; the HD loop below does not blink. Answer #42 lives in what this file has no reason to say.'}[m.reg];
+}
+
+/* ================= Reference ================= */
+function rReference(el){
+  var h='<div class="card"><h3>The state that took the risk back \u2014 a chronicle</h3>'+
+   '<div class="tblwrap"><table class="chron"><tbody>'+
+   '<tr><td class="mono">1997</td><td>HUSKY launches \u2014 the letters A through D still organize the program today.</td></tr>'+
+   '<tr><td class="mono">Apr 2010</td><td>HUSKY D: the first early expansion in the nation \u2014 low-income adults moved from the state-funded SAGA program into Medicaid nearly four years before anyone else\u2019s day one.</td></tr>'+
+   '<tr><td class="mono">Jan 2012</td><td>The de-privatization: after years of fighting its MCOs for encounter data the plans called proprietary, Connecticut terminates the capitated contracts outright \u2014 the only state ever to leave managed care entirely. ASOs replace plans; the state holds all risk and sees all data. Administrative costs fall; per-member cost growth flattens.</td></tr>'+
+   '<tr><td class="mono">2012\u2013present</td><td>PCMH attribution under CHNCT \u2014 the delivery table survives with its meaning transformed. Register D\u2019s subject. Connecticut watches the financial-alignment demonstrations from outside; it never fields one.</td></tr>'+
+   '<tr><td class="mono">Jan 2023</td><td>State-funded HUSKY opens to children regardless of immigration status, expanding by age in steps since. Register E\u2019s subject. Verify currency; this landscape moves.</td></tr>'+
+   '</tbody></table></div></div>';
+  h+='<div class="card"><h3>834 maintenance codes used in this app</h3><div class="tblwrap"><table><thead><tr><th class="nosort">INS03</th><th class="nosort">Meaning</th><th class="nosort">Where you\u2019ll see it</th></tr></thead><tbody>'+
+   '<tr><td class="mono">021</td><td>Addition</td><td>New members, register B\u2019s returns, register E\u2019s state-funded children \u2014 additions to attribution, never to risk</td></tr>'+
+   '<tr><td class="mono">001</td><td>Change</td><td>Register D\u2019s attribution maintenance \u2014 and register F, where the change is the absence of one</td></tr>'+
+   '<tr><td class="mono">024</td><td>Cancellation / termination</td><td>Register B\u2019s closures. Famously absent from register F: there is no plan enrollment to terminate</td></tr>'+
+   '</tbody></table></div></div>';
+  h+='<div class="card"><h3>Glossary</h3><dl class="gloss">'+
+   gl('HUSKY Health','Connecticut Medicaid and CHIP \u2014 the letters A (families), B (CHIP), C (aged/blind/disabled), D (expansion) have organized the program since 1997.')+
+   gl('The de-privatization','January 2012: the only full exit from Medicaid managed care in the nation, provoked by plans withholding encounter data as proprietary. The state took back every dollar of risk \u2014 and every row of its own data.')+
+   gl('ASO','Administrative services organization \u2014 paid a fee to administer, holding no risk. CHNCT (medical), Carelon (behavioral), the dental partnership, the transportation broker. The delivery table\u2019s rows survived; their meaning changed.')+
+   gl('Attribution','What Connecticut\u2019s delivery table actually contains \u2014 PCMH primary-care attribution and ASO administration, wearing enrollment\u2019s schema. Register D: schemas travel; semantics don\u2019t.')+
+   gl('HUSKY D','April 2010 \u2014 the nation\u2019s first early expansion, predating everyone else\u2019s day one by nearly four years and this app\u2019s timeline by four months short of that.')+
+   gl('The funding dimension','Register E\u2019s lesson: state-funded and federally matched spans are identical in every table; the CMS-64, T-MSIS, and the match arithmetic split them by a flag no span carries.')+
+   gl('The buy-in exchange','The fixed-width state\u2194CMS file that accretes Part B \u2014 in register F, the only file that speaks when Medicare arrives.')+
+   gl('The arrival only eligibility could see','The forty-second Medicare answer, and the floor under the other five: the pair, missing pair, half pair, same-name pair, and added row were all behaviors of risk-bearing plans. Remove the plans \u2014 Connecticut did \u2014 and Medicare\u2019s arrival is purely an eligibility event.')+
+   gl('834','The X12N benefit enrollment transaction \u2014 still this app\u2019s native tongue, spoken here to ASOs instead of plans: same segments, transformed meaning.')+
+   '</dl></div>';
+  h+='<div class="card"><h3>Cities in this population</h3><p style="font-size:.85rem">'+
+   Array.from(new Set(COUNTIES.map(function(c){return c.city}))).join(' \u00b7 ')+'</p>'+
+   '<p class="sub" style="margin-top:8px">The Riveras and Col\u00f3ns carry Hartford and Willimantic \u2014 among the highest Puerto Rican concentrations on the mainland; the Kowalskis and Wi\u015bniewskis, New Britain\u2019s Little Poland; the Silvas and Oliveiras, Danbury\u2019s Brazilian blocks; the Fieldings and Tantaquidgeons, Mohegan country around Norwich; Bridgeport, New Haven, Waterbury, Meriden, and Stamford carry the rest.</p></div>';
+  el.innerHTML=h;
+  function gl(t,d){return '<dt>'+t+'</dt><dd>'+d+'</dd>'}
+}
+</script>
+<script>
+'use strict';
+/* ================= slide-over member record ================= */
+var nav={list:[],ix:-1,ctx:''};
+function openMember(id,list,ctx){
+  nav.list=list||[id];nav.ix=nav.list.indexOf(id);nav.ctx=ctx||'';
+  paintMember();document.getElementById('overlay').classList.add('open');
+  var s=document.getElementById('slide');s.classList.add('open');
+  highlightRow(id);s.focus&&s.focus();
+}
+function closeMember(){
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('slide').classList.remove('open');
+  highlightRow(null);
+}
+function stepMember(d){var n=nav.ix+d;if(n<0||n>=nav.list.length)return;nav.ix=n;paintMember();highlightRow(nav.list[n])}
+function highlightRow(id){document.querySelectorAll('tr.hl').forEach(function(t){t.classList.remove('hl')});
+  if(id){var tr=document.querySelector('tr[data-mid="'+id+'"]');if(tr)tr.classList.add('hl')}}
+function paintMember(){
+  var m=MEMBERS.find(function(x){return x.id===nav.list[nav.ix]});
+  var s=document.getElementById('slide');
+  var ctxLabel={roster:'filtered roster',spans:'spans view',delivery:'enrollment view',register:'register'}[nav.ctx]||'list';
+  var h='<button class="close" aria-label="Close">\u00d7</button>'+
+   '<div class="navrow"><button id="mprev"'+(nav.ix===0?' disabled':'')+' aria-label="Previous member">\u25C0</button>'+
+   '<button id="mnext"'+(nav.ix>=nav.list.length-1?' disabled':'')+' aria-label="Next member">\u25B6</button>'+
+   '<span class="pos">'+(nav.ix+1)+' / '+nav.list.length+' ('+ctxLabel+')</span></div>'+
+   '<h2>'+esc(m.last)+', '+esc(m.first)+'</h2>'+
+   '<p class="sub">'+pillFor(m.group)+' &nbsp; Register '+m.reg+' \u2014 '+esc(REGDEFS[m.reg].title)+'</p>'+
+   '<dl class="kv">'+
+   kv('Medicaid ID','<span class="mono">'+m.mid+'</span>')+
+   kv('Born',esc(m.dob)+' ('+m.sex+')')+
+   kv('Address',esc(m.addr)+', '+esc(m.city)+', OH '+m.zip+' \u2014 '+esc(m.county)+' County')+
+   kv('Phone','<span class="mono">'+esc(m.phone)+'</span>')+
+   (m.lang?kv('Language',esc(m.langName)+' <span class="mono">('+m.lang+')</span>'):'')+
+   '</dl>'+
+   '<div class="plain small">'+plainEnglish(m)+'</div>'+
+   '<h4>Eligibility spans</h4><div class="tblwrap"><table><thead><tr><th class="nosort">Group</th><th class="nosort">Begin</th><th class="nosort">End</th><th class="nosort">Note</th></tr></thead><tbody>'+
+   (m.spans.length===0?'<tr><td colspan="4" class="sub">No eligibility spans \u2014 this member has never been eligible. The empty table is the record.</td></tr>':'')+
+   m.spans.map(function(x){return '<tr><td>'+pillFor(x.cat)+'</td><td class="mono">'+mLabel(x.b)+'</td>'+
+     '<td class="mono">'+(x.e===null?'\u2014 open \u2014':mLabel(x.e))+'</td><td>'+esc(x.notes)+'</td></tr>'}).join('')+
+   '</tbody></table></div>'+
+   '<h4>Delivery spans</h4><div class="tblwrap"><table><thead><tr><th class="nosort">Plan</th><th class="nosort">Begin</th><th class="nosort">End</th><th class="nosort">Why</th></tr></thead><tbody>'+
+   (m.dspans.length===0?'<tr><td colspan="4" class="sub">No delivery spans \u2014 no plan was ever asked to carry this member.</td></tr>':'')+
+   (m.dspans.length===0?'<tr><td colspan="4" class="sub">No delivery spans on record.</td></tr>':'')+
+   m.dspans.map(function(x){return '<tr><td><b>'+esc(x.plan)+'</b></td><td class="mono">'+mLabel(x.b)+'</td>'+
+     '<td class="mono">'+(x.e===null?'\u2014 open \u2014':mLabel(x.e))+'</td><td>'+esc(x.why)+'</td></tr>'}).join('')+
+   '</tbody></table></div>'+
+   '<p style="margin-top:14px"><button class="linkish" id="see834">Read this member\u2019s 834 \u2192</button></p>';
+  s.innerHTML=h;
+  s.querySelector('.close').onclick=closeMember;
+  document.getElementById('mprev').onclick=function(){stepMember(-1)};
+  document.getElementById('mnext').onclick=function(){stepMember(1)};
+  document.getElementById('see834').onclick=function(){fileSel=m.id;closeMember();activeTab='file';renderTabs();renderMain()};
+  function kv(k,v){return '<dt>'+k+'</dt><dd>'+v+'</dd>'}
+}
+function plainEnglish(m){
+  var first=m.spans[0];
+  switch(m.reg){
+   case 'A':return esc(m.first)+' has been covered under '+esc(GROUPS[m.group].name)+' since '+mLabel(first.b)+
+     ' \u2014 '+(NOW-first.b+1)+' straight months \u2014 administered by CHNCT, insured by the State of Connecticut itself, '+
+     'because since January 2012 there has been no one else to insure it. The most recent renewal passed without incident.';
+   case 'B':return esc(m.first)+'\u2019s renewal was never completed, so coverage closed at the end of '+mLabel(m.closedAt)+
+     ' \u2014 not because anything about '+(m.sex==='F'?'her':'him')+' changed, but because paperwork lapsed. After '+m.gap+
+     ' uncovered month'+(m.gap>1?'s':'')+', a new application was approved and a new span opened '+mLabel(m.closedAt+m.gap+1)+
+     '. The gap stays in the record; that is the point.';
+   case 'C':return esc(m.first)+' applied in '+mLabel(first.app)+' and was granted '+first.retroN+' retroactive month'+
+     (first.retroN>1?'s':'')+', so eligibility begins '+mLabel(first.b)+' \u2014 before the application existed. And here Connecticut '+
+     'retires the series\u2019 oldest seam: in a state with no capitation, the retro months are paid exactly like all the others \u2014 '+
+     'the state\u2019s own claims system, end to end. The two dates remain; the payment cliff between them is gone.';
+   case 'D':return esc(m.first)+'\u2019s delivery table has churned three times \u2014 '+m.pcps.join(', then ')+' \u2014 and not one of '+
+     'those rows is an enrollment: PCMH attribution carries no risk, moves no capitation, and changes nothing about coverage. The schema '+
+     'is identical to the enrollment tables in forty-one other apps in this series; the contract behind it ended in January 2012. A '+
+     'pipeline that joins this table the way it joins the others produces numbers that are precisely, silently wrong \u2014 schemas '+
+     'travel; semantics don\u2019t.';
+   case 'E':return esc(m.first)+' has been covered since '+mLabel(first.b)+' under state-funded HUSKY \u2014 coverage for children '+
+     'regardless of immigration status, opened January 2023 \u2014 with benefits, ASO, and renewal calendar identical to a HUSKY A '+
+     'child\u2019s. What separates the two exists in no span: a fund-source flag, invisible to every table in this app and decisive in '+
+     'every federal report downstream. The CMS-64 splits where the eligibility record cannot.';
+   default:
+     return esc(m.first)+' turned 65 and Medicare arrived '+mLabel(m.t65)+' \u2014 and the delivery table never noticed. The eligibility '+
+     'side seamed as it does in every state: the '+esc(GROUPS[m.spans[0].cat].name)+' span closed, dual status opened, the Part B buy-in '+
+     'accreted '+mLabel(m.t65+1)+'. But nothing terminated and nothing enrolled, because in Connecticut there has been no plan to leave '+
+     'since January 2012 \u2014 the ASO attribution runs straight through the birthday, meaning what it always meant. Answer #42 removes '+
+     'the premise under the taxonomy: the pair, missing pair, half pair, same-name pair, and added row were all things risk-bearing plans '+
+     'do. Remove the plans, and Medicare\u2019s arrival is what it was underneath all along \u2014 an eligibility event, and the only file '+
+     'that speaks is the buy-in exchange between the state and CMS.';
+  }
+}
+function currentPlan(m){var d=sysNow(m).find(function(x){return x.sys==='MCO'||x.sys==='MYC'});
+  return d?d.plan:'fee-for-service'}
+
+/* ================= internal invariant suite (headless harness calls runTests) ================= */
+function runTests(){
+  var out=[],pass=0;
+  function t(name,fn){try{var r=fn();out.push([!!r,name+(typeof r==='string'?' \u2014 '+r:'')]);if(r)pass++}
+    catch(e){out.push([false,name+' \u2014 threw: '+e.message])}}
+  t('Population is exactly 3,000 members',function(){return MEMBERS.length===3000});
+  t('Register counts are exactly as planted (1500/500/250/250/350/150)',function(){
+    return ['A','B','C','D','E','F'].every(function(r){
+      return MEMBERS.filter(function(m){return m.reg===r}).length===REGCOUNT[r]})});
+  t('No span ends before it begins',function(){
+    return SPANS.every(function(r){return r.s.e===null||r.s.e>=r.s.b})&&
+           DSPANS.every(function(r){return r.d.e===null||r.d.e>=r.d.b})});
+  t('Register D: one unbroken span; exactly three PCP attributions, adjacent, plus one open ASO row',function(){
+    return MEMBERS.filter(function(m){return m.reg==='D'}).every(function(m){
+      if(!(m.spans.length===1&&m.spans[0].e===null))return false;
+      var aso=m.dspans.filter(function(d){return d.sys==='ASO'}),p=m.dspans.filter(function(d){return d.sys==='PCP'});
+      if(!(aso.length===1&&aso[0].e===null&&p.length===3))return false;
+      return p[0].e===p[1].b-1&&p[1].e===p[2].b-1&&p[2].e===null})});
+  t('Register E: every state-funded child post-2023, single open span, no federal match flag confusion',function(){
+    return MEMBERS.filter(function(m){return m.reg==='E'}).every(function(m){
+      return m.fundSrc==='STATE'&&m.spans.length===1&&m.spans[0].b>=KIDS0&&m.spans[0].e===null&&m.group==='KID'})});
+  t('Register F: eligibility seams at 65; exactly one delivery row, open through the boundary, and it is not a plan',function(){
+    return MEMBERS.filter(function(m){return m.reg==='F'}).every(function(m){
+      if(!(m.spans.length===2&&m.spans[0].e===m.spans[1].b-1&&m.spans[1].cat==='DUA'))return false;
+      return m.dspans.length===1&&m.dspans[0].sys==='ASO'&&m.dspans[0].e===null&&m.dspans[0].b<m.t65})});
+  t('Every retro grant begins before its application month',function(){
+    return MEMBERS.filter(function(m){return m.reg==='C'}).every(function(m){
+      return m.spans[0].b<m.spans[0].app})});
+  
+  t('Every member renders an 834 without error',function(){
+    var n=0;MEMBERS.forEach(function(m){n+=build834(m).length});return n>0?String(n)+' segments built':false});
+  t('Dataset checksum (FNV-1a over the serialized population)',function(){
+    var s='';MEMBERS.forEach(function(m){s+=m.mid+m.last+m.first+m.reg+m.group+
+      m.spans.map(function(x){return x.cat+x.b+'/'+x.e}).join('|')+
+      m.dspans.map(function(x){return x.sys+x.b+'/'+x.e}).join('|')});
+    var hv=0x811c9dc5;
+    for(var i=0;i<s.length;i++){hv^=s.charCodeAt(i);hv=Math.imul(hv,0x01000193)}
+    return 'FNV 0x'+(hv>>>0).toString(16).toUpperCase()});
+  var h='<table><tbody>'+out.map(function(r){
+    return '<tr><td class="'+(r[0]?'testpass':'testfail')+'">'+(r[0]?'PASS':'FAIL')+'</td><td>'+esc(r[1])+'</td></tr>'}).join('')+
+    '</tbody></table><p class="sub" style="margin-top:10px">'+pass+' / '+out.length+' checks passed.</p>';
+  var out_el=document.getElementById('testout');if(out_el)out_el.innerHTML=h;
+  return pass===out.length;
+}
+
+/* ================= keyboard & overlay ================= */
+document.getElementById('overlay').onclick=closeMember;
+document.addEventListener('keydown',function(e){
+  var open=document.getElementById('slide').classList.contains('open');
+  if(!open)return;
+  if(e.key==='Escape')closeMember();
+  if(e.key==='ArrowLeft')stepMember(-1);
+  if(e.key==='ArrowRight')stepMember(1);
+});
+
+/* ================= boot ================= */
+renderTabs();renderMain();
+</script>
+</body>
+</html>

@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minnesota Health Care Programs Eligibility Central</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@1,8..60,400;1,8..60,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#1E5FCC;
+  --accent-soft:#E8EFFB;
+  --ink:#1b2430;
+  --ink-soft:#4a5568;
+  --ink-faint:#8a94a3;
+  --line:#dde3ea;
+  --line-soft:#eceff3;
+  --bg:#f7f8fa;
+  --card:#ffffff;
+  --serif:'Source Serif 4', Georgia, serif;
+  --sans:'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono:'IBM Plex Mono', 'Consolas', monospace;
+  --g-FC01:#2E7D5B; --g-PG02:#B0568C; --g-CH19:#C98A2B; --g-EA02:#1E5FCC;
+  --g-SI02:#6A4FB6; --g-MN98:#5B8AA6; --g-FF26:#C25B4A; --g-WD02:#3E9C9C; --g-LT01:#7A7A52;
+  --d-mco:#4a7fd6; --d-ffs:#9aa3ad; --d-harp:#8a5fc0; --d-mltc:#2e8f8f;
+  --ok:#2E7D5B; --warn:#C98A2B; --bad:#C0392B;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+
+/* ---------- header ---------- */
+header{background:var(--card);border-bottom:1px solid var(--line);padding:18px 28px 0}
+.brandrow{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.wordmark{font-family:var(--serif);font-style:italic;font-weight:600;font-size:1.65rem;color:var(--accent);letter-spacing:.01em}
+.wordmark .st{color:var(--ink)}
+.tagline{color:var(--ink-faint);font-size:.85rem}
+.credit{margin-left:auto;color:var(--ink-faint);font-size:.78rem}
+nav{display:flex;gap:2px;margin-top:14px;flex-wrap:wrap}
+nav button{appearance:none;border:none;background:none;font:inherit;font-size:.86rem;font-weight:500;color:var(--ink-soft);padding:9px 14px;cursor:pointer;border-bottom:3px solid transparent;border-radius:6px 6px 0 0}
+nav button:hover{background:var(--line-soft)}
+nav button.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+nav button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+/* ---------- layout ---------- */
+main{max-width:1280px;margin:0 auto;padding:24px 28px 80px}
+.page{display:none}
+.page.on{display:block}
+h2{font-size:1.22rem;font-weight:700;margin:4px 0 4px}
+h3{font-size:.98rem;font-weight:600;margin:22px 0 8px}
+.sub{color:var(--ink-soft);font-size:.88rem;margin-bottom:16px;max-width:70ch}
+
+/* ---------- plain english callout ---------- */
+.plain{font-family:var(--serif);font-style:italic;font-size:1.02rem;line-height:1.65;color:#2c3a4d;background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:14px 18px;margin:14px 0 20px;max-width:86ch}
+.plain b{font-style:italic;font-weight:600}
+.plain .pe-label{display:block;font-family:var(--sans);font-style:normal;font-weight:700;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:5px}
+
+/* ---------- cards / stats ---------- */
+.statrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.stat .n{font-family:var(--mono);font-size:1.55rem;font-weight:600;color:var(--ink)}
+.stat .l{font-size:.74rem;color:var(--ink-soft);margin-top:2px;line-height:1.35}
+.stat.acc .n{color:var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:14px 0}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:900px){.twocol{grid-template-columns:1fr}}
+
+/* ---------- legend / bars ---------- */
+.leg{display:flex;flex-direction:column;gap:7px}
+.legrow{display:grid;grid-template-columns:16px 64px 1fr 46px;gap:10px;align-items:center;font-size:.84rem}
+.legrow .swatch{width:14px;height:14px;border-radius:4px}
+.legrow .code{font-family:var(--mono);font-size:.8rem;font-weight:600}
+.legrow .cnt{font-family:var(--mono);text-align:right;color:var(--ink-soft)}
+.barlist{display:flex;flex-direction:column;gap:8px}
+.barrow{display:grid;grid-template-columns:210px 1fr 40px;gap:10px;align-items:center;font-size:.83rem}
+.barrow .track{background:var(--line-soft);border-radius:5px;height:14px;overflow:hidden}
+.barrow .fill{display:block;height:100%;background:var(--d-mco);border-radius:5px;transition:width .8s ease}
+.barrow .bn{font-family:var(--mono);text-align:right;color:var(--ink-soft)}
+@media(max-width:700px){.barrow{grid-template-columns:130px 1fr 36px}}
+
+/* ---------- controls ---------- */
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;align-items:center}
+.controls input[type=search],.controls select{font:inherit;font-size:.85rem;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
+.controls input[type=search]{min-width:220px}
+.controls select:focus,.controls input:focus{outline:2px solid var(--accent);outline-offset:0}
+.hint{font-size:.76rem;color:var(--ink-faint)}
+
+/* ---------- tables ---------- */
+.tblwrap{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:auto;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:.83rem}
+th{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);background:#fbfcfd;white-space:nowrap;position:sticky;top:0}
+th.sortable{cursor:pointer;user-select:none}
+th.sortable:hover{color:var(--accent)}
+th .arr{font-size:.72rem;color:var(--accent)}
+.pager{display:flex;align-items:center;justify-content:center;gap:14px;margin:12px 0 2px}
+.pager button.pg{appearance:none;font:inherit;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:5px 13px;cursor:pointer;font-size:.82rem;color:var(--ink-soft)}
+.pager button.pg:hover:not(:disabled){background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.pager button.pg:disabled{opacity:.35;cursor:default}
+.pager .pgpos{font-size:.78rem;color:var(--ink-faint)}
+td{padding:9px 12px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tbody tr.rowlink{cursor:pointer}
+tbody tr.rowlink:hover{background:var(--accent-soft)}
+tbody tr.hl{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+.mono{font-family:var(--mono);font-size:.8rem}
+.nowrap{white-space:nowrap}
+
+/* ---------- chips ---------- */
+.chip{display:inline-block;font-family:var(--mono);font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:20px;color:#fff;white-space:nowrap}
+.chip.outl{background:none;border:1.5px solid currentColor}
+.dchip{display:inline-block;font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:5px;white-space:nowrap}
+.d-mco{background:#e5edfa;color:#2456a8}
+.d-ffs{background:#eceff2;color:#5c6672}
+.d-harp{background:#efe7f8;color:#6a3fa0}
+.d-mltc{background:#e2f2f2;color:#1f6f6f}
+.st-act{color:var(--ok);font-weight:600}
+.st-gap{color:var(--warn);font-weight:600}
+.st-cls{color:var(--ink-faint);font-weight:600}
+.flag{display:inline-block;font-size:.7rem;font-weight:600;background:#fdf1e0;color:#96660f;border:1px solid #f0d9ae;border-radius:5px;padding:1px 7px;white-space:nowrap}
+
+/* ---------- registers ---------- */
+.reg{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin:12px 0}
+.reg h3{margin:0 0 4px;display:flex;align-items:center;gap:10px}
+.reg .rl{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;background:var(--accent);color:#fff;font-family:var(--mono);font-weight:600;font-size:.85rem;flex:none}
+.reg .q{font-family:var(--serif);font-style:italic;color:#2c3a4d;font-size:.95rem;margin:4px 0 10px}
+.reg .meta{font-size:.78rem;color:var(--ink-faint);margin-bottom:8px}
+
+/* ---------- 834 ---------- */
+.ediwrap{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:12px 0;overflow:hidden}
+.edihead{padding:12px 18px;border-bottom:1px solid var(--line);display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;background:#fbfcfd}
+.edihead .fn{font-family:var(--mono);font-size:.82rem;font-weight:600}
+.edirow{display:grid;grid-template-columns:minmax(300px,46%) 1fr;border-bottom:1px solid var(--line-soft)}
+.edirow:last-child{border-bottom:none}
+.edirow .seg{font-family:var(--mono);font-size:.78rem;padding:8px 16px;background:#f4f7fb;color:#1b3a66;overflow-wrap:anywhere;border-right:1px solid var(--line-soft)}
+.edirow .note{font-size:.8rem;padding:8px 16px;color:var(--ink-soft)}
+.edirow.loop .seg{background:#e8effb;font-weight:600}
+@media(max-width:780px){.edirow{grid-template-columns:1fr}.edirow .seg{border-right:none}}
+
+/* ---------- modal ---------- */
+.overlay{position:fixed;inset:0;background:rgba(20,28,40,.42);opacity:0;pointer-events:none;transition:opacity .22s;z-index:40}
+.overlay.on{opacity:1;pointer-events:auto}
+.slideover{position:fixed;top:0;right:0;bottom:0;width:640px;max-width:94vw;background:var(--card);box-shadow:-12px 0 40px rgba(15,25,45,.22);transform:translateX(102%);transition:transform .26s ease;z-index:50;display:flex;flex-direction:column}
+.slideover.on{transform:translateX(0)}
+.mo-head{padding:16px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+.mo-head .who{min-width:0}
+.mo-head .nm{font-weight:700;font-size:1.05rem}
+.mo-head .idz{font-family:var(--mono);font-size:.76rem;color:var(--ink-soft)}
+.mo-x{margin-left:auto;appearance:none;border:1px solid var(--line);background:none;border-radius:8px;width:32px;height:32px;font-size:1rem;cursor:pointer;color:var(--ink-soft);flex:none}
+.mo-x:hover{background:var(--line-soft)}
+.mo-body{overflow-y:auto;padding:18px 22px;flex:1}
+.mo-foot{border-top:1px solid var(--line);padding:10px 22px;display:flex;align-items:center;gap:12px}
+.mo-foot button{appearance:none;font:inherit;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:.9rem}
+.mo-foot button:hover:not(:disabled){background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.mo-foot button:disabled{opacity:.35;cursor:default}
+.mo-foot .pos{font-family:var(--mono);font-size:.78rem;color:var(--ink-faint);margin-left:auto}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:4px 12px;font-size:.85rem;margin:8px 0 14px}
+.kv .k{color:var(--ink-faint)}
+.kv .v{color:var(--ink)}
+.mo-body h4{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);margin:16px 0 8px}
+.mo-body .plain{font-size:.93rem;padding:12px 15px}
+
+/* ---------- mini timeline ---------- */
+.tl{margin:6px 0 4px}
+.tl .band{display:grid;grid-template-columns:78px 1fr;gap:8px;align-items:center;margin:5px 0}
+.tl .bl{font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-faint);text-align:right}
+.tl .lane{position:relative;height:18px;background:var(--line-soft);border-radius:4px}
+.tl .bar{position:absolute;top:0;bottom:0;border-radius:4px;min-width:3px}
+.tl .bar.striped{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.28) 0 5px,transparent 5px 10px)}
+.tl .axis{display:grid;grid-template-columns:78px 1fr;gap:8px;margin-top:3px}
+.tl .ax{position:relative;height:14px;font-size:.62rem;color:var(--ink-faint);font-family:var(--mono)}
+.tl .ax span{position:absolute;transform:translateX(-50%)}
+.tl .todayline{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--bad);opacity:.7}
+.tl-note{font-size:.7rem;color:var(--ink-faint);margin-top:6px}
+
+/* ---------- reference ---------- */
+.refgrid{display:grid;grid-template-columns:1fr;gap:4px}
+dl.gloss{display:grid;grid-template-columns:200px 1fr;gap:8px 16px;font-size:.85rem}
+dl.gloss dt{font-weight:600}
+dl.gloss dd{color:var(--ink-soft)}
+@media(max-width:700px){dl.gloss{grid-template-columns:1fr}dl.gloss dd{margin-bottom:8px}}
+footer{max-width:1280px;margin:0 auto;padding:0 28px 40px;color:var(--ink-faint);font-size:.75rem;line-height:1.6}
+@media(max-width:700px){header{padding:14px 16px 0}main{padding:18px 14px 60px}.kv{grid-template-columns:120px 1fr}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brandrow">
+    <div class="wordmark">Minnesota Health Care Programs <span class="st">Central</span></div>
+    <div class="tagline">PMAP, MinnesotaCare, MSHO, and the 834 &mdash; a synthetic demonstration</div>
+    <div class="credit">Robert Thomas Keyes</div>
+  </div>
+  <nav id="nav" aria-label="Sections">
+    <button data-pg="overview" class="on">Overview</button>
+    <button data-pg="members">Members</button>
+    <button data-pg="spans">Eligibility Spans</button>
+    <button data-pg="delivery">Plans & Products</button>
+    <button data-pg="registers">Scenario Registers</button>
+    <button data-pg="file">What the File Says</button>
+    <button data-pg="reference">Reference Codes</button>
+  </nav>
+</header>
+<main>
+  <section class="page on" id="pg-overview">
+    <h2>Overview</h2>
+    <p class="sub">A synthetic Minnesota Health Care Programs population across a 24-month window (January 2025 &ndash; December 2026), viewed as of <b>July 2026</b>. Every value is deterministic &mdash; seeded PRNG, identical on every load.</p>
+    <div class="plain" id="ov-plain"></div>
+    <div class="statrow" id="ov-stats"></div>
+    <div class="twocol">
+      <div class="card">
+        <h3 style="margin-top:0">Coverage groups in the population</h3>
+        <div class="leg" id="ov-groups"></div>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Where members get their care today</h3>
+        <div class="barlist" id="ov-mcos"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="pg-members">
+    <h2>Members</h2>
+    <p class="sub">The full synthetic roster. Click any row for the member record; click a column header to sort.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>Every person here has an eight-digit <b>PMI</b> — the Person Master Index number — that never changes. Two things make this roster unlike any other in the series. First, the group column includes <b>MinnesotaCare</b>: the Basic Health Program, Medicaid’s upstairs neighbor — when income rises past 138%, coverage <b>converts</b> instead of ending. Second, the plan shelf includes <b>governments</b>: Hennepin Health is owned by a county; South Country Health Alliance is owned jointly by rural county boards — and every other carrier is a nonprofit, because Minnesota long barred for-profit HMOs. Products (PMAP, SNBC, MSC+, MSHO) ride on the plans by life stage — and MSHO holds Medicare and Medicaid <b>in one plan at once</b>.</div>
+    <div class="controls">
+      <input type="search" id="m-search" placeholder="Search name, PMI, city&hellip;" aria-label="Search members">
+      <select id="m-group" aria-label="Filter by coverage group"></select>
+      <select id="m-del" aria-label="Filter by delivery system"></select>
+      <select id="m-reg" aria-label="Filter by register"></select>
+      <select id="m-status" aria-label="Filter by status">
+        <option value="">Status today: all</option>
+        <option value="Active">Active</option>
+        <option value="Gap">In gap</option>
+        <option value="Closed">Closed</option>
+      </select>
+      <span class="hint" id="m-count"></span>
+    </div>
+    <div class="tblwrap"><table id="m-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">PMI</th>
+        <th class="sortable" data-k="name">Name</th>
+        <th class="sortable" data-k="age">Age</th>
+        <th class="sortable" data-k="sex">Sex</th>
+        <th class="sortable" data-k="grp">Coverage Group</th>
+        <th class="sortable" data-k="del">Delivery Today</th>
+        <th class="sortable" data-k="county">County</th>
+        <th class="sortable" data-k="reg">Register</th>
+        <th class="sortable" data-k="status">Status Today</th>
+      </tr></thead>
+      <tbody id="m-body"></tbody>
+    </table></div>
+    <div class="pager" id="m-pager"></div>
+  </section>
+
+  <section class="page" id="pg-spans">
+    <h2>Eligibility Spans</h2>
+    <p class="sub">One row per coverage-group span &mdash; the state's answer to <i>&ldquo;from when to when, and under which door did this person enter?&rdquo;</i> Click a row to open the member.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>A span is a promise with dates on it — and Minnesota’s spans include an end reason almost no other state can write: <b>“converted — no gap.”</b> When income crosses the 138% line, Medical Assistance closes and MinnesotaCare opens the next day — register B’s net, register C’s two-way ladder. Kansas’s register C showed what the cliff does to a record; this app shows what the anti-cliff looks like: contiguous spans, program labels flipping, coverage never blinking. Churn measured on coverage is zero; churn measured on program is not — choose your metric carefully.</div>
+    <div class="controls">
+      <select id="s-group" aria-label="Filter spans by coverage group"></select>
+      <select id="s-open" aria-label="Filter by open or closed">
+        <option value="">Open + closed</option><option value="open">Open only</option><option value="closed">Closed only</option>
+      </select>
+      <span class="hint" id="s-count"></span>
+    </div>
+    <div class="tblwrap"><table id="s-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">PMI</th>
+        <th class="sortable" data-k="name">Member</th>
+        <th class="sortable" data-k="grp">Group</th>
+        <th class="sortable" data-k="start">Begin</th>
+        <th class="sortable" data-k="end">End</th>
+        <th class="sortable" data-k="months">Months</th>
+        <th>End Reason</th>
+      </tr></thead>
+      <tbody id="s-body"></tbody>
+    </table></div>
+    <div class="pager" id="s-pager"></div>
+  </section>
+
+  <section class="page" id="pg-delivery">
+    <h2>Plans & Products</h2>
+    <p class="sub">One row per delivery span: which plan held the member, and under which <b>product</b> — PMAP, SNBC, MSC+, or MSHO (the integrated dual product) — or fee-for-service under the tribal election. Click a row to open the member.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>Minnesota’s shelf is unlike any other in the series twice over. <b>Who owns the plans:</b> every carrier is a nonprofit or a government — including Hennepin Health (owned by a county) and South Country Health Alliance (owned by rural county boards under joint powers): county government competing as a carrier, on a menu, which is Oregon’s community governance and Philadelphia’s public plan rolled into a market. <b>What rides on them:</b> products by life stage — PMAP for families and working-age adults, SNBC for adults with disabilities, and at 65 the fork this whole app builds toward: <b>MSHO</b>, where one plan takes Medicare and Medicaid together (the oldest integrated dual product in the country, 1997), or <b>MSC+</b>, the Medicaid-only path for those who decline. Register F is that fork, member by member.</div>
+    <div class="controls">
+      <select id="d-sys" aria-label="Filter by delivery system"></select>
+      <span class="hint" id="d-count"></span>
+    </div>
+    <div class="tblwrap"><table id="d-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">PMI</th>
+        <th class="sortable" data-k="name">Member</th>
+        <th class="sortable" data-k="sys">Delivery</th>
+        <th class="sortable" data-k="start">Begin</th>
+        <th class="sortable" data-k="end">End</th>
+        <th class="sortable" data-k="months">Months</th>
+        <th>Begin / End Reason</th>
+      </tr></thead>
+      <tbody id="d-body"></tbody>
+    </table></div>
+    <div class="pager" id="d-pager"></div>
+  </section>
+
+  <section class="page" id="pg-registers">
+    <h2>Scenario Registers</h2>
+    <p class="sub">Six business questions, each answered by a register of members whose data was planted to demonstrate exactly that scenario. Click any member to inspect the record behind the answer.</p>
+    <div id="reg-list"></div>
+  </section>
+
+  <section class="page" id="pg-file">
+    <h2>What the File Says</h2>
+    <p class="sub">Minnesota really does speak X12N 834 — the state’s roster files to its plans, across every product. Pick a member and read the transaction, segment by segment, with a plain-language note on every line.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>An 834 is the state telling a health plan: <b>this person is yours now</b> — and Minnesota’s quietest files are its best ones: register B and C’s conversions often produce <b>no plan transaction at all</b>, because the member kept the same plan while the program label flipped underneath — the anti-cliff leaves almost no wake. Register F’s aligned members produce a product change to the <b>same carrier</b>: the 834 equivalent of an upgrade letter. Tribal-election members generate the state’s own record, shown in the same shape for teaching.</div>
+    <div class="controls">
+      <select id="f-member" aria-label="Choose member for 834"></select>
+      <span class="hint">Members are grouped by register; the transaction is rebuilt live from the member's actual spans.</span>
+    </div>
+    <div id="f-out"></div>
+  </section>
+
+  <section class="page" id="pg-reference">
+    <h2>Reference Codes</h2>
+    <p class="sub">The teaching code sets used throughout the app. Codes are patterned on Minnesota conventions; verify against current Minnesota DHS publications before any non-demonstration use.</p>
+    <div id="ref-out"></div>
+  </section>
+</main>
+
+<footer>
+  <p><b>Minnesota Health Care Programs Eligibility Central</b> &mdash; a single-file demonstration app in the Central series. All members, identifiers, addresses, phone numbers, and dates are synthetic and deterministic (seeded PRNG, seed 612001); any resemblance to real persons is coincidental. Program facts reflect public Minnesota Health Care Programs policy of the mid-2020s and change year to year — plan service areas and product mechanics are teaching simplifications; verify against current Minnesota DHS and CMS publications before any non-demonstration use. The 834 rendering is a teaching aid, not an implementation guide. &copy; Robert Thomas Keyes.</p>
+</footer>
+
+<div class="overlay" id="overlay"></div>
+<aside class="slideover" id="modal" role="dialog" aria-modal="true" aria-labelledby="mo-nm">
+  <div class="mo-head">
+    <div class="who">
+      <div class="nm" id="mo-nm"></div>
+      <div class="idz" id="mo-id"></div>
+    </div>
+    <button class="mo-x" id="mo-x" aria-label="Close">&#10005;</button>
+  </div>
+  <div class="mo-body" id="mo-body"></div>
+  <div class="mo-foot">
+    <button id="mo-prev" aria-label="Previous member">&#9664;</button>
+    <button id="mo-next" aria-label="Next member">&#9654;</button>
+    <span class="pos" id="mo-pos"></span>
+  </div>
+</aside>
+<script>
+'use strict';
+/* ============ Minnesota Health Care Programs Eligibility Central ============
+   Central series -- Robert Thomas Keyes
+   Deterministic synthetic data. Seed 612001 (Minneapolis's area code).
+   Window: Jan 2025 (idx 0) .. Dec 2026 (idx 23). "Today" = Jul 2026 (idx 18).
+================================================================= */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+var R = mulberry32(612001);
+function ri(lo,hi){return lo+Math.floor(R()*(hi-lo+1))}
+function pick(arr){return arr[Math.floor(R()*arr.length)]}
+function wpick(pairs){var tot=0,i;for(i=0;i<pairs.length;i++)tot+=pairs[i][1];var x=R()*tot;for(i=0;i<pairs.length;i++){x-=pairs[i][1];if(x<0)return pairs[i][0]}return pairs[pairs.length-1][0]}
+
+var WIN_START_Y=2025, WIN_MONTHS=24, TODAY_IDX=18; /* Jul 2026 */
+var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function mLabel(idx){ if(idx===null||idx===undefined)return '&mdash;';
+  var y=WIN_START_Y+Math.floor(idx/12), m=((idx%12)+12)%12;
+  return MONTHS[m]+' '+y }
+function mFirstD8(idx){var y=WIN_START_Y+Math.floor(idx/12),m=((idx%12)+12)%12;return ''+y+String(m+1).padStart(2,'0')+'01'}
+function mLastD8(idx){var y=WIN_START_Y+Math.floor(idx/12),m=((idx%12)+12)%12;var last=new Date(y,m+1,0).getDate();return ''+y+String(m+1).padStart(2,'0')+String(last).padStart(2,'0')}
+function spanMonths(s,e){var last=(e===null?TODAY_IDX:e);return Math.max(1,last-Math.max(s,-990)+1)}
+
+var GROUPS={
+ CH19:{name:'Children (Medical Assistance)', magi:true, color:'--g-CH19', blurb:'Children through 18 under Medical Assistance \u2014 Minnesota\u2019s name for Medicaid since 1966.'},
+ AEG:{name:'MA Adults (expansion)',    magi:true,  color:'--g-SI02', blurb:'Adults 19\u201364 to 138% FPL \u2014 Minnesota expanded early (2011 early option, 2014 fully), and built something <b>above</b> the expansion: see MCARE.'},
+ MCARE:{name:'MinnesotaCare (BHP)',    magi:true,  color:'--g-WD02', blurb:'The Basic Health Program \u2014 138\u2013200% FPL, small premiums, run by the state under ACA \u00a71331. Only Minnesota and New York built one. It is <b>Medicaid\u2019s upstairs neighbor</b>: when income rises past 138%, coverage converts instead of ending \u2014 the anti-cliff, and registers B and C\u2019s subject.'},
+ PW02:{name:'Pregnant & Postpartum',   magi:true,  color:'--g-EA02', blurb:'Pregnancy coverage plus twelve months postpartum.'},
+ FM01:{name:'Parents & Caretakers',    magi:true,  color:'--g-FC01', blurb:'Parents and caretaker relatives.'},
+ AB03:{name:'Aged / Blind / Disabled', magi:false, color:'--g-MN98', blurb:'SSI-related budgeting \u2014 home of the senior products: MSHO, MSC+, and SNBC.'},
+ FF26:{name:'Former Foster Care',      magi:true,  color:'--g-FF26', blurb:'Young adults formerly in foster care, covered to 26.'}
+};
+var GROUP_KEYS=Object.keys(GROUPS);
+
+/* ---------- plans: commercial, nonprofit, and government-owned in one market ---------- */
+var MNPLANS=[
+ {code:'BP',  name:'Blue Plus', own:'nonprofit carrier'},
+ {code:'HP',  name:'HealthPartners', own:'member-governed nonprofit'},
+ {code:'UC',  name:'UCare', own:'independent nonprofit'},
+ {code:'MED', name:'Medica', own:'nonprofit carrier'},
+ {code:'HH',  name:'Hennepin Health', own:'owned by Hennepin County government'},
+ {code:'SCHA',name:'South Country Health Alliance', own:'joint powers of rural county boards'}
+];
+var PLANBY={}; MNPLANS.forEach(function(p){PLANBY[p.code]=p});
+var MSHO_OK={BP:1,HP:1,UC:1,MED:1}; /* carriers with an MSHO product in this population */
+function sysLabel(code){ return code==='FFS'?'Fee-for-Service (tribal election and exemptions)':(PLANBY[code]?PLANBY[code].name:code) }
+function sysKind(code){ return code==='FFS'?'FFS':'MCO' }
+function sysClass(code){ return code==='FFS'?'d-ffs':'d-mco' }
+function plansFor(county){
+  var map={'Hennepin':['BP','HP','UC','MED','HH'],'Kandiyohi':['SCHA','BP','UC'],'Nobles':['SCHA','BP','UC'],'Blue Earth':['SCHA','BP','UC','MED'],'Mahnomen':['BP','UC'],'Beltrami':['BP','UC']};
+  return map[county]||['BP','HP','UC','MED'];
+}
+/* products ride on plans: PMAP (families/adults), MSHO (integrated dual), MSC+ (Medicaid-only 65+), SNBC (disabled adults) */
+var PRODUCTS={
+ PMAP:'Prepaid Medical Assistance Program \u2014 families and adults',
+ MSHO:'Minnesota Senior Health Options \u2014 one plan holds Medicare AND Medicaid: the oldest integrated dual product in the country (1997)',
+ 'MSC+':'Minnesota Senior Care Plus \u2014 Medicaid-only managed care for 65+ who declined MSHO integration',
+ SNBC:'Special Needs BasicCare \u2014 adults with disabilities, 18\u201364'
+};
+
+var COUNTIES=[
+ {name:'Hennepin',  w:6, zips:['55404','55411'], city:'Minneapolis', streets:['E Lake St','W Broadway Ave','Chicago Ave','Franklin Ave E']},
+ {name:'Ramsey',    w:4, zips:['55106'], city:'St. Paul', streets:['Payne Ave','Rice St','Arcade St','Maryland Ave E']},
+ {name:'Dakota',    w:1.5,zips:['55075'], city:'South St. Paul', streets:['Southview Blvd','Marie Ave','Concord St']},
+ {name:'Anoka',     w:1.5,zips:['55303'], city:'Anoka', streets:['Main St','7th Ave','Round Lake Blvd']},
+ {name:'St. Louis', w:2, zips:['55806'], city:'Duluth', streets:['W Superior St','Grand Ave','Piedmont Ave']},
+ {name:'Olmsted',   w:1.5,zips:['55904'], city:'Rochester', streets:['11th Ave SE','Marion Rd SE','Broadway Ave S']},
+ {name:'Stearns',   w:1.5,zips:['56303'], city:'St. Cloud', streets:['3rd St N','9th Ave N','Veterans Dr']},
+ {name:'Kandiyohi', w:1, zips:['56201'], city:'Willmar', streets:['1st St S','Becker Ave','Lakeland Dr']},
+ {name:'Nobles',    w:0.8,zips:['56187'], city:'Worthington', streets:['Oxford St','10th St','Humiston Ave']},
+ {name:'Beltrami',  w:0.8,zips:['56601'], city:'Bemidji', streets:['Paul Bunyan Dr','Bemidji Ave N','Irvine Ave NW']},
+ {name:'Mahnomen',  w:0.5,zips:['56557'], city:'Mahnomen', streets:['Main St W','1st St SW','Jefferson Ave']},
+ {name:'Blue Earth',w:1, zips:['56001'], city:'Mankato', streets:['Madison Ave','N Riverfront Dr','Balcerzak Dr']}
+];
+var COUNTYBY={}; COUNTIES.forEach(function(c){COUNTYBY[c.name]=c});
+function pickCounty(){return wpick(COUNTIES.map(function(c){return [c,c.w]}))}
+var AREA=['612','651','218','507','320'];
+
+var FIRST_F=['Emma','Olivia','Madison','Kaylee','Brittany','Amber','Dawn','Crystal','Karen','Linda','Darlene','Amina','Fartun','Hodan','Sagal','Maria','Guadalupe','Pa','Mai','Kia','Paw','Hser','Svetlana','Hazel','June','Twyla','Bernice','Peggy','Sharon','Marlys','Solveig','Ingrid'],
+    FIRST_M=['Gary','Dennis','Larry','Duane','Wayne','Dale','Travis','Hunter','Cody','Tyler','Abdi','Mohamed','Yusuf','Liban','Jose','Luis','Tou','Vang','Chai','Hsa','Dmitri','Vernon','Merle','Clifford','Emil','Delbert','Leland','Frank','Lars','Nils','Ole','Curtis'];
+var LAST=['Olson','Johnson','Anderson','Peterson','Larson','Hanson','Lindberg','Nelson','Carlson','Hassan','Mohamed','Abdi','Farah','Ali','Omar','Hussein','Warsame','Vang','Yang','Xiong','Lee','Her','Moua','Thao','Garcia','Hernandez','Martinez','Fairbanks','Beaulieu','Roy','Goodwin','Kettner','Schmitt','Meyer','Htoo','Paw','Reh','Gudina','Bekele','Volkov'],
+    LANGS=[['English',78],['Somali',6],['Spanish',6],['Hmong',4],['Karen',2.5],['Oromo',1.5],['Russian',1.5],['Ojibwe',0.5]];
+
+var ELIG_END={
+ REDET:'Renewal not completed \u2014 case closed at renewal',
+ UPNET:'Over income \u2014 converted to MinnesotaCare (no gap)',
+ DOWNNET:'Income fell \u2014 returned to Medical Assistance (no gap)',
+ MOVED:'Moved out of state',
+ MEDI:'Medicare entitlement \u2014 redetermined under SSI-related rules'
+};
+</script>
+<script>
+'use strict';
+/* ================= population generator ================= */
+var MEMBERS=[];
+var usedIds={};
+function genId(){ var s; do{ s=String(ri(10000000,89999999)) }while(usedIds[s]); usedIds[s]=1; return s } /* 8-digit PMI */
+function genPhone(){ return '('+pick(AREA)+') '+ri(200,989)+'-'+String(ri(0,9999)).padStart(4,'0') }
+function genAddr(c){ return {street:ri(100,9999)+' '+pick(c.streets), city:c.city, zip:pick(c.zips)} }
+function genName(sex){ return {first:(sex==='F'?pick(FIRST_F):pick(FIRST_M)), last:pick(LAST)} }
+function dobForAge(age){ var y=2026-age; var m=ri(0,11); if(m>6)y--; return {y:y,m:m,d:ri(1,28)} }
+function dobD8(d){return ''+d.y+String(d.m+1).padStart(2,'0')+String(d.d).padStart(2,'0')}
+function dobLabel(d){return MONTHS[d.m]+' '+d.d+', '+d.y}
+
+function baseMember(reg){
+  var sex=pick(['F','F','F','M','M']);
+  var nm=genName(sex), c=pickCounty(), a=genAddr(c);
+  return { id:genId(), first:nm.first, last:nm.last, sex:sex, county:c.name,
+    street:a.street, city:a.city, zip:a.zip, phone:genPhone(),
+    lang:wpick(LANGS), reg:reg, eligSpans:[], delSpans:[], flags:[],
+    product:'PMAP', net:false, ladder2:false, eStory:null, tribal:false, declined:false };
+}
+function addElig(m,grp,s,e,reason){m.eligSpans.push({grp:grp,start:s,end:e,reason:reason||null})}
+function addDel(m,sys,s,e,note,pd){m.delSpans.push({sys:sys,start:s,end:e,note:note||null,pd:pd||null})}
+function enrollMN(m,s,e,note){
+  var plan=pick(plansFor(m.county));
+  addDel(m,plan,s,(e===undefined?null:e),note||'PMAP \u2014 plan chosen from the county\u2019s menu');
+  return plan;
+}
+
+/* ----- Register A: steady state -- a market with government on the shelf (1100) ----- */
+(function(){
+  var grpsA=[['CH19',6],['AEG',5],['MCARE',1.5],['FM01',1],['PW02',1],['AB03',1.5],['FF26',1]];
+  for(var i=0;i<1100;i++){
+    var grp=wpick(grpsA);
+    var m=baseMember('A');
+    var age = grp==='CH19'?ri(0,18) : grp==='FF26'?ri(18,25) : grp==='AB03'?ri(28,62) : grp==='PW02'?ri(19,38) : ri(19,60);
+    m.age=age; m.dob=dobForAge(age); if(grp==='PW02')m.sex='F';
+    var s=ri(-20,2);
+    addElig(m,grp,s,null,null);
+    var plan=enrollMN(m,s);
+    if(plan==='HH'){
+      m.flags.push('Enrolled with <b>Hennepin Health</b> \u2014 a plan owned by county government, competing on the same shelf as the nonprofits: Minneapolis\u2019s safety-net answer, integrated with county social services and housing programs');
+    } else if(plan==='SCHA'){
+      m.flags.push('Enrolled with <b>South Country Health Alliance</b> \u2014 a plan owned jointly by rural county boards under a joint-powers agreement: county government as carrier, out on the prairie');
+    } else if(grp==='MCARE'){
+      m.flags.push('A <b>MinnesotaCare</b> member \u2014 138\u2013200% FPL, a small monthly premium, same plan menu as Medical Assistance: the Basic Health Program, Medicaid\u2019s upstairs neighbor, that only Minnesota and New York ever built');
+    } else if(R()<0.12){
+      m.flags.push('A '+GROUPS[grp].name+' member with '+sysLabel(plan)+' \u2014 in a market where every carrier is a nonprofit or a government: Minnesota law long barred for-profit HMOs, and the shelf still shows it');
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register B: churn -- and the gap with a net under it (500) ----- */
+(function(){
+  for(var i=0;i<500;i++){
+    var m=baseMember('B');
+    var net=(i>=125&&i<185); /* 60 conversions instead of closures */
+    if(net){
+      m.age=ri(21,60); m.dob=dobForAge(m.age);
+      var s=ri(-18,-4), t=ri(4,14);
+      addElig(m,'AEG',s,t,ELIG_END.UPNET);
+      addElig(m,'MCARE',t+1,null,null);
+      var plan=enrollMN(m,s);
+      m.net=true;
+      m.flags.push('<b>The gap with a net under it</b> \u2014 income rose past 138% FPL at the '+mLabel(t)+' renewal, and where Kansas\u2019s register C showed a cliff, Minnesota shows a <b>conversion</b>: Medical Assistance closed and MinnesotaCare opened the next day, same plan, small premium, no gap. The end reason says \u201cconverted,\u201d not \u201cclosed\u201d \u2014 the anti-cliff, as an eligibility span pair.');
+    } else {
+      var grp=wpick([['AEG',5],['FM01',2],['CH19',2]]);
+      m.age = grp==='CH19'?ri(1,17):ri(19,60); m.dob=dobForAge(m.age);
+      var s2=ri(-18,-2);
+      var inGapNow=(i<125);
+      var term=inGapNow?ri(15,16):ri(4,12);
+      var gap=inGapNow?ri(3,4):ri(1,4);
+      var regain=term+gap+1;
+      addElig(m,grp,s2,term,ELIG_END.REDET);
+      addElig(m,grp,regain,null,null);
+      enrollMN(m,s2,term);
+      enrollMN(m,regain);
+      m.flags.push('Gap '+mLabel(term+1)+'\u2013'+mLabel(regain-1)+' ('+gap+' mo) \u2014 procedural churn: the net below catches income changes, not paperwork failures');
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register C: the upstairs neighbor (375) ----- */
+(function(){
+  for(var i=0;i<375;i++){
+    var m=baseMember('C');
+    var steady=(i<200);
+    m.age=ri(21,60); m.dob=dobForAge(m.age);
+    if(steady){
+      var s=ri(-22,-4);
+      addElig(m,'MCARE',s,null,null);
+      enrollMN(m,s,undefined,'MinnesotaCare rides the same plan menu');
+      m.flags.push('<b>Medicaid\u2019s upstairs neighbor</b> \u2014 a steady MinnesotaCare member: 138\u2013200% FPL, a sliding premium of a few dollars to about $80, the same plans, the same provider networks. Under ACA \u00a71331 the state runs this itself with federal subsidy dollars that would otherwise buy marketplace coverage \u2014 and pays plans Medicaid-style rates for it. Most states\u2019 138\u2013200% population is in commercial QHPs with deductibles; Minnesota\u2019s is one floor up from Medicaid, in the same building.');
+    } else {
+      var s2=ri(-22,-14);
+      var t1=s2+ri(4,8), t2=t1+ri(4,8);
+      var up=(R()<0.5);
+      if(up){
+        addElig(m,'AEG',s2,t1,ELIG_END.UPNET);
+        addElig(m,'MCARE',t1+1,t2,ELIG_END.DOWNNET);
+        addElig(m,'AEG',t2+1,null,null);
+      } else {
+        addElig(m,'MCARE',s2,t1,ELIG_END.DOWNNET);
+        addElig(m,'AEG',t1+1,t2,ELIG_END.UPNET);
+        addElig(m,'MCARE',t2+1,null,null);
+      }
+      enrollMN(m,s2);
+      m.ladder2=true;
+      m.flags.push('<b>The two-way ladder</b> \u2014 three contiguous spans, two program flips, zero uncovered days: income wobbled across the 138% line twice and coverage converted each time \u2014 MA \u2194 MinnesotaCare, same plan throughout. In cliff states this history would be two gaps; here it is a program label changing while the card stays in the wallet. Churn measured on <b>coverage</b> is zero; churn measured on <b>program</b> is two \u2014 choose your metric carefully.');
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register D: the senior products (375) ----- */
+(function(){
+  for(var i=0;i<375;i++){
+    var m=baseMember('D');
+    var kind = i<150?'MSHO' : (i<265?'MSCP':'SNBC');
+    if(kind==='MSHO'){
+      m.age=ri(66,88); m.dob=dobForAge(m.age);
+      var s=ri(-30,-8);
+      addElig(m,'AB03',s,null,null);
+      var plans=plansFor(m.county).filter(function(p){return MSHO_OK[p]});
+      addDel(m,pick(plans),s,null,'MSHO \u2014 one plan, both programs','MSHO');
+      m.product='MSHO';
+      m.flags.push('<b>One card</b> \u2014 an MSHO member: '+sysLabel(m.delSpans[0].sys)+' holds this member\u2019s <b>Medicare and Medicaid at once</b>, one plan, one care coordinator, one card in the wallet. Minnesota Senior Health Options is the oldest integrated dual product in the country (1997) \u2014 the thing every D-SNP alignment policy in this series is reaching toward, running here for a generation.');
+    } else if(kind==='MSCP'){
+      m.age=ri(66,88); m.dob=dobForAge(m.age);
+      var s2=ri(-30,-8);
+      addElig(m,'AB03',s2,null,null);
+      enrollMN(m,s2,undefined,'MSC+ \u2014 Medicaid-only managed care');
+      m.delSpans[0].pd='MSC+';
+      m.product='MSC+';
+      m.declined=true;
+      m.flags.push('<b>Integration, declined</b> \u2014 an MSC+ member: 65+, Medicaid side managed by a plan, Medicare side separate (original Medicare or an unrelated Advantage plan). MSHO was on the table and this member said no \u2014 which the state permits, and which leaves the two programs coordinating by fax instead of by design. The control group for register F\u2019s question.');
+    } else {
+      m.age=ri(20,62); m.dob=dobForAge(m.age);
+      var s3=ri(-24,-6);
+      addElig(m,'AB03',s3,null,null);
+      enrollMN(m,s3,undefined,'SNBC \u2014 disabled adults 18\u201364');
+      m.delSpans[0].pd='SNBC';
+      m.product='SNBC';
+      m.flags.push('<b>SNBC</b> \u2014 Special Needs BasicCare: the working-age disability product, a managed-care home for adults with disabilities that most states leave in fee-for-service. Minnesota built a product for every life stage \u2014 PMAP, SNBC, MSC+, MSHO \u2014 and this register is the middle of that shelf.');
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register E: who owns the plan (325) ----- */
+(function(){
+  for(var i=0;i<325;i++){
+    var kind = i<140?'SCHA' : (i<235?'HH':'TRIBAL');
+    var m=baseMember('E');
+    var grp=wpick([['AEG',4],['CH19',3],['FM01',1]]);
+    m.age = grp==='CH19'?ri(2,17):ri(19,60); m.dob=dobForAge(m.age);
+    if(kind==='SCHA'){
+      var c=COUNTYBY[pick(['Kandiyohi','Nobles','Blue Earth'])];
+      m.county=c.name; var a=genAddr(c); m.street=a.street; m.city=a.city; m.zip=a.zip;
+      var s=ri(-20,-4);
+      addElig(m,grp,s,null,null);
+      addDel(m,'SCHA',s,null,'County-based purchasing');
+      m.eStory='joint-powers county plan';
+      m.flags.push('<b>County-based purchasing</b> \u2014 enrolled with South Country Health Alliance, a plan owned by rural county boards under a joint-powers agreement: commissioners from farm counties sitting as a health plan\u2019s governing body. Minnesota\u2019s statute lets counties <b>be</b> the carrier \u2014 the deepest local ownership in the series outside Philadelphia\u2019s CBH, and the only one that competes on a menu.');
+    } else if(kind==='HH'){
+      var c2=COUNTYBY['Hennepin'];
+      m.county='Hennepin'; var a2=genAddr(c2); m.street=a2.street; m.city=a2.city; m.zip=a2.zip;
+      var s2=ri(-20,-4);
+      addElig(m,grp,s2,null,null);
+      addDel(m,'HH',s2,null,'The county-owned safety-net plan');
+      m.eStory='county safety-net plan';
+      m.flags.push('<b>The county as carrier</b> \u2014 Hennepin Health: Minneapolis\u2019s county government owns this plan and wires it into its own social services \u2014 housing navigators, jail-release coordination, county clinics. Where Oregon puts community governance around a budget, Hennepin puts county government inside a competitive market \u2014 and members choose it off the same shelf as the nonprofits.');
+    } else {
+      var c3=COUNTYBY[pick(['Mahnomen','Beltrami'])];
+      m.county=c3.name; var a3=genAddr(c3); m.street=a3.street; m.city=a3.city; m.zip=a3.zip;
+      m.last=pick(['Fairbanks','Beaulieu','Roy','Goodwin']);
+      var s3=ri(-20,-4);
+      addElig(m,grp,s3,null,null);
+      m.tribal=true;
+      if(R()<0.6){
+        addDel(m,'FFS',s3,null,'American Indian election \u2014 fee-for-service with IHS/638 access');
+        m.eStory='tribal FFS election';
+        m.flags.push('<b>The tribal election</b> \u2014 a White Earth / Red Lake area member who elected fee-for-service, as federal law allows: care flows through IHS and tribally operated (638) facilities, paid encounter by encounter at the special IHS rate. '+(m.county==='Mahnomen'?'Mahnomen is the only county in the nation lying entirely within a reservation \u2014 the county <b>is</b> White Earth.':'Managed care is optional here by federal design, and the option is exercised.'));
+      } else {
+        addDel(m,pick(plansFor(m.county)),s3,null,'Enrolled by choice \u2014 the election runs both ways');
+        m.eStory='tribal plan choice';
+        m.flags.push('An Ojibwe-country member who <b>chose</b> a plan \u2014 the tribal exemption runs both ways: exempt from mandatory enrollment, free to opt in. The IHS referral machinery and the plan\u2019s network now have to talk to each other, and this record is where they meet.');
+      }
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register F: Medicare arrives -- the birthday that integrated (325) ----- */
+(function(){
+  for(var i=0;i<325;i++){
+    var m=baseMember('F');
+    var aligned=(i<195);
+    var medi=ri(6,16), lag=ri(1,3);
+    m.age=(medi<=TODAY_IDX)?65:64;
+    m.dob={y:WIN_START_Y+Math.floor(medi/12)-65, m:medi%12, d:ri(1,28)};
+    var s=ri(-28,-10);
+    addElig(m,'AEG',s,medi-1,ELIG_END.MEDI);
+    addElig(m,'AB03',medi,null,null);
+    if(aligned){
+      var plans=plansFor(m.county).filter(function(p){return MSHO_OK[p]});
+      var plan=pick(plans);
+      addDel(m,plan,s,medi-1,'PMAP \u2014 the working-age product');
+      addDel(m,plan,medi,null,'MSHO \u2014 same carrier, now holding both programs','MSHO');
+      m.product='MSHO';
+      m.flags.push('<b>The birthday that integrated</b> \u2014 the twenty-sixth answer. At 65, '+sysLabel(plan)+' did not let go: the PMAP product ended and the <b>MSHO</b> product began, same carrier, same month \u2014 and the new card carries <b>Medicare and Medicaid together</b>, one plan at risk for both, one care coordinator. Twenty-five states in this series answered the birthday with a goodbye of some kind; Minnesota\u2019s default offer is an upgrade. California aligned by statute, North Dakota by market, and Minnesota by <b>product design</b> \u2014 MSHO has been making this offer since 1997.');
+    } else {
+      var planA=enrollMN(m,s,medi-1,'PMAP until Medicare');
+      var planB=pick(plansFor(m.county).filter(function(p){return p!=='HH'}));
+      addDel(m,planB,medi,null,'MSC+ \u2014 Medicaid-only; Medicare went its own way','MSC+');
+      m.product='MSC+';
+      m.declined=true;
+      m.flags.push('<b>The offer, declined</b> \u2014 MSHO was the default invitation at 65 and this member chose otherwise: the Medicaid side moved to <b>MSC+</b> ('+sysLabel(planB)+'), Medicare enrolled separately, and the two programs now coordinate this member the ordinary American way \u2014 which is to say, barely. Same state, same birthday, same products on the shelf: the difference between this record and the 195 above is one checkbox, and everything downstream of it.');
+    }
+    m.medicareIdx=medi; m.buyinIdx=medi+lag;
+    MEMBERS.push(m);
+  }
+})();
+
+/* ---------- derived member state ---------- */
+function eligToday(m){ for(var i=0;i<m.eligSpans.length;i++){var s=m.eligSpans[i]; if(s.start<=TODAY_IDX&&(s.end===null||s.end>=TODAY_IDX))return s} return null }
+function delToday(m){ for(var i=0;i<m.delSpans.length;i++){var s=m.delSpans[i]; if(s.start<=TODAY_IDX&&(s.end===null||s.end>=TODAY_IDX))return s} return null }
+function lastElig(m){ return m.eligSpans[m.eligSpans.length-1] }
+function statusToday(m){
+  if(eligToday(m))return 'Active';
+  var le=lastElig(m);
+  if(le.end!==null&&le.end<TODAY_IDX){
+    for(var i=0;i<m.eligSpans.length;i++){ if(m.eligSpans[i].start>TODAY_IDX)return 'Gap' }
+    return 'Closed';
+  }
+  return 'Gap';
+}
+MEMBERS.forEach(function(m,ix){
+  m.ix=ix;
+  if(m.sex==='F'&&FIRST_F.indexOf(m.first)<0)m.first=FIRST_F[(m.first.length*7+m.last.length)%FIRST_F.length];
+  if(m.sex==='M'&&FIRST_M.indexOf(m.first)<0)m.first=FIRST_M[(m.first.length*7+m.last.length)%FIRST_M.length];
+  m.name=m.last+', '+m.first;
+  var et=eligToday(m), le=lastElig(m);
+  m.grpToday = et?et.grp:le.grp;
+  var dt=delToday(m);
+  m.delTodayCode = dt?dt.sys:'\u2014';
+  m.status=statusToday(m);
+});
+</script>
+<script>
+'use strict';
+/* ================= shared render helpers ================= */
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function grpChip(g){ if(!GROUPS[g])return esc(g);
+  return '<span class="chip" style="background:var('+GROUPS[g].color+')" title="'+esc(GROUPS[g].name)+'">'+g+'</span>' }
+function delChip(code){ if(code==='\u2014')return '<span class="st-cls">\u2014</span>';
+  var cls=sysClass(code), lbl=code;
+  return '<span class="dchip '+cls+'" title="'+esc(sysLabel(code))+'">'+esc(lbl)+'</span>' }
+function statusHtml(st){ return st==='Active'?'<span class="st-act">Active</span>':(st==='Gap'?'<span class="st-gap">In gap</span>':'<span class="st-cls">Closed</span>') }
+function regBadge(r){return '<span class="mono" style="font-weight:600;color:var(--accent)">'+r+'</span>'}
+
+/* ================= overview ================= */
+function renderOverview(){
+  var n=MEMBERS.length, act=0, mcare=0, msho=0, gov=0, net=0, lad=0, gaps=0;
+  MEMBERS.forEach(function(m){
+    if(m.status==='Active')act++;
+    if(m.status==='Gap')gaps++;
+    if(m.grpToday==='MCARE')mcare++;
+    if(m.product==='MSHO')msho++;
+    if(m.delTodayCode==='HH'||m.delTodayCode==='SCHA')gov++;
+    if(m.net)net++;
+    if(m.ladder2)lad++;
+  });
+  var st=document.getElementById('ov-stats');
+  st.innerHTML =
+    stat(n,'Synthetic members',true)+
+    stat(act,'Eligible today (Jul 2026)')+
+    stat(mcare,'In MinnesotaCare \u2014 the upstairs neighbor')+
+    stat(msho,'In MSHO \u2014 one plan holding both programs')+
+    stat(gov,'In a government-owned plan today')+
+    stat(net,'Caught by the net \u2014 converted, no gap')+
+    stat(lad,'Rode the two-way ladder \u2014 zero uncovered days')+
+    stat(gaps,'In an eligibility gap today \u2014 paperwork, not income');
+  function stat(nv,l,acc){return '<div class="stat'+(acc?' acc':'')+'"><div class="n">'+(typeof nv==='number'?nv.toLocaleString():nv)+'</div><div class="l">'+l+'</div></div>'}
+
+  /* group legend with counts (by current/last group) */
+  var gc={}; MEMBERS.forEach(function(m){gc[m.grpToday]=(gc[m.grpToday]||0)+1});
+  var lg=document.getElementById('ov-groups'); lg.innerHTML='';
+  GROUP_KEYS.forEach(function(g){
+    var c=gc[g]||0;
+    lg.innerHTML+='<div class="legrow"><span class="swatch" style="background:var('+GROUPS[g].color+')"></span>'+
+      '<span class="code">'+g+'</span><span>'+esc(GROUPS[g].name)+'</span>'+
+      '<span class="cnt">'+c+'</span></div>';
+  });
+
+  /* delivery distribution today */
+  var dc={}; MEMBERS.forEach(function(m){ if(m.delTodayCode!=='\u2014') dc[m.delTodayCode]=(dc[m.delTodayCode]||0)+1 });
+  var pc={}; MEMBERS.forEach(function(m){ if(m.product&&m.product!=='PMAP') pc[m.product]=(pc[m.product]||0)+1 });
+  var rows=MNPLANS.map(function(p){return {label:p.name+' \u2014 '+p.own, code:p.code, n:dc[p.code]||0, cls:(p.code==='HH'||p.code==='SCHA')?'var(--d-harp)':'var(--d-mco)'}});
+  rows.sort(function(a,b){return b.n-a.n});
+  rows.push({label:'Fee-for-Service \u2014 the tribal election', code:'FFS', n:dc.FFS||0, cls:'var(--d-ffs)'});
+  ['MSHO','MSC+','SNBC'].forEach(function(p){ rows.push({label:p+' \u2014 '+PRODUCTS[p].split(' \u2014 ')[0]+' (product, rides on plans above)', code:p, n:pc[p]||0, cls:'var(--d-harp)'}) });
+  var mx=rows.reduce(function(a,r){return Math.max(a,r.n)},1);
+  var bl=document.getElementById('ov-mcos'); bl.innerHTML='';
+  rows.forEach(function(r){
+    bl.innerHTML+='<div class="barrow"><span title="'+esc(r.label)+'">'+esc(r.label)+'</span>'+
+      '<span class="track"><span class="fill" style="width:0;background:'+r.cls+'" data-w="'+(100*r.n/mx)+'"></span></span>'+
+      '<span class="bn">'+r.n+'</span></div>';
+  });
+  requestAnimationFrame(function(){ setTimeout(function(){
+    bl.querySelectorAll('.fill').forEach(function(f){f.style.width=f.getAttribute('data-w')+'%'}) },60) });
+
+  document.getElementById('ov-plain').innerHTML='<span class="pe-label">In plain English</span>'+
+    'Minnesota built two things no one else in this series has. The first is a <b>floor above Medicaid</b>: MinnesotaCare, the Basic Health Program \u2014 when income rises past 138%, coverage converts instead of ending (register B\u2019s net, register C\u2019s two-way ladder), so the cliff that Kansas\u2019s data wears as a scar simply is not in this file. The second is a <b>shelf where governments compete</b>: every carrier is a nonprofit or a government \u2014 Hennepin Health is owned by a county, South Country by rural county boards \u2014 the purple plan rows below. Products ride on the plans by life stage (PMAP \u2192 SNBC \u2192 MSC+/MSHO), and at 65 the state\u2019s signature move: <b>MSHO</b>, the oldest integrated dual product in the country, where one plan holds Medicare and Medicaid at once. Register F\u2019s twenty-sixth answer \u2014 <b>the birthday that integrated</b> \u2014 completes a quartet: California aligned by statute, North Dakota by market, Minnesota by product design. One state remains.';
+}
+
+/* ================= reference ================= */
+function renderReference(){
+  var h='';
+  h+='<div class="card"><h3 style="margin-top:0">Coverage groups (teaching set)</h3>'+
+     '<div class="tblwrap"><table><thead><tr><th>Code</th><th>Name</th><th>Determination</th><th>What it means</th></tr></thead><tbody>';
+  GROUP_KEYS.forEach(function(g){var G=GROUPS[g];
+    h+='<tr'+(g==='MCARE'?' style="background:#f8f6f2"':'')+'><td>'+grpChip(g)+'</td><td>'+esc(G.name)+'</td><td>'+(G.magi?'MAGI (MNsure/county)':'Non-MAGI')+'</td><td>'+G.blurb+'</td></tr>'});
+  h+='</tbody></table></div></div>';
+  h+='<div class="card"><h3 style="margin-top:0">The shelf \u2014 who owns each plan</h3>'+
+     '<div class="tblwrap"><table><thead><tr><th>Code</th><th>Plan</th><th>Ownership</th></tr></thead><tbody>';
+  MNPLANS.forEach(function(p){
+    h+='<tr'+(p.code==='HH'||p.code==='SCHA'?' style="background:#f8f6f2"':'')+'><td class="mono">'+p.code+'</td><td>'+esc(p.name)+'</td><td>'+esc(p.own)+'</td></tr>';
+  });
+  h+='<tr><td class="mono">FFS</td><td>Fee-for-Service</td><td>The tribal election and exemptions</td></tr>'+
+     '</tbody></table></div><p class="sub" style="margin-top:8px">Every carrier is a nonprofit or a government \u2014 Minnesota law long barred for-profit HMOs, and the shelf still shows it.</p></div>';
+  h+='<div class="card"><h3 style="margin-top:0">The products \u2014 by life stage</h3>'+
+     '<div class="tblwrap"><table><thead><tr><th>Product</th><th>What it is</th></tr></thead><tbody>';
+  Object.keys(PRODUCTS).forEach(function(p){
+    h+='<tr'+(p==='MSHO'?' style="background:#f8f6f2"':'')+'><td class="mono">'+p+'</td><td>'+esc(PRODUCTS[p])+'</td></tr>';
+  });
+  h+='</tbody></table></div></div>';
+  h+='<div class="card"><h3 style="margin-top:0">834 maintenance codes used in this app</h3>'+
+     '<div class="tblwrap"><table><thead><tr><th>INS03</th><th>Meaning</th><th>Where you\u2019ll see it</th></tr></thead><tbody>'+
+     '<tr><td class="mono">021</td><td>Addition</td><td>Enrollments \u2014 including register F\u2019s MSHO product addition to the <b>same carrier</b>: the upgrade letter</td></tr>'+
+     '<tr><td class="mono">024</td><td>Cancellation / termination</td><td>Procedural churn \u2014 rarer here than the series average, because income changes convert instead of closing</td></tr>'+
+     '<tr><td class="mono">001</td><td>Change</td><td>The conversions\u2019 usual footprint: program label flips while the plan enrollment holds \u2014 the anti-cliff leaves almost no wake</td></tr>'+
+     '</tbody></table></div></div>';
+  h+='<div class="card"><h3 style="margin-top:0">Glossary</h3><dl class="gloss">'+
+    gl('MinnesotaCare','The Basic Health Program (ACA \u00a71331) \u2014 138\u2013200% FPL, sliding premiums, Medicaid-style plans and rates, run by the state on federal subsidy dollars. Medicaid\u2019s upstairs neighbor: only Minnesota and New York ever built one.')+
+    gl('The anti-cliff','When income crosses 138%, Medical Assistance converts to MinnesotaCare the next day \u2014 no gap, same plan, an end reason that says \u201cconverted.\u201d Kansas\u2019s register C is the cliff; this app is its inverse.')+
+    gl('The two-way ladder','Income wobbling across the line produces contiguous spans with flipping program labels and zero uncovered days. Churn on coverage: zero. Churn on program: real. The metric you choose decides what Minnesota looks like.')+
+    gl('MSHO','Minnesota Senior Health Options (1997) \u2014 the oldest integrated dual product in the country: one plan at risk for Medicare and Medicaid together, one care coordinator, one card. What every alignment policy in this series reaches toward, running for a generation.')+
+    gl('MSC+','Minnesota Senior Care Plus \u2014 the Medicaid-only path for 65+ members who decline MSHO. The state permits the no; register F measures its cost in coordination.')+
+    gl('SNBC','Special Needs BasicCare \u2014 managed care for working-age adults with disabilities, a population most states leave in fee-for-service. The middle of the product shelf.')+
+    gl('County-based purchasing','Minnesota statute lets counties be the carrier: Hennepin Health (one county) and South Country Health Alliance (rural county boards under joint powers) compete on the same menu as the nonprofits \u2014 government as a choice, not a default.')+
+    gl('The tribal election','Federal law exempts American Indian members from mandatory managed care; the election runs both ways. Mahnomen County lies entirely within the White Earth Nation \u2014 the only county in America inside a reservation.')+
+    gl('The birthday that integrated','The twenty-sixth Medicare answer: at 65 the same carrier\u2019s PMAP product ends and its MSHO product begins \u2014 an upgrade, not a goodbye. California aligned by statute, North Dakota by market, Minnesota by product design.')+
+    gl('834','The X12N enrollment transaction \u2014 whose quietest Minnesota files are its proudest: conversions that produce no plan event at all.')+
+    '</dl></div>';
+  function gl(t,d){return '<dt>'+t+'</dt><dd>'+d+'</dd>'}
+  h+='<div class="card"><h3 style="margin-top:0">Counties in this population</h3><p style="font-size:.85rem">'+COUNTIES.map(function(c){return esc(c.name)}).join(' \u00b7 ')+'</p><p class="sub" style="margin-top:8px">The Hassans and Warsames carry the largest Somali community in America; the Vangs and Xiongs, St. Paul\u2019s Hmong community, the largest urban one anywhere; the Htoos and Paws, the Karen resettlement; the Fairbankses and Beaulieus, White Earth and Red Lake Ojibwe country; the Olsons and Petersons, everyone\u2019s neighbors.</p></div>';
+  document.getElementById('ref-out').innerHTML=h;
+}
+</script>
+<script>
+'use strict';
+/* ================= generic sortable table state ================= */
+var SORT={};
+function bindSort(tblId, renderFn){
+  document.querySelectorAll('#'+tblId+' th.sortable').forEach(function(th){
+    th.addEventListener('click',function(){
+      var k=th.getAttribute('data-k');
+      var cur=SORT[tblId]||{};
+      SORT[tblId]={k:k, dir:(cur.k===k&&cur.dir==='asc')?'desc':'asc'};
+      renderFn();
+    });
+  });
+}
+function sortRows(tblId, rows){
+  var s=SORT[tblId]; if(!s)return rows;
+  var dir=s.dir==='asc'?1:-1;
+  rows.sort(function(a,b){
+    var x=a[s.k],y=b[s.k];
+    if(x===null||x===undefined)x=-Infinity; if(y===null||y===undefined)y=-Infinity;
+    if(typeof x==='string'){x=x.toLowerCase();y=String(y).toLowerCase();return x<y?-dir:(x>y?dir:0)}
+    return (x-y)*dir;
+  });
+  return rows;
+}
+function sortMarks(tblId){
+  var s=SORT[tblId];
+  document.querySelectorAll('#'+tblId+' th.sortable').forEach(function(th){
+    var base=th.textContent.replace(/[\u25b2\u25bc]\s*$/,'').trim();
+    th.innerHTML=esc(base)+(s&&s.k===th.getAttribute('data-k')?' <span class="arr">'+(s.dir==='asc'?'\u25b2':'\u25bc')+'</span>':'');
+  });
+}
+
+/* ================= pagination ================= */
+var PAGE={}, PAGE_SIZE=50;
+function pager(tblId, total, renderFn, pagerId){
+  var pages=Math.max(1,Math.ceil(total/PAGE_SIZE));
+  var p=Math.min(PAGE[tblId]||1,pages); if(p<1)p=1; PAGE[tblId]=p;
+  var el=document.getElementById(pagerId);
+  if(el){
+    if(pages===1){ el.innerHTML=''; }
+    else{
+      el.innerHTML='<button class="pg"'+(p<=1?' disabled':'')+' data-d="-1">\u25c0 Prev</button>'+
+        '<span class="mono pgpos">page '+p+' of '+pages.toLocaleString()+'</span>'+
+        '<button class="pg"'+(p>=pages?' disabled':'')+' data-d="1">Next \u25b6</button>';
+      el.querySelectorAll('button.pg').forEach(function(b){
+        b.addEventListener('click',function(){ PAGE[tblId]=p+parseInt(b.getAttribute('data-d'),10); renderFn(); });
+      });
+    }
+  }
+  return {from:(p-1)*PAGE_SIZE, to:Math.min(total,p*PAGE_SIZE)};
+}
+function resetPage(tblId){ PAGE[tblId]=1 }
+
+/* ================= members roster ================= */
+var ROSTER_VIEW=[]; /* current filtered order (all pages), for modal nav */
+function fillSelect(id, opts, allLabel){
+  var el=document.getElementById(id);
+  el.innerHTML='<option value="">'+allLabel+'</option>'+opts.map(function(o){return '<option value="'+o[0]+'">'+o[1]+'</option>'}).join('');
+}
+function initRosterControls(){
+  fillSelect('m-group',GROUP_KEYS.map(function(g){return[g,g+' \u2014 '+GROUPS[g].name]}),'Coverage group: all');
+  var dopts=MNPLANS.map(function(m){return[m.code,m.name]});
+  dopts.push(['FFS','Fee-for-Service (tribal election)']);
+  fillSelect('m-del',dopts,'Delivery today: all');
+  fillSelect('m-reg',['A','B','C','D','E','F'].map(function(r){return[r,'Register '+r]}),'Register: all');
+  ['m-search','m-group','m-del','m-reg','m-status'].forEach(function(id){
+    document.getElementById(id).addEventListener('input',function(){resetPage('m-tbl');renderRoster()});
+  });
+  bindSort('m-tbl',renderRoster);
+}
+function renderRoster(){
+  var q=document.getElementById('m-search').value.trim().toLowerCase();
+  var fg=document.getElementById('m-group').value, fd=document.getElementById('m-del').value,
+      fr=document.getElementById('m-reg').value, fs=document.getElementById('m-status').value;
+  var rows=MEMBERS.filter(function(m){
+    if(fg&&m.grpToday!==fg)return false;
+    if(fd&&m.delTodayCode!==fd)return false;
+    if(fr&&m.reg!==fr)return false;
+    if(fs&&m.status!==fs)return false;
+    if(q){ var hay=(m.name+' '+m.id+' '+m.city+' '+m.county).toLowerCase(); if(hay.indexOf(q)<0)return false }
+    return true;
+  }).map(function(m){return {ix:m.ix,id:m.id,name:m.name,age:m.age,sex:m.sex,grp:m.grpToday,del:m.delTodayCode,county:m.county,reg:m.reg,status:m.status}});
+  rows=sortRows('m-tbl',rows); sortMarks('m-tbl');
+  ROSTER_VIEW=rows.map(function(r){return r.ix});
+  var pg=pager('m-tbl',rows.length,renderRoster,'m-pager');
+  var tb=document.getElementById('m-body'); tb.innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+r.age+'</td><td>'+r.sex+'</td>'+
+    '<td>'+grpChip(r.grp)+'</td><td>'+delChip(r.del)+'</td><td class="nowrap">'+esc(r.county)+'</td><td>'+regBadge(r.reg)+'</td><td>'+statusHtml(r.status)+'</td></tr>'}).join('');
+  document.getElementById('m-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' matching (population '+MEMBERS.length.toLocaleString()+')';
+  tb.querySelectorAll('tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'roster')})});
+}
+
+/* ================= eligibility spans ================= */
+var SPAN_VIEW=[];
+function initSpanControls(){
+  fillSelect('s-group',GROUP_KEYS.map(function(g){return[g,g+' \u2014 '+GROUPS[g].name]}),'Coverage group: all');
+  ['s-group','s-open'].forEach(function(id){document.getElementById(id).addEventListener('input',function(){resetPage('s-tbl');renderSpans()})});
+  bindSort('s-tbl',renderSpans);
+}
+function renderSpans(){
+  var fg=document.getElementById('s-group').value, fo=document.getElementById('s-open').value;
+  var rows=[];
+  MEMBERS.forEach(function(m){ m.eligSpans.forEach(function(s){
+    if(fg&&s.grp!==fg)return;
+    if(fo==='open'&&s.end!==null)return;
+    if(fo==='closed'&&s.end===null)return;
+    rows.push({ix:m.ix,id:m.id,name:m.name,grp:s.grp,start:s.start,end:(s.end===null?9999:s.end),endRaw:s.end,
+      months:spanMonths(s.start,s.end),reason:s.reason});
+  })});
+  rows=sortRows('s-tbl',rows); sortMarks('s-tbl');
+  SPAN_VIEW=[]; var seenS={}; rows.forEach(function(r){ if(!seenS[r.ix]){seenS[r.ix]=1;SPAN_VIEW.push(r.ix)} });
+  var pg=pager('s-tbl',rows.length,renderSpans,'s-pager');
+  document.getElementById('s-body').innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+grpChip(r.grp)+'</td>'+
+    '<td class="nowrap">'+startLabel(r.start)+'</td><td class="nowrap">'+(r.endRaw===null?'<span class="st-act">open</span>':mLabel(r.endRaw))+'</td>'+
+    '<td class="mono">'+r.months+(r.start<0?'+':'')+'</td><td>'+(r.reason?esc(r.reason):'\u2014')+'</td></tr>'}).join('');
+  document.getElementById('s-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' spans';
+  document.querySelectorAll('#s-body tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'spans')})});
+}
+function startLabel(s){ return s<0 ? mLabel(s)+' <span class="hint">(pre-window)</span>' : mLabel(s) }
+
+/* ================= delivery spans ================= */
+var DEL_VIEW=[];
+function initDelControls(){
+  var dopts=MNPLANS.map(function(m){return[m.code,m.name]});
+  dopts.push(['FFS','Fee-for-Service (tribal election)']);
+  fillSelect('d-sys',dopts,'Delivery system: all');
+  document.getElementById('d-sys').addEventListener('input',function(){resetPage('d-tbl');renderDel()});
+  bindSort('d-tbl',renderDel);
+}
+function renderDel(){
+  var fd=document.getElementById('d-sys').value;
+  var rows=[];
+  MEMBERS.forEach(function(m){ m.delSpans.forEach(function(s){
+    if(fd&&s.sys!==fd)return;
+    rows.push({ix:m.ix,id:m.id,name:m.name,sys:s.sys,start:s.start,end:(s.end===null?9999:s.end),endRaw:s.end,
+      months:spanMonths(s.start,s.end),note:s.note});
+  })});
+  rows=sortRows('d-tbl',rows); sortMarks('d-tbl');
+  DEL_VIEW=[]; var seenD={}; rows.forEach(function(r){ if(!seenD[r.ix]){seenD[r.ix]=1;DEL_VIEW.push(r.ix)} });
+  var pg=pager('d-tbl',rows.length,renderDel,'d-pager');
+  document.getElementById('d-body').innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+delChip(r.sys)+'</td>'+
+    '<td class="nowrap">'+startLabel(r.start)+'</td><td class="nowrap">'+(r.endRaw===null?'<span class="st-act">open</span>':mLabel(r.endRaw))+'</td>'+
+    '<td class="mono">'+r.months+(r.start<0?'+':'')+'</td><td>'+(r.note?esc(r.note):'\u2014')+'</td></tr>'}).join('');
+  document.getElementById('d-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' delivery spans';
+  document.querySelectorAll('#d-body tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'delivery')})});
+}
+</script>
+<script>
+'use strict';
+/* ================= scenario registers ================= */
+var REGDEFS={
+ A:{title:'Steady state \u2014 a market with government on the shelf', q:'What does Minnesota managed care look like at rest?',
+    body:'The baseline: plan choice from a county menu where every carrier is a nonprofit or a <b>government</b> \u2014 Hennepin Health (owned by a county) and South Country Health Alliance (owned by rural county boards) compete beside Blue Plus, HealthPartners, UCare, and Medica. MinnesotaCare members ride the same shelf one income floor up. The Hassans and Warsames carry the largest Somali community in America; the Vangs and Xiongs, St. Paul\u2019s Hmong community; the Olsons and Petersons, everyone\u2019s neighbors.'},
+ B:{title:'Churn \u2014 and the gap with a net under it', q:'What happens when income rises in a state with an upstairs?',
+    body:'125 members sit in ordinary procedural gaps \u2014 paperwork churn, which no program design prevents. But 60 members show what Minnesota built for <b>income</b> churn: they crossed the 138% line at renewal and, where Kansas\u2019s register C showed a cliff, these records show a <b>conversion</b> \u2014 Medical Assistance closes, MinnesotaCare opens the next day, same plan, small premium, an end reason that says \u201cconverted,\u201d not \u201cclosed.\u201d The anti-cliff, as a span pair. Paperwork still churns; income no longer does.'},
+ C:{title:'The upstairs neighbor', q:'What is a Basic Health Program, in data?',
+    body:'200 members live in <b>MinnesotaCare</b> at steady state: 138\u2013200% FPL, sliding premiums, the same plans and networks as Medical Assistance \u2014 a state-run program on federal subsidy dollars that elsewhere buy commercial marketplace coverage with deductibles. Only Minnesota and New York ever built one. And 175 members rode the <b>two-way ladder</b>: income wobbled across the line twice, producing three contiguous spans, two program flips, and zero uncovered days \u2014 a history that in cliff states would be two gaps. Churn on coverage: zero. Churn on program: two. The metric you pick decides what this state looks like.'},
+ D:{title:'The senior products \u2014 one shelf, every life stage', q:'What does a product ladder look like when it reaches all the way up?',
+    body:'150 members hold <b>MSHO</b> \u2014 Minnesota Senior Health Options, the oldest integrated dual product in the country (1997): one plan at risk for Medicare and Medicaid together, one care coordinator, one card. 115 hold <b>MSC+</b> \u2014 the Medicaid-only path for seniors who declined the integration: same state, same shelf, coordination by fax. 110 hold <b>SNBC</b> \u2014 the working-age disability product most states never built. PMAP \u2192 SNBC \u2192 MSC+/MSHO: a product for every life stage, and the fork at the top is register F\u2019s whole subject.'},
+ E:{title:'Who owns the plan', q:'What does public ownership look like inside a competitive market?',
+    body:'140 members are enrolled with <b>South Country Health Alliance</b> \u2014 rural county boards sitting as a health plan\u2019s governing body under a joint-powers agreement: county-based purchasing, the statute that lets counties <b>be</b> the carrier. 95 are with <b>Hennepin Health</b> \u2014 Minneapolis\u2019s county-owned safety-net plan, wired into county housing and social services. And 90 are Ojibwe-country members exercising the <b>tribal election</b> in both directions \u2014 some in fee-for-service with IHS/638 access (Mahnomen County lies entirely within the White Earth Nation), some opting into plans. Oregon built community governance around a budget; Philadelphia made a plan a city department; Minnesota put governments on a menu.'},
+ F:{title:'Medicare arrives \u2014 the birthday that integrated', q:'The twenty-sixth answer: what if 65 is an upgrade?',
+    body:'195 members took the state\u2019s signature offer: at 65, the <b>same carrier\u2019s</b> PMAP product ended and its <b>MSHO</b> product began \u2014 one plan now holding Medicare and Medicaid together. Twenty-five states answered this birthday with some kind of goodbye; Minnesota\u2019s default is an upgrade, and it has been making the offer since 1997. The other 130 declined: Medicaid moved to MSC+, Medicare went its own way, and the two programs coordinate the ordinary American way \u2014 barely. One checkbox separates the cohorts, and everything downstream flows from it. California aligned by statute, North Dakota by market, Minnesota by <b>product design</b> \u2014 the quartet\u2019s third corner.'}
+};
+function renderRegisters(){
+  var out=document.getElementById('reg-list'); var h='';
+  ['A','B','C','D','E','F'].forEach(function(r){
+    var d=REGDEFS[r], list=MEMBERS.filter(function(m){return m.reg===r});
+    var sample=list.slice(0,12);
+    h+='<div class="reg"><h3><span class="rl">'+r+'</span>'+esc(d.title)+'<span class="meta" style="margin-left:auto">'+list.length.toLocaleString()+' members</span></h3>'+
+       '<div class="q">'+d.q+'</div><p class="sub" style="margin-bottom:10px">'+d.body+'</p>'+
+       '<div class="tblwrap"><table><thead><tr><th>PMI</th><th>Member</th><th>Group</th><th>Delivery today</th><th>The planted story</th></tr></thead><tbody>';
+    sample.forEach(function(m){
+      h+='<tr class="rowlink" data-ix="'+m.ix+'"><td class="mono">'+m.id+'</td><td class="nowrap">'+esc(m.name)+'</td><td>'+grpChip(m.grpToday)+'</td><td>'+delChip(m.delTodayCode)+'</td>'+
+         '<td>'+(m.flags.length?m.flags[0]:'Clean spans \u2014 the control group')+'</td></tr>';
+    });
+    h+='</tbody></table></div>';
+    if(list.length>sample.length){
+      h+='<div class="hint" style="margin-top:8px">Showing the first '+sample.length+' of '+list.length.toLocaleString()+'. Open any row \u2014 the \u25c0 \u25b6 arrows walk the entire register \u2014 or filter the Members tab by register for the full list.</div>';
+    }
+    h+='</div>';
+  });
+  out.innerHTML=h;
+  out.querySelectorAll('tr.rowlink').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'register')})});
+}
+
+/* ================= 834 builder ================= */
+function lastDelEvent(m){
+  var spans=m.delSpans.filter(function(s){return s.sys!=='FFS'});
+  var last=spans.length?spans[spans.length-1]:null;
+  if(m.reg==='F'&&m.product==='MSHO'){
+    return {kind:'021',del:last,why:'The upgrade letter: an addition to the same carrier that already held the member \u2014 the PMAP product closed and MSHO opened, and from this month the plan is at risk for Medicare and Medicaid together. The twenty-sixth answer, as a transaction.'};
+  }
+  if(m.reg==='F'){
+    return {kind:'021',del:last,why:'The offer declined: an MSC+ addition \u2014 the Medicaid half moves to a Medicaid-only product while Medicare enrolls separately, and integration becomes this member\u2019s own job.'};
+  }
+  if(m.net||m.ladder2){
+    return {kind:'001',del:last,why:'The anti-cliff\u2019s footprint \u2014 or lack of one: the program label flipped (MA \u2194 MinnesotaCare) while the plan enrollment held, so the plan sees at most a change record. The quietest good news in the series.'};
+  }
+  if(m.product==='MSHO'){
+    return {kind:'021',del:last,why:'An MSHO enrollment \u2014 the plan accepts risk for both programs at once: the oldest integrated product in the country, in its ordinary monthly operation.'};
+  }
+  if(m.reg==='B'&&last&&last.start>TODAY_IDX){
+    return {kind:'024',del:spans[0],why:'Procedural churn \u2014 the net catches income changes, not paperwork; this closure was paperwork.'};
+  }
+  if(!last){
+    return {kind:'021',state:true,why:'The tribal election \u2014 no plan receives this record: fee-for-service with IHS/638 access, the state\u2019s own file in standard shape.'};
+  }
+  return {kind:'021',del:last,why:(m.eStory==='joint-powers county plan'||m.eStory==='county safety-net plan'?'An addition whose receiver is a government: the plan on the other end of this file is owned by '+(m.delSpans[0].sys==='HH'?'a county':'county boards under joint powers')+'.':'Enrollment addition \u2014 a plan chosen from the county\u2019s menu of nonprofits and governments.')};
+}
+function ediRow(seg,note,loop){return '<div class="edirow'+(loop?' loop':'')+'"><div class="seg">'+esc(seg)+'</div><div class="note">'+note+'</div></div>'}
+function build834(m){
+  var ev=lastDelEvent(m);
+  var eligSpan=m.eligSpans[m.eligSpans.length-1];
+  var eligBegin=m.eligSpans[m.eligSpans.length-1].start;
+  var ctl=String(612000+m.ix*7);
+  var kindLabel={ '021':'Addition','001':'Change','024':'Termination' }[ev.kind];
+  var out='<div class="ediwrap"><div class="edihead"><span class="fn">834 \u2014 '+kindLabel+(ev.state?' (state record)':'')+'</span><span class="hint">'+ev.why+'</span></div>';
+  var recvName = (ev.state||!ev.del)?'MN DHS (STATE RECORD)':sysLabel(ev.del.sys).toUpperCase().split(' (')[0];
+  var recvId = (ev.state||!ev.del)?'MNDHS':ev.del.sys;
+  out+=ediRow('ISA*00*          *00*          *ZZ*MNMEDICAID     *ZZ*'+(recvId+'          ').slice(0,10)+'    *260701*0800*^*00501*'+ctl.padStart(9,'0')+'*0*P*:~','Interchange envelope: Minnesota DHS to <b>'+esc(recvName)+'</b>'+(recvId==='HH'||recvId==='SCHA'?' \u2014 a receiver that is a government.':'.'));
+  out+=ediRow('GS*BE*MNMEDICAID*'+recvId+'*20260701*0800*'+ctl+'*X*005010X220A1~','Functional group: <b>BE</b> = benefit enrollment.');
+  out+=ediRow('ST*834*'+ctl.slice(-4)+'*005010X220A1~','Transaction set header.');
+  out+=ediRow('BGN*00*'+m.id.slice(-5)+'-'+ctl.slice(-3)+'*20260701*0800****4~','Beginning segment. Purpose 00 = original; action 4 = full audit.');
+  out+=ediRow('N1*P5*MINNESOTA DEPT OF HUMAN SERVICES*FI*416007162~','Loop 1000A \u2014 plan sponsor.', true);
+  out+=ediRow('N1*IN*'+recvName+'*FI*'+String(410000000+m.ix*13)+'~','Loop 1000B \u2014 the receiver.', true);
+  out+=ediRow('INS*Y*18*'+ev.kind+'*'+(ev.kind==='024'?'07':(ev.kind==='001'?'43':'28'))+'*A***FT~','Loop 2000. Maintenance <b>'+ev.kind+'</b>.', true);
+  out+=ediRow('REF*0F*'+m.id+'~','The <b>PMI</b> \u2014 eight digits: the person, permanently, on every floor of the building.');
+  out+=ediRow('DTP*356*D8*'+mFirstD8(Math.max(eligBegin,-24))+'~','<b>Eligibility</b> begin date'+((m.net||m.ladder2)&&m.eligSpans.length>1?' \u2014 contiguous with the prior span\u2019s end: the conversion\u2019s signature, a begin date that touches an end date with no daylight between.':'.'));
+  out+=ediRow('NM1*IL*1*'+m.last.toUpperCase()+'*'+m.first.toUpperCase()+'****34*'+String(468000000+m.ix*311)+'~','Member name; SSN qualifier synthetic here.');
+  out+=ediRow('PER*IP**TE*'+m.phone.replace(/\D/g,'')+'~','Contact telephone.');
+  out+=ediRow('N3*'+m.street.toUpperCase()+'~','Street address.');
+  out+=ediRow('N4*'+m.city.toUpperCase()+'*MN*'+m.zip+'~','City/state/ZIP: '+esc(m.city)+', '+esc(m.county)+' County'+(m.county==='Mahnomen'?' \u2014 entirely within the White Earth Nation.':'.'));
+  out+=ediRow('DMG*D8*'+dobD8(m.dob)+'*'+m.sex+'~','Date of birth and sex.');
+  if(m.lang!=='English') out+=ediRow('LUI*LD*'+({'Somali':'SOM','Spanish':'SPA','Hmong':'HMN','Karen':'KAR','Oromo':'ORM','Russian':'RUS','Ojibwe':'OJI'}[m.lang]||'ENG')+'**6~','Preferred language: '+esc(m.lang)+' \u2014 Minnesota\u2019s LUI distribution is the most distinctive in the series.');
+  if(!ev.state&&ev.del){
+    out+=ediRow('HD*'+ev.kind+'**HLT*'+ev.del.sys+(ev.del.pd?'-'+ev.del.pd:'')+'~','Loop 2300 \u2014 coverage under the <b>'+(ev.del.pd||'PMAP')+'</b> product'+(ev.del.pd==='MSHO'?': the plan is at risk for Medicare AND Medicaid from this date.':'.'), true);
+    out+=ediRow('DTP*348*D8*'+mFirstD8(Math.max(ev.del.start,-24))+'~','Coverage begin date \u2014 first of the month, always prospective.');
+    if(ev.kind==='024'&&ev.del.end!==null) out+=ediRow('DTP*349*D8*'+mLastD8(ev.del.end)+'~','Coverage end date.');
+  } else {
+    out+=ediRow('HD*021**HLT*FFS~','Loop 2300 \u2014 fee-for-service under the tribal election.', true);
+    out+=ediRow('DTP*348*D8*'+mFirstD8(Math.max(eligBegin,-24))+'~','Coverage begin for the state-side record.');
+  }
+  out+=ediRow('LS*2700~','Open the member-reporting loop.', true);
+  out+=ediRow('LX*1~ N1*75*COVERAGE GROUP~ REF*ZZ*'+eligSpan.grp+'~','The coverage group ('+esc(GROUPS[eligSpan.grp].name)+')'+(eligSpan.grp==='MCARE'?' \u2014 the upstairs neighbor: a premium program riding Medicaid\u2019s rails.':'.'));
+  if(m.net||m.ladder2) out+=ediRow('LX*2~ N1*75*CONVERSION~ REF*ZZ*'+(eligSpan.grp==='MCARE'?'MA-MCARE':'MCARE-MA')+'~','The conversion marker \u2014 program changed, coverage did not: the anti-cliff\u2019s paper trail.');
+  if(m.product&&m.product!=='PMAP') out+=ediRow('LX*2~ N1*75*PRODUCT~ REF*ZZ*'+m.product.replace('+','P')+'~','The product: '+esc(PRODUCTS[m.product])+'.');
+  if(m.tribal) out+=ediRow('LX*2~ N1*75*AMERICAN INDIAN STATUS~ REF*ZZ*AI~','The federal exemption \u2014 managed care optional, IHS/638 access preserved, the special IHS encounter rate applies.');
+  if(m.reg==='F') out+=ediRow('LX*3~ N1*75*MEDICARE STATUS~ REF*ZZ*AB~','Medicare A+B from '+mLabel(m.medicareIdx)+' \u2014 buy-in accreted '+mLabel(m.buyinIdx)+(m.product==='MSHO'?'. Held by the SAME organization that holds the Medicaid risk \u2014 the whole point.':'. Held separately from the Medicaid plan \u2014 the declined integration, visible as an address difference.'));
+  out+=ediRow('LE*2700~','Close the reporting loop.', true);
+  out+=ediRow('SE*'+ri(15,21)+'*'+ctl.slice(-4)+'~ GE*1*'+ctl+'~ IEA*1*'+ctl.padStart(9,'0')+'~','Trailers \u2014 counts must reconcile or the file bounces.');
+  out+='</div>';
+  if(m.reg==='F'&&m.product==='MSHO'){
+    out+='<div class="plain" style="margin-top:14px"><span class="pe-label">Worth noticing</span>Compare this file to any other register F in the series. Everywhere else, the Medicare month generates a termination \u2014 the plan and the member part ways, and whatever catches the member afterward is a different organization\u2019s problem. Here the same carrier appears on both sides of the birthday, and the transaction is an <b>addition</b>. Integration is not a data-sharing agreement bolted on after the fact; it is one entity holding both risks, which makes the coordination problem disappear as an organizational boundary. MSHO has run this way since 1997 \u2014 the series\u2019 alignment endgame, already a generation old.</div>';
+  }
+  return out;
+}
+function initFileTab(){
+  var sel=document.getElementById('f-member');
+  var h='';
+  ['A','B','C','D','E','F'].forEach(function(r){
+    h+='<optgroup label="Register '+r+' \u2014 '+esc(REGDEFS[r].title)+'">';
+    MEMBERS.filter(function(m){return m.reg===r}).slice().sort(function(a,b){return (a.name+' \u2014 '+a.id).localeCompare(b.name+' \u2014 '+b.id)}).forEach(function(m){
+      h+='<option value="'+m.ix+'">'+esc(m.name)+' \u2014 '+m.id+'</option>';
+    });
+    h+='</optgroup>';
+  });
+  sel.innerHTML=h;
+  sel.addEventListener('input',function(){renderFile(+sel.value)});
+  renderFile(+sel.value);
+}
+function renderFile(ix){
+  document.getElementById('f-out').innerHTML=build834(MEMBERS[ix]);
+}
+</script>
+<script>
+'use strict';
+/* ================= modal ================= */
+var MODAL={ix:null, ctx:'roster'};
+function navList(){
+  if(MODAL.ctx==='spans'&&SPAN_VIEW.length)return SPAN_VIEW;
+  if(MODAL.ctx==='delivery'&&DEL_VIEW.length)return DEL_VIEW;
+  if(MODAL.ctx==='register'&&MODAL.ix!==null){
+    var r=MEMBERS[MODAL.ix].reg;
+    return MEMBERS.filter(function(m){return m.reg===r}).map(function(m){return m.ix});
+  }
+  return ROSTER_VIEW.length?ROSTER_VIEW:MEMBERS.map(function(m){return m.ix});
+}
+function openModal(ix,ctx){
+  MODAL.ix=ix; if(ctx)MODAL.ctx=ctx;
+  var m=MEMBERS[ix];
+  document.getElementById('mo-nm').textContent=m.first+' '+m.last;
+  document.getElementById('mo-id').textContent='PMI '+m.id+'  \u00b7  Register '+m.reg;
+  document.getElementById('mo-body').innerHTML=modalBody(m);
+  var list=navList(), pos=list.indexOf(ix);
+  document.getElementById('mo-pos').textContent=(pos+1)+' / '+list.length+' ('+MODAL.ctx+')';
+  document.getElementById('mo-prev').disabled=pos<=0;
+  document.getElementById('mo-next').disabled=pos<0||pos>=list.length-1;
+  document.getElementById('overlay').classList.add('on');
+  document.getElementById('modal').classList.add('on');
+  highlightRow(ix);
+  document.getElementById('mo-x').focus();
+}
+function closeModal(){
+  document.getElementById('overlay').classList.remove('on');
+  document.getElementById('modal').classList.remove('on');
+  highlightRow(null);
+  MODAL.ix=null;
+}
+function stepModal(d){
+  var list=navList(), pos=list.indexOf(MODAL.ix), np=pos+d;
+  if(np<0||np>=list.length)return;
+  openModal(list[np]);
+}
+function highlightRow(ix){
+  document.querySelectorAll('tr.hl').forEach(function(tr){tr.classList.remove('hl')});
+  if(ix===null)return;
+  document.querySelectorAll('tr.rowlink[data-ix="'+ix+'"]').forEach(function(tr){tr.classList.add('hl')});
+}
+
+/* ---------- mini two-band timeline ---------- */
+function tlBar(startIdx,endIdx,color,striped,title){
+  var s=Math.max(startIdx,0), e=(endIdx===null?WIN_MONTHS-1:Math.min(endIdx,WIN_MONTHS-1));
+  if(e<0||s>WIN_MONTHS-1)return '';
+  var l=100*s/WIN_MONTHS, w=100*(e-s+1)/WIN_MONTHS;
+  return '<span class="bar'+(striped?' striped':'')+'" style="left:'+l+'%;width:'+w+'%;background:'+color+'" title="'+esc(title)+'"></span>';
+}
+function timeline(m){
+  var h='<div class="tl">';
+  h+='<div class="band"><span class="bl">Eligibility</span><span class="lane">';
+  m.eligSpans.forEach(function(s){
+    h+=tlBar(s.start,s.end,'var('+GROUPS[s.grp].color+')',false,s.grp+' '+mLabel(s.start)+' \u2013 '+(s.end===null?'open':mLabel(s.end)));
+  });
+  h+='<span class="todayline" style="left:'+(100*(TODAY_IDX+0.5)/WIN_MONTHS)+'%"></span></span></div>';
+  h+='<div class="band"><span class="bl">Delivery</span><span class="lane">';
+  m.delSpans.forEach(function(s){
+    var col = sysKind(s.sys)==='FFS'?'var(--d-ffs)':(s.pd&&s.pd!=='PMAP'?'var(--d-harp)':'var(--d-mco)');
+    h+=tlBar(s.start,s.end,col,s.sys!=='FFS',sysLabel(s.sys)+(s.pd?' ['+s.pd+']':'')+' '+mLabel(s.start)+' \u2013 '+(s.end===null?'open':mLabel(s.end)));
+  });
+  h+='<span class="todayline" style="left:'+(100*(TODAY_IDX+0.5)/WIN_MONTHS)+'%"></span></span></div>';
+  h+='<div class="axis"><span></span><span class="ax">'+
+     '<span style="left:2%">Jan 25</span><span style="left:27%">Jul 25</span><span style="left:52%">Jan 26</span><span style="left:77%">Jul 26</span></span></div>';
+  h+='<div class="tl-note">Striped blue = PMAP \u00b7 striped purple = a senior/disability product (MSHO, MSC+, SNBC) \u00b7 solid gray = fee-for-service (tribal election) \u00b7 red line = today (Jul 2026). Register F\u2019s aligned members show blue turning purple <b>within the same carrier</b> \u2014 the upgrade. Contiguous eligibility spans with flipping groups are conversions: the anti-cliff. Bars clamp to the 24-month window.</div></div>';
+  return h;
+}
+
+/* ---------- per-member plain english ---------- */
+function plainFor(m){
+  var p='';
+  var first=m.first;
+  if(m.reg==='A'){
+    if(m.grpToday==='MCARE'){
+      p=first+' lives one floor up: <b>MinnesotaCare</b> \u2014 138\u2013200% FPL, a sliding premium, the same plans and networks as Medical Assistance. In most states this income band means commercial marketplace coverage with a deductible; in Minnesota it means Medicaid\u2019s upstairs neighbor, in the same building.';
+    } else if(m.delTodayCode==='HH'){
+      p=first+' chose <b>Hennepin Health</b> off the same shelf as the nonprofits \u2014 a plan owned by county government, wired into county housing programs and social services. Government as a menu option, not a default.';
+    } else if(m.delTodayCode==='SCHA'){
+      p=first+' is enrolled with <b>South Country Health Alliance</b> \u2014 a plan whose board is rural county commissioners under a joint-powers agreement: county-based purchasing, government as carrier, out on the prairie.';
+    } else {
+      p=first+' is enrolled with '+esc(sysLabel(m.delTodayCode))+' \u2014 a shelf where every carrier is a nonprofit or a government, because Minnesota long barred for-profit HMOs from this market. The steady state of the series\u2019 most distinctive plan landscape.';
+    }
+  } else if(m.reg==='B'){
+    if(m.net){
+      var t=m.eligSpans[0].end;
+      p='At the '+mLabel(t)+' renewal, '+first+'\u2019s income came in over 138% FPL \u2014 and in most of this series that sentence ends with a gap. Here it ends with a <b>conversion</b>: Medical Assistance closed and MinnesotaCare opened the next day, same plan, small premium, zero uncovered days. The end reason says \u201cconverted,\u201d not \u201cclosed\u201d \u2014 the anti-cliff, in '+first+'\u2019s own spans.';
+    } else {
+      var t2=m.eligSpans[0].end, rg=m.eligSpans[1].start, gap=rg-t2-1;
+      if(rg>TODAY_IDX){
+        p=first+'\u2019s renewal did not come back and the case closed after '+mLabel(t2)+' \u2014 paperwork churn, which no program design prevents. The case reopens '+mLabel(rg)+'. The net below this record catches income changes; it cannot catch an unreturned envelope.';
+      } else {
+        p=first+' churned: closed after '+mLabel(t2)+', '+gap+' month'+(gap>1?'s':'')+' in the gap, back '+mLabel(rg)+'. Procedural, not income-driven \u2014 the one kind of churn Minnesota\u2019s architecture doesn\u2019t solve.';
+      }
+    }
+  } else if(m.reg==='C'){
+    if(m.ladder2){
+      p=first+' rode the <b>two-way ladder</b>: income wobbled across the 138% line twice, and the record shows three contiguous spans, two program flips (MA \u2194 MinnesotaCare), and <b>zero uncovered days</b> \u2014 same plan throughout. In a cliff state this exact income history would read as two gaps and two re-applications. Churn on coverage: zero. Churn on program: two. What Minnesota looks like depends entirely on which one you measure.';
+    } else {
+      p=first+' is a steady <b>MinnesotaCare</b> member \u2014 the Basic Health Program that only Minnesota and New York ever built: a premium of a few dollars to about $80, Medicaid-style plans and rates, run by the state on federal dollars that would otherwise buy marketplace coverage. One floor up from Medicaid, same building, same elevator.';
+    }
+  } else if(m.reg==='D'){
+    if(m.product==='MSHO'){
+      p=first+' carries <b>one card</b>: '+esc(sysLabel(m.delSpans[0].sys))+' holds both Medicare and Medicaid \u2014 one plan at risk for everything, one care coordinator who can see everything. Minnesota Senior Health Options has run since 1997: the oldest integrated dual product in the country, and the thing every alignment policy in this series is reaching toward.';
+    } else if(m.product==='MSC+'){
+      p=first+' is 65+ with the Medicaid side in <b>MSC+</b> and Medicare somewhere else entirely \u2014 the integration offer was on the table and '+first+' said no, as the state permits. Two programs, two organizations, coordination by fax: the control group for register F\u2019s question.';
+    } else {
+      p=first+' is in <b>SNBC</b> \u2014 Special Needs BasicCare, the managed-care product for working-age adults with disabilities that most states never built, leaving this population in fee-for-service. The middle rung of a product ladder that runs PMAP \u2192 SNBC \u2192 MSC+/MSHO: a product for every life stage.';
+    }
+  } else if(m.reg==='E'){
+    if(m.eStory==='joint-powers county plan'){
+      p=first+'\u2019s carrier is a room full of county commissioners: <b>South Country Health Alliance</b>, owned by rural county boards under a joint-powers agreement \u2014 the statute is called county-based purchasing, and it means the county doesn\u2019t contract with a plan; it <b>is</b> one. The deepest local ownership in the series that competes on a menu.';
+    } else if(m.eStory==='county safety-net plan'){
+      p=first+' is with <b>Hennepin Health</b> \u2014 Minneapolis\u2019s county government as carrier, its plan wired into the county\u2019s own housing navigators, jail-release coordination, and clinics. Oregon built community governance around a budget; Philadelphia made a plan a city department; Hennepin put a county inside a competitive market.';
+    } else if(m.eStory==='tribal FFS election'){
+      p=first+' elected fee-for-service, as federal law allows American Indian members to do: care flows through IHS and tribally operated (638) facilities at the special IHS rate. '+(m.county==='Mahnomen'?'And '+first+'\u2019s county \u2014 Mahnomen \u2014 lies entirely within the White Earth Nation: the only county in America inside a reservation. The county is the tribe\u2019s land; the election is the data\u2019s acknowledgment.':'Managed care is optional here by federal design, and this record is the option exercised.');
+    } else {
+      p=first+' is an Ojibwe-country member who <b>opted in</b> \u2014 the tribal exemption runs both ways: exempt from mandatory enrollment, free to choose a plan anyway. The IHS referral system and the plan\u2019s network now must talk to each other, and this record is where they meet.';
+    }
+  } else {
+    var mi=m.medicareIdx, bi=m.buyinIdx;
+    if(m.product==='MSHO'){
+      p='In '+mLabel(mi)+', '+first+' turned 65 \u2014 and '+esc(sysLabel(m.delSpans[1].sys))+' <b>did not let go</b>. The PMAP product ended and MSHO began, same carrier, same month: one plan now at risk for Medicare and Medicaid together, one coordinator, one card. The twenty-sixth answer \u2014 <b>the birthday that integrated</b>: twenty-five states said some kind of goodbye; Minnesota\u2019s default offer is an upgrade, and it has made that offer since 1997. California aligned by statute, North Dakota by market, Minnesota by product design.';
+    } else {
+      p='In '+mLabel(mi)+', '+first+' turned 65, was offered MSHO \u2014 and declined. The Medicaid side moved to <b>MSC+</b> ('+esc(sysLabel(m.delSpans[1].sys))+'), Medicare enrolled separately, buy-in accreted '+mLabel(bi)+', and the two programs now coordinate '+first+' the ordinary American way. One checkbox separates this record from the 195 integrated ones above it \u2014 and everything downstream of the checkbox is the cost of the no.';
+    }
+  }
+  return '<div class="plain"><span class="pe-label">In plain English</span>'+p+'</div>';
+}
+
+/* ---------- modal body ---------- */
+function modalBody(m){
+  var h='';
+  var et=eligToday(m);
+  h+='<div class="kv">'+
+    kv('Status today',statusHtml(m.status))+
+    kv('Coverage group',grpChip(m.grpToday)+' <span style="font-size:.8rem;color:var(--ink-soft)">'+esc(GROUPS[m.grpToday].name)+'</span>')+
+    kv('Delivery today',delChip(m.delTodayCode)+(m.delTodayCode!=='\u2014'?' <span style="font-size:.8rem;color:var(--ink-soft)">'+esc(sysLabel(m.delTodayCode))+'</span>':''))+
+    kv('Date of birth',dobLabel(m.dob)+' <span class="hint">(age '+m.age+')</span>')+
+    kv('Sex',m.sex)+
+    kv('Address',esc(m.street)+', '+esc(m.city)+', MN '+m.zip)+
+    kv('County',esc(m.county)+(m.county==='Mahnomen'?' \u2014 entirely within the White Earth Nation':''))+
+    kv('Phone','<span class="mono">'+m.phone+'</span>')+
+    kv('Preferred language',esc(m.lang))+
+    (m.product&&m.product!=='PMAP'?kv('Product',m.product+' \u2014 '+PRODUCTS[m.product].split(' \u2014 ')[1]):'')+(m.net?kv('The net','Converted MA \u2192 MinnesotaCare at renewal \u2014 no gap'):'')+(m.ladder2?kv('The ladder','Two conversions, three contiguous spans, zero uncovered days'):'')+(m.declined?kv('MSHO offer','Declined \u2014 Medicare and Medicaid held separately'):'')+(m.tribal?kv('Tribal election',m.eStory==='tribal FFS election'?'Fee-for-service with IHS/638 access':'Opted into a plan \u2014 the election runs both ways'):'')+
+    '</div>';
+  function kv(k,v){return '<div class="k">'+k+'</div><div class="v">'+v+'</div>'}
+  h+='<h4>24-month picture</h4>'+timeline(m);
+  h+=plainFor(m);
+  h+='<h4>Eligibility spans</h4><div class="tblwrap"><table><thead><tr><th>Group</th><th>Begin</th><th>End</th><th>Reason</th></tr></thead><tbody>';
+  m.eligSpans.forEach(function(s){
+    h+='<tr><td>'+grpChip(s.grp)+'</td><td class="nowrap">'+startLabel(s.start)+'</td><td class="nowrap">'+(s.end===null?'<span class="st-act">open</span>':mLabel(s.end))+'</td><td>'+(s.reason?esc(s.reason):'\u2014')+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  h+='<h4>Delivery spans</h4><div class="tblwrap"><table><thead><tr><th>System</th><th>Begin</th><th>End</th><th>Note</th></tr></thead><tbody>';
+  m.delSpans.forEach(function(s){
+    h+='<tr><td>'+delChip(s.sys)+'</td><td class="nowrap">'+startLabel(s.start)+'</td><td class="nowrap">'+(s.end===null?'<span class="st-act">open</span>':mLabel(s.end))+'</td><td>'+(s.note?esc(s.note):'\u2014')+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  if(m.flags.length){
+    h+='<h4>Flags</h4><p>'+m.flags.map(function(f){return '<span class="flag">'+esc(f)+'</span>'}).join(' ')+'</p>';
+  }
+  h+='<h4>See the file</h4><p style="font-size:.84rem;color:var(--ink-soft)">Open <b>What the File Says</b> and choose '+esc(m.first+' '+m.last)+' to read the 834 the plan received for this member\u2019s most recent enrollment event.</p>';
+  return h;
+}
+
+/* ================= navigation & boot ================= */
+function showPage(pg){
+  document.querySelectorAll('nav button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-pg')===pg)});
+  document.querySelectorAll('.page').forEach(function(p){p.classList.toggle('on',p.id==='pg-'+pg)});
+  if(pg==='overview')renderOverview();
+}
+document.getElementById('nav').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b)return; showPage(b.getAttribute('data-pg'));
+});
+document.getElementById('mo-x').addEventListener('click',closeModal);
+document.getElementById('overlay').addEventListener('click',closeModal);
+document.getElementById('mo-prev').addEventListener('click',function(){stepModal(-1)});
+document.getElementById('mo-next').addEventListener('click',function(){stepModal(1)});
+document.addEventListener('keydown',function(e){
+  if(MODAL.ix===null)return;
+  if(e.key==='Escape')closeModal();
+  else if(e.key==='ArrowLeft')stepModal(-1);
+  else if(e.key==='ArrowRight')stepModal(1);
+});
+
+/* boot */
+renderOverview();
+initRosterControls(); renderRoster();
+initSpanControls();  renderSpans();
+initDelControls();   renderDel();
+renderRegisters();
+initFileTab();
+renderReference();
+</script>
+</body>
+</html>

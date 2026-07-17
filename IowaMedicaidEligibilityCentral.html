@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Iowa Medicaid Eligibility Central</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,600;1,400;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#1E5FCC; --accent-soft:#E8EFFA; --ink:#1A2233; --sub:#5A6478;
+  --line:#DDE3EC; --bg:#F7F9FC; --card:#FFFFFF; --warn:#B4540A; --ok:#1F7A3D;
+  --g-cfc:#4C7FB8; --g-hst:#B85C8A; --g-v8:#3D8F6E; --g-abd:#8A6FB8;
+  --g-mbw:#B08A3D; --g-dua:#B4540A; --g-wvr:#5C8A99; --g-rise:#7A5CB8; --g-ffs:#7A8299;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.55}
+.mono{font-family:'IBM Plex Mono',monospace;font-size:.85em}
+header{background:var(--card);border-bottom:1px solid var(--line);padding:22px 28px 0}
+.wordmark{font-size:1.55rem;font-weight:600}
+.wordmark .central{font-family:'Source Serif 4',serif;font-style:italic;color:var(--accent);font-weight:600}
+.tagline{color:var(--sub);font-size:.9rem;margin:4px 0 14px;max-width:70ch}
+nav{display:flex;gap:2px;flex-wrap:wrap}
+nav button{border:none;background:none;font:inherit;font-size:.88rem;font-weight:500;color:var(--sub);
+  padding:9px 14px;cursor:pointer;border-bottom:3px solid transparent}
+nav button:hover{color:var(--ink)}
+nav button.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+nav button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+main{max-width:1240px;margin:0 auto;padding:24px 28px 80px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px 20px;margin-bottom:16px}
+.card h3{font-size:1.02rem;margin-bottom:10px}
+.grid{display:grid;gap:14px}
+.grid.stats{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px}
+.stat .n{font-size:1.7rem;font-weight:700;letter-spacing:-.01em}
+.stat .l{color:var(--sub);font-size:.8rem;margin-top:2px}
+.plain{font-family:'Source Serif 4',serif;font-style:italic;font-size:1.02rem;line-height:1.6;
+  background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;
+  padding:14px 18px;margin:14px 0;color:#22304a}
+.plain.small{font-size:.94rem;padding:11px 14px}
+.plain b{font-style:normal}
+.tblwrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.86rem}
+th{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--sub);text-align:left;
+  padding:8px 10px;border-bottom:2px solid var(--line);white-space:nowrap;cursor:pointer;user-select:none}
+th.nosort{cursor:default}
+th .arr{color:var(--accent)}
+td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+tbody tr.rowbtn{cursor:pointer}
+tbody tr.rowbtn:hover{background:var(--accent-soft)}
+tbody tr.hl{background:var(--accent-soft);box-shadow:inset 4px 0 0 var(--accent)}
+.pill{display:inline-block;font-size:.72rem;font-weight:600;padding:2px 9px;border-radius:99px;
+  color:#fff;white-space:nowrap}
+.pill.outline{background:none;border:1.5px solid var(--line);color:var(--sub)}
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.controls input[type=search],.controls select{font:inherit;font-size:.86rem;padding:7px 10px;
+  border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink)}
+.controls input[type=search]{min-width:230px}
+.pager{display:flex;gap:8px;align-items:center;margin-top:12px;font-size:.84rem;color:var(--sub)}
+.pager button{font:inherit;font-size:.82rem;border:1px solid var(--line);background:var(--card);
+  border-radius:6px;padding:5px 12px;cursor:pointer}
+.pager button:disabled{opacity:.4;cursor:default}
+button.linkish{border:none;background:none;color:var(--accent);font:inherit;font-size:.85rem;
+  cursor:pointer;text-decoration:underline;padding:0}
+.regcard{border:1px solid var(--line);border-radius:8px;background:var(--card);padding:18px 20px;margin-bottom:18px}
+.regcard .regletter{font-family:'Source Serif 4',serif;font-style:italic;color:var(--accent);
+  font-size:1.5rem;font-weight:600;margin-right:8px}
+.regcard .q{font-weight:600;font-size:1rem;margin-bottom:8px}
+.regcard .body{color:#2a3448;font-size:.92rem;max-width:88ch}
+.answerno{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:.78rem;
+  background:var(--ink);color:#fff;border-radius:4px;padding:2px 8px;margin-left:8px;vertical-align:2px}
+/* slide-over modal */
+.overlay{position:fixed;inset:0;background:rgba(20,28,45,.35);opacity:0;pointer-events:none;transition:opacity .18s;z-index:40}
+.overlay.open{opacity:1;pointer-events:auto}
+.slide{position:fixed;top:0;right:0;bottom:0;width:min(560px,94vw);background:var(--card);
+  border-left:1px solid var(--line);box-shadow:-12px 0 32px rgba(20,28,45,.14);
+  transform:translateX(102%);transition:transform .2s ease;z-index:50;overflow-y:auto;padding:20px 24px 40px}
+.slide.open{transform:none}
+.slide .close{position:absolute;top:14px;right:16px;border:none;background:none;font-size:1.3rem;
+  cursor:pointer;color:var(--sub)}
+.slide .navrow{display:flex;align-items:center;gap:10px;margin:2px 0 14px}
+.slide .navrow button{border:1px solid var(--line);background:var(--card);border-radius:6px;
+  font-size:1rem;padding:3px 12px;cursor:pointer}
+.slide .navrow button:disabled{opacity:.35;cursor:default}
+.slide .pos{font-family:'IBM Plex Mono',monospace;font-size:.76rem;color:var(--sub)}
+.slide h2{font-size:1.25rem;margin-bottom:2px}
+.slide .sub,p.sub{color:var(--sub);font-size:.85rem}
+.slide dl.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;font-size:.86rem;margin:12px 0}
+.slide dl.kv dt{color:var(--sub)}
+.slide dl.kv dd{font-weight:500}
+.slide h4{font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;color:var(--sub);margin:16px 0 6px}
+/* 834 viewer */
+.x12{display:grid;grid-template-columns:minmax(280px,44%) 1fr;font-size:.8rem;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.x12 .seg{font-family:'IBM Plex Mono',monospace;padding:6px 10px;border-bottom:1px solid var(--line);white-space:pre-wrap;word-break:break-all}
+.x12 .exp{padding:6px 10px;border-bottom:1px solid var(--line);color:#2a3448}
+.x12 .loop .seg,.x12 .loop .exp{background:var(--accent-soft);font-weight:600}
+.x12 .teach .exp{border-left:3px solid var(--warn)}
+dl.gloss dt{font-weight:600;margin-top:10px}
+dl.gloss dd{color:#2a3448;font-size:.9rem;max-width:90ch}
+.chron td:first-child{white-space:nowrap;font-weight:600}
+footer{border-top:1px solid var(--line);color:var(--sub);font-size:.8rem;padding:18px 28px;max-width:1240px;margin:0 auto}
+.testpass{color:var(--ok);font-weight:600}.testfail{color:#B00020;font-weight:600}
+@media (prefers-reduced-motion:reduce){.slide,.overlay{transition:none}}
+@media (max-width:720px){.x12{grid-template-columns:1fr}.x12 .seg{border-bottom:none;padding-bottom:0}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wordmark">Iowa Medicaid Eligibility <span class="central">Central</span></div>
+  <p class="tagline">Eligibility, enrollment, and the file that carries both — 3,000 synthetic members of Iowa Medicaid: everything privatized in one day, a carousel of carrier exits the members never chose, a waiver that ended retroactive coverage so the dates agree, and a Medicare register where the series’ signature pair simply does not file. All data is seeded and deterministic; nothing here is real.</p>
+  <nav id="tabs" role="tablist"></nav>
+</header>
+<main id="main"></main>
+<footer>
+  <b>Iowa Medicaid Eligibility Central</b> — a single-file demonstration by <b>Robert Thomas Keyes</b>.
+  All members, identifiers, spans, and files are synthetic, generated in the browser from a fixed seed (515001);
+  no PHI, no network calls, no storage. Policy landscape described as of early 2026; verify currency before relying on any detail.
+</footer>
+<div class="overlay" id="overlay"></div>
+<aside class="slide" id="slide" role="dialog" aria-modal="true" aria-label="Member record"></aside>
+</file_text><script>
+'use strict';
+/* ================= seeded PRNG ================= */
+var SEED=515001; /* Des Moines area code + 001, house convention */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);
+  t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+var rng=mulberry32(SEED);
+function ri(n){return Math.floor(rng()*n)}
+function pick(a){return a[ri(a.length)]}
+function chance(p){return rng()<p}
+
+/* ================= time model =================
+   Month index 0 = January 2014. NOW = June 2026 = 149. */
+var EPOCH_Y=2014, NOW=149;
+var MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+function mLabel(i){return MONTHS[((i%12)+12)%12]+' '+(EPOCH_Y+Math.floor(i/12))}
+function mYYYYMMDD(i,last){var y=EPOCH_Y+Math.floor(i/12),m=i%12+1,d=last?new Date(y,m,0).getDate():1;
+  return ''+y+String(m).padStart(2,'0')+String(d).padStart(2,'0')}
+var COOP_FAIL=12;   /* Jan 2015 - CoOportunity Health, the co-op, collapses */
+var HEALTHLINK=27;  /* Apr 2016 - IA Health Link: everything, including LTSS, privatized in one day */
+var AMERI_EXIT=46;  /* Nov 2017 - AmeriHealth Caritas's last month; the largest reassignment */
+var RETRO_CUT=46;   /* Nov 2017 - the waiver ends retroactive eligibility for most adults */
+var UHC_EXIT=65;    /* Jun 2019 - UnitedHealthcare's last month, mid-contract */
+var MOLINA0=114;    /* Jul 2023 - Molina joins */
+var UNWIND=111;     /* Apr 2023 - first unwinding terminations */
+
+/* ================= coverage groups ================= */
+var GROUPS={
+ HWP:{name:'Health and Wellness Plan (expansion)',color:'var(--g-v8)',blurb:'Iowa\u2019s waiver expansion \u2014 born as two doors, the Wellness Plan and Marketplace Choice; register E remembers the door that collapsed.'},
+ HKI:{name:'hawki (CHIP)',color:'var(--g-mbw)',blurb:'Healthy and Well Kids in Iowa \u2014 CHIP under its own lowercase brand.'},
+ FAM:{name:'Families (FMAP)',color:'var(--g-cfc)',blurb:'Parents, caretakers, and children in the family categories.'},
+ PRG:{name:'Pregnancy',color:'var(--g-hst)',blurb:'Pregnancy coverage with 12-month postpartum continuation.'},
+ ABD:{name:'Aged, Blind, or Disabled',color:'var(--g-abd)',blurb:'Non-MAGI eligibility \u2014 in Iowa, in managed care like everyone else.'},
+ LTC:{name:'Facility / long-term care',color:'var(--g-rise)',blurb:'The nursing-facility population \u2014 capitated into IA Health Link on day one, which is why register F\u2019s pair never files.'},
+ WVR:{name:'HCBS waivers',color:'var(--g-wvr)',blurb:'Iowa\u2019s seven home- and community-based waivers \u2014 also inside the MCOs since 2016.'},
+ DUA:{name:'Dual (Medicare + Medicaid)',color:'var(--g-dua)',blurb:'Full and partial duals \u2014 no alignment demonstration here; the MCO simply keeps the member. Register F\u2019s subject.'}
+};
+/* ================= delivery systems ================= */
+var PLANS=[
+ {code:'ITC',name:'Iowa Total Care'},
+ {code:'MOL',name:'Molina Healthcare of Iowa'},
+ {code:'WLP',name:'Wellpoint Iowa (formerly Amerigroup)'}
+];
+var AME='AmeriHealth Caritas Iowa';
+var UHC='UnitedHealthcare Plan of the River Valley';
+var COOP='CoOportunity Health (Marketplace Choice)';
+function planName(code){var p=PLANS.find(function(x){return x.code===code});return p?p.name:code}
+
+/* ================= geography & communities =================
+   Roster texture: Des Moines; Waterloo\u2019s Bosnian community; West Liberty, Iowa\u2019s first
+   majority-Hispanic town; Postville, the meatpacking town whose Guatemalan and Somali
+   chapters are national history; Marshalltown; and the Meskwaki Settlement \u2014 land the
+   Nation purchased in 1857, sovereignty by deed rather than by reservation. */
+var COUNTIES=[
+ {name:'Polk',      city:'Des Moines',   zip:'50314',ac:'515',w:20},
+ {name:'Linn',      city:'Cedar Rapids', zip:'52404',ac:'319',w:10},
+ {name:'Scott',     city:'Davenport',    zip:'52802',ac:'563',w:9},
+ {name:'Black Hawk',city:'Waterloo',     zip:'50703',ac:'319',w:10},
+ {name:'Woodbury',  city:'Sioux City',   zip:'51103',ac:'712',w:9},
+ {name:'Muscatine', city:'West Liberty', zip:'52776',ac:'319',w:7},
+ {name:'Allamakee', city:'Postville',    zip:'52162',ac:'563',w:6},
+ {name:'Marshall',  city:'Marshalltown', zip:'50158',ac:'641',w:8},
+ {name:'Tama',      city:'Meskwaki Settlement',zip:'52339',ac:'641',w:6},
+ {name:'Wapello',   city:'Ottumwa',      zip:'52501',ac:'641',w:7}
+];
+var CPOOL=[];COUNTIES.forEach(function(c){for(var i=0;i<c.w;i++)CPOOL.push(c)});
+var NAMES={
+ general:{f:['James','Mary','Robert','Patricia','John','Jennifer','Michael','Linda','David','Elizabeth','William','Barbara','Richard','Susan','Joseph','Jessica','Thomas','Sarah','Christopher','Karen','Daniel','Lisa','Matthew','Nancy','Anthony','Betty','Mark','Margaret','Donald','Sandra','Steven','Ashley','Paul','Kimberly','Andrew','Emily','Joshua','Donna','Kenneth','Michelle','Kevin','Carol','Brian','Amanda','Marcus','Keisha','Darnell','Latoya'],
+  l:['Smith','Johnson','Williams','Brown','Jones','Miller','Davis','Wilson','Anderson','Taylor','Moore','Jackson','Martin','Lee','Thompson','White','Harris','Clark','Lewis','Walker','Hall','Young','Allen','King','Wright','Scott','Green','Baker','Adams','Nelson','Petersen','Jensen','Hansen','Christensen','Vander Linden','Van Dyke']},
+ hispanic:{f:['Jos\u00e9','Guadalupe','Juan','Mar\u00eda','Miguel','Rosa','Francisco','Carmen','Luis','Alejandra','Ram\u00f3n','Leticia','Jes\u00fas','Araceli','Marta','Domingo'],
+  l:['Garc\u00eda','Hern\u00e1ndez','Mart\u00ednez','L\u00f3pez','Gonz\u00e1lez','P\u00e9rez','Ram\u00edrez','Torres','Flores','Reyes','Zavala','Salinas','Ch\u00e1vez','P\u00e9rez L\u00f3pez']},
+ bosnian:{f:['Emir','Amina','Mirsad','Jasmina','Adnan','Selma','Haris','Lejla','Damir','Aida','Senad','Merima'],
+  l:['Hod\u017ei\u0107','Begovi\u0107','Muji\u0107','Ali\u0107','Deli\u0107','Softi\u0107','Kova\u010devi\u0107','Zuki\u0107','Hasanovi\u0107','Omerovi\u0107']},
+ somali:{f:['Ayaan','Mohamed','Fatima','Abdi','Halima','Ahmed','Sahra','Yusuf','Amina','Hassan','Ifrah','Omar'],
+  l:['Abdi','Mohamed','Hassan','Farah','Ali','Omar','Yusuf','Ahmed','Hussein','Warsame']},
+ meskwaki:{f:['George','Adeline','Frank','Priscilla','Jonathan','Donnabelle','Wayne','Charlene','Everett','Ramona','Lance','Dawn'],
+  l:['Wanatee','Youngbear','Pushetonequa','Lasley','Papakee','Keahna','Bear','Waseskuk','Mitchell','Davenport']}
+};
+var STREETS=['SE 14th St','E University Ave','Douglas Ave','1st Ave SE','W 4th St','Rockingham Rd','La Porte Rd','Floyd Blvd','E 3rd St','Lawler St','S Center St','Meskwaki Rd','Albia Rd','N Calhoun St','Army Post Rd','Falls Ave'];
+
+function namePoolFor(county){
+  if(county.name==='Tama')return['meskwaki',null,null];
+  if(county.city==='West Liberty'){if(chance(.65))return['hispanic','SPA','Spanish'];return['general',null,null]}
+  if(county.city==='Postville'){var r=rng();if(r<.35)return['somali','SOM','Somali'];if(r<.6)return['hispanic','SPA','Spanish'];return['general',null,null]}
+  if(county.name==='Black Hawk'){if(chance(.28))return['bosnian','BOS','Bosnian'];return['general',null,null]}
+  if(county.name==='Marshall'){if(chance(.35))return['hispanic','SPA','Spanish'];return['general',null,null]}
+  return['general',null,null];
+}
+
+/* ================= registers ================= */
+var REGCOUNT={A:1500,B:500,C:250,D:250,E:350,F:150};
+
+/* ================= member generation ================= */
+var MEMBERS=[];
+function pad(n,w){return String(n).padStart(w,'0')}
+function newMedicaidId(i){ /* 8-character Iowa state ID: seven digits + letter, synthetic */
+  return pad(5150000+i*3+ri(3),7)+String.fromCharCode(65+(i%26))}
+function mkSpan(cat,b,e,notes,extra){var s={cat:cat,b:b,e:e,notes:notes||''};
+  if(extra)Object.keys(extra).forEach(function(k){s[k]=extra[k]});return s}
+
+/* Health Link delivery chain \u2014 the exits are the architecture */
+function chainDelivery(m,b,e,opts){
+  opts=opts||{};
+  b=Math.max(b,0);
+  if(b<HEALTHLINK){
+    var preEnd=(e!==null&&e<HEALTHLINK)?e:HEALTHLINK-1;
+    m.dspans.push({sys:'FFS',plan:'Fee-for-service (pre\u2013Health Link)',b:b,e:preEnd,
+      why:'Before April 2016, Iowa Medicaid was the state\u2019s own program \u2014 then everything moved at once'});
+    if(e!==null&&e<HEALTHLINK)return;
+    b=HEALTHLINK;
+  }
+  var seat=opts.forceSurvivor?'WLP':(opts.seat||pick(['AME','UHC','WLP']));
+  if(b>UHC_EXIT)seat=pick(b>=MOLINA0?['ITC','MOL','WLP']:['ITC','WLP']);
+  else if(b>AMERI_EXIT&&seat==='AME')seat='UHC';
+  function push(sys,plan,pb,pe,why){m.dspans.push({sys:sys,plan:plan,b:pb,e:pe,why:why})}
+  if(seat==='AME'){
+    var aEnd=(e!==null&&e<=AMERI_EXIT)?e:AMERI_EXIT;
+    push('MCO',AME,b,aEnd,'Assigned at the Health Link launch');
+    if(e!==null&&e<=AMERI_EXIT)return;
+    m.moved=(m.moved||0)+1;
+    var uEnd=(e!==null&&e<=UHC_EXIT)?e:UHC_EXIT;
+    push('MCO',UHC,AMERI_EXIT+1,uEnd,'Reassigned \u2014 AmeriHealth exited November 2017; the largest single reassignment in the program\u2019s history');
+    if(e!==null&&e<=UHC_EXIT)return;
+    m.moved++;
+    push('MCO',planName(pick(['ITC','WLP'])),UHC_EXIT+1,e,'Reassigned again \u2014 UnitedHealthcare exited mid-contract, June 2019');
+  }else if(seat==='UHC'){
+    var uEnd2=(e!==null&&e<=UHC_EXIT)?e:UHC_EXIT;
+    push('MCO',UHC,b,uEnd2,b<=AMERI_EXIT?'Assigned at the Health Link launch':'Enrolled in the UnitedHealthcare era');
+    if(e!==null&&e<=UHC_EXIT)return;
+    m.moved=(m.moved||0)+1;
+    push('MCO',planName(pick(['ITC','WLP'])),UHC_EXIT+1,e,'Reassigned \u2014 UnitedHealthcare exited mid-contract, June 2019');
+  }else{
+    push('MCO',planName(seat==='WLP'?'WLP':seat),b,e,seat==='WLP'?'The survivor\u2019s seat \u2014 the one carrier lineage that never exited; no forced moves on this row':'IA Health Link enrollment');
+  }
+}
+
+function genMember(i,reg){
+  var county=pick(CPOOL);
+  var np=namePoolFor(county), pool=NAMES[np[0]];
+  var m={
+    id:'M'+pad(i+1,4), mid:newMedicaidId(i), reg:reg,
+    first:pick(pool.f), last:pick(pool.l),
+    sex:chance(.52)?'F':'M',
+    county:county.name, city:county.city, zip:county.zip,
+    addr:(100+ri(8900))+' '+pick(STREETS),
+    phone:'('+county.ac+') 555-'+pad(ri(10000),4),
+    lang:np[1], langName:np[2],
+    meskwaki:county.name==='Tama',
+    spans:[], dspans:[], moved:0
+  };
+  var b,e,g;
+  if(reg==='A'){
+    g=pick(['FAM','FAM','HKI','HKI','PRG','HWP','HWP','ABD','WVR']);
+    b=60+ri(70); m.dob=dobFor(g);
+    m.spans.push(mkSpan(g,b,null,'Ongoing; renewal passed '+mLabel(NOW-ri(10))+(m.meskwaki?' \u2014 Meskwaki Nation member; services at the Settlement clinic claim 100% federal match':'')));
+    chainDelivery(m,b,null);
+  }else if(reg==='B'){
+    g=pick(['FAM','HKI','HWP','PRG']); m.dob=dobFor(g);
+    b=80+ri(28); var gap=1+ri(3), closed=UNWIND+ri(16);
+    m.spans.push(mkSpan(g,b,closed,'Terminated \u2014 procedural (annual review not completed)'));
+    m.spans.push(mkSpan(g,closed+gap+1,null,'Reapplied and approved; coverage restored after '+gap+'-month gap'));
+    m.gap=gap; m.closedAt=closed;
+    chainDelivery(m,b,closed); chainDelivery(m,closed+gap+1,null);
+  }else if(reg==='C'){ /* the month the waiver kept */
+    g=pick(['HWP','HWP','FAM']); m.dob=dobFor(g);
+    var app=120+ri(26);
+    m.spans.push(mkSpan(g,app,null,'Application '+mLabel(app)+'; coverage begins the same month \u2014 Iowa\u2019s waiver ended retroactive eligibility, so '+mLabel(app-1)+'\u2019s bills stay the member\u2019s own',{noretro:true,app:app}));
+    chainDelivery(m,app,null);
+  }else if(reg==='D'){ /* the moves the member never made */
+    g=pick(['FAM','HWP','WVR','ABD']); m.dob=g==='WVR'||g==='ABD'?dobOlder():dobAdult();
+    b=ri(25); /* pre\u2013Health Link, so the whole chain plays out */
+    m.spans.push(mkSpan(g,b,null,'One continuous eligibility span \u2014 the member changed nothing; the carriers changed everything'));
+    chainDelivery(m,b,null,{seat:'AME'});
+  }else if(reg==='E'){ /* the co-op that collapsed */
+    g='HWP'; m.dob=dobAdult();
+    b=3+ri(9);
+    m.spans.push(mkSpan(g,b,null,'Expansion via Marketplace Choice \u2014 premium assistance through a commercial QHP; one continuous eligibility span across everything that follows',{coop:true}));
+    var qEnd=COOP_FAIL;
+    m.dspans.push({sys:'QHP',plan:COOP,b:b,e:qEnd,
+      why:'Marketplace Choice \u2014 Medicaid buying a marketplace plan; the carrier was CoOportunity, the co-op'});
+    m.dspans.push({sys:'FFS',plan:'Iowa Wellness Plan (state-run)',b:qEnd+1,e:HEALTHLINK-1,
+      why:'January 2015: the co-op collapses into liquidation; the state absorbs the experiment overnight'});
+    chainDelivery(m,HEALTHLINK,null);
+  }else{ /* F: Medicare arrives \u2014 answer #38 */
+    g=pick(['LTC','LTC','ABD','WVR']); m.dob=dob65();
+    var t65=130+ri(19); m.t65=t65;
+    b=HEALTHLINK+40+ri(50); if(b>=t65-6)b=t65-6-ri(12);
+    m.spans.push(mkSpan(g,b,t65-1,'Group closed at Medicare entitlement \u2014 redetermined, not terminated'));
+    m.spans.push(mkSpan('DUA',t65,null,'Dual eligibility begins; Part B buy-in accreted '+mLabel(t65+1)+' \u2014 and the plan below never blinked'));
+    /* the whole point: ONE delivery span, straight through the boundary */
+    var seat=b<=UHC_EXIT?'WLP':pick(b>=MOLINA0?['ITC','MOL','WLP']:['ITC','WLP']);
+    m.dspans.push({sys:'MCO',plan:planName(seat),b:b,e:null,
+      why:'IA Health Link carries LTSS through the Medicare boundary \u2014 the plan keeps the member; only the payer mix changes'});
+    m.throughPlan=planName(seat);
+    m.group='DUA';
+    return m;
+  }
+  m.group=m.group||g;
+  return m;
+}
+function dobFor(g){return g==='HKI'?dobKid():g==='FAM'?(chance(.5)?dobKid():dobAdult()):g==='PRG'?dobAdultYoung():g==='ABD'||g==='WVR'||g==='LTC'?dobOlder():dobAdult()}
+function dobKid(){return (2009+ri(15))+'-'+pad(1+ri(12),2)+'-'+pad(1+ri(28),2)}
+function dobAdultYoung(){return (1990+ri(15))+'-'+pad(1+ri(12),2)+'-'+pad(1+ri(28),2)}
+function dobAdult(){return (1975+ri(28))+'-'+pad(1+ri(12),2)+'-'+pad(1+ri(28),2)}
+function dobOlder(){return (1950+ri(25))+'-'+pad(1+ri(12),2)+'-'+pad(1+ri(28),2)}
+function dob65(){return (1959+ri(3))+'-'+pad(1+ri(12),2)+'-'+pad(1+ri(28),2)}
+
+/* build the population */
+(function(){
+  var i=0;
+  ['A','B','C','D','E','F'].forEach(function(reg){
+    for(var k=0;k<REGCOUNT[reg];k++){MEMBERS.push(genMember(i,reg));i++}
+  });
+})();
+/* derived tables */
+var SPANS=[],DSPANS=[];
+MEMBERS.forEach(function(m){
+  m.spans.forEach(function(s){SPANS.push({m:m,s:s})});
+  m.dspans.forEach(function(d){DSPANS.push({m:m,d:d})});
+});
+function eligNow(m){return m.spans.some(function(s){return s.b<=NOW&&(s.e===null||s.e>=NOW)})}
+function inGapNow(m){return !eligNow(m)&&m.spans.length>1}
+function sysNow(m){var d=m.dspans.filter(function(x){return x.b<=NOW&&(x.e===null||x.e>=NOW)});return d}
+</script>
+<script>
+'use strict';
+/* ================= tab framework ================= */
+var TABS=[
+ {id:'overview',label:'Overview'},
+ {id:'members',label:'Members'},
+ {id:'spans',label:'Eligibility Spans'},
+ {id:'delivery',label:'MCO Enrollment'},
+ {id:'registers',label:'Scenario Registers'},
+ {id:'file',label:'What the File Says'},
+ {id:'reference',label:'Reference'}
+];
+var activeTab='overview';
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function renderTabs(){
+  var n=document.getElementById('tabs');n.innerHTML='';
+  TABS.forEach(function(t){
+    var b=document.createElement('button');b.textContent=t.label;b.setAttribute('role','tab');
+    if(t.id===activeTab)b.className='active';
+    b.onclick=function(){activeTab=t.id;renderTabs();renderMain()};n.appendChild(b)});
+}
+function renderMain(){
+  var el=document.getElementById('main');
+  ({overview:rOverview,members:rMembers,spans:rSpans,delivery:rDelivery,
+    registers:rRegisters,file:rFile,reference:rReference})[activeTab](el);
+  window.scrollTo(0,0);
+}
+function pillFor(g){return '<span class="pill" style="background:'+GROUPS[g].color+'">'+g+'</span>'}
+function sortable(rows,cols,state,onchange){
+  /* returns thead html + attaches click sort via delegation key */
+  return cols.map(function(c,i){
+    var arr=state.col===i?(state.dir>0?' <span class="arr">\u25B2</span>':' <span class="arr">\u25BC</span>'):'';
+    return '<th data-si="'+i+'"'+(c.nosort?' class="nosort"':'')+'>'+c.h+arr+'</th>'}).join('');
+}
+function bindSort(theadEl,state,rerender){
+  theadEl.querySelectorAll('th[data-si]').forEach(function(th){
+    if(th.classList.contains('nosort'))return;
+    th.onclick=function(){var i=+th.dataset.si;
+      if(state.col===i)state.dir=-state.dir;else{state.col=i;state.dir=1}
+      state.page=0;rerender()}});
+}
+
+/* ================= Overview ================= */
+function rOverview(el){
+  var elig=0,mco=0,duals=0,gap=0,moved=0,noretro=0,through=0;
+  MEMBERS.forEach(function(m){
+    if(eligNow(m))elig++; else if(inGapNow(m))gap++;
+    if(m.group==='DUA')duals++;
+    if(m.reg==='D')moved+=m.moved;
+    if(m.reg==='C')noretro++;
+    if(m.reg==='F')through++;
+    sysNow(m).forEach(function(d){if(d.sys==='MCO')mco++});
+  });
+  var h='<div class="grid stats">'+
+    stat(MEMBERS.length.toLocaleString(),'members in population')+
+    stat(elig.toLocaleString(),'eligible today')+
+    stat(mco.toLocaleString(),'in an IA Health Link MCO today')+
+    stat(moved.toLocaleString(),'reassignments nobody chose (register D)')+
+    stat(noretro.toLocaleString(),'grants with zero retro months')+
+    stat(through.toLocaleString(),'delivery spans running through age 65')+
+    stat(duals.toLocaleString(),'duals (Medicare + Medicaid)')+
+    stat(gap.toLocaleString(),'in a churn gap')+
+    '</div>';
+  h+='<div class="plain">Iowa privatized nearly everything in one April day \u2014 nursing facilities and waivers '+
+   'included \u2014 then watched two of its carriers walk out. This population carries the whole decade: the co-op that '+
+   'collapsed, the carousel of reassignments no member chose, the waiver that ended retroactive coverage so that two '+
+   'dates agreeing became a scar, and \u2014 answer #38 \u2014 a Medicare register where the series\u2019 signature 024/021 '+
+   'pair does not file, because the plan keeps the member. Everything is synthetic and seeded: reload it anywhere and '+
+   'you get exactly these people, exactly these dates.</div>';
+  h+='<div class="card"><h3>Coverage groups in this population</h3><div class="tblwrap"><table><tbody>';
+  Object.keys(GROUPS).forEach(function(g){
+    var n=MEMBERS.filter(function(m){return m.group===g}).length;
+    h+='<tr><td>'+pillFor(g)+'</td><td><b>'+esc(GROUPS[g].name)+'</b></td><td>'+GROUPS[g].blurb+'</td><td class="mono" style="text-align:right">'+n.toLocaleString()+'</td></tr>'});
+  h+='</tbody></table></div></div>';
+  h+='<div class="card"><h3>The plans \u2014 present and departed</h3><div class="tblwrap"><table><thead><tr><th class="nosort">Plan / entity</th><th class="nosort">Note</th></tr></thead><tbody>'+
+   PLANS.map(function(p){return '<tr><td><b>'+esc(p.name)+'</b></td><td>'+(p.code==='WLP'?'The one carrier lineage that never exited \u2014 the survivor\u2019s seat':p.code==='MOL'?'Joined July 2023 \u2014 the newest seat at the table':'IA Health Link MCO')+'</td></tr>'}).join('')+
+   '<tr><td><b>AmeriHealth Caritas Iowa</b> <span class="pill outline">exited 2017</span></td><td>Left nineteen months in \u2014 the largest single reassignment in program history. Register D remembers</td></tr>'+
+   '<tr><td><b>UnitedHealthcare</b> <span class="pill outline">exited 2019</span></td><td>Left mid-contract \u2014 the carousel\u2019s second turn</td></tr>'+
+   '<tr><td><b>CoOportunity Health</b> <span class="pill outline">collapsed 2015</span></td><td>The co-op that carried Marketplace Choice into the nation\u2019s first co-op liquidation \u2014 register E</td></tr>'+
+   '</tbody></table></div></div>';
+  el.innerHTML=h;
+  function stat(n,l){return '<div class="stat"><div class="n">'+n+'</div><div class="l">'+l+'</div></div>'}
+}
+
+/* ================= Members ================= */
+var mState={q:'',grp:'',reg:'',st:'',page:0,col:0,dir:1};
+function memberRows(){
+  var q=mState.q.toLowerCase();
+  var rows=MEMBERS.filter(function(m){
+    if(mState.grp&&m.group!==mState.grp)return false;
+    if(mState.reg&&m.reg!==mState.reg)return false;
+    if(mState.st){var s=eligNow(m)?'A':(inGapNow(m)?'G':'C');if(s!==mState.st)return false}
+    if(q){var hay=(m.first+' '+m.last+' '+m.mid+' '+m.city+' '+m.county).toLowerCase();
+      if(hay.indexOf(q)<0)return false}
+    return true});
+  var key=[function(m){return m.last+m.first},function(m){return m.mid},function(m){return m.group},
+           function(m){return m.county},function(m){return m.reg},function(m){return eligNow(m)?0:inGapNow(m)?1:2}][mState.col];
+  rows.sort(function(a,b){var x=key(a),y=key(b);return (x<y?-1:x>y?1:0)*mState.dir});
+  return rows;
+}
+function rMembers(el){
+  var rows=memberRows(), per=50, pages=Math.max(1,Math.ceil(rows.length/per));
+  mState.page=Math.min(mState.page,pages-1);
+  var slice=rows.slice(mState.page*per,mState.page*per+per);
+  var h='<div class="plain small">Every column sorts; search covers name, Medicaid ID, city, and county. Click any row for the member record \u2014 the \u25C0 \u25B6 arrows there walk this exact filtered order.</div>';
+  h+='<div class="controls">'+
+   '<input type="search" id="mq" placeholder="Search 3,000 members\u2026" value="'+esc(mState.q)+'">'+
+   sel('mgrp','All coverage groups',Object.keys(GROUPS).map(function(g){return[g,GROUPS[g].name]}),mState.grp)+
+   sel('mreg','All registers',['A','B','C','D','E','F'].map(function(r){return[r,'Register '+r]}),mState.reg)+
+   sel('mst','Any status',[['A','Active'],['G','In gap'],['C','Closed']],mState.st)+
+   '</div>';
+  var cols=[{h:'Member'},{h:'Medicaid ID'},{h:'Group'},{h:'County'},{h:'Reg'},{h:'Status'}];
+  h+='<div class="card"><div class="tblwrap"><table><thead id="mth"><tr>'+sortable(rows,cols,mState)+'</tr></thead><tbody>';
+  slice.forEach(function(m){
+    var st=eligNow(m)?'<span class="pill" style="background:var(--ok)">Active</span>':
+      inGapNow(m)?'<span class="pill" style="background:var(--warn)">In gap</span>':
+      '<span class="pill outline">Closed</span>';
+    h+='<tr class="rowbtn" data-mid="'+m.id+'"><td><b>'+esc(m.last)+', '+esc(m.first)+'</b><br><span class="sub">'+esc(m.city)+'</span></td>'+
+      '<td class="mono">'+m.mid+'</td><td>'+pillFor(m.group)+'</td><td>'+esc(m.county)+'</td>'+
+      '<td class="mono">'+m.reg+'</td><td>'+st+'</td></tr>'});
+  h+='</tbody></table></div>'+pager(rows.length,per,mState)+'</div>';
+  el.innerHTML=h;
+  bindSort(document.getElementById('mth'),mState,function(){rMembers(el)});
+  document.getElementById('mq').oninput=function(){mState.q=this.value;mState.page=0;
+    var y=this.selectionStart;rMembers(el);var q=document.getElementById('mq');q.focus();q.setSelectionRange(y,y)};
+  ['mgrp','mreg','mst'].forEach(function(id,ix){document.getElementById(id).onchange=function(){
+    mState[['grp','reg','st'][ix]]=this.value;mState.page=0;rMembers(el)}});
+  bindPager(el,mState,function(){rMembers(el)});
+  bindRows(el,rows.map(function(m){return{m:m}}),'roster');
+}
+function sel(id,none,opts,cur){return '<select id="'+id+'"><option value="">'+none+'</option>'+
+  opts.map(function(o){return '<option value="'+o[0]+'"'+(cur===o[0]?' selected':'')+'>'+esc(o[1])+'</option>'}).join('')+'</select>'}
+function pager(total,per,state){
+  var a=state.page*per+1,b=Math.min(total,a+per-1);
+  if(!total)return '<p class="sub" style="margin-top:10px">No rows match \u2014 clear a filter to widen the view.</p>';
+  return '<div class="pager"><button data-pg="-1"'+(state.page===0?' disabled':'')+'>\u25C0 Prev</button>'+
+   '<span>showing '+a.toLocaleString()+'\u2013'+b.toLocaleString()+' of '+total.toLocaleString()+' matching (population '+MEMBERS.length.toLocaleString()+')</span>'+
+   '<button data-pg="1"'+(b>=total?' disabled':'')+'>Next \u25B6</button></div>'}
+function bindPager(el,state,rerender){el.querySelectorAll('[data-pg]').forEach(function(b){
+  b.onclick=function(){state.page+=+b.dataset.pg;rerender()}})}
+function bindRows(el,navList,ctx){el.querySelectorAll('tr[data-mid]').forEach(function(tr){
+  tr.onclick=function(){openMember(tr.dataset.mid,navList.map(function(x){return x.m.id}),ctx)}})}
+
+/* ================= Eligibility Spans ================= */
+var sState={grp:'',open:'',page:0,col:1,dir:1};
+function rSpans(el){
+  var rows=SPANS.filter(function(r){
+    if(sState.grp&&r.s.cat!==sState.grp)return false;
+    if(sState.open==='O'&&r.s.e!==null)return false;
+    if(sState.open==='C'&&r.s.e===null)return false;return true});
+  var key=[function(r){return r.m.last+r.m.first},function(r){return r.s.b},
+    function(r){return r.s.e===null?9999:r.s.e},function(r){return (r.s.e===null?NOW:r.s.e)-r.s.b},
+    function(r){return r.s.cat}][sState.col];
+  rows.sort(function(a,b){var x=key(a),y=key(b);return (x<y?-1:x>y?1:0)*sState.dir});
+  var per=50,pages=Math.max(1,Math.ceil(rows.length/per));sState.page=Math.min(sState.page,pages-1);
+  var slice=rows.slice(sState.page*per,sState.page*per+per);
+  var h='<div class="plain small">'+SPANS.length.toLocaleString()+' eligibility spans across the population \u2014 each row one continuous stretch in one coverage group. The end-reason column is where the registers live: procedural closures, Medicare redeterminations, retro grants whose begin dates precede their applications.</div>';
+  h+='<div class="controls">'+sel('sgrp','All coverage groups',Object.keys(GROUPS).map(function(g){return[g,GROUPS[g].name]}),sState.grp)+
+    sel('sopen','Open + closed',[['O','Open only'],['C','Closed only']],sState.open)+'</div>';
+  var cols=[{h:'Member'},{h:'Begin'},{h:'End'},{h:'Months'},{h:'Group'},{h:'Note',nosort:true}];
+  h+='<div class="card"><div class="tblwrap"><table><thead id="sth"><tr>'+sortable(rows,cols,sState)+'</tr></thead><tbody>';
+  slice.forEach(function(r){
+    h+='<tr class="rowbtn" data-mid="'+r.m.id+'"><td><b>'+esc(r.m.last)+', '+esc(r.m.first)+'</b></td>'+
+     '<td class="mono">'+mLabel(r.s.b)+'</td><td class="mono">'+(r.s.e===null?'\u2014 open \u2014':mLabel(r.s.e))+'</td>'+
+     '<td class="mono">'+((r.s.e===null?NOW:r.s.e)-r.s.b+1)+'</td><td>'+pillFor(r.s.cat)+'</td>'+
+     '<td style="max-width:340px">'+esc(r.s.notes)+'</td></tr>'});
+  h+='</tbody></table></div>'+pager(rows.length,per,sState)+'</div>';
+  el.innerHTML=h;
+  bindSort(document.getElementById('sth'),sState,function(){rSpans(el)});
+  ['sgrp','sopen'].forEach(function(id,ix){document.getElementById(id).onchange=function(){
+    sState[['grp','open'][ix]]=this.value;sState.page=0;rSpans(el)}});
+  bindPager(el,sState,function(){rSpans(el)});
+  bindRows(el,dedupeByMember(rows),'spans');
+}
+function dedupeByMember(rows){var seen={},out=[];rows.forEach(function(r){if(!seen[r.m.id]){seen[r.m.id]=1;out.push(r)}});return out}
+
+/* ================= Next Gen Enrollment (delivery spans) ================= */
+var dState={sys:'',plan:'',page:0,col:1,dir:1};
+function rDelivery(el){
+  var plans={};DSPANS.forEach(function(r){plans[r.d.plan]=1});
+  var rows=DSPANS.filter(function(r){
+    if(dState.sys&&r.d.sys!==dState.sys)return false;
+    if(dState.plan&&r.d.plan!==dState.plan)return false;return true});
+  var key=[function(r){return r.m.last+r.m.first},function(r){return r.d.b},
+    function(r){return r.d.e===null?9999:r.d.e},function(r){return r.d.plan},function(r){return r.d.sys}][dState.col];
+  rows.sort(function(a,b){var x=key(a),y=key(b);return (x<y?-1:x>y?1:0)*dState.dir});
+  var per=50,pages=Math.max(1,Math.ceil(rows.length/per));dState.page=Math.min(dState.page,pages-1);
+  var slice=rows.slice(dState.page*per,dState.page*per+per);
+  var h='<div class="plain small">The second clock, as a first-class table: '+DSPANS.length.toLocaleString()+' delivery spans \u2014 who carries the member, distinct from whether they are eligible. Every span boundary at November 2017 and June 2019 is a carrier exit \u2014 real churn no member chose \u2014 January 2015 is an insolvency, and register F\u2019s rows are the quietest in the series: single spans that run straight through age 65, because the plan never let go.</div>';
+  h+='<div class="controls">'+
+    sel('dsys','All systems',[['MCO','IA Health Link MCO'],['QHP','Marketplace Choice (CoOportunity)'],['FFS','Fee-for-service / Wellness Plan']],dState.sys)+
+    sel('dplan','All plans',Object.keys(plans).sort().map(function(p){return[p,p]}),dState.plan)+'</div>';
+  var cols=[{h:'Member'},{h:'Begin'},{h:'End'},{h:'Plan'},{h:'System'},{h:'Why',nosort:true}];
+  h+='<div class="card"><div class="tblwrap"><table><thead id="dth"><tr>'+sortable(rows,cols,dState)+'</tr></thead><tbody>';
+  slice.forEach(function(r){
+    var sysPill={MCO:'var(--g-cfc)',QHP:'var(--g-v8)',FFS:'var(--g-ffs)'}[r.d.sys];
+    h+='<tr class="rowbtn" data-mid="'+r.m.id+'"><td><b>'+esc(r.m.last)+', '+esc(r.m.first)+'</b></td>'+
+     '<td class="mono">'+mLabel(r.d.b)+'</td><td class="mono">'+(r.d.e===null?'\u2014 open \u2014':mLabel(r.d.e))+'</td>'+
+     '<td>'+esc(r.d.plan)+'</td><td><span class="pill" style="background:'+sysPill+'">'+r.d.sys+'</span></td>'+
+     '<td style="max-width:330px">'+esc(r.d.why)+'</td></tr>'});
+  h+='</tbody></table></div>'+pager(rows.length,per,dState)+'</div>';
+  el.innerHTML=h;
+  bindSort(document.getElementById('dth'),dState,function(){rDelivery(el)});
+  ['dsys','dplan'].forEach(function(id,ix){document.getElementById(id).onchange=function(){
+    dState[['sys','plan'][ix]]=this.value;dState.page=0;rDelivery(el)}});
+  bindPager(el,dState,function(){rDelivery(el)});
+  bindRows(el,dedupeByMember(rows),'delivery');
+}
+</script>
+<script>
+'use strict';
+/* ================= scenario registers ================= */
+var REGDEFS={
+ A:{title:'Steady state \u2014 everything, privatized in one day',
+    q:'What does the most complete Medicaid privatization look like at rest?',
+    body:`1,500 members simply covered. In April 2016 Iowa moved essentially its entire program \u2014 families, hawki children, expansion adults, waivers, and, almost uniquely, the nursing-facility population \u2014 into IA Health Link on a single day. Today three plans carry the state; Molina is the newest arrival, and the Wellpoint lineage is the only carrier seat that has never turned over. On the Meskwaki Settlement in Tama County \u2014 land the Nation purchased in 1857, sovereignty by deed rather than by reservation \u2014 tribal members\u2019 clinic services claim 100% federal match, a quiet economics running through those rows.`},
+ B:{title:'Churn \u2014 the annual review',
+    q:'What does unwinding-era churn look like in a span table?',
+    body:`500 members closed procedurally at annual review, sat uncovered one to three months, reapplied, and returned. Every reopened span is a new span, not a correction of the old one: the gap stays in the history because it happened, and the history is the audit.`},
+ C:{title:'The month the waiver kept \u2014 retroactive eligibility, ended',
+    q:'What does register C look like in a state that abolished the retro grant?',
+    body:`Every other register C in this series teaches the DTP*356 versus DTP*348 gap \u2014 eligibility reaching back before the application while the plan does not. Iowa\u2019s waiver <b>ended retroactive eligibility</b> for most adults in 2017, so these 250 members teach the same lesson by absence: coverage begins the month of application, the two dates agree, and <b>the agreement is the scar.</b> The emergency-room bill from the month before the application is the member\u2019s own, permanently. A file where the retro gap never appears is not a cleaner file; it is a record of a door that was closed. Read this register beside any other state\u2019s C and the waiver\u2019s cost is the difference between the two begin dates.`},
+ D:{title:'The moves the member never made',
+    q:'What does real, involuntary delivery churn look like \u2014 as opposed to a rename?',
+    body:`250 members enrolled before the 2016 launch who then rode the whole arc: assigned to AmeriHealth Caritas at go-live, reassigned when AmeriHealth exited in November 2017 \u2014 the largest single reassignment in the program\u2019s history \u2014 and reassigned again when UnitedHealthcare left mid-contract in June 2019. Three and four delivery spans each, every transition real, and <b>not one of them chosen by the member.</b> Virginia\u2019s register D (one series-neighbor east) is the mirror image: a rename that files recorded as churn while nothing moved. Iowa is churn that actually moved people, repeatedly, while their eligibility never blinked \u2014 one continuous span above, a carousel below. A model that counts \u201cplan changes\u201d as member behavior has misread both states.`},
+ E:{title:'The co-op that collapsed \u2014 Marketplace Choice',
+    q:'What happens to premium assistance when the carrier dies?',
+    body:`Iowa\u2019s expansion opened through two doors: the state-run Wellness Plan and Marketplace Choice \u2014 Medicaid buying commercial marketplace coverage, Arkansas\u2019s private option in Iowa dress. The carrier for much of it was CoOportunity Health, one of the ACA\u2019s co-ops \u2014 and in January 2015 CoOportunity collapsed into liquidation, the first co-op failure in the nation. These 350 members\u2019 delivery tables carry the whole story: a QHP span that ends the month the carrier died, a state-run span where the experiment was absorbed overnight, then the Health Link era. Their eligibility spans are one unbroken line across all of it. Arkansas\u2019s premium assistance persisted and became ARHOME; Iowa\u2019s lasted thirteen months and ended in an insolvency \u2014 the same idea, two fates, and the crosswalk is where the comparison lives.`},
+ F:{title:'Medicare arrives \u2014 the pair that doesn\u2019t file',
+    q:'What happens to these 150 members the month they turn 65?',
+    body:`Answer #38 in the series, and it deletes the series\u2019 most reliable artifact. Eight consecutive answers ended in the same file shape: a 024 terminating the old coverage, a 021 opening the successor \u2014 the pair. Iowa capitates its long-term-care population, so when Medicare arrives for a Health Link LTSS member, <b>the MCO keeps the member.</b> The eligibility side seams exactly as everywhere else \u2014 the category redetermines, dual status opens, the buy-in accretes \u2014 but the delivery span runs straight through the boundary, unbroken. The 834 files a change, not a pair: an INS*001 adding Medicare as primary in the COB loop, and the HD loop it would elsewhere terminate simply\u2026 continues. The two clocks this whole series keeps apart finally diverge in public: eligibility has a seam at 65; delivery doesn\u2019t. The pair that doesn\u2019t file is the proof they were never the same clock.`}
+};
+function rRegisters(el){
+  var h='<div class="plain">Six planted business questions \u2014 the registers are the population\u2019s table of contents. Each shows a 12-member sample; open any row and the \u25C0 \u25B6 arrows walk the <i>entire</i> register in order. For the complete list, filter the Members tab by register.</div>';
+  ['A','B','C','D','E','F'].forEach(function(r){
+    var d=REGDEFS[r], members=MEMBERS.filter(function(m){return m.reg===r});
+    h+='<div class="regcard"><div class="q"><span class="regletter">'+r+'</span>'+esc(d.title)+
+      (r==='F'?'<span class="answerno">answer #38</span>':'')+
+      ' <span class="sub" style="font-weight:400">\u2014 '+members.length.toLocaleString()+' members</span></div>'+
+      '<p class="body" style="margin-bottom:6px"><b>'+esc(d.q)+'</b></p>'+
+      '<p class="body">'+d.body+'</p>'+
+      '<div class="tblwrap" style="margin-top:12px"><table><thead><tr><th class="nosort">Member</th><th class="nosort">Group</th><th class="nosort">County</th><th class="nosort">Story in one line</th></tr></thead><tbody>';
+    members.slice(0,12).forEach(function(m){
+      h+='<tr class="rowbtn" data-mid="'+m.id+'" data-reg="'+r+'"><td><b>'+esc(m.last)+', '+esc(m.first)+'</b></td>'+
+        '<td>'+pillFor(m.group)+'</td><td>'+esc(m.county)+'</td><td>'+esc(oneLiner(m))+'</td></tr>'});
+    h+='</tbody></table></div></div>';
+  });
+  el.innerHTML=h;
+  el.querySelectorAll('tr[data-mid]').forEach(function(tr){
+    tr.onclick=function(){var r=tr.dataset.reg;
+      openMember(tr.dataset.mid,MEMBERS.filter(function(m){return m.reg===r}).map(function(m){return m.id}),'register')}});
+}
+function oneLiner(m){
+  switch(m.reg){
+   case 'A':return 'Covered since '+mLabel(m.spans[0].b)+', no story \u2014 which is the story.';
+   case 'B':return 'Closed '+mLabel(m.closedAt)+' for paperwork; back after '+m.gap+' month'+(m.gap>1?'s':'')+'.';
+   case 'C':return 'Applied '+mLabel(m.spans[0].app)+'; coverage begins '+mLabel(m.spans[0].app)+' \u2014 the month before stays hers.';
+   case 'D':return m.moved+' reassignment'+(m.moved===1?'':'s')+', zero of them chosen.';
+   case 'E':return 'Enrolled '+mLabel(m.spans[0].b)+'; the carrier died '+mLabel(12)+'. The span didn\u2019t.';
+   default:return 'Turned 65 '+mLabel(m.t65)+'; '+esc(m.throughPlan.split(' ')[0])+' never let go.'}
+}
+
+/* ================= What the File Says (annotated 834) ================= */
+var fileSel=null;
+function rFile(el){
+  if(!fileSel)fileSel=MEMBERS.filter(function(m){return m.reg==='F'})[0].id;
+  var opts='';['A','B','C','D','E','F'].forEach(function(r){
+    opts+='<optgroup label="Register '+r+' \u2014 '+esc(REGDEFS[r].title)+'">'+
+     MEMBERS.filter(function(m){return m.reg===r}).slice(0,40).map(function(m){
+       return '<option value="'+m.id+'"'+(m.id===fileSel?' selected':'')+'>'+esc(m.last)+', '+esc(m.first)+' \u2014 '+m.mid+'</option>'}).join('')+'</optgroup>'});
+  var m=MEMBERS.find(function(x){return x.id===fileSel});
+  var h='<div class="plain small">Pick a member and the app builds their most recent X12N 834 enrollment event with every segment explained. The planted lessons: register C\u2019s two dates that agree \u2014 and why the agreement is a scar; register D\u2019s exit-driven pairs the member never chose; and register F, where the series\u2019 signature 024/021 pair simply does not file \u2014 a change transaction and a COB loop where eight states filed a termination.</div>'+
+   '<div class="controls"><select id="fsel" style="max-width:480px">'+opts+'</select></div>'+
+   '<div class="card"><div class="x12">'+build834(m).map(function(row){
+     return '<div class="seg'+(row.loop?' loop':'')+'">'+esc(row.seg)+'</div>'+
+            '<div class="exp'+(row.loop?' loop':'')+(row.teach?' teach':'')+'">'+row.exp+'</div>'}).join('')+
+   '</div></div>';
+  el.innerHTML=h;
+  document.getElementById('fsel').onchange=function(){fileSel=this.value;rFile(el)};
+}
+function build834(m){
+  var rows=[];
+  var evt={A:'021',B:'021',C:'021',D:'001',E:'001',F:'001'}[m.reg];
+  function seg(s,e,o){rows.push({seg:s,exp:e,loop:o&&o.loop,teach:o&&o.teach})}
+  seg('ISA*00*          *00*          *ZZ*IMESENDER      *ZZ*PLANRCVR       *260601*0800*^*00501*000051500*0*P*:~',
+    'Interchange envelope \u2014 sender is the state, receiver is the plan. Synthetic control number.');
+  seg('GS*BE*IMESENDER*PLANRCVR*20260601*0800*515*X*005010X220A1~','Functional group: BE = benefit enrollment, the 834\u2019s family name.');
+  seg('ST*834*0001*005010X220A1~','Transaction set header.');
+  seg('BGN*00*'+m.id+'FILE*20260601*0800****4~','Original transaction (BGN01=00), reference keyed to the member for this demo.');
+  seg('INS*Y*18*'+evt+'*XN*A***FT~','Loop 2000 \u2014 member level. INS03='+evt+' ('+({'021':'addition','001':'change'})[evt]+'): '+insStory(m),{loop:true,teach:m.reg==='F'});
+  seg('REF*0F*'+m.mid+'~','Subscriber identifier \u2014 Iowa\u2019s eight-character state ID: seven digits and a letter.');
+  seg('REF*3H*'+m.reg+m.id.slice(1)+'~','Case/agency reference \u2014 synthetic, keyed to the register.');
+  if(m.reg==='C'){
+    seg('DTP*356*D8*'+mYYYYMMDD(m.spans[0].app)+'~','Member-level eligibility begin: '+mLabel(m.spans[0].app)+' \u2014 <b>the application month itself.</b> Hold this date; compare it to the coverage begin below.',{teach:true});
+  }else{
+    seg('DTP*356*D8*'+mYYYYMMDD(m.spans[m.spans.length-1].b)+'~','Member-level eligibility begin: '+mLabel(m.spans[m.spans.length-1].b)+'.');
+  }
+  if(m.reg==='F')seg('DTP*357*D8*'+mYYYYMMDD(m.t65-1,true)+'~','Member-level eligibility end for the <i>pre-Medicare group</i> \u2014 the eligibility side seams exactly like everywhere else. Keep reading: the delivery side won\u2019t.',{teach:true});
+  seg('NM1*IL*1*'+m.last.toUpperCase()+'*'+m.first.toUpperCase()+'~','Member name.');
+  seg('PER*IP**TE*'+m.phone.replace(/\D/g,'')+'~','Contact telephone.');
+  seg('N3*'+m.addr.toUpperCase()+'~','Street address \u2014 '+esc(m.city)+' texture from the seeded roster.');
+  seg('N4*'+m.city.toUpperCase()+'*IA*'+m.zip+'~','City / state / ZIP.');
+  seg('DMG*D8*'+m.dob.replace(/-/g,'')+'*'+m.sex+'~','Demographics: date of birth and sex.');
+  if(m.lang)seg('LUI*LE*'+m.lang+'**7~','Preferred language: '+m.langName+' \u2014 '+(m.lang==='BOS'?'Waterloo\u2019s Bosnian community.':m.lang==='SOM'?'Postville \u2014 the meatpacking town whose Somali chapter is national history.':'West Liberty \u2014 Iowa\u2019s first majority-Hispanic town \u2014 and Marshalltown.'));
+  /* health coverage loops */
+  var openD=m.dspans.filter(function(d){return d.e===null});
+  var mainD=openD[0]||m.dspans[m.dspans.length-1];
+  if(m.reg==='F'){
+    seg('HD*001**HLT*'+esc(m.throughPlan.toUpperCase())+'~','Loop 2300 \u2014 <b>read what is not here.</b> Eight consecutive states filed HD*024 at this exact moment. Iowa files a change: the plan carried this member\u2019s LTSS yesterday and carries it tomorrow; only the payer mix changed. The pair does not file, because nothing about the delivery relationship ended.',{loop:true,teach:true});
+    seg('DTP*348*D8*'+mYYYYMMDD(m.dspans[0].b)+'~','Coverage begin \u2014 unchanged since '+mLabel(m.dspans[0].b)+'. The span runs straight through the Medicare boundary; the begin date predates it and no end date exists.');
+    seg('COB*P*'+m.mid+'*1~','<b>Here is the actual event:</b> Medicare becomes primary. Answer #38 lives in this segment \u2014 the arrival of Medicare, reduced to a coordination-of-benefits update inside a coverage loop that never blinked. Eligibility seamed above; delivery shrugged here.',{teach:true});
+  }else if(m.reg==='D'){
+    var last=m.dspans[m.dspans.length-1], prev=m.dspans[m.dspans.length-2];
+    seg('HD*024**HLT*'+esc(prev.plan.toUpperCase())+'~','Loop 2300 \u2014 a real termination: '+esc(prev.why)+'.',{loop:true,teach:true});
+    seg('DTP*349*D8*'+mYYYYMMDD(prev.e,true)+'~','Coverage-end '+mLabel(prev.e)+' \u2014 the carrier\u2019s date, not the member\u2019s.');
+    seg('HD*021**HLT*'+esc(last.plan.toUpperCase())+'~','\u2026and the successor: '+esc(last.why)+'. This pair is <b>true</b> \u2014 contrast the series-neighbor whose identical-looking pair was a rename. Same file shape, opposite reality; only the reasons tell them apart, which is why reasons are data.',{loop:true,teach:true});
+    seg('DTP*348*D8*'+mYYYYMMDD(last.b)+'~','Coverage begin '+mLabel(last.b)+' \u2014 zero-day gap; the reassignment waited for no one.');
+  }else if(m.reg==='E'){
+    seg('HD*024**HLT*COOPORTUNITY HEALTH (MARKETPLACE CHOICE)~','Loop 2300 \u2014 the termination an insolvency wrote: the co-op collapsed into liquidation in January 2015, thirteen months into the experiment.',{loop:true,teach:true});
+    seg('DTP*349*D8*'+mYYYYMMDD(12,true)+'~','Coverage-end January 2015 \u2014 every member of this register shares it; carrier death is a wall too.');
+    seg('HD*021**HLT*'+esc(mainD.plan.toUpperCase())+'~','\u2026and the state absorbed the experiment overnight, then Health Link absorbed the state. The eligibility span above never noticed any of it.',{loop:true});
+    seg('DTP*348*D8*'+mYYYYMMDD(mainD.b)+'~','Current coverage begin '+mLabel(mainD.b)+'.');
+  }else{
+    seg('HD*'+evt+'**HLT*'+esc((mainD?mainD.plan:'FEE-FOR-SERVICE').toUpperCase())+'~','Loop 2300 \u2014 health coverage: the delivery span, distinct from eligibility.',{loop:true});
+    var covB=m.reg==='C'?m.spans[0].app:Math.max(m.spans[m.spans.length-1].b,0);
+    if(m.reg==='C'){
+      seg('DTP*348*D8*'+mYYYYMMDD(covB)+'~','Coverage begin \u2014 '+mLabel(covB)+', <b>the same month as DTP*356 above. The two dates agree, and the agreement is the lesson:</b> everywhere else in this series they disagree by up to three months, and the disagreement is the retro grant. Iowa\u2019s waiver removed the gap by removing the coverage; a matching pair of dates is this state\u2019s scar.',{teach:true});
+    }else{
+      seg('DTP*348*D8*'+mYYYYMMDD(covB)+'~','Coverage begin '+mLabel(covB)+'.');
+    }
+  }
+  seg('REF*CE*'+m.group+'~','Reporting category \u2014 the coverage group riding with the enrollment ('+esc(GROUPS[m.group]?GROUPS[m.group].name:m.group)+').');
+  seg('SE*'+(rows.length+2)+'*0001~','Transaction trailer with segment count.');
+  seg('GE*1*515~','Functional group trailer.');
+  seg('IEA*1*000051500~','Interchange trailer.');
+  return rows;
+}
+function insStory(m){
+  return {A:'routine enrollment maintenance.',B:'the reapproval after the review gap \u2014 a brand-new addition, not a correction.',
+   C:'an addition whose two dates agree \u2014 read why that is the scar.',
+   D:'a change wrapping a reassignment the member never chose \u2014 a true pair, unlike some.',
+   E:'a change from the month the carrier died \u2014 the eligibility above never noticed.',
+   F:'<b>a change, not a pair.</b> Eight states filed a termination at this moment; Iowa updates a COB loop. Read the HD segment below for what is missing.'}[m.reg];
+}
+
+/* ================= Reference ================= */
+function rReference(el){
+  var h='<div class="card"><h3>Two exits and a collapse \u2014 the Health Link decade</h3>'+
+   '<div class="tblwrap"><table class="chron"><tbody>'+
+   '<tr><td class="mono">Jan 2015</td><td>CoOportunity Health \u2014 the co-op carrying Marketplace Choice \u2014 collapses into liquidation, the first co-op failure in the nation. The state absorbs the premium-assistance experiment overnight. Register E.</td></tr>'+
+   '<tr><td class="mono">Apr 2016</td><td>IA Health Link: essentially the entire program, including the nursing-facility and waiver populations, moves into managed care on one day \u2014 among the most complete privatizations any state has attempted.</td></tr>'+
+   '<tr><td class="mono">Nov 2017</td><td>AmeriHealth Caritas exits \u2014 the largest single reassignment in the program\u2019s history. The same season, the waiver ends retroactive eligibility for most adults. Registers D and C, respectively.</td></tr>'+
+   '<tr><td class="mono">Jun 2019</td><td>UnitedHealthcare exits mid-contract; the carousel turns again. Iowa Total Care arrives.</td></tr>'+
+   '<tr><td class="mono">Jul 2023</td><td>Molina joins; three plans hold the state. The Wellpoint lineage remains the only seat that never turned over. Verify currency \u2014 this landscape moves.</td></tr>'+
+   '</tbody></table></div></div>';
+  h+='<div class="card"><h3>834 maintenance codes used in this app</h3><div class="tblwrap"><table><thead><tr><th class="nosort">INS03</th><th class="nosort">Meaning</th><th class="nosort">Where you\u2019ll see it</th></tr></thead><tbody>'+
+   '<tr><td class="mono">021</td><td>Addition</td><td>New enrollments, register B\u2019s returns, register C\u2019s same-month grants</td></tr>'+
+   '<tr><td class="mono">024</td><td>Cancellation / termination</td><td>Register D\u2019s exits and register E\u2019s insolvency \u2014 real pairs with real reasons</td></tr>'+
+   '<tr><td class="mono">001</td><td>Change</td><td>Register F \u2014 the whole answer: Medicare arrives as a COB update, and the pair every other state files here does not file</td></tr>'+
+   '</tbody></table></div></div>';
+  h+='<div class="card"><h3>Glossary</h3><dl class="gloss">'+
+   gl('IA Health Link','The April 2016 single-day privatization of nearly the whole program \u2014 LTSS included, which is register F\u2019s precondition and the reason the pair doesn\u2019t file.')+
+   gl('hawki','Healthy and Well Kids in Iowa \u2014 CHIP under its own lowercase brand.')+
+   gl('Marketplace Choice / CoOportunity','Iowa\u2019s premium-assistance door and the co-op that carried it into a January 2015 liquidation \u2014 register E, and the fate Arkansas\u2019s twin experiment escaped.')+
+   gl('The retro waiver','The 2017 elimination of retroactive eligibility for most adults \u2014 register C\u2019s inversion: the two dates agree, and the agreement is the scar.')+
+   gl('The exits','AmeriHealth Caritas (2017) and UnitedHealthcare (2019, mid-contract) \u2014 register D\u2019s carousel: the moves the member never made, and the true-pair counterpart to the series\u2019 famous rename.')+
+   gl('Meskwaki Settlement','The Meskwaki Nation\u2019s land in Tama County \u2014 purchased in 1857, sovereignty by deed rather than reservation; Settlement clinic services claim 100% federal match. The Wanatees and Youngbears in these rows carry it.')+
+   gl('Postville','The northeast Iowa meatpacking town whose Guatemalan and Somali chapters \u2014 and the 2008 raid between them \u2014 are national history; its rows here carry both communities.')+
+   gl('The pair that doesn\u2019t file','The thirty-eighth Medicare answer: with LTSS capitated, the MCO keeps the member through the boundary \u2014 eligibility seams, delivery doesn\u2019t, and the 834 files a COB change where eight states filed a termination. Proof the two clocks were never one.')+
+   gl('834','The X12N benefit enrollment transaction \u2014 this app\u2019s native tongue. Register D\u2019s pairs are true; register E\u2019s wall was an insolvency; register F\u2019s pair is famous for not existing.')+
+   '</dl></div>';
+  h+='<div class="card"><h3>Counties in this population</h3><p style="font-size:.85rem">'+
+   Array.from(new Set(COUNTIES.map(function(c){return c.name}))).join(' \u00b7 ')+'</p>'+
+   '<p class="sub" style="margin-top:8px">The Wanatees, Youngbears, and Pushetonequas carry the Meskwaki Settlement; the Hod\u017ei\u0107s and Begovi\u0107s, Waterloo\u2019s Bosnian community; the Garc\u00edas of West Liberty carry Iowa\u2019s first majority-Hispanic town, and Postville\u2019s rows carry its Somali and Guatemalan chapters; Des Moines, Cedar Rapids, Davenport, Sioux City, and Ottumwa carry the rest.</p></div>';
+  el.innerHTML=h;
+  function gl(t,d){return '<dt>'+t+'</dt><dd>'+d+'</dd>'}
+}
+</script>
+<script>
+'use strict';
+/* ================= slide-over member record ================= */
+var nav={list:[],ix:-1,ctx:''};
+function openMember(id,list,ctx){
+  nav.list=list||[id];nav.ix=nav.list.indexOf(id);nav.ctx=ctx||'';
+  paintMember();document.getElementById('overlay').classList.add('open');
+  var s=document.getElementById('slide');s.classList.add('open');
+  highlightRow(id);s.focus&&s.focus();
+}
+function closeMember(){
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('slide').classList.remove('open');
+  highlightRow(null);
+}
+function stepMember(d){var n=nav.ix+d;if(n<0||n>=nav.list.length)return;nav.ix=n;paintMember();highlightRow(nav.list[n])}
+function highlightRow(id){document.querySelectorAll('tr.hl').forEach(function(t){t.classList.remove('hl')});
+  if(id){var tr=document.querySelector('tr[data-mid="'+id+'"]');if(tr)tr.classList.add('hl')}}
+function paintMember(){
+  var m=MEMBERS.find(function(x){return x.id===nav.list[nav.ix]});
+  var s=document.getElementById('slide');
+  var ctxLabel={roster:'filtered roster',spans:'spans view',delivery:'enrollment view',register:'register'}[nav.ctx]||'list';
+  var h='<button class="close" aria-label="Close">\u00d7</button>'+
+   '<div class="navrow"><button id="mprev"'+(nav.ix===0?' disabled':'')+' aria-label="Previous member">\u25C0</button>'+
+   '<button id="mnext"'+(nav.ix>=nav.list.length-1?' disabled':'')+' aria-label="Next member">\u25B6</button>'+
+   '<span class="pos">'+(nav.ix+1)+' / '+nav.list.length+' ('+ctxLabel+')</span></div>'+
+   '<h2>'+esc(m.last)+', '+esc(m.first)+'</h2>'+
+   '<p class="sub">'+pillFor(m.group)+' &nbsp; Register '+m.reg+' \u2014 '+esc(REGDEFS[m.reg].title)+'</p>'+
+   '<dl class="kv">'+
+   kv('Medicaid ID','<span class="mono">'+m.mid+'</span>')+
+   kv('Born',esc(m.dob)+' ('+m.sex+')')+
+   kv('Address',esc(m.addr)+', '+esc(m.city)+', OH '+m.zip+' \u2014 '+esc(m.county)+' County')+
+   kv('Phone','<span class="mono">'+esc(m.phone)+'</span>')+
+   (m.lang?kv('Language',esc(m.langName)+' <span class="mono">('+m.lang+')</span>'):'')+
+   '</dl>'+
+   '<div class="plain small">'+plainEnglish(m)+'</div>'+
+   '<h4>Eligibility spans</h4><div class="tblwrap"><table><thead><tr><th class="nosort">Group</th><th class="nosort">Begin</th><th class="nosort">End</th><th class="nosort">Note</th></tr></thead><tbody>'+
+   (m.spans.length===0?'<tr><td colspan="4" class="sub">No eligibility spans \u2014 this member has never been eligible. The empty table is the record.</td></tr>':'')+
+   m.spans.map(function(x){return '<tr><td>'+pillFor(x.cat)+'</td><td class="mono">'+mLabel(x.b)+'</td>'+
+     '<td class="mono">'+(x.e===null?'\u2014 open \u2014':mLabel(x.e))+'</td><td>'+esc(x.notes)+'</td></tr>'}).join('')+
+   '</tbody></table></div>'+
+   '<h4>Delivery spans</h4><div class="tblwrap"><table><thead><tr><th class="nosort">Plan</th><th class="nosort">Begin</th><th class="nosort">End</th><th class="nosort">Why</th></tr></thead><tbody>'+
+   (m.dspans.length===0?'<tr><td colspan="4" class="sub">No delivery spans \u2014 no plan was ever asked to carry this member.</td></tr>':'')+
+   (m.dspans.length===0?'<tr><td colspan="4" class="sub">No delivery spans on record.</td></tr>':'')+
+   m.dspans.map(function(x){return '<tr><td><b>'+esc(x.plan)+'</b></td><td class="mono">'+mLabel(x.b)+'</td>'+
+     '<td class="mono">'+(x.e===null?'\u2014 open \u2014':mLabel(x.e))+'</td><td>'+esc(x.why)+'</td></tr>'}).join('')+
+   '</tbody></table></div>'+
+   '<p style="margin-top:14px"><button class="linkish" id="see834">Read this member\u2019s 834 \u2192</button></p>';
+  s.innerHTML=h;
+  s.querySelector('.close').onclick=closeMember;
+  document.getElementById('mprev').onclick=function(){stepMember(-1)};
+  document.getElementById('mnext').onclick=function(){stepMember(1)};
+  document.getElementById('see834').onclick=function(){fileSel=m.id;closeMember();activeTab='file';renderTabs();renderMain()};
+  function kv(k,v){return '<dt>'+k+'</dt><dd>'+v+'</dd>'}
+}
+function plainEnglish(m){
+  var first=m.spans[0];
+  switch(m.reg){
+   case 'A':return esc(m.first)+' has been covered under '+esc(GROUPS[m.group].name)+' since '+mLabel(first.b)+
+     ' \u2014 '+(NOW-first.b+1)+' straight months \u2014 and is carried today by '+esc(currentPlan(m))+'.'+
+     (m.meskwaki?' As a Meskwaki Nation member, services at the Settlement clinic claim 100% federal match \u2014 sovereignty by deed, economics by statute.':
+     ' The most recent renewal passed without incident. In a program this size, uneventful is an achievement.');
+   case 'B':return esc(m.first)+'\u2019s annual review was never completed, so coverage closed at the end of '+mLabel(m.closedAt)+
+     ' \u2014 not because anything about '+(m.sex==='F'?'her':'him')+' changed, but because paperwork lapsed. After '+m.gap+
+     ' uncovered month'+(m.gap>1?'s':'')+', a new application was approved and a new span opened '+mLabel(m.closedAt+m.gap+1)+
+     '. The gap stays in the record; that is the point.';
+   case 'C':return esc(m.first)+' applied in '+mLabel(first.app)+' and coverage began '+mLabel(first.app)+' \u2014 the same month, '+
+     'because Iowa\u2019s waiver ended retroactive eligibility. In any other state in this series, up to three earlier months could have '+
+     'been covered; here, '+mLabel(first.app-1)+'\u2019s emergency-room bill is '+esc(m.first)+'\u2019s own, permanently. The two dates in '+
+     'this record agree, and the agreement is the scar.';
+   case 'D':return 'Since '+mLabel(first.b)+', '+esc(m.first)+' has been moved '+m.moved+' time'+(m.moved===1?'':'s')+' \u2014 assigned to '+
+     'AmeriHealth at the Health Link launch, reassigned when it exited in 2017, and again when UnitedHealthcare left mid-contract in 2019 \u2014 '+
+     'while the eligibility span above ran unbroken through all of it. Every one of those delivery transitions is real, and not one was '+
+     esc(m.first)+'\u2019s choice. The rename one state east taught you to disbelieve a pair; this register teaches you the pair can be true '+
+     'and still say nothing about the member.';
+   case 'E':return esc(m.first)+' enrolled in '+mLabel(first.b)+' through Marketplace Choice \u2014 Medicaid buying a commercial plan, and the '+
+     'plan was CoOportunity, the co-op. In January 2015 the carrier collapsed into liquidation, the first in the nation, and the state absorbed '+
+     'the experiment overnight; fifteen months later Health Link absorbed the state. Three delivery eras, one insolvency, and one eligibility '+
+     'span that never noticed \u2014 the coverage outlived the company that carried it.';
+   default:
+     return esc(m.first)+' turned 65 and Medicare arrived '+mLabel(m.t65)+'. The eligibility side did exactly what eight states before it did: '+
+     'the '+esc(GROUPS[m.spans[0].cat].name)+' span closed, dual status opened, the buy-in accreted. The delivery side did something no prior '+
+     'state\u2019s F register could: nothing. '+esc(m.throughPlan)+' carried '+esc(m.first)+'\u2019s long-term care the month before the birthday '+
+     'and carries it still \u2014 one unbroken span straight through the boundary, with Medicare arriving as a COB update inside it. Answer #38: '+
+     'the pair that doesn\u2019t file \u2014 and the proof that eligibility and delivery were never the same clock.';
+  }
+}
+function currentPlan(m){var d=sysNow(m).find(function(x){return x.sys==='MCO'||x.sys==='MYC'});
+  return d?d.plan:'fee-for-service'}
+
+/* ================= internal invariant suite (headless harness calls runTests) ================= */
+function runTests(){
+  var out=[],pass=0;
+  function t(name,fn){try{var r=fn();out.push([!!r,name+(typeof r==='string'?' \u2014 '+r:'')]);if(r)pass++}
+    catch(e){out.push([false,name+' \u2014 threw: '+e.message])}}
+  t('Population is exactly 3,000 members',function(){return MEMBERS.length===3000});
+  t('Register counts are exactly as planted (1500/500/250/250/350/150)',function(){
+    return ['A','B','C','D','E','F'].every(function(r){
+      return MEMBERS.filter(function(m){return m.reg===r}).length===REGCOUNT[r]})});
+  t('No span ends before it begins',function(){
+    return SPANS.every(function(r){return r.s.e===null||r.s.e>=r.s.b})&&
+           DSPANS.every(function(r){return r.d.e===null||r.d.e>=r.d.b})});
+  t('Register D: one continuous eligibility span; every delivery boundary is an exit date',function(){
+    return MEMBERS.filter(function(m){return m.reg==='D'}).every(function(m){
+      if(!(m.spans.length===1&&m.spans[0].e===null))return false;
+      if(m.moved<1)return false;
+      return m.dspans.every(function(d,i){
+        if(i===0)return true;
+        var prev=m.dspans[i-1];
+        return d.b===prev.e+1&&(prev.e===HEALTHLINK-1||prev.e===AMERI_EXIT||prev.e===UHC_EXIT)})})});
+  t('Register E: the QHP span ends the month the carrier died; eligibility is one unbroken span',function(){
+    return MEMBERS.filter(function(m){return m.reg==='E'}).every(function(m){
+      var q=m.dspans.find(function(d){return d.sys==='QHP'});
+      return q&&q.e===COOP_FAIL&&m.spans.length===1&&m.spans[0].e===null})});
+  t('Register F: eligibility seams at 65 while exactly one delivery span runs through the boundary',function(){
+    return MEMBERS.filter(function(m){return m.reg==='F'}).every(function(m){
+      if(!(m.spans.length===2&&m.spans[0].e===m.spans[1].b-1&&m.spans[1].cat==='DUA'))return false;
+      return m.dspans.length===1&&m.dspans[0].b<m.t65&&m.dspans[0].e===null})});
+  t('Register C: every grant begins exactly at application \u2014 the retro that isn\u2019t',function(){
+    return MEMBERS.filter(function(m){return m.reg==='C'}).every(function(m){
+      return m.spans[0].b===m.spans[0].app})});
+  
+  t('Every member renders an 834 without error',function(){
+    var n=0;MEMBERS.forEach(function(m){n+=build834(m).length});return n>0?String(n)+' segments built':false});
+  t('Dataset checksum (FNV-1a over the serialized population)',function(){
+    var s='';MEMBERS.forEach(function(m){s+=m.mid+m.last+m.first+m.reg+m.group+
+      m.spans.map(function(x){return x.cat+x.b+'/'+x.e}).join('|')+
+      m.dspans.map(function(x){return x.sys+x.b+'/'+x.e}).join('|')});
+    var hv=0x811c9dc5;
+    for(var i=0;i<s.length;i++){hv^=s.charCodeAt(i);hv=Math.imul(hv,0x01000193)}
+    return 'FNV 0x'+(hv>>>0).toString(16).toUpperCase()});
+  var h='<table><tbody>'+out.map(function(r){
+    return '<tr><td class="'+(r[0]?'testpass':'testfail')+'">'+(r[0]?'PASS':'FAIL')+'</td><td>'+esc(r[1])+'</td></tr>'}).join('')+
+    '</tbody></table><p class="sub" style="margin-top:10px">'+pass+' / '+out.length+' checks passed.</p>';
+  var out_el=document.getElementById('testout');if(out_el)out_el.innerHTML=h;
+  return pass===out.length;
+}
+
+/* ================= keyboard & overlay ================= */
+document.getElementById('overlay').onclick=closeMember;
+document.addEventListener('keydown',function(e){
+  var open=document.getElementById('slide').classList.contains('open');
+  if(!open)return;
+  if(e.key==='Escape')closeMember();
+  if(e.key==='ArrowLeft')stepMember(-1);
+  if(e.key==='ArrowRight')stepMember(1);
+});
+
+/* ================= boot ================= */
+renderTabs();renderMain();
+</script>
+</body>
+</html>

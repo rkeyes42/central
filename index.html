@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Central — The Fifty-State Medicaid Eligibility Series</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@1,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--accent:#1E5FCC;--ink:#1a1f2b;--muted:#5b6474;--line:#e3e7ee;--bg:#fbfcfe;--tile:#ffffff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+.wrap{max-width:1080px;margin:0 auto;padding:48px 24px 64px}
+.wordmark{font-family:'Source Serif 4',serif;font-style:italic;font-weight:600;font-size:56px;color:var(--accent)}
+.subtitle{font-size:17px;font-weight:500;margin-top:4px}
+.intro{max-width:720px;color:var(--muted);font-size:14.5px;margin-top:14px}
+.intro b{color:var(--ink);font-weight:600}
+.controls{margin:28px 0 18px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+#q{flex:1;min-width:220px;max-width:360px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;font:inherit;font-size:14px;background:#fff}
+#q:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+.note{font-size:12.5px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.tile{display:block;background:var(--tile);border:1px solid var(--line);border-radius:10px;padding:14px 16px;text-decoration:none;color:inherit;transition:border-color .12s, box-shadow .12s}
+.tile:hover{border-color:var(--accent);box-shadow:0 2px 10px rgba(30,95,204,.10)}
+.tile .state{font-weight:600;font-size:15.5px;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.badge{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--accent);white-space:nowrap}
+.tag{font-size:12.8px;color:var(--muted);margin-top:4px}
+.count{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--muted)}
+footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+footer b{color:var(--ink);font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="wordmark">Central</div>
+  <div class="subtitle">The fifty-state Medicaid eligibility series</div>
+  <p class="intro">One demonstration application per state on a deliberately constant chassis &mdash; the same synthetic population, the same register structure, the same 834 rendering &mdash; so that everything that differs between apps is the state itself. Register F of every app carries a running answer to one question: <b>what happens in the data when Medicare arrives?</b></p>
+  <div class="controls">
+    <input id="q" type="search" placeholder="Filter states&hellip;" aria-label="Filter states">
+    <span class="count" id="count"></span>
+    <span class="note">Answer numbers shown where the register F thread carries them; other states show their signatures.</span>
+  </div>
+  <div class="grid" id="grid"></div>
+  <footer>Every member, span, and file in this series is synthetic, generated for teaching. Program facts reflect the public record of the mid-2020s and change continuously; verify against current CMS and state agency publications before any reliance. &mdash; <b>Robert</b></footer>
+</div>
+<script>
+const STATES = [
+  ["Alabama", "AlabamaMedicaidEligibilityCentral.html", null, "perfectly still: the control group"],
+  ["Alaska", "AlaskaMedicaidEligibilityCentral.html", null, "the original: buy-in limbo and the tribal wrap"],
+  ["Arizona", "ArizonaAHCCCSEligibilityCentral.html", null, "born capitated: the state with no FFS memory"],
+  ["Arkansas", "ArkansasMedicaidARHOMEEligibilityCentral.html", 28, "the marketplace lets go"],
+  ["California", "MediCalEligibilityCentral.html", null, "aligned by law: three models by county"],
+  ["Colorado", "HealthFirstColoradoEligibilityCentral.html", null, "the RAE attribution overlay"],
+  ["Connecticut", "ConnecticutMedicaidEligibilityCentral.html", 42, "the arrival only eligibility could see"],
+  ["Delaware", "DelawareMedicaidEligibilityCentral.html", 41, "the arrival that adds a row"],
+  ["Florida", "FloridaMedicaidEligibilityCentral.html", null, "the share-of-cost flicker"],
+  ["Georgia", "GeorgiaMedicaidEligibilityCentral.html", 33, "the door that opens at 65"],
+  ["Hawaii", "HawaiiMedQuestEligibilityCentral.html", null, "island rate cells"],
+  ["Idaho", "IdahoMedicaidEligibilityCentral.html", null, "the benefit lanes"],
+  ["Illinois", "IllinoisMedicaidEligibilityCentral.html", 32, "the commencement was national"],
+  ["Indiana", "HealthyIndianaEligibilityCentral.html", 27, "the goodbye with a refund"],
+  ["Iowa", "IowaMedicaidEligibilityCentral.html", 38, "the pair that doesn't file"],
+  ["Kansas", "KanCareEligibilityCentral.html", null, "the cliff: Minnesota's inverse"],
+  ["Kentucky", "KentuckyMedicaidEligibilityCentral.html", 36, "the arrival before the birthday"],
+  ["Louisiana", "HealthyLouisianaEligibilityCentral.html", null, "the clean launch"],
+  ["Maine", "MaineMedicaidEligibilityCentral.html", 43, "the answer at the pharmacy counter"],
+  ["Maryland", "MarylandMedicaidEligibilityCentral.html", null, "the reference implementation"],
+  ["Massachusetts", "MassHealthEligibilityCentral.html", null, "loud: the inverted ladder"],
+  ["Michigan", "MichiganMedicaidEligibilityCentral.html", 31, "the second commencement"],
+  ["Minnesota", "MinnesotaHealthCareProgramsEligibilityCentral.html", 26, "the birthday that integrated"],
+  ["Mississippi", "MississippiMedicaidEligibilityCentral.html", null, "the missing rung"],
+  ["Missouri", "MOHealthNetEligibilityCentral.html", null, "the expansion the courts enforced"],
+  ["Montana", "MontanaMedicaidEligibilityCentral.html", null, "the HELP premiums"],
+  ["Nebraska", "HeritageHealthEligibilityCentral.html", null, "the ghost tier"],
+  ["Nevada", "NevadaMedicaidEligibilityCentral.html", null, "two answers, chosen by geography"],
+  ["New Hampshire", "NewHampshireMedicaidEligibilityCentral.html", 10, "done plainly: the commonest answer"],
+  ["New Jersey", "NewJerseyMedicaidEligibilityCentral.html", 45, "the integrated answer"],
+  ["New Mexico", "NewMexicoTurquoiseCareEligibilityCentral.html", null, "the double rename"],
+  ["New York", "NewYorkMedicaidEligibilityCentral.html", null, "the product-line state"],
+  ["North Carolina", "NCMedicaidManagedCareEligibilityCentral.html", 25, "the whole ladder"],
+  ["North Dakota", "NorthDakotaMedicaidEligibilityCentral.html", 19, "released and caught by the same name"],
+  ["Ohio", "OhioMedicaidEligibilityCentral.html", 30, "the demonstration that graduated"],
+  ["Oklahoma", "OklahomaSoonerCareEligibilityCentral.html", null, "the big bang"],
+  ["Oregon", "OregonHealthPlanEligibilityCentral.html", null, "the two clocks"],
+  ["Pennsylvania", "HealthChoicesEligibilityCentral.html", null, "the county behavioral carve"],
+  ["Rhode Island", "RhodeIslandMedicaidEligibilityCentral.html", 40, "the pair with the same name twice"],
+  ["South Carolina", "SouthCarolinaMedicaidEligibilityCentral.html", 37, "the door that opens partway"],
+  ["South Dakota", "SouthDakotaMedicaidEligibilityCentral.html", null, "expansion by amendment, delivery unchanged"],
+  ["Tennessee", "TennCareEligibilityCentral.html", 29, "the arranged alignment"],
+  ["Texas", "TexasMedicaidEligibilityCentral.html", null, "the STAR+PLUS constellation"],
+  ["Utah", "UtahMedicaidEligibilityCentral.html", null, "split down the middle of one member"],
+  ["Vermont", "VermontMedicaidEligibilityCentral.html", null, "the state is the plan"],
+  ["Virginia", "VirginiaMedicaidEligibilityCentral.html", 35, "the early graduate"],
+  ["Washington", "WashingtonAppleHealthEligibilityCentral.html", null, "the integration that ended the carve"],
+  ["West Virginia", "WestVirginiaMedicaidEligibilityCentral.html", 39, "the pair that files half"],
+  ["Wisconsin", "WisconsinMedicaidEligibilityCentral.html", 34, "the answer that predates the question"],
+  ["Wyoming", "WyomingMedicaidEligibilityCentral.html", 44, "the answer, unadorned"]
+];
+const grid = document.getElementById('grid');
+const count = document.getElementById('count');
+function render(filter){
+  const f = (filter||'').trim().toLowerCase();
+  grid.innerHTML = '';
+  let shown = 0;
+  for (const [state, file, num, tag] of STATES){
+    if (f && !(state.toLowerCase().includes(f) || tag.toLowerCase().includes(f))) continue;
+    shown++;
+    const a = document.createElement('a');
+    a.className = 'tile';
+    a.href = file;
+    const badge = num ? '<span class="badge">#' + num + '</span>' : '';
+    a.innerHTML = '<div class="state"><span>' + state + '</span>' + badge + '</div>' +
+                  '<div class="tag">' + tag + '</div>';
+    grid.appendChild(a);
+  }
+  count.textContent = shown + ' / ' + STATES.length;
+}
+document.getElementById('q').addEventListener('input', e => render(e.target.value));
+render('');
+</script>
+</body>
+</html>

@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Healthy Indiana / Hoosier Healthwise Eligibility Central</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@1,8..60,400;1,8..60,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#1E5FCC;
+  --accent-soft:#E8EFFB;
+  --ink:#1b2430;
+  --ink-soft:#4a5568;
+  --ink-faint:#8a94a3;
+  --line:#dde3ea;
+  --line-soft:#eceff3;
+  --bg:#f7f8fa;
+  --card:#ffffff;
+  --serif:'Source Serif 4', Georgia, serif;
+  --sans:'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono:'IBM Plex Mono', 'Consolas', monospace;
+  --g-FC01:#2E7D5B; --g-PG02:#B0568C; --g-CH19:#C98A2B; --g-EA02:#1E5FCC;
+  --g-SI02:#6A4FB6; --g-MN98:#5B8AA6; --g-FF26:#C25B4A; --g-WD02:#3E9C9C; --g-LT01:#7A7A52;
+  --d-mco:#4a7fd6; --d-ffs:#9aa3ad; --d-harp:#8a5fc0; --d-mltc:#2e8f8f;
+  --ok:#2E7D5B; --warn:#C98A2B; --bad:#C0392B;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+
+/* ---------- header ---------- */
+header{background:var(--card);border-bottom:1px solid var(--line);padding:18px 28px 0}
+.brandrow{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.wordmark{font-family:var(--serif);font-style:italic;font-weight:600;font-size:1.65rem;color:var(--accent);letter-spacing:.01em}
+.wordmark .st{color:var(--ink)}
+.tagline{color:var(--ink-faint);font-size:.85rem}
+.credit{margin-left:auto;color:var(--ink-faint);font-size:.78rem}
+nav{display:flex;gap:2px;margin-top:14px;flex-wrap:wrap}
+nav button{appearance:none;border:none;background:none;font:inherit;font-size:.86rem;font-weight:500;color:var(--ink-soft);padding:9px 14px;cursor:pointer;border-bottom:3px solid transparent;border-radius:6px 6px 0 0}
+nav button:hover{background:var(--line-soft)}
+nav button.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+nav button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+/* ---------- layout ---------- */
+main{max-width:1280px;margin:0 auto;padding:24px 28px 80px}
+.page{display:none}
+.page.on{display:block}
+h2{font-size:1.22rem;font-weight:700;margin:4px 0 4px}
+h3{font-size:.98rem;font-weight:600;margin:22px 0 8px}
+.sub{color:var(--ink-soft);font-size:.88rem;margin-bottom:16px;max-width:70ch}
+
+/* ---------- plain english callout ---------- */
+.plain{font-family:var(--serif);font-style:italic;font-size:1.02rem;line-height:1.65;color:#2c3a4d;background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:14px 18px;margin:14px 0 20px;max-width:86ch}
+.plain b{font-style:italic;font-weight:600}
+.plain .pe-label{display:block;font-family:var(--sans);font-style:normal;font-weight:700;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:5px}
+
+/* ---------- cards / stats ---------- */
+.statrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.stat .n{font-family:var(--mono);font-size:1.55rem;font-weight:600;color:var(--ink)}
+.stat .l{font-size:.74rem;color:var(--ink-soft);margin-top:2px;line-height:1.35}
+.stat.acc .n{color:var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:14px 0}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:900px){.twocol{grid-template-columns:1fr}}
+
+/* ---------- legend / bars ---------- */
+.leg{display:flex;flex-direction:column;gap:7px}
+.legrow{display:grid;grid-template-columns:16px 64px 1fr 46px;gap:10px;align-items:center;font-size:.84rem}
+.legrow .swatch{width:14px;height:14px;border-radius:4px}
+.legrow .code{font-family:var(--mono);font-size:.8rem;font-weight:600}
+.legrow .cnt{font-family:var(--mono);text-align:right;color:var(--ink-soft)}
+.barlist{display:flex;flex-direction:column;gap:8px}
+.barrow{display:grid;grid-template-columns:210px 1fr 40px;gap:10px;align-items:center;font-size:.83rem}
+.barrow .track{background:var(--line-soft);border-radius:5px;height:14px;overflow:hidden}
+.barrow .fill{display:block;height:100%;background:var(--d-mco);border-radius:5px;transition:width .8s ease}
+.barrow .bn{font-family:var(--mono);text-align:right;color:var(--ink-soft)}
+@media(max-width:700px){.barrow{grid-template-columns:130px 1fr 36px}}
+
+/* ---------- controls ---------- */
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;align-items:center}
+.controls input[type=search],.controls select{font:inherit;font-size:.85rem;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
+.controls input[type=search]{min-width:220px}
+.controls select:focus,.controls input:focus{outline:2px solid var(--accent);outline-offset:0}
+.hint{font-size:.76rem;color:var(--ink-faint)}
+
+/* ---------- tables ---------- */
+.tblwrap{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:auto;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:.83rem}
+th{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);background:#fbfcfd;white-space:nowrap;position:sticky;top:0}
+th.sortable{cursor:pointer;user-select:none}
+th.sortable:hover{color:var(--accent)}
+th .arr{font-size:.72rem;color:var(--accent)}
+.pager{display:flex;align-items:center;justify-content:center;gap:14px;margin:12px 0 2px}
+.pager button.pg{appearance:none;font:inherit;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:5px 13px;cursor:pointer;font-size:.82rem;color:var(--ink-soft)}
+.pager button.pg:hover:not(:disabled){background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.pager button.pg:disabled{opacity:.35;cursor:default}
+.pager .pgpos{font-size:.78rem;color:var(--ink-faint)}
+td{padding:9px 12px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tbody tr.rowlink{cursor:pointer}
+tbody tr.rowlink:hover{background:var(--accent-soft)}
+tbody tr.hl{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+.mono{font-family:var(--mono);font-size:.8rem}
+.nowrap{white-space:nowrap}
+
+/* ---------- chips ---------- */
+.chip{display:inline-block;font-family:var(--mono);font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:20px;color:#fff;white-space:nowrap}
+.chip.outl{background:none;border:1.5px solid currentColor}
+.dchip{display:inline-block;font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:5px;white-space:nowrap}
+.d-mco{background:#e5edfa;color:#2456a8}
+.d-ffs{background:#eceff2;color:#5c6672}
+.d-harp{background:#efe7f8;color:#6a3fa0}
+.d-mltc{background:#e2f2f2;color:#1f6f6f}
+.st-act{color:var(--ok);font-weight:600}
+.st-gap{color:var(--warn);font-weight:600}
+.st-cls{color:var(--ink-faint);font-weight:600}
+.flag{display:inline-block;font-size:.7rem;font-weight:600;background:#fdf1e0;color:#96660f;border:1px solid #f0d9ae;border-radius:5px;padding:1px 7px;white-space:nowrap}
+
+/* ---------- registers ---------- */
+.reg{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin:12px 0}
+.reg h3{margin:0 0 4px;display:flex;align-items:center;gap:10px}
+.reg .rl{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;background:var(--accent);color:#fff;font-family:var(--mono);font-weight:600;font-size:.85rem;flex:none}
+.reg .q{font-family:var(--serif);font-style:italic;color:#2c3a4d;font-size:.95rem;margin:4px 0 10px}
+.reg .meta{font-size:.78rem;color:var(--ink-faint);margin-bottom:8px}
+
+/* ---------- 834 ---------- */
+.ediwrap{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:12px 0;overflow:hidden}
+.edihead{padding:12px 18px;border-bottom:1px solid var(--line);display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;background:#fbfcfd}
+.edihead .fn{font-family:var(--mono);font-size:.82rem;font-weight:600}
+.edirow{display:grid;grid-template-columns:minmax(300px,46%) 1fr;border-bottom:1px solid var(--line-soft)}
+.edirow:last-child{border-bottom:none}
+.edirow .seg{font-family:var(--mono);font-size:.78rem;padding:8px 16px;background:#f4f7fb;color:#1b3a66;overflow-wrap:anywhere;border-right:1px solid var(--line-soft)}
+.edirow .note{font-size:.8rem;padding:8px 16px;color:var(--ink-soft)}
+.edirow.loop .seg{background:#e8effb;font-weight:600}
+@media(max-width:780px){.edirow{grid-template-columns:1fr}.edirow .seg{border-right:none}}
+
+/* ---------- modal ---------- */
+.overlay{position:fixed;inset:0;background:rgba(20,28,40,.42);opacity:0;pointer-events:none;transition:opacity .22s;z-index:40}
+.overlay.on{opacity:1;pointer-events:auto}
+.slideover{position:fixed;top:0;right:0;bottom:0;width:640px;max-width:94vw;background:var(--card);box-shadow:-12px 0 40px rgba(15,25,45,.22);transform:translateX(102%);transition:transform .26s ease;z-index:50;display:flex;flex-direction:column}
+.slideover.on{transform:translateX(0)}
+.mo-head{padding:16px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+.mo-head .who{min-width:0}
+.mo-head .nm{font-weight:700;font-size:1.05rem}
+.mo-head .idz{font-family:var(--mono);font-size:.76rem;color:var(--ink-soft)}
+.mo-x{margin-left:auto;appearance:none;border:1px solid var(--line);background:none;border-radius:8px;width:32px;height:32px;font-size:1rem;cursor:pointer;color:var(--ink-soft);flex:none}
+.mo-x:hover{background:var(--line-soft)}
+.mo-body{overflow-y:auto;padding:18px 22px;flex:1}
+.mo-foot{border-top:1px solid var(--line);padding:10px 22px;display:flex;align-items:center;gap:12px}
+.mo-foot button{appearance:none;font:inherit;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:.9rem}
+.mo-foot button:hover:not(:disabled){background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.mo-foot button:disabled{opacity:.35;cursor:default}
+.mo-foot .pos{font-family:var(--mono);font-size:.78rem;color:var(--ink-faint);margin-left:auto}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:4px 12px;font-size:.85rem;margin:8px 0 14px}
+.kv .k{color:var(--ink-faint)}
+.kv .v{color:var(--ink)}
+.mo-body h4{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);margin:16px 0 8px}
+.mo-body .plain{font-size:.93rem;padding:12px 15px}
+
+/* ---------- mini timeline ---------- */
+.tl{margin:6px 0 4px}
+.tl .band{display:grid;grid-template-columns:78px 1fr;gap:8px;align-items:center;margin:5px 0}
+.tl .bl{font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-faint);text-align:right}
+.tl .lane{position:relative;height:18px;background:var(--line-soft);border-radius:4px}
+.tl .bar{position:absolute;top:0;bottom:0;border-radius:4px;min-width:3px}
+.tl .bar.striped{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.28) 0 5px,transparent 5px 10px)}
+.tl .axis{display:grid;grid-template-columns:78px 1fr;gap:8px;margin-top:3px}
+.tl .ax{position:relative;height:14px;font-size:.62rem;color:var(--ink-faint);font-family:var(--mono)}
+.tl .ax span{position:absolute;transform:translateX(-50%)}
+.tl .todayline{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--bad);opacity:.7}
+.tl-note{font-size:.7rem;color:var(--ink-faint);margin-top:6px}
+
+/* ---------- reference ---------- */
+.refgrid{display:grid;grid-template-columns:1fr;gap:4px}
+dl.gloss{display:grid;grid-template-columns:200px 1fr;gap:8px 16px;font-size:.85rem}
+dl.gloss dt{font-weight:600}
+dl.gloss dd{color:var(--ink-soft)}
+@media(max-width:700px){dl.gloss{grid-template-columns:1fr}dl.gloss dd{margin-bottom:8px}}
+footer{max-width:1280px;margin:0 auto;padding:0 28px 40px;color:var(--ink-faint);font-size:.75rem;line-height:1.6}
+@media(max-width:700px){header{padding:14px 16px 0}main{padding:18px 14px 60px}.kv{grid-template-columns:120px 1fr}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brandrow">
+    <div class="wordmark">Healthy Indiana Eligibility <span class="st">Central</span></div>
+    <div class="tagline">HIP, POWER accounts, Hoosier Healthwise, and the 834 &mdash; a synthetic demonstration</div>
+    <div class="credit">Robert Thomas Keyes</div>
+  </div>
+  <nav id="nav" aria-label="Sections">
+    <button data-pg="overview" class="on">Overview</button>
+    <button data-pg="members">Members</button>
+    <button data-pg="spans">Eligibility Spans</button>
+    <button data-pg="delivery">Programs & Plans</button>
+    <button data-pg="registers">Scenario Registers</button>
+    <button data-pg="file">What the File Says</button>
+    <button data-pg="reference">Reference Codes</button>
+  </nav>
+</header>
+<main>
+  <section class="page on" id="pg-overview">
+    <h2>Overview</h2>
+    <p class="sub">A synthetic Indiana Health Coverage Programs population across a 24-month window (January 2025 &ndash; December 2026), viewed as of <b>July 2026</b>. Every value is deterministic &mdash; seeded PRNG, identical on every load.</p>
+    <div class="plain" id="ov-plain"></div>
+    <div class="statrow" id="ov-stats"></div>
+    <div class="twocol">
+      <div class="card">
+        <h3 style="margin-top:0">Coverage groups in the population</h3>
+        <div class="leg" id="ov-groups"></div>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Where members get their care today</h3>
+        <div class="barlist" id="ov-mcos"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="pg-members">
+    <h2>Members</h2>
+    <p class="sub">The full synthetic roster. Click any row for the member record; click a column header to sort.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>Every person here has a twelve-digit <b>RID</b> — the recipient ID — that never changes across three program brands: <b>Hoosier Healthwise</b> (kids and pregnancy), the <b>Healthy Indiana Plan</b> (the consumer-directed expansion), and <b>Hoosier Care Connect</b> (aged, blind, disabled). HIP is the reason this app exists: every HIP adult has a <b>POWER account</b> — a $2,500 ledger, mostly state-funded, topped by a monthly member contribution — and a <b>tier</b> that watches whether the payment arrives: Plus (paying: dental, vision, no copays) or Basic (not paying, below poverty: copays, thinner benefit). Nebraska proposed a tier system and walked away; Indiana has run one since 2015. The same four carriers serve all three brands.</div>
+    <div class="controls">
+      <input type="search" id="m-search" placeholder="Search name, RID, city&hellip;" aria-label="Search members">
+      <select id="m-group" aria-label="Filter by coverage group"></select>
+      <select id="m-del" aria-label="Filter by delivery system"></select>
+      <select id="m-reg" aria-label="Filter by register"></select>
+      <select id="m-status" aria-label="Filter by status">
+        <option value="">Status today: all</option>
+        <option value="Active">Active</option>
+        <option value="Gap">In gap</option>
+        <option value="Closed">Closed</option>
+      </select>
+      <span class="hint" id="m-count"></span>
+    </div>
+    <div class="tblwrap"><table id="m-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">RID</th>
+        <th class="sortable" data-k="name">Name</th>
+        <th class="sortable" data-k="age">Age</th>
+        <th class="sortable" data-k="sex">Sex</th>
+        <th class="sortable" data-k="grp">Coverage Group</th>
+        <th class="sortable" data-k="del">Delivery Today</th>
+        <th class="sortable" data-k="county">County</th>
+        <th class="sortable" data-k="reg">Register</th>
+        <th class="sortable" data-k="status">Status Today</th>
+      </tr></thead>
+      <tbody id="m-body"></tbody>
+    </table></div>
+    <div class="pager" id="m-pager"></div>
+  </section>
+
+  <section class="page" id="pg-spans">
+    <h2>Eligibility Spans</h2>
+    <p class="sub">One row per coverage-group span &mdash; the state's answer to <i>&ldquo;from when to when, and under which door did this person enter?&rdquo;</i> Click a row to open the member.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>A span is a promise with dates on it — and Indiana attaches a <b>ledger</b> to the promise: HIP spans carry a POWER account whose contributions, balances, and rollovers move underneath the coverage without moving the dates. A missed payment below poverty doesn’t close the span — it drops the <b>tier</b> (register B’s drop-that-isn’t-a-closure), and register D’s life events flip members across program brands while the same carrier holds on. The span table tells you less of the story here than anywhere else in the series; the tier and the balance tell the rest.</div>
+    <div class="controls">
+      <select id="s-group" aria-label="Filter spans by coverage group"></select>
+      <select id="s-open" aria-label="Filter by open or closed">
+        <option value="">Open + closed</option><option value="open">Open only</option><option value="closed">Closed only</option>
+      </select>
+      <span class="hint" id="s-count"></span>
+    </div>
+    <div class="tblwrap"><table id="s-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">RID</th>
+        <th class="sortable" data-k="name">Member</th>
+        <th class="sortable" data-k="grp">Group</th>
+        <th class="sortable" data-k="start">Begin</th>
+        <th class="sortable" data-k="end">End</th>
+        <th class="sortable" data-k="months">Months</th>
+        <th>End Reason</th>
+      </tr></thead>
+      <tbody id="s-body"></tbody>
+    </table></div>
+    <div class="pager" id="s-pager"></div>
+  </section>
+
+  <section class="page" id="pg-delivery">
+    <h2>Programs & Plans</h2>
+    <p class="sub">One row per delivery span: which of the four carriers held the member — under Hoosier Healthwise, HIP, or Hoosier Care Connect — or fee-for-service for duals. Click a row to open the member.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>Indiana’s delivery landscape is simple on the carrier axis — Anthem, MDwise, MHS, and CareSource serve everything — and intricate on the <b>program</b> axis. HIP is the centerpiece: the 2015 deal that brought expansion to a red state by wrapping it in consumer direction — POWER accounts, contributions, tiers, and a decade of behavioral experiments (register E: work reporting died in court, lockouts were suspended, rollover rewards still run). Because the carriers span the brands, register D’s life-event flips — turning 19, reporting a pregnancy, a disability determination — change the member’s <b>program, benefit, and financial relationship</b> while the plan card in the wallet stays the same. Watch the program, not the plan.</div>
+    <div class="controls">
+      <select id="d-sys" aria-label="Filter by delivery system"></select>
+      <span class="hint" id="d-count"></span>
+    </div>
+    <div class="tblwrap"><table id="d-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">RID</th>
+        <th class="sortable" data-k="name">Member</th>
+        <th class="sortable" data-k="sys">Delivery</th>
+        <th class="sortable" data-k="start">Begin</th>
+        <th class="sortable" data-k="end">End</th>
+        <th class="sortable" data-k="months">Months</th>
+        <th>Begin / End Reason</th>
+      </tr></thead>
+      <tbody id="d-body"></tbody>
+    </table></div>
+    <div class="pager" id="d-pager"></div>
+  </section>
+
+  <section class="page" id="pg-registers">
+    <h2>Scenario Registers</h2>
+    <p class="sub">Six business questions, each answered by a register of members whose data was planted to demonstrate exactly that scenario. Click any member to inspect the record behind the answer.</p>
+    <div id="reg-list"></div>
+  </section>
+
+  <section class="page" id="pg-file">
+    <h2>What the File Says</h2>
+    <p class="sub">Indiana really does speak X12N 834 — the state’s roster files to its four carriers, across all three programs. Pick a member and read the transaction, segment by segment, with a plain-language note on every line.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>An 834 is the state telling a health plan: <b>this person is yours now</b> — and Indiana’s files carry facts no other state’s do: the <b>tier</b> rides in a reporting loop (a Plus-to-Basic drop is a change record, not a termination — the quietest punishment in the series), and register F’s exit carries an <b>amount</b>: the POWER account’s closing settlement, the refund that makes the twenty-seventh answer the only goodbye with accounting. Fee-for-service duals generate the state’s own record, shown in the same shape for teaching.</div>
+    <div class="controls">
+      <select id="f-member" aria-label="Choose member for 834"></select>
+      <span class="hint">Members are grouped by register; the transaction is rebuilt live from the member's actual spans.</span>
+    </div>
+    <div id="f-out"></div>
+  </section>
+
+  <section class="page" id="pg-reference">
+    <h2>Reference Codes</h2>
+    <p class="sub">The teaching code sets used throughout the app. Codes are patterned on Indiana conventions; verify against current Indiana FSSA publications before any non-demonstration use.</p>
+    <div id="ref-out"></div>
+  </section>
+</main>
+
+<footer>
+  <p><b>Healthy Indiana / Hoosier Healthwise Eligibility Central</b> &mdash; a single-file demonstration app in the Central series. All members, identifiers, addresses, phone numbers, and dates are synthetic and deterministic (seeded PRNG, seed 317001); any resemblance to real persons is coincidental. Program facts reflect public Indiana Health Coverage Programs policy of the mid-2020s and change year to year — POWER account amounts and tier mechanics are teaching simplifications; verify against current Indiana FSSA and CMS publications before any non-demonstration use. The 834 rendering is a teaching aid, not an implementation guide. &copy; Robert Thomas Keyes.</p>
+</footer>
+
+<div class="overlay" id="overlay"></div>
+<aside class="slideover" id="modal" role="dialog" aria-modal="true" aria-labelledby="mo-nm">
+  <div class="mo-head">
+    <div class="who">
+      <div class="nm" id="mo-nm"></div>
+      <div class="idz" id="mo-id"></div>
+    </div>
+    <button class="mo-x" id="mo-x" aria-label="Close">&#10005;</button>
+  </div>
+  <div class="mo-body" id="mo-body"></div>
+  <div class="mo-foot">
+    <button id="mo-prev" aria-label="Previous member">&#9664;</button>
+    <button id="mo-next" aria-label="Next member">&#9654;</button>
+    <span class="pos" id="mo-pos"></span>
+  </div>
+</aside>
+<script>
+'use strict';
+/* ============ Healthy Indiana / Hoosier Healthwise Eligibility Central ============
+   Central series -- Robert Thomas Keyes
+   Deterministic synthetic data. Seed 317001 (Indianapolis's area code).
+   Window: Jan 2025 (idx 0) .. Dec 2026 (idx 23). "Today" = Jul 2026 (idx 18).
+================================================================= */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+var R = mulberry32(317001);
+function ri(lo,hi){return lo+Math.floor(R()*(hi-lo+1))}
+function pick(arr){return arr[Math.floor(R()*arr.length)]}
+function wpick(pairs){var tot=0,i;for(i=0;i<pairs.length;i++)tot+=pairs[i][1];var x=R()*tot;for(i=0;i<pairs.length;i++){x-=pairs[i][1];if(x<0)return pairs[i][0]}return pairs[pairs.length-1][0]}
+
+var WIN_START_Y=2025, WIN_MONTHS=24, TODAY_IDX=18; /* Jul 2026 */
+var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function mLabel(idx){ if(idx===null||idx===undefined)return '&mdash;';
+  var y=WIN_START_Y+Math.floor(idx/12), m=((idx%12)+12)%12;
+  return MONTHS[m]+' '+y }
+function mFirstD8(idx){var y=WIN_START_Y+Math.floor(idx/12),m=((idx%12)+12)%12;return ''+y+String(m+1).padStart(2,'0')+'01'}
+function mLastD8(idx){var y=WIN_START_Y+Math.floor(idx/12),m=((idx%12)+12)%12;var last=new Date(y,m+1,0).getDate();return ''+y+String(m+1).padStart(2,'0')+String(last).padStart(2,'0')}
+function spanMonths(s,e){var last=(e===null?TODAY_IDX:e);return Math.max(1,last-Math.max(s,-990)+1)}
+
+var GROUPS={
+ CH19:{name:'Children (Hoosier Healthwise)', magi:true, color:'--g-CH19', blurb:'Children through 18 under Hoosier Healthwise \u2014 the program brand for kids and pregnancy.'},
+ AEG:{name:'HIP Adults (expansion)',   magi:true,  color:'--g-SI02', blurb:'Adults 19\u201364 to 138% FPL under the <b>Healthy Indiana Plan</b> \u2014 the consumer-directed expansion: a POWER account, monthly contributions, and two tiers (Plus and Basic) that turn on whether the member pays. The living tier system \u2014 Nebraska proposed one and dropped it; Indiana has run one since 2015.'},
+ PW02:{name:'Pregnant (Hoosier Healthwise)', magi:true, color:'--g-EA02', blurb:'Pregnancy coverage plus twelve months postpartum \u2014 HIP members who become pregnant move here: same person, new program brand.'},
+ FM01:{name:'Parents & Caretakers',    magi:true,  color:'--g-FC01', blurb:'Very low-income parents \u2014 most parents above this line are in HIP.'},
+ AB03:{name:'Aged / Blind / Disabled (Hoosier Care Connect)', magi:false, color:'--g-MN98', blurb:'SSI-related budgeting \u2014 the Hoosier Care Connect managed-care program for aged, blind, and disabled members.'},
+ FF26:{name:'Former Foster Care',      magi:true,  color:'--g-FF26', blurb:'Young adults formerly in foster care, covered to 26.'}
+};
+var GROUP_KEYS=Object.keys(GROUPS);
+
+/* ---------- plans: the same four across programs ---------- */
+var INPLANS=[
+ {code:'ANTH',name:'Anthem'},
+ {code:'MDW', name:'MDwise (Indiana nonprofit)'},
+ {code:'MHS', name:'Managed Health Services (MHS)'},
+ {code:'CS',  name:'CareSource'}
+];
+var PLANBY={}; INPLANS.forEach(function(p){PLANBY[p.code]=p});
+function sysLabel(code){ return code==='FFS'?'Fee-for-Service (duals and exemptions)':(PLANBY[code]?PLANBY[code].name:code) }
+function sysKind(code){ return code==='FFS'?'FFS':'MCO' }
+function sysClass(code){ return code==='FFS'?'d-ffs':'d-mco' }
+var PROGRAMS={
+ HHW:'Hoosier Healthwise \u2014 children and pregnancy',
+ HIP:'Healthy Indiana Plan \u2014 the consumer-directed expansion: POWER accounts, contributions, Plus/Basic tiers',
+ HCC:'Hoosier Care Connect \u2014 aged, blind, and disabled'
+};
+
+var COUNTIES=[
+ {name:'Marion',     w:6, zips:['46201','46218'], city:'Indianapolis', streets:['E 10th St','E 38th St','Shadeland Ave','W Washington St']},
+ {name:'Lake',       w:3, zips:['46402'], city:'Gary', streets:['Broadway','W 5th Ave','Grant St']},
+ {name:'Allen',      w:2.5,zips:['46803'], city:'Fort Wayne', streets:['S Anthony Blvd','E Pontiac St','Oxford St']},
+ {name:'St. Joseph', w:2, zips:['46613'], city:'South Bend', streets:['S Michigan St','Miami St','W Western Ave']},
+ {name:'Vanderburgh',w:1.5,zips:['47713'], city:'Evansville', streets:['S Kentucky Ave','Covert Ave','Washington Ave']},
+ {name:'Elkhart',    w:1.5,zips:['46514'], city:'Elkhart', streets:['Cassopolis St','Bristol St','Main St']},
+ {name:'Tippecanoe', w:1.5,zips:['47904'], city:'Lafayette', streets:['Union St','Greenbush St','Schuyler Ave']},
+ {name:'Madison',    w:1, zips:['46016'], city:'Anderson', streets:['Meridian St','Columbus Ave','Nichol Ave']},
+ {name:'Delaware',   w:1, zips:['47302'], city:'Muncie', streets:['S Madison St','E Memorial Dr','Burlington Dr']},
+ {name:'Howard',     w:1, zips:['46901'], city:'Kokomo', streets:['N Washington St','E Markland Ave','S Reed Rd']},
+ {name:'Vigo',       w:1, zips:['47802'], city:'Terre Haute', streets:['S 3rd St','Wabash Ave','Poplar St']},
+ {name:'Clark',      w:1, zips:['47130'], city:'Jeffersonville', streets:['E 10th St','Spring St','Allison Ln']}
+];
+var COUNTYBY={}; COUNTIES.forEach(function(c){COUNTYBY[c.name]=c});
+function pickCounty(){return wpick(COUNTIES.map(function(c){return [c,c.w]}))}
+var AREA=['317','219','260','574','812','765'];
+
+var FIRST_F=['Emma','Olivia','Madison','Kaylee','Brittany','Amber','Dawn','Crystal','Karen','Linda','Darlene','Maria','Guadalupe','Rosa','Keisha','Latoya','Tamika','Sui','Zing','Van','Hazel','June','Twyla','Bernice','Peggy','Sharon','Marlys','Destiny','Renae','Brandy','Misty','Ruth'],
+    FIRST_M=['Gary','Dennis','Larry','Duane','Wayne','Dale','Travis','Hunter','Cody','Tyler','Jose','Luis','Miguel','Juan','Darius','Jamal','Terrence','Marcus','Thang','Lian','Ceu','Vernon','Merle','Clifford','Emil','Delbert','Leland','Frank','Earl','Amos','Eli','Levi'];
+var LAST=['Miller','Smith','Johnson','Brown','Jones','Davis','Wilson','Moore','Taylor','Yoder','Bontrager','Hostetler','Schrock','Troyer','Garcia','Hernandez','Martinez','Ramirez','Washington','Jackson','Brooks','Robinson','Thang','Lian','Sung','Ceu','Hniang','Nguyen','Kim','Whitaker','Sizemore','Combs','Slone','Napier','Hensley','Pierre','Jean-Baptiste','Wagner','Schneider','Koch'],
+    LANGS=[['English',87],['Spanish',7],['Hakha Chin',1.5],['Burmese',1],['Pennsylvania Dutch',1],['Arabic',1],['Haitian Creole',1],['Mandarin',0.5]];
+
+var ELIG_END={
+ REDET:'Renewal not completed \u2014 case closed at renewal',
+ INCOME:'Over income at renewal',
+ MOVED:'Moved out of state',
+ MEDI:'Medicare entitlement \u2014 POWER account reconciled; redetermined under SSI-related rules'
+};
+</script>
+<script>
+'use strict';
+/* ================= population generator ================= */
+var MEMBERS=[];
+var usedIds={};
+function genId(){ var s; do{ s=String(ri(100000000000,899999999999)) }while(usedIds[s]); usedIds[s]=1; return s } /* 12-digit RID */
+function genPhone(){ return '('+pick(AREA)+') '+ri(200,989)+'-'+String(ri(0,9999)).padStart(4,'0') }
+function genAddr(c){ return {street:ri(100,9999)+' '+pick(c.streets), city:c.city, zip:pick(c.zips)} }
+function genName(sex){ return {first:(sex==='F'?pick(FIRST_F):pick(FIRST_M)), last:pick(LAST)} }
+function dobForAge(age){ var y=2026-age; var m=ri(0,11); if(m>6)y--; return {y:y,m:m,d:ri(1,28)} }
+function dobD8(d){return ''+d.y+String(d.m+1).padStart(2,'0')+String(d.d).padStart(2,'0')}
+function dobLabel(d){return MONTHS[d.m]+' '+d.d+', '+d.y}
+
+function baseMember(reg){
+  var sex=pick(['F','F','F','M','M']);
+  var nm=genName(sex), c=pickCounty(), a=genAddr(c);
+  return { id:genId(), first:nm.first, last:nm.last, sex:sex, county:c.name,
+    street:a.street, city:a.city, zip:a.zip, phone:genPhone(),
+    lang:wpick(LANGS), reg:reg, eligSpans:[], delSpans:[], flags:[],
+    prog:null, tier:null, contrib:null, powerBal:null, rollover:false,
+    tierDrop:null, flipIdx:null, flipKind:null, exp:null, powerRefund:null, hccDual:false };
+}
+function addElig(m,grp,s,e,reason){m.eligSpans.push({grp:grp,start:s,end:e,reason:reason||null})}
+function addDel(m,sys,s,e,note){m.delSpans.push({sys:sys,start:s,end:e,note:note||null})}
+function enrollIN(m,s,e,note){
+  var plan=pick(INPLANS).code;
+  addDel(m,plan,s,(e===undefined?null:e),note||(m.prog?PROGRAMS[m.prog].split(' \u2014 ')[0]+' \u2014 the same four carriers serve every program':null));
+  return plan;
+}
+function progFor(grp){ return grp==='CH19'||grp==='PW02'?'HHW':(grp==='AB03'?'HCC':'HIP') }
+function setHIP(m){
+  m.tier=(R()<0.7)?'PLUS':'BASIC';
+  if(m.tier==='PLUS'){ m.contrib=pick([1,5,10,15,20]); m.powerBal=ri(300,2400); }
+  else { m.contrib=0; m.powerBal=ri(100,1200); }
+}
+
+/* ----- Register A: steady state -- three program brands, four carriers (1100) ----- */
+(function(){
+  var grpsA=[['CH19',5.5],['AEG',5.5],['FM01',0.8],['PW02',1],['AB03',1.7],['FF26',0.8]];
+  for(var i=0;i<1100;i++){
+    var grp=wpick(grpsA);
+    var m=baseMember('A');
+    var age = grp==='CH19'?ri(0,18) : grp==='FF26'?ri(18,25) : grp==='AB03'?ri(28,62) : grp==='PW02'?ri(19,38) : ri(19,60);
+    m.age=age; m.dob=dobForAge(age); if(grp==='PW02')m.sex='F';
+    m.prog=progFor(grp);
+    var s=ri(-20,2);
+    addElig(m,grp,s,null,null);
+    enrollIN(m,s);
+    if(m.prog==='HIP'){
+      setHIP(m);
+      if(m.tier==='PLUS'&&R()<0.35) m.flags.push('<b>HIP Plus</b> \u2014 pays $'+m.contrib+'/month into a POWER account and gets the full package: dental, vision, no copays. The consumer-directed expansion at steady state: coverage with a monthly payment behavior attached, and a tier that watches whether the payment arrives');
+      else if(m.tier==='BASIC'&&R()<0.5) m.flags.push('<b>HIP Basic</b> \u2014 below poverty, contributions optional and unpaid: same core coverage, but copays at the point of care and no dental or vision. The tier that Nebraska proposed and abandoned, alive here since 2015');
+    } else if(R()<0.08){
+      m.flags.push('The same four carriers \u2014 Anthem, MDwise, MHS, CareSource \u2014 serve all three program brands, so a program flip (register D) often keeps the plan while everything else changes');
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register B: churn -- and the drop that isn't a closure (500) ----- */
+(function(){
+  for(var i=0;i<500;i++){
+    var m=baseMember('B');
+    var drop=(i>=125&&i<185); /* 60 tier-droppers */
+    if(drop){
+      m.age=ri(19,60); m.dob=dobForAge(m.age);
+      m.prog='HIP';
+      var s=ri(-16,-4), d=ri(4,14);
+      addElig(m,'AEG',s,null,null);
+      enrollIN(m,s);
+      m.tier='BASIC'; m.contrib=0; m.powerBal=ri(80,900);
+      m.tierDrop=d;
+      m.flags.push('<b>The drop that isn\u2019t a closure</b> \u2014 below poverty and stopped paying the POWER contribution in '+mLabel(d)+': coverage did NOT end. The tier did \u2014 Plus became <b>Basic</b>: dental and vision gone, copays on. The eligibility span runs unbroken through the drop; the punishment lives entirely in the benefit tier. Nebraska designed exactly this and walked away; Indiana has operated it for a decade \u2014 the living tier, and the reason this register\u2019s B-side has fewer gaps than its story suggests.');
+    } else {
+      var grp=wpick([['AEG',5],['CH19',3],['FM01',1]]);
+      m.age = grp==='CH19'?ri(1,17):ri(19,60); m.dob=dobForAge(m.age);
+      m.prog=progFor(grp);
+      var s2=ri(-18,-2);
+      var inGapNow=(i<125);
+      var term=inGapNow?ri(15,16):ri(4,12);
+      var gap=inGapNow?ri(3,4):ri(1,4);
+      var regain=term+gap+1;
+      addElig(m,grp,s2,term,ELIG_END.REDET);
+      addElig(m,grp,regain,null,null);
+      enrollIN(m,s2,term);
+      enrollIN(m,regain);
+      if(m.prog==='HIP')setHIP(m);
+      m.flags.push('Gap '+mLabel(term+1)+'\u2013'+mLabel(regain-1)+' ('+gap+' mo) \u2014 ordinary procedural churn'+(m.prog==='HIP'?'; the POWER account froze with the case and thawed with it':''));
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register C: the checking account inside the coverage (375) ----- */
+(function(){
+  for(var i=0;i<375;i++){
+    var m=baseMember('C');
+    var contributor=(i<200);
+    m.age=ri(19,60); m.dob=dobForAge(m.age);
+    m.prog='HIP';
+    var s=ri(-20,-4);
+    addElig(m,'AEG',s,null,null);
+    enrollIN(m,s);
+    if(contributor){
+      m.tier='PLUS'; m.contrib=pick([1,5,10,15,20]); m.powerBal=ri(400,2500);
+      m.rollover=(R()<0.45);
+      m.flags.push('<b>The checking account inside the coverage</b> \u2014 a $2,500 POWER account: the state funds most of it, the member pays $'+m.contrib+'/month (2% of income, floor of a dollar), and the first $2,500 of claims draw against it. Statements arrive monthly.'+(m.rollover?' This member got preventive care during the year, so the unused balance <b>rolled over</b> \u2014 next year\u2019s contribution is discounted: the incentive that works quietly, an HSA grafted onto Medicaid.':' The account is the expansion\u2019s ideology rendered as a ledger: skin in the game, statements, balances \u2014 for a population the rest of the country covers without any of it.'));
+    } else {
+      m.tier='BASIC'; m.contrib=0; m.powerBal=ri(100,1100);
+      m.flags.push('<b>The same coverage, paid differently</b> \u2014 HIP Basic: below poverty, no contribution made, so the member pays <b>copays</b> at the point of care instead \u2014 $4 here, $8 there \u2014 and forgoes dental and vision. Studies keep finding Basic members pay more in copays than Plus members would have paid in contributions; the tier persists anyway. The price of not paying is paying.');
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register D: one person, three brands (375) ----- */
+(function(){
+  for(var i=0;i<375;i++){
+    var m=baseMember('D');
+    var kind = i<150?'AGE19' : (i<265?'PREG':'DISAB');
+    var flip=ri(3,14);
+    if(kind==='AGE19'){
+      m.age=19; m.dob={y:WIN_START_Y+Math.floor(flip/12)-19, m:flip%12, d:ri(1,28)};
+      var s=flip-ri(24,60);
+      addElig(m,'CH19',s,flip-1,'Aged out \u2014 19th birthday');
+      addElig(m,'AEG',flip,null,null);
+      var plan=enrollIN(m,s,undefined,'Same carrier across the flip \u2014 the brand changed, the plan didn\u2019t');
+      m.prog='HIP'; setHIP(m); m.flipIdx=flip; m.flipKind='HHW \u2192 HIP';
+      m.flags.push('<b>The 19th birthday flip</b> \u2014 Hoosier Healthwise ended and HIP began at '+mLabel(flip)+': same person, same carrier ('+sysLabel(plan)+'), new program brand \u2014 and suddenly a POWER account, a contribution invoice, and a tier. Childhood coverage asks nothing; adult coverage here arrives with a bill for $'+(m.contrib||1)+' and a ledger. The birthday changed the member\u2019s relationship to the program more than it changed the program.');
+    } else if(kind==='PREG'){
+      m.sex='F'; m.age=ri(19,38); m.dob=dobForAge(m.age);
+      var s2=flip-ri(12,36);
+      addElig(m,'AEG',s2,flip-1,'Pregnancy reported \u2014 moved to Hoosier Healthwise');
+      addElig(m,'PW02',flip,null,null);
+      enrollIN(m,s2,undefined,'Same carrier \u2014 the pregnancy moved the program, not the plan');
+      m.prog='HHW'; m.flipIdx=flip; m.flipKind='HIP \u2192 HHW (pregnancy)';
+      m.flags.push('<b>The pregnancy flip</b> \u2014 a HIP member reported a pregnancy in '+mLabel(flip)+' and moved to Hoosier Healthwise: contributions stop, copays stop, the POWER account suspends, the benefit deepens \u2014 same carrier throughout. The consumer-direction machinery politely steps aside for pregnancy and returns twelve months postpartum: the program\u2019s own admission of where its ideology ends.');
+    } else {
+      m.age=ri(30,62); m.dob=dobForAge(m.age);
+      var s3=flip-ri(12,36);
+      addElig(m,'AEG',s3,flip-1,'Disability determination \u2014 moved to Hoosier Care Connect');
+      addElig(m,'AB03',flip,null,null);
+      enrollIN(m,s3,flip-1,'HIP until the determination');
+      enrollIN(m,flip,undefined,'Hoosier Care Connect \u2014 the ABD program');
+      m.prog='HCC'; m.flipIdx=flip; m.flipKind='HIP \u2192 HCC (disability)';
+      m.flags.push('<b>The disability flip</b> \u2014 a disability determination in '+mLabel(flip)+' moved this member HIP \u2192 Hoosier Care Connect: the POWER account reconciled and closed, contributions ended, and the ABD program\u2019s deeper benefit took over. Three program brands \u2014 HHW, HIP, HCC \u2014 and register D\u2019s point: Indiana\u2019s members flip between them at life events while the same four carriers watch from above.');
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register E: the experiments -- one dead, one served, one alive (325) ----- */
+(function(){
+  for(var i=0;i<325;i++){
+    var kind = i<140?'GTW' : (i<235?'LOCKOUT':'ROLLOVER');
+    var m=baseMember('E');
+    m.age=ri(21,60); m.dob=dobForAge(m.age);
+    m.prog='HIP';
+    var s=ri(-20,-4);
+    addElig(m,'AEG',s,null,null);
+    enrollIN(m,s);
+    setHIP(m);
+    if(kind==='GTW'){
+      m.exp=pick(['exempt \u2014 caretaker of a dependent','exempt \u2014 medically frail','compliant \u2014 20 hours reported','compliant \u2014 student status','pending verification at suspension']);
+      m.flags.push('<b>The requirement that never happened</b> \u2014 this record carries a Gateway to Work status ("'+m.exp+'") for a rule that never operated: approved 2018, scheduled to bite in 2019, suspended amid the litigation that struck down Arkansas\u2019s twin, formally withdrawn later. The eligibility system was built, the statuses were assigned, the fields still populate \u2014 and no one was ever terminated. Archive fields for a dead policy: the cheapest kind of history to keep and the easiest to misread.');
+    } else if(kind==='LOCKOUT'){
+      m.exp='served a 2018\u201319 lockout';
+      m.flags.push('<b>The lockout, served</b> \u2014 in 2018\u201319, HIP members above poverty who missed POWER payments weren\u2019t just dropped to Basic: they were <b>disenrolled and locked out for six months</b>, barred from reapplying. This member served one \u2014 the gap is years pre-window, but the flag survives. The lockout was suspended in 2020 and hasn\u2019t returned; the record keeps the scar the policy left, the way Arkansas\u2019s records keep vacated terminations: the data outlives the rule.');
+    } else {
+      m.tier='PLUS'; m.contrib=pick([1,5,10,15,20]); m.powerBal=ri(800,2500); m.rollover=true;
+      m.exp='rollover earned';
+      m.flags.push('<b>The experiment that\u2019s alive</b> \u2014 the rollover: this member got recommended preventive care, ended the year with POWER balance unspent, and earned a discounted contribution. Of HIP\u2019s three behavioral experiments \u2014 work reporting (died in court), lockouts (suspended), rollover rewards (running) \u2014 only the carrot survived. A decade of consumer-direction, distilled: the sticks kept losing lawsuits; the discount just kept working.');
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register F: Medicare arrives -- the goodbye with a refund (325) ----- */
+(function(){
+  for(var i=0;i<325;i++){
+    var m=baseMember('F');
+    var hip=(i<195);
+    var medi=ri(6,16), lag=ri(1,3);
+    m.age=(medi<=TODAY_IDX)?65:64;
+    m.dob={y:WIN_START_Y+Math.floor(medi/12)-65, m:medi%12, d:ri(1,28)};
+    var s=ri(-28,-10);
+    if(hip){
+      m.prog='HIP'; m.tier='PLUS'; m.contrib=pick([1,5,10,15,20]);
+      addElig(m,'AEG',s,medi-1,ELIG_END.MEDI);
+      addElig(m,'AB03',medi,null,null);
+      enrollIN(m,s,medi-1,'HIP until Medicare');
+      addDel(m,'FFS',medi,null,'Fee-for-service wrap \u2014 Medicare primary');
+      m.powerRefund=ri(40,1900);
+      m.powerBal=m.powerRefund;
+      m.flags.push('<b>The goodbye with a refund</b> \u2014 the twenty-seventh answer. Medicare arrived '+mLabel(medi)+', HIP ended \u2014 and the exit had <b>accounting</b>: the POWER account reconciled, and the member\u2019s own contributions came back as a refund of $'+m.powerRefund+'. Twenty-six states end this relationship with a termination record; Indiana ends it with a termination record and a <b>check</b>. The consumer-directed expansion is consumer-directed to the last: the ledger closes, the balance settles, and the goodbye clears the account.');
+    } else {
+      m.prog='HCC'; m.hccDual=true;
+      addElig(m,'AB03',s,null,null);
+      enrollIN(m,s,medi-1,'Hoosier Care Connect until Medicare');
+      addDel(m,'FFS',medi,null,'Duals leave HCC \u2014 fee-for-service wrap');
+      m.flags.push('An HCC member reaching Medicare '+mLabel(medi)+' \u2014 no account, no refund, no ceremony: Hoosier Care Connect excludes duals, so the plan span ends, the wrap goes fee-for-service, the buy-in accretes '+mLabel(medi+lag)+', and the eligibility span never blinks. The plain version of the birthday, for the program that never asked its members to keep a ledger.');
+    }
+    m.medicareIdx=medi; m.buyinIdx=medi+lag;
+    MEMBERS.push(m);
+  }
+})();
+
+/* ---------- derived member state ---------- */
+function eligToday(m){ for(var i=0;i<m.eligSpans.length;i++){var s=m.eligSpans[i]; if(s.start<=TODAY_IDX&&(s.end===null||s.end>=TODAY_IDX))return s} return null }
+function delToday(m){ for(var i=0;i<m.delSpans.length;i++){var s=m.delSpans[i]; if(s.start<=TODAY_IDX&&(s.end===null||s.end>=TODAY_IDX))return s} return null }
+function lastElig(m){ return m.eligSpans[m.eligSpans.length-1] }
+function statusToday(m){
+  if(eligToday(m))return 'Active';
+  var le=lastElig(m);
+  if(le.end!==null&&le.end<TODAY_IDX){
+    for(var i=0;i<m.eligSpans.length;i++){ if(m.eligSpans[i].start>TODAY_IDX)return 'Gap' }
+    return 'Closed';
+  }
+  return 'Gap';
+}
+MEMBERS.forEach(function(m,ix){
+  m.ix=ix;
+  if(m.sex==='F'&&FIRST_F.indexOf(m.first)<0)m.first=FIRST_F[(m.first.length*7+m.last.length)%FIRST_F.length];
+  if(m.sex==='M'&&FIRST_M.indexOf(m.first)<0)m.first=FIRST_M[(m.first.length*7+m.last.length)%FIRST_M.length];
+  m.name=m.last+', '+m.first;
+  var et=eligToday(m), le=lastElig(m);
+  m.grpToday = et?et.grp:le.grp;
+  var dt=delToday(m);
+  m.delTodayCode = dt?dt.sys:'\u2014';
+  m.status=statusToday(m);
+});
+</script>
+<script>
+'use strict';
+/* ================= shared render helpers ================= */
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function grpChip(g){ if(!GROUPS[g])return esc(g);
+  return '<span class="chip" style="background:var('+GROUPS[g].color+')" title="'+esc(GROUPS[g].name)+'">'+g+'</span>' }
+function delChip(code){ if(code==='\u2014')return '<span class="st-cls">\u2014</span>';
+  var cls=sysClass(code), lbl=code;
+  return '<span class="dchip '+cls+'" title="'+esc(sysLabel(code))+'">'+esc(lbl)+'</span>' }
+function statusHtml(st){ return st==='Active'?'<span class="st-act">Active</span>':(st==='Gap'?'<span class="st-gap">In gap</span>':'<span class="st-cls">Closed</span>') }
+function regBadge(r){return '<span class="mono" style="font-weight:600;color:var(--accent)">'+r+'</span>'}
+
+/* ================= overview ================= */
+function renderOverview(){
+  var n=MEMBERS.length, act=0, hip=0, plus=0, basic=0, roll=0, refund=0, gaps=0;
+  MEMBERS.forEach(function(m){
+    if(m.status==='Active')act++;
+    if(m.status==='Gap')gaps++;
+    if(m.prog==='HIP'&&m.status==='Active')hip++;
+    if(m.tier==='PLUS'&&m.status==='Active')plus++;
+    if(m.tier==='BASIC'&&m.status==='Active')basic++;
+    if(m.rollover)roll++;
+    if(m.powerRefund)refund++;
+  });
+  var st=document.getElementById('ov-stats');
+  st.innerHTML =
+    stat(n,'Synthetic members',true)+
+    stat(act,'Eligible today (Jul 2026)')+
+    stat(hip,'In HIP today \u2014 the consumer-directed expansion')+
+    stat(plus,'HIP Plus \u2014 contributing, full benefit')+
+    stat(basic,'HIP Basic \u2014 the living tier')+
+    stat(roll,'Earned a rollover \u2014 the surviving experiment')+
+    stat(refund,'Got the goodbye refund \u2014 register F')+
+    stat(gaps,'In an eligibility gap today');
+  function stat(nv,l,acc){return '<div class="stat'+(acc?' acc':'')+'"><div class="n">'+(typeof nv==='number'?nv.toLocaleString():nv)+'</div><div class="l">'+l+'</div></div>'}
+
+  /* group legend with counts (by current/last group) */
+  var gc={}; MEMBERS.forEach(function(m){gc[m.grpToday]=(gc[m.grpToday]||0)+1});
+  var lg=document.getElementById('ov-groups'); lg.innerHTML='';
+  GROUP_KEYS.forEach(function(g){
+    var c=gc[g]||0;
+    lg.innerHTML+='<div class="legrow"><span class="swatch" style="background:var('+GROUPS[g].color+')"></span>'+
+      '<span class="code">'+g+'</span><span>'+esc(GROUPS[g].name)+'</span>'+
+      '<span class="cnt">'+c+'</span></div>';
+  });
+
+  /* delivery distribution today */
+  var dc={}; MEMBERS.forEach(function(m){ if(m.delTodayCode!=='\u2014') dc[m.delTodayCode]=(dc[m.delTodayCode]||0)+1 });
+  var pc={}; MEMBERS.forEach(function(m){ if(m.prog&&m.status==='Active') pc[m.prog]=(pc[m.prog]||0)+1 });
+  var rows=INPLANS.map(function(p){return {label:p.name, code:p.code, n:dc[p.code]||0, cls:'var(--d-mco)'}});
+  rows.sort(function(a,b){return b.n-a.n});
+  rows.push({label:'Fee-for-Service \u2014 duals and exemptions', code:'FFS', n:dc.FFS||0, cls:'var(--d-ffs)'});
+  ['HHW','HIP','HCC'].forEach(function(p){ rows.push({label:p+' \u2014 '+PROGRAMS[p].split(' \u2014 ')[1]+' (program, rides on plans above)', code:p, n:pc[p]||0, cls:'var(--d-harp)'}) });
+  var mx=rows.reduce(function(a,r){return Math.max(a,r.n)},1);
+  var bl=document.getElementById('ov-mcos'); bl.innerHTML='';
+  rows.forEach(function(r){
+    bl.innerHTML+='<div class="barrow"><span title="'+esc(r.label)+'">'+esc(r.label)+'</span>'+
+      '<span class="track"><span class="fill" style="width:0;background:'+r.cls+'" data-w="'+(100*r.n/mx)+'"></span></span>'+
+      '<span class="bn">'+r.n+'</span></div>';
+  });
+  requestAnimationFrame(function(){ setTimeout(function(){
+    bl.querySelectorAll('.fill').forEach(function(f){f.style.width=f.getAttribute('data-w')+'%'}) },60) });
+
+  document.getElementById('ov-plain').innerHTML='<span class="pe-label">In plain English</span>'+
+    'Indiana is the series\u2019 study in <b>consumer direction</b> \u2014 the 2015 bargain that brought Medicaid expansion to a red state by making it look like a health savings account. Every HIP adult has a <b>POWER account</b>: a $2,500 ledger, mostly state-funded, topped by a monthly contribution of 2% of income (floor of a dollar), with monthly statements. Whether the payment arrives decides the <b>tier</b>: Plus (dental, vision, no copays) or Basic (copays, thinner benefit) \u2014 the living tier system Nebraska designed and abandoned, running here for a decade. Register B shows the drop that isn\u2019t a closure; register C, the ledger itself; register D, life events flipping members across three program brands while the same four carriers hold on; register E, the three behavioral experiments \u2014 the work requirement that died in court, the lockouts that were suspended, and the rollover reward that quietly survived. And register F\u2019s twenty-seventh answer: <b>the goodbye with a refund</b> \u2014 the only Medicare exit in the series that closes with a settlement check.';
+}
+
+/* ================= reference ================= */
+function renderReference(){
+  var h='';
+  h+='<div class="card"><h3 style="margin-top:0">Coverage groups (teaching set)</h3>'+
+     '<div class="tblwrap"><table><thead><tr><th>Code</th><th>Name</th><th>Determination</th><th>What it means</th></tr></thead><tbody>';
+  GROUP_KEYS.forEach(function(g){var G=GROUPS[g];
+    h+='<tr'+(g==='AEG'?' style="background:#f8f6f2"':'')+'><td>'+grpChip(g)+'</td><td>'+esc(G.name)+'</td><td>'+(G.magi?'MAGI (FSSA)':'Non-MAGI')+'</td><td>'+G.blurb+'</td></tr>'});
+  h+='</tbody></table></div></div>';
+  h+='<div class="card"><h3 style="margin-top:0">Programs and plans</h3>'+
+     '<div class="tblwrap"><table><thead><tr><th>Program</th><th>What it is</th></tr></thead><tbody>';
+  Object.keys(PROGRAMS).forEach(function(p){
+    h+='<tr'+(p==='HIP'?' style="background:#f8f6f2"':'')+'><td class="mono">'+p+'</td><td>'+esc(PROGRAMS[p])+'</td></tr>';
+  });
+  h+='</tbody></table></div><p class="sub" style="margin-top:8px">All three programs are served by the same four carriers \u2014 '+INPLANS.map(function(p){return esc(p.name.split(' (')[0])}).join(', ')+' \u2014 so program flips usually keep the plan.</p></div>';
+  h+='<div class="card"><h3 style="margin-top:0">The POWER account, mechanically</h3>'+
+     '<div class="tblwrap"><table><thead><tr><th>Piece</th><th>How it works</th></tr></thead><tbody>'+
+     '<tr><td>The account</td><td>$2,500 per member per year \u2014 the state funds most of it; the first $2,500 of claims draw against it. Monthly statements go to the member.</td></tr>'+
+     '<tr><td>The contribution</td><td>2% of monthly income, floor of $1, ceiling around $20 \u2014 the member\u2019s share, invoiced monthly.</td></tr>'+
+     '<tr style="background:#f8f6f2"><td>The tier</td><td><b>Plus</b> if paying (dental, vision, no copays); <b>Basic</b> if below poverty and not paying (copays at point of care, no dental/vision). Above poverty, nonpayment once meant lockout \u2014 suspended since 2020.</td></tr>'+
+     '<tr><td>The rollover</td><td>Preventive care + unspent balance = discounted next-year contribution. The surviving experiment.</td></tr>'+
+     '<tr><td>The settlement</td><td>At exit \u2014 including Medicare \u2014 the account reconciles and the member\u2019s own contributions come back: register F\u2019s refund.</td></tr>'+
+     '</tbody></table></div></div>';
+  h+='<div class="card"><h3 style="margin-top:0">834 maintenance codes used in this app</h3>'+
+     '<div class="tblwrap"><table><thead><tr><th>INS03</th><th>Meaning</th><th>Where you\u2019ll see it</th></tr></thead><tbody>'+
+     '<tr><td class="mono">021</td><td>Addition</td><td>Enrollments and register D\u2019s program flips \u2014 the brand changes; often the carrier doesn\u2019t</td></tr>'+
+     '<tr><td class="mono">024</td><td>Cancellation / termination</td><td>Churn and register F\u2019s exits \u2014 the only 024s in the series accompanied by a settlement amount</td></tr>'+
+     '<tr><td class="mono">001</td><td>Change</td><td>The tier drop\u2019s footprint: Plus \u2192 Basic is a change record, not a termination \u2014 the quietest punishment in the series</td></tr>'+
+     '</tbody></table></div></div>';
+  h+='<div class="card"><h3 style="margin-top:0">Glossary</h3><dl class="gloss">'+
+    gl('HIP','The Healthy Indiana Plan \u2014 the 2015 consumer-directed expansion: POWER accounts, contributions, and tiers, negotiated as the price of expanding in a red state. The template Kentucky, Arkansas, and others borrowed pieces of; the only one still running whole.')+
+    gl('POWER account','Personal Wellness and Responsibility \u2014 the $2,500 ledger inside the coverage: mostly state money, topped by member contributions, drawn by claims, reported monthly, settled at exit. An HSA grafted onto Medicaid.')+
+    gl('The living tier','Plus vs Basic \u2014 benefit depth keyed to payment behavior. Nebraska designed a tier system and dropped it before launch; Indiana\u2019s has operated for a decade. A missed payment below poverty drops the tier, never the coverage.')+
+    gl('The lockout','2018\u201319: above-poverty members who missed payments were disenrolled and barred for six months. Suspended in 2020, never revived \u2014 register E keeps the scars.')+
+    gl('Gateway to Work','The work-reporting requirement that never operated: approved 2018, suspended amid the Arkansas litigation, withdrawn. The statuses were assigned and still populate \u2014 archive fields for a dead policy.')+
+    gl('The rollover','Preventive care plus unspent balance earns a discounted contribution \u2014 the one behavioral experiment that survived its decade. The sticks kept losing lawsuits; the discount kept working.')+
+    gl('The program flip','Turning 19 (HHW\u2192HIP), reporting a pregnancy (HIP\u2192HHW), a disability determination (HIP\u2192HCC): the member\u2019s program, benefit, and financial relationship change while the same carrier holds on. Watch the program, not the plan.')+
+    gl('The goodbye with a refund','The twenty-seventh Medicare answer: HIP ends at 65 and the POWER account settles \u2014 the member\u2019s own contributions come back as a check. The only exit in the series with accounting.')+
+    gl('834','The X12N enrollment transaction \u2014 which in Indiana can carry a tier in its reporting loop and a settlement amount at the end.')+
+    '</dl></div>';
+  function gl(t,d){return '<dt>'+t+'</dt><dd>'+d+'</dd>'}
+  h+='<div class="card"><h3 style="margin-top:0">Counties in this population</h3><p style="font-size:.85rem">'+COUNTIES.map(function(c){return esc(c.name)}).join(' \u00b7 ')+'</p><p class="sub" style="margin-top:8px">The Thangs, Lians, and Sungs carry Fort Wayne\u2019s Burmese and Chin communities \u2014 the largest in the country; the Yoders and Bontragers, Elkhart\u2019s Plain communities; the Pierres and Jean-Baptistes, the newer Haitian arrivals; the Washingtons and Jacksons, Gary and Indianapolis.</p></div>';
+  document.getElementById('ref-out').innerHTML=h;
+}
+</script>
+<script>
+'use strict';
+/* ================= generic sortable table state ================= */
+var SORT={};
+function bindSort(tblId, renderFn){
+  document.querySelectorAll('#'+tblId+' th.sortable').forEach(function(th){
+    th.addEventListener('click',function(){
+      var k=th.getAttribute('data-k');
+      var cur=SORT[tblId]||{};
+      SORT[tblId]={k:k, dir:(cur.k===k&&cur.dir==='asc')?'desc':'asc'};
+      renderFn();
+    });
+  });
+}
+function sortRows(tblId, rows){
+  var s=SORT[tblId]; if(!s)return rows;
+  var dir=s.dir==='asc'?1:-1;
+  rows.sort(function(a,b){
+    var x=a[s.k],y=b[s.k];
+    if(x===null||x===undefined)x=-Infinity; if(y===null||y===undefined)y=-Infinity;
+    if(typeof x==='string'){x=x.toLowerCase();y=String(y).toLowerCase();return x<y?-dir:(x>y?dir:0)}
+    return (x-y)*dir;
+  });
+  return rows;
+}
+function sortMarks(tblId){
+  var s=SORT[tblId];
+  document.querySelectorAll('#'+tblId+' th.sortable').forEach(function(th){
+    var base=th.textContent.replace(/[\u25b2\u25bc]\s*$/,'').trim();
+    th.innerHTML=esc(base)+(s&&s.k===th.getAttribute('data-k')?' <span class="arr">'+(s.dir==='asc'?'\u25b2':'\u25bc')+'</span>':'');
+  });
+}
+
+/* ================= pagination ================= */
+var PAGE={}, PAGE_SIZE=50;
+function pager(tblId, total, renderFn, pagerId){
+  var pages=Math.max(1,Math.ceil(total/PAGE_SIZE));
+  var p=Math.min(PAGE[tblId]||1,pages); if(p<1)p=1; PAGE[tblId]=p;
+  var el=document.getElementById(pagerId);
+  if(el){
+    if(pages===1){ el.innerHTML=''; }
+    else{
+      el.innerHTML='<button class="pg"'+(p<=1?' disabled':'')+' data-d="-1">\u25c0 Prev</button>'+
+        '<span class="mono pgpos">page '+p+' of '+pages.toLocaleString()+'</span>'+
+        '<button class="pg"'+(p>=pages?' disabled':'')+' data-d="1">Next \u25b6</button>';
+      el.querySelectorAll('button.pg').forEach(function(b){
+        b.addEventListener('click',function(){ PAGE[tblId]=p+parseInt(b.getAttribute('data-d'),10); renderFn(); });
+      });
+    }
+  }
+  return {from:(p-1)*PAGE_SIZE, to:Math.min(total,p*PAGE_SIZE)};
+}
+function resetPage(tblId){ PAGE[tblId]=1 }
+
+/* ================= members roster ================= */
+var ROSTER_VIEW=[]; /* current filtered order (all pages), for modal nav */
+function fillSelect(id, opts, allLabel){
+  var el=document.getElementById(id);
+  el.innerHTML='<option value="">'+allLabel+'</option>'+opts.map(function(o){return '<option value="'+o[0]+'">'+o[1]+'</option>'}).join('');
+}
+function initRosterControls(){
+  fillSelect('m-group',GROUP_KEYS.map(function(g){return[g,g+' \u2014 '+GROUPS[g].name]}),'Coverage group: all');
+  var dopts=INPLANS.map(function(m){return[m.code,m.name]});
+  dopts.push(['FFS','Fee-for-Service (duals)']);
+  fillSelect('m-del',dopts,'Delivery today: all');
+  fillSelect('m-reg',['A','B','C','D','E','F'].map(function(r){return[r,'Register '+r]}),'Register: all');
+  ['m-search','m-group','m-del','m-reg','m-status'].forEach(function(id){
+    document.getElementById(id).addEventListener('input',function(){resetPage('m-tbl');renderRoster()});
+  });
+  bindSort('m-tbl',renderRoster);
+}
+function renderRoster(){
+  var q=document.getElementById('m-search').value.trim().toLowerCase();
+  var fg=document.getElementById('m-group').value, fd=document.getElementById('m-del').value,
+      fr=document.getElementById('m-reg').value, fs=document.getElementById('m-status').value;
+  var rows=MEMBERS.filter(function(m){
+    if(fg&&m.grpToday!==fg)return false;
+    if(fd&&m.delTodayCode!==fd)return false;
+    if(fr&&m.reg!==fr)return false;
+    if(fs&&m.status!==fs)return false;
+    if(q){ var hay=(m.name+' '+m.id+' '+m.city+' '+m.county).toLowerCase(); if(hay.indexOf(q)<0)return false }
+    return true;
+  }).map(function(m){return {ix:m.ix,id:m.id,name:m.name,age:m.age,sex:m.sex,grp:m.grpToday,del:m.delTodayCode,county:m.county,reg:m.reg,status:m.status}});
+  rows=sortRows('m-tbl',rows); sortMarks('m-tbl');
+  ROSTER_VIEW=rows.map(function(r){return r.ix});
+  var pg=pager('m-tbl',rows.length,renderRoster,'m-pager');
+  var tb=document.getElementById('m-body'); tb.innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+r.age+'</td><td>'+r.sex+'</td>'+
+    '<td>'+grpChip(r.grp)+'</td><td>'+delChip(r.del)+'</td><td class="nowrap">'+esc(r.county)+'</td><td>'+regBadge(r.reg)+'</td><td>'+statusHtml(r.status)+'</td></tr>'}).join('');
+  document.getElementById('m-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' matching (population '+MEMBERS.length.toLocaleString()+')';
+  tb.querySelectorAll('tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'roster')})});
+}
+
+/* ================= eligibility spans ================= */
+var SPAN_VIEW=[];
+function initSpanControls(){
+  fillSelect('s-group',GROUP_KEYS.map(function(g){return[g,g+' \u2014 '+GROUPS[g].name]}),'Coverage group: all');
+  ['s-group','s-open'].forEach(function(id){document.getElementById(id).addEventListener('input',function(){resetPage('s-tbl');renderSpans()})});
+  bindSort('s-tbl',renderSpans);
+}
+function renderSpans(){
+  var fg=document.getElementById('s-group').value, fo=document.getElementById('s-open').value;
+  var rows=[];
+  MEMBERS.forEach(function(m){ m.eligSpans.forEach(function(s){
+    if(fg&&s.grp!==fg)return;
+    if(fo==='open'&&s.end!==null)return;
+    if(fo==='closed'&&s.end===null)return;
+    rows.push({ix:m.ix,id:m.id,name:m.name,grp:s.grp,start:s.start,end:(s.end===null?9999:s.end),endRaw:s.end,
+      months:spanMonths(s.start,s.end),reason:s.reason});
+  })});
+  rows=sortRows('s-tbl',rows); sortMarks('s-tbl');
+  SPAN_VIEW=[]; var seenS={}; rows.forEach(function(r){ if(!seenS[r.ix]){seenS[r.ix]=1;SPAN_VIEW.push(r.ix)} });
+  var pg=pager('s-tbl',rows.length,renderSpans,'s-pager');
+  document.getElementById('s-body').innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+grpChip(r.grp)+'</td>'+
+    '<td class="nowrap">'+startLabel(r.start)+'</td><td class="nowrap">'+(r.endRaw===null?'<span class="st-act">open</span>':mLabel(r.endRaw))+'</td>'+
+    '<td class="mono">'+r.months+(r.start<0?'+':'')+'</td><td>'+(r.reason?esc(r.reason):'\u2014')+'</td></tr>'}).join('');
+  document.getElementById('s-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' spans';
+  document.querySelectorAll('#s-body tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'spans')})});
+}
+function startLabel(s){ return s<0 ? mLabel(s)+' <span class="hint">(pre-window)</span>' : mLabel(s) }
+
+/* ================= delivery spans ================= */
+var DEL_VIEW=[];
+function initDelControls(){
+  var dopts=INPLANS.map(function(m){return[m.code,m.name]});
+  dopts.push(['FFS','Fee-for-Service (duals)']);
+  fillSelect('d-sys',dopts,'Delivery system: all');
+  document.getElementById('d-sys').addEventListener('input',function(){resetPage('d-tbl');renderDel()});
+  bindSort('d-tbl',renderDel);
+}
+function renderDel(){
+  var fd=document.getElementById('d-sys').value;
+  var rows=[];
+  MEMBERS.forEach(function(m){ m.delSpans.forEach(function(s){
+    if(fd&&s.sys!==fd)return;
+    rows.push({ix:m.ix,id:m.id,name:m.name,sys:s.sys,start:s.start,end:(s.end===null?9999:s.end),endRaw:s.end,
+      months:spanMonths(s.start,s.end),note:s.note});
+  })});
+  rows=sortRows('d-tbl',rows); sortMarks('d-tbl');
+  DEL_VIEW=[]; var seenD={}; rows.forEach(function(r){ if(!seenD[r.ix]){seenD[r.ix]=1;DEL_VIEW.push(r.ix)} });
+  var pg=pager('d-tbl',rows.length,renderDel,'d-pager');
+  document.getElementById('d-body').innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+delChip(r.sys)+'</td>'+
+    '<td class="nowrap">'+startLabel(r.start)+'</td><td class="nowrap">'+(r.endRaw===null?'<span class="st-act">open</span>':mLabel(r.endRaw))+'</td>'+
+    '<td class="mono">'+r.months+(r.start<0?'+':'')+'</td><td>'+(r.note?esc(r.note):'\u2014')+'</td></tr>'}).join('');
+  document.getElementById('d-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' delivery spans';
+  document.querySelectorAll('#d-body tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'delivery')})});
+}
+</script>
+<script>
+'use strict';
+/* ================= scenario registers ================= */
+var REGDEFS={
+ A:{title:'Steady state \u2014 three brands, four carriers, one ledger', q:'What does consumer-directed Medicaid look like at rest?',
+    body:'The baseline: Hoosier Healthwise kids, HIP adults with POWER accounts and tiers, Hoosier Care Connect for aged/blind/disabled \u2014 all served by the same four carriers. HIP is the 2015 bargain that brought expansion to a red state by making it look like a health savings account, and the tier column is its heartbeat: Plus for those paying, Basic for those below poverty who aren\u2019t. The Thangs and Lians carry Fort Wayne\u2019s Chin community, the largest in the country; the Yoders and Bontragers, Elkhart\u2019s Plain communities.'},
+ B:{title:'Churn \u2014 and the drop that isn\u2019t a closure', q:'What happens when a HIP member stops paying?',
+    body:'125 members sit in ordinary procedural gaps. But 60 show Indiana\u2019s signature non-event: below-poverty HIP members who stopped paying the POWER contribution \u2014 and whose coverage <b>did not end</b>. The tier ended: Plus became Basic, dental and vision fell away, copays switched on, and the eligibility span ran straight through. Nebraska designed exactly this consequence structure and abandoned it before launch; Indiana has operated it for a decade. The punishment lives in the benefit, never the span \u2014 which makes it invisible to every churn metric ever built.'},
+ C:{title:'The checking account inside the coverage', q:'What does an HSA grafted onto Medicaid look like in data?',
+    body:'200 members are contributors \u2014 HIP Plus: a $2,500 POWER account, mostly state money, topped by $1\u2013$20 a month from the member (2% of income), drawn down by claims, reported in monthly statements. Nearly half earned the <b>rollover</b>: preventive care plus unspent balance equals a discounted contribution next year. The other 175 are HIP Basic \u2014 the same core coverage, paid differently: no contribution, so copays at the point of care and no dental or vision. Studies keep finding Basic members pay more in copays than Plus would have cost them in contributions. The price of not paying is paying.'},
+ D:{title:'One person, three brands', q:'What moves a member between programs?',
+    body:'Life does. 150 members turned 19 and flipped HHW \u2192 HIP \u2014 childhood coverage asks nothing; adulthood here arrives with a contribution invoice, a ledger, and a tier. 115 reported a pregnancy and flipped HIP \u2192 Hoosier Healthwise: contributions stop, copays stop, the account suspends \u2014 the consumer-direction machinery politely steps aside for pregnancy, its own admission of where the ideology ends. 110 got disability determinations and flipped HIP \u2192 HCC: the account reconciles and closes. In all three, the same carrier usually holds on \u2014 the program, benefit, and financial relationship change while the card in the wallet doesn\u2019t. Watch the program, not the plan.'},
+ E:{title:'The experiments \u2014 one dead, one served, one alive', q:'What does a decade of behavioral economics leave in a Medicaid file?',
+    body:'HIP ran three experiments on its members. 140 records carry <b>Gateway to Work</b> statuses \u2014 exempt, compliant, pending \u2014 for a work-reporting rule that never operated: approved 2018, suspended amid the litigation that struck down Arkansas\u2019s twin, withdrawn. The fields still populate; no one was ever terminated. 95 members <b>served lockouts</b> in 2018\u201319 \u2014 disenrolled six months for missed payments, a stick suspended in 2020 and never revived; the scar outlives the rule. And 90 earned <b>rollovers</b> \u2014 the carrot, still running. The distilled finding of a decade: the sticks kept losing lawsuits; the discount just kept working.'},
+ F:{title:'Medicare arrives \u2014 the goodbye with a refund', q:'The twenty-seventh answer: what does a ledger do at 65?',
+    body:'It settles. For 195 HIP members, Medicare month meant the usual mechanics \u2014 redetermination to AB03, the plan\u2019s 024, the fee-for-service wrap, the buy-in lag \u2014 plus one thing no other state in this series produces: a <b>refund check</b>. The POWER account reconciles at exit, and the member\u2019s own contributions come back. Twenty-six states end this relationship with a termination record; Indiana ends it with a termination record and a settlement. The other 130 are HCC duals \u2014 no account, no ceremony: the plain version of the birthday, from the program that never asked its members to keep a ledger.'}
+};
+function renderRegisters(){
+  var out=document.getElementById('reg-list'); var h='';
+  ['A','B','C','D','E','F'].forEach(function(r){
+    var d=REGDEFS[r], list=MEMBERS.filter(function(m){return m.reg===r});
+    var sample=list.slice(0,12);
+    h+='<div class="reg"><h3><span class="rl">'+r+'</span>'+esc(d.title)+'<span class="meta" style="margin-left:auto">'+list.length.toLocaleString()+' members</span></h3>'+
+       '<div class="q">'+d.q+'</div><p class="sub" style="margin-bottom:10px">'+d.body+'</p>'+
+       '<div class="tblwrap"><table><thead><tr><th>RID</th><th>Member</th><th>Group</th><th>Delivery today</th><th>The planted story</th></tr></thead><tbody>';
+    sample.forEach(function(m){
+      h+='<tr class="rowlink" data-ix="'+m.ix+'"><td class="mono">'+m.id+'</td><td class="nowrap">'+esc(m.name)+'</td><td>'+grpChip(m.grpToday)+'</td><td>'+delChip(m.delTodayCode)+'</td>'+
+         '<td>'+(m.flags.length?m.flags[0]:'Clean spans \u2014 the control group')+'</td></tr>';
+    });
+    h+='</tbody></table></div>';
+    if(list.length>sample.length){
+      h+='<div class="hint" style="margin-top:8px">Showing the first '+sample.length+' of '+list.length.toLocaleString()+'. Open any row \u2014 the \u25c0 \u25b6 arrows walk the entire register \u2014 or filter the Members tab by register for the full list.</div>';
+    }
+    h+='</div>';
+  });
+  out.innerHTML=h;
+  out.querySelectorAll('tr.rowlink').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'register')})});
+}
+
+/* ================= 834 builder ================= */
+function lastDelEvent(m){
+  var spans=m.delSpans.filter(function(s){return s.sys!=='FFS'});
+  var last=spans.length?spans[spans.length-1]:null;
+  if(m.reg==='F'&&m.powerRefund){
+    return {kind:'024',del:spans[0],why:'The goodbye with a refund: this termination travels with a settlement \u2014 the POWER account reconciled and the member\u2019s own contributions came back. The only 024 in the series with accounting attached.'};
+  }
+  if(m.reg==='F'){
+    return {kind:'024',del:spans[0],why:'The plain version of the birthday: HCC excludes duals, so the plan span ends and the wrap goes fee-for-service \u2014 no account, no ceremony.'};
+  }
+  if(m.tierDrop!==null){
+    return {kind:'001',del:last,why:'The quietest punishment in the series: a Plus-to-Basic tier drop is a <b>change</b> record \u2014 the coverage never ended, so nothing terminates; the benefit just got thinner. Churn metrics will never see this member.'};
+  }
+  if(m.flipIdx!==null){
+    return {kind:'021',del:last,why:'A program flip ('+m.flipKind+'): the brand, benefit, and financial relationship changed at '+mLabel(m.flipIdx)+' \u2014 and the carrier usually didn\u2019t. Watch the program, not the plan.'};
+  }
+  if(m.reg==='B'&&last&&last.start>TODAY_IDX){
+    return {kind:'024',del:spans[0],why:'Ordinary procedural churn \u2014 the POWER account froze with the case.'};
+  }
+  if(!last){
+    return {kind:'021',state:true,why:'A fee-for-service record \u2014 the state\u2019s own file, in standard shape.'};
+  }
+  return {kind:'021',del:last,why:(m.prog==='HIP'?'A HIP addition: downstream of this enrollment sit the monthly statements, the contribution invoices, and the tier \u2014 the ledger starts here.':'Enrollment addition under '+PROGRAMS[m.prog].split(' \u2014 ')[0]+'.')};
+}
+function ediRow(seg,note,loop){return '<div class="edirow'+(loop?' loop':'')+'"><div class="seg">'+esc(seg)+'</div><div class="note">'+note+'</div></div>'}
+function build834(m){
+  var ev=lastDelEvent(m);
+  var eligSpan=m.eligSpans[m.eligSpans.length-1];
+  var eligBegin=m.eligSpans[m.eligSpans.length-1].start;
+  var ctl=String(317000+m.ix*7);
+  var kindLabel={ '021':'Addition','001':'Change','024':'Termination' }[ev.kind];
+  var out='<div class="ediwrap"><div class="edihead"><span class="fn">834 \u2014 '+kindLabel+(ev.state?' (state record)':'')+'</span><span class="hint">'+ev.why+'</span></div>';
+  var recvName = (ev.state||!ev.del)?'IN FSSA (STATE RECORD)':sysLabel(ev.del.sys).toUpperCase().split(' (')[0];
+  var recvId = (ev.state||!ev.del)?'INFSSA':ev.del.sys;
+  out+=ediRow('ISA*00*          *00*          *ZZ*INMEDICAID     *ZZ*'+(recvId+'          ').slice(0,10)+'    *260701*0800*^*00501*'+ctl.padStart(9,'0')+'*0*P*:~','Interchange envelope: Indiana FSSA to <b>'+esc(recvName)+'</b>.');
+  out+=ediRow('GS*BE*INMEDICAID*'+recvId+'*20260701*0800*'+ctl+'*X*005010X220A1~','Functional group: <b>BE</b> = benefit enrollment.');
+  out+=ediRow('ST*834*'+ctl.slice(-4)+'*005010X220A1~','Transaction set header.');
+  out+=ediRow('BGN*00*'+m.id.slice(-5)+'-'+ctl.slice(-3)+'*20260701*0800****4~','Beginning segment. Purpose 00 = original; action 4 = full audit.');
+  out+=ediRow('N1*P5*INDIANA FSSA*FI*356000158~','Loop 1000A \u2014 plan sponsor.', true);
+  out+=ediRow('N1*IN*'+recvName+'*FI*'+String(351000000+m.ix*13)+'~','Loop 1000B \u2014 the receiver: the same four carriers serve all three programs.', true);
+  out+=ediRow('INS*Y*18*'+ev.kind+'*'+(ev.kind==='024'?'07':(ev.kind==='001'?'43':'28'))+'*A***FT~','Loop 2000. Maintenance <b>'+ev.kind+'</b>.', true);
+  out+=ediRow('REF*0F*'+m.id+'~','The <b>RID</b> \u2014 twelve digits: the person, permanently, across every brand and every tier.');
+  out+=ediRow('DTP*356*D8*'+mFirstD8(Math.max(eligBegin,-24))+'~','<b>Eligibility</b> begin date.');
+  out+=ediRow('NM1*IL*1*'+m.last.toUpperCase()+'*'+m.first.toUpperCase()+'****34*'+String(310000000+m.ix*311)+'~','Member name; SSN qualifier synthetic here.');
+  out+=ediRow('PER*IP**TE*'+m.phone.replace(/\D/g,'')+'~','Contact telephone.');
+  out+=ediRow('N3*'+m.street.toUpperCase()+'~','Street address.');
+  out+=ediRow('N4*'+m.city.toUpperCase()+'*IN*'+m.zip+'~','City/state/ZIP: '+esc(m.city)+', '+esc(m.county)+' County.');
+  out+=ediRow('DMG*D8*'+dobD8(m.dob)+'*'+m.sex+'~','Date of birth and sex.');
+  if(m.lang!=='English') out+=ediRow('LUI*LD*'+({'Spanish':'SPA','Hakha Chin':'CNH','Burmese':'MYA','Pennsylvania Dutch':'PDC','Arabic':'ARA','Haitian Creole':'HAT','Mandarin':'CHI'}[m.lang]||'ENG')+'**6~','Preferred language: '+esc(m.lang)+(m.lang==='Hakha Chin'?' \u2014 Fort Wayne\u2019s Chin community, the country\u2019s largest.':'.'));
+  if(!ev.state&&ev.del){
+    out+=ediRow('HD*'+ev.kind+'**HLT*'+ev.del.sys+'-'+(m.prog||'HHW')+'~','Loop 2300 \u2014 coverage under <b>'+(m.prog?PROGRAMS[m.prog].split(' \u2014 ')[0]:'Hoosier Healthwise')+'</b>.', true);
+    out+=ediRow('DTP*348*D8*'+mFirstD8(Math.max(ev.del.start,-24))+'~','Coverage begin date \u2014 first of the month, always prospective.');
+    if(ev.kind==='024'&&ev.del.end!==null) out+=ediRow('DTP*349*D8*'+mLastD8(ev.del.end)+'~','Coverage end date'+(m.powerRefund?' \u2014 and the ledger below settles as of this date.':'.'));
+  } else {
+    out+=ediRow('HD*021**HLT*FFS~','Loop 2300 \u2014 fee-for-service record.', true);
+    out+=ediRow('DTP*348*D8*'+mFirstD8(Math.max(eligBegin,-24))+'~','Coverage begin for the state-side record.');
+  }
+  out+=ediRow('LS*2700~','Open the member-reporting loop.', true);
+  out+=ediRow('LX*1~ N1*75*COVERAGE GROUP~ REF*ZZ*'+eligSpan.grp+'~','The coverage group ('+esc(GROUPS[eligSpan.grp].name)+').');
+  if(m.tier) out+=ediRow('LX*2~ N1*75*HIP TIER~ REF*ZZ*'+m.tier+'~'+(m.contrib?' AMT*C1*'+m.contrib+'~':''),'The <b>tier</b> \u2014 '+(m.tier==='PLUS'?'Plus: contributing $'+m.contrib+'/month, full benefit.':'Basic: no contribution, copays at point of care, no dental or vision.')+(m.tierDrop!==null?' Dropped from Plus in '+mLabel(m.tierDrop)+' \u2014 the coverage never blinked.':''));
+  if(m.powerBal!==null&&!m.powerRefund) out+=ediRow('LX*3~ N1*75*POWER ACCOUNT~ AMT*D*'+m.powerBal+'~','The ledger: current POWER balance $'+m.powerBal+(m.rollover?' \u2014 rollover earned: preventive care plus unspent balance, so next year\u2019s contribution is discounted. The surviving experiment.':' \u2014 an HSA grafted onto Medicaid, reported monthly.'));
+  if(m.powerRefund) out+=ediRow('LX*3~ N1*75*POWER SETTLEMENT~ AMT*F5*'+m.powerRefund+'~','<b>The refund</b> \u2014 $'+m.powerRefund+' of the member\u2019s own contributions, returned at exit: the only settlement amount in any 834 in this series. The goodbye, with accounting.');
+  if(m.exp&&m.exp!=='rollover earned') out+=ediRow('LX*4~ N1*75*ARCHIVE~ REF*ZZ*'+(m.exp.indexOf('lockout')>=0?'LOCKOUT-SERVED':'GTW')+'~','Archive: '+esc(m.exp)+' \u2014 '+(m.exp.indexOf('lockout')>=0?'a stick suspended in 2020; the scar outlives the rule.':'a status for a requirement that never operated; the field outlives the policy.'));
+  if(m.reg==='F') out+=ediRow('LX*5~ N1*75*MEDICARE STATUS~ REF*ZZ*AB~','Medicare A+B from '+mLabel(m.medicareIdx)+' \u2014 buy-in accreted '+mLabel(m.buyinIdx)+'.');
+  out+=ediRow('LE*2700~','Close the reporting loop.', true);
+  out+=ediRow('SE*'+ri(15,21)+'*'+ctl.slice(-4)+'~ GE*1*'+ctl+'~ IEA*1*'+ctl.padStart(9,'0')+'~','Trailers \u2014 counts must reconcile or the file bounces.');
+  out+='</div>';
+  if(m.reg==='F'&&m.powerRefund){
+    out+='<div class="plain" style="margin-top:14px"><span class="pe-label">Worth noticing</span>Every other register F in this series ends in pure enrollment mechanics \u2014 dates, codes, a wrap. Indiana\u2019s ends in <b>money</b>: the POWER settlement means the Medicare transition has a financial reconciliation step, a refund calculation, and a check in the mail, which means the state\u2019s exit process has to touch the banking side of the program, not just the roster side. Systems that model enrollment and finance separately \u2014 which is most of them \u2014 meet their integration test at exactly this birthday.</div>';
+  }
+  return out;
+}
+function initFileTab(){
+  var sel=document.getElementById('f-member');
+  var h='';
+  ['A','B','C','D','E','F'].forEach(function(r){
+    h+='<optgroup label="Register '+r+' \u2014 '+esc(REGDEFS[r].title)+'">';
+    MEMBERS.filter(function(m){return m.reg===r}).slice().sort(function(a,b){return (a.name+' \u2014 '+a.id).localeCompare(b.name+' \u2014 '+b.id)}).forEach(function(m){
+      h+='<option value="'+m.ix+'">'+esc(m.name)+' \u2014 '+m.id+'</option>';
+    });
+    h+='</optgroup>';
+  });
+  sel.innerHTML=h;
+  sel.addEventListener('input',function(){renderFile(+sel.value)});
+  renderFile(+sel.value);
+}
+function renderFile(ix){
+  document.getElementById('f-out').innerHTML=build834(MEMBERS[ix]);
+}
+</script>
+<script>
+'use strict';
+/* ================= modal ================= */
+var MODAL={ix:null, ctx:'roster'};
+function navList(){
+  if(MODAL.ctx==='spans'&&SPAN_VIEW.length)return SPAN_VIEW;
+  if(MODAL.ctx==='delivery'&&DEL_VIEW.length)return DEL_VIEW;
+  if(MODAL.ctx==='register'&&MODAL.ix!==null){
+    var r=MEMBERS[MODAL.ix].reg;
+    return MEMBERS.filter(function(m){return m.reg===r}).map(function(m){return m.ix});
+  }
+  return ROSTER_VIEW.length?ROSTER_VIEW:MEMBERS.map(function(m){return m.ix});
+}
+function openModal(ix,ctx){
+  MODAL.ix=ix; if(ctx)MODAL.ctx=ctx;
+  var m=MEMBERS[ix];
+  document.getElementById('mo-nm').textContent=m.first+' '+m.last;
+  document.getElementById('mo-id').textContent='RID '+m.id+'  \u00b7  Register '+m.reg;
+  document.getElementById('mo-body').innerHTML=modalBody(m);
+  var list=navList(), pos=list.indexOf(ix);
+  document.getElementById('mo-pos').textContent=(pos+1)+' / '+list.length+' ('+MODAL.ctx+')';
+  document.getElementById('mo-prev').disabled=pos<=0;
+  document.getElementById('mo-next').disabled=pos<0||pos>=list.length-1;
+  document.getElementById('overlay').classList.add('on');
+  document.getElementById('modal').classList.add('on');
+  highlightRow(ix);
+  document.getElementById('mo-x').focus();
+}
+function closeModal(){
+  document.getElementById('overlay').classList.remove('on');
+  document.getElementById('modal').classList.remove('on');
+  highlightRow(null);
+  MODAL.ix=null;
+}
+function stepModal(d){
+  var list=navList(), pos=list.indexOf(MODAL.ix), np=pos+d;
+  if(np<0||np>=list.length)return;
+  openModal(list[np]);
+}
+function highlightRow(ix){
+  document.querySelectorAll('tr.hl').forEach(function(tr){tr.classList.remove('hl')});
+  if(ix===null)return;
+  document.querySelectorAll('tr.rowlink[data-ix="'+ix+'"]').forEach(function(tr){tr.classList.add('hl')});
+}
+
+/* ---------- mini two-band timeline ---------- */
+function tlBar(startIdx,endIdx,color,striped,title){
+  var s=Math.max(startIdx,0), e=(endIdx===null?WIN_MONTHS-1:Math.min(endIdx,WIN_MONTHS-1));
+  if(e<0||s>WIN_MONTHS-1)return '';
+  var l=100*s/WIN_MONTHS, w=100*(e-s+1)/WIN_MONTHS;
+  return '<span class="bar'+(striped?' striped':'')+'" style="left:'+l+'%;width:'+w+'%;background:'+color+'" title="'+esc(title)+'"></span>';
+}
+function timeline(m){
+  var h='<div class="tl">';
+  h+='<div class="band"><span class="bl">Eligibility</span><span class="lane">';
+  m.eligSpans.forEach(function(s){
+    h+=tlBar(s.start,s.end,'var('+GROUPS[s.grp].color+')',false,s.grp+' '+mLabel(s.start)+' \u2013 '+(s.end===null?'open':mLabel(s.end)));
+  });
+  h+='<span class="todayline" style="left:'+(100*(TODAY_IDX+0.5)/WIN_MONTHS)+'%"></span></span></div>';
+  h+='<div class="band"><span class="bl">Delivery</span><span class="lane">';
+  m.delSpans.forEach(function(s){
+    var col = sysKind(s.sys)==='FFS'?'var(--d-ffs)':'var(--d-mco)';
+    h+=tlBar(s.start,s.end,col,s.sys!=='FFS',sysLabel(s.sys)+' '+mLabel(s.start)+' \u2013 '+(s.end===null?'open':mLabel(s.end)));
+  });
+  h+='<span class="todayline" style="left:'+(100*(TODAY_IDX+0.5)/WIN_MONTHS)+'%"></span></span></div>';
+  h+='<div class="axis"><span></span><span class="ax">'+
+     '<span style="left:2%">Jan 25</span><span style="left:27%">Jul 25</span><span style="left:52%">Jan 26</span><span style="left:77%">Jul 26</span></span></div>';
+  h+='<div class="tl-note">Striped blue = a plan span (any program \u2014 the program brand, tier, and POWER facts live in the panel above, not in the bars) \u00b7 solid gray = fee-for-service \u00b7 red line = today (Jul 2026). Register B\u2019s tier drops leave the bars untouched \u2014 that is the point. Bars clamp to the 24-month window.</div></div>';
+  return h;
+}
+
+/* ---------- per-member plain english ---------- */
+function plainFor(m){
+  var p='';
+  var first=m.first;
+  if(m.reg==='A'){
+    if(m.prog==='HIP'&&m.tier==='PLUS'){
+      p=first+' is <b>HIP Plus</b>: $'+m.contrib+' a month into the POWER account, and in exchange the full package \u2014 dental, vision, no copays. The consumer-directed expansion at steady state: Medicaid with a monthly bill, a balance, and a statement, which is exactly what its designers wanted it to feel like.';
+    } else if(m.prog==='HIP'){
+      p=first+' is <b>HIP Basic</b>: below poverty, contributions unpaid, so the coverage holds but thins \u2014 copays at the point of care, no dental or vision. The living tier: the consequence structure Nebraska designed and abandoned, in its second decade here.';
+    } else if(m.prog==='HCC'){
+      p=first+' is in <b>Hoosier Care Connect</b> \u2014 the aged/blind/disabled managed-care program: no accounts, no tiers, no ledger, just the deeper benefit. The program HIP members flip into when a disability determination arrives (register D).';
+    } else {
+      p=first+' is a <b>Hoosier Healthwise</b> member \u2014 the kids-and-pregnancy brand: no contribution, no tier, no account. The program that asks nothing, which is what makes register D\u2019s 19th-birthday flip \u2014 into the program that asks monthly \u2014 so instructive.';
+    }
+  } else if(m.reg==='B'){
+    if(m.tierDrop!==null){
+      p=first+' stopped paying the POWER contribution in '+mLabel(m.tierDrop)+' \u2014 and nothing in the eligibility span table moved. That is the whole lesson: below poverty, nonpayment costs the <b>tier</b>, not the coverage. Plus became Basic; dental and vision fell away; copays switched on; the span ran straight through. The quietest punishment in the series, and invisible to every churn metric ever built.';
+    } else {
+      var t2=m.eligSpans[0].end, rg=m.eligSpans[1].start, gap=rg-t2-1;
+      if(rg>TODAY_IDX){
+        p=first+'\u2019s renewal did not come back and the case closed after '+mLabel(t2)+' \u2014 ordinary procedural churn'+(m.prog==='HIP'?'; the POWER account froze with the case':'')+'. The case reopens '+mLabel(rg)+'.';
+      } else {
+        p=first+' churned: closed after '+mLabel(t2)+', '+gap+' month'+(gap>1?'s':'')+' in the gap, back '+mLabel(rg)+(m.prog==='HIP'?' \u2014 account thawed with the case':'')+'. Paperwork, not payment: the tier machinery only governs benefit depth; renewals still govern the span.';
+      }
+    }
+  } else if(m.reg==='C'){
+    if(m.tier==='PLUS'){
+      p=first+' keeps a <b>checking account inside the coverage</b>: a $2,500 POWER account, state-funded but for '+first+'\u2019s $'+m.contrib+'/month, drawn by claims, reported in statements.'+(m.rollover?' Preventive care plus an unspent balance earned the <b>rollover</b> \u2014 next year costs less. The carrot that survived a decade of litigation that killed the sticks.':' Skin in the game, rendered as a ledger \u2014 the expansion\u2019s ideology in a monthly envelope, for a population every other state covers without one.');
+    } else {
+      p=first+' is <b>HIP Basic</b> \u2014 no contribution, so the cost moved to the point of care: $4 and $8 copays, no dental, no vision. Studies keep finding Basic members pay more in copays than Plus would have cost them in contributions. The price of not paying is paying \u2014 just later, and at the pharmacy counter.';
+    }
+  } else if(m.reg==='D'){
+    if(m.flipKind==='HHW \u2192 HIP'){
+      p='On the 19th birthday \u2014 '+mLabel(m.flipIdx)+' \u2014 Hoosier Healthwise ended and <b>HIP began</b>: same person, same carrier, and suddenly a POWER account, a $'+(m.contrib||1)+' invoice, and a tier. '+first+'\u2019s relationship to the program changed more than the program did: childhood coverage asks nothing; adulthood here asks monthly.';
+    } else if(m.flipKind==='HIP \u2192 HHW (pregnancy)'){
+      p=first+' reported a pregnancy in '+mLabel(m.flipIdx)+' and flipped HIP \u2192 Hoosier Healthwise: contributions stopped, copays stopped, the POWER account suspended, the benefit deepened \u2014 same carrier throughout. The consumer-direction machinery steps aside for pregnancy and returns twelve months postpartum: the program\u2019s own map of where its ideology ends.';
+    } else {
+      p='A disability determination in '+mLabel(m.flipIdx)+' moved '+first+' from HIP to <b>Hoosier Care Connect</b>: the POWER account reconciled and closed, contributions ended, the ABD benefit took over \u2014 and the delivery table shows a new span because HCC is a separate procurement. Three brands, one member, one RID: register D\u2019s whole argument.';
+    }
+  } else if(m.reg==='E'){
+    if(m.exp==='rollover earned'){
+      p=first+' earned the <b>rollover</b> \u2014 preventive care plus an unspent POWER balance, so next year\u2019s contribution is discounted. Of HIP\u2019s three behavioral experiments, this is the one still running: the work requirement died in court, the lockout was suspended, and the discount just kept working.';
+    } else if(m.exp==='served a 2018\u201319 lockout'){
+      p=first+' <b>served a lockout</b>: in 2018\u201319, missing POWER payments above poverty meant disenrollment plus a six-month bar on reapplying. The gap predates this window, but the flag survives \u2014 the data outlives the rule, the way Arkansas\u2019s records keep their vacated terminations. Suspended 2020; never revived.';
+    } else {
+      p=first+'\u2019s record still carries a <b>Gateway to Work</b> status \u2014 "'+esc(m.exp)+'" \u2014 for a requirement that never operated: approved 2018, suspended amid the Arkansas litigation, withdrawn. The system was built, the statuses were assigned, no one was ever terminated. An archive field for a dead policy: cheap to keep, easy to misread.';
+    }
+  } else {
+    var mi=m.medicareIdx, bi=m.buyinIdx;
+    if(m.powerRefund){
+      p='In '+mLabel(mi)+', '+first+' turned 65: HIP ended, the wrap went fee-for-service, the buy-in accreted '+mLabel(bi)+' \u2014 and then the part no other state has: the POWER account <b>settled</b>, and $'+m.powerRefund+' of '+first+'\u2019s own contributions came back as a refund. The twenty-seventh answer \u2014 <b>the goodbye with a refund</b>: the only Medicare exit in the series that ends with accounting, because Indiana\u2019s expansion was a ledger all along, and ledgers close.';
+    } else {
+      p=first+' is an HCC member who reached Medicare in '+mLabel(mi)+': plan span ends, fee-for-service wrap begins, buy-in accretes '+mLabel(bi)+', eligibility never blinks. No account, no tier, no refund \u2014 the plain version of the birthday, from the program that never asked for a monthly payment in the first place. The control group for the refund above.';
+    }
+  }
+  return '<div class="plain"><span class="pe-label">In plain English</span>'+p+'</div>';
+}
+
+/* ---------- modal body ---------- */
+function modalBody(m){
+  var h='';
+  var et=eligToday(m);
+  h+='<div class="kv">'+
+    kv('Status today',statusHtml(m.status))+
+    kv('Coverage group',grpChip(m.grpToday)+' <span style="font-size:.8rem;color:var(--ink-soft)">'+esc(GROUPS[m.grpToday].name)+'</span>')+
+    kv('Delivery today',delChip(m.delTodayCode)+(m.delTodayCode!=='\u2014'?' <span style="font-size:.8rem;color:var(--ink-soft)">'+esc(sysLabel(m.delTodayCode))+'</span>':''))+
+    kv('Date of birth',dobLabel(m.dob)+' <span class="hint">(age '+m.age+')</span>')+
+    kv('Sex',m.sex)+
+    kv('Address',esc(m.street)+', '+esc(m.city)+', IN '+m.zip)+
+    kv('County',esc(m.county))+
+    kv('Phone','<span class="mono">'+m.phone+'</span>')+
+    kv('Preferred language',esc(m.lang))+
+    (m.prog?kv('Program',m.prog+' \u2014 '+PROGRAMS[m.prog].split(' \u2014 ')[1].split(':')[0]):'')+(m.tier?kv('HIP tier',m.tier+(m.contrib?' \u2014 contributing $'+m.contrib+'/mo':' \u2014 no contribution, copays instead')):'')+(m.powerBal!==null&&!m.powerRefund?kv('POWER balance','$'+m.powerBal+(m.rollover?' \u2014 rollover earned':'')):'')+(m.tierDrop!==null?kv('Tier drop','Plus \u2192 Basic in '+mLabel(m.tierDrop)+' \u2014 coverage never blinked'):'')+(m.flipKind?kv('Program flip',m.flipKind+' at '+mLabel(m.flipIdx)):'')+(m.powerRefund?kv('POWER settlement','$'+m.powerRefund+' refunded at exit \u2014 the goodbye with accounting'):'')+(m.exp&&m.exp!=='rollover earned'?kv('Archive',esc(m.exp)):'')+
+    '</div>';
+  function kv(k,v){return '<div class="k">'+k+'</div><div class="v">'+v+'</div>'}
+  h+='<h4>24-month picture</h4>'+timeline(m);
+  h+=plainFor(m);
+  h+='<h4>Eligibility spans</h4><div class="tblwrap"><table><thead><tr><th>Group</th><th>Begin</th><th>End</th><th>Reason</th></tr></thead><tbody>';
+  m.eligSpans.forEach(function(s){
+    h+='<tr><td>'+grpChip(s.grp)+'</td><td class="nowrap">'+startLabel(s.start)+'</td><td class="nowrap">'+(s.end===null?'<span class="st-act">open</span>':mLabel(s.end))+'</td><td>'+(s.reason?esc(s.reason):'\u2014')+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  h+='<h4>Delivery spans</h4><div class="tblwrap"><table><thead><tr><th>System</th><th>Begin</th><th>End</th><th>Note</th></tr></thead><tbody>';
+  m.delSpans.forEach(function(s){
+    h+='<tr><td>'+delChip(s.sys)+'</td><td class="nowrap">'+startLabel(s.start)+'</td><td class="nowrap">'+(s.end===null?'<span class="st-act">open</span>':mLabel(s.end))+'</td><td>'+(s.note?esc(s.note):'\u2014')+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  if(m.flags.length){
+    h+='<h4>Flags</h4><p>'+m.flags.map(function(f){return '<span class="flag">'+esc(f)+'</span>'}).join(' ')+'</p>';
+  }
+  h+='<h4>See the file</h4><p style="font-size:.84rem;color:var(--ink-soft)">Open <b>What the File Says</b> and choose '+esc(m.first+' '+m.last)+' to read the 834 the plan received for this member\u2019s most recent enrollment event.</p>';
+  return h;
+}
+
+/* ================= navigation & boot ================= */
+function showPage(pg){
+  document.querySelectorAll('nav button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-pg')===pg)});
+  document.querySelectorAll('.page').forEach(function(p){p.classList.toggle('on',p.id==='pg-'+pg)});
+  if(pg==='overview')renderOverview();
+}
+document.getElementById('nav').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b)return; showPage(b.getAttribute('data-pg'));
+});
+document.getElementById('mo-x').addEventListener('click',closeModal);
+document.getElementById('overlay').addEventListener('click',closeModal);
+document.getElementById('mo-prev').addEventListener('click',function(){stepModal(-1)});
+document.getElementById('mo-next').addEventListener('click',function(){stepModal(1)});
+document.addEventListener('keydown',function(e){
+  if(MODAL.ix===null)return;
+  if(e.key==='Escape')closeModal();
+  else if(e.key==='ArrowLeft')stepModal(-1);
+  else if(e.key==='ArrowRight')stepModal(1);
+});
+
+/* boot */
+renderOverview();
+initRosterControls(); renderRoster();
+initSpanControls();  renderSpans();
+initDelControls();   renderDel();
+renderRegisters();
+initFileTab();
+renderReference();
+</script>
+</body>
+</html>

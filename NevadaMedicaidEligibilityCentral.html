@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nevada Medicaid Eligibility Central</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@1,8..60,400;1,8..60,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#1E5FCC;
+  --accent-soft:#E8EFFB;
+  --ink:#1b2430;
+  --ink-soft:#4a5568;
+  --ink-faint:#8a94a3;
+  --line:#dde3ea;
+  --line-soft:#eceff3;
+  --bg:#f7f8fa;
+  --card:#ffffff;
+  --serif:'Source Serif 4', Georgia, serif;
+  --sans:'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono:'IBM Plex Mono', 'Consolas', monospace;
+  --g-FC01:#2E7D5B; --g-PG02:#B0568C; --g-CH19:#C98A2B; --g-EA02:#1E5FCC;
+  --g-SI02:#6A4FB6; --g-MN98:#5B8AA6; --g-FF26:#C25B4A; --g-WD02:#3E9C9C; --g-LT01:#7A7A52;
+  --d-mco:#4a7fd6; --d-ffs:#9aa3ad; --d-harp:#8a5fc0; --d-mltc:#2e8f8f;
+  --ok:#2E7D5B; --warn:#C98A2B; --bad:#C0392B;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+
+/* ---------- header ---------- */
+header{background:var(--card);border-bottom:1px solid var(--line);padding:18px 28px 0}
+.brandrow{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.wordmark{font-family:var(--serif);font-style:italic;font-weight:600;font-size:1.65rem;color:var(--accent);letter-spacing:.01em}
+.wordmark .st{color:var(--ink)}
+.tagline{color:var(--ink-faint);font-size:.85rem}
+.credit{margin-left:auto;color:var(--ink-faint);font-size:.78rem}
+nav{display:flex;gap:2px;margin-top:14px;flex-wrap:wrap}
+nav button{appearance:none;border:none;background:none;font:inherit;font-size:.86rem;font-weight:500;color:var(--ink-soft);padding:9px 14px;cursor:pointer;border-bottom:3px solid transparent;border-radius:6px 6px 0 0}
+nav button:hover{background:var(--line-soft)}
+nav button.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+nav button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+/* ---------- layout ---------- */
+main{max-width:1280px;margin:0 auto;padding:24px 28px 80px}
+.page{display:none}
+.page.on{display:block}
+h2{font-size:1.22rem;font-weight:700;margin:4px 0 4px}
+h3{font-size:.98rem;font-weight:600;margin:22px 0 8px}
+.sub{color:var(--ink-soft);font-size:.88rem;margin-bottom:16px;max-width:70ch}
+
+/* ---------- plain english callout ---------- */
+.plain{font-family:var(--serif);font-style:italic;font-size:1.02rem;line-height:1.65;color:#2c3a4d;background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:14px 18px;margin:14px 0 20px;max-width:86ch}
+.plain b{font-style:italic;font-weight:600}
+.plain .pe-label{display:block;font-family:var(--sans);font-style:normal;font-weight:700;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:5px}
+
+/* ---------- cards / stats ---------- */
+.statrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.stat .n{font-family:var(--mono);font-size:1.55rem;font-weight:600;color:var(--ink)}
+.stat .l{font-size:.74rem;color:var(--ink-soft);margin-top:2px;line-height:1.35}
+.stat.acc .n{color:var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:14px 0}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:900px){.twocol{grid-template-columns:1fr}}
+
+/* ---------- legend / bars ---------- */
+.leg{display:flex;flex-direction:column;gap:7px}
+.legrow{display:grid;grid-template-columns:16px 64px 1fr 46px;gap:10px;align-items:center;font-size:.84rem}
+.legrow .swatch{width:14px;height:14px;border-radius:4px}
+.legrow .code{font-family:var(--mono);font-size:.8rem;font-weight:600}
+.legrow .cnt{font-family:var(--mono);text-align:right;color:var(--ink-soft)}
+.barlist{display:flex;flex-direction:column;gap:8px}
+.barrow{display:grid;grid-template-columns:210px 1fr 40px;gap:10px;align-items:center;font-size:.83rem}
+.barrow .track{background:var(--line-soft);border-radius:5px;height:14px;overflow:hidden}
+.barrow .fill{display:block;height:100%;background:var(--d-mco);border-radius:5px;transition:width .8s ease}
+.barrow .bn{font-family:var(--mono);text-align:right;color:var(--ink-soft)}
+@media(max-width:700px){.barrow{grid-template-columns:130px 1fr 36px}}
+
+/* ---------- controls ---------- */
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;align-items:center}
+.controls input[type=search],.controls select{font:inherit;font-size:.85rem;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
+.controls input[type=search]{min-width:220px}
+.controls select:focus,.controls input:focus{outline:2px solid var(--accent);outline-offset:0}
+.hint{font-size:.76rem;color:var(--ink-faint)}
+
+/* ---------- tables ---------- */
+.tblwrap{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:auto;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:.83rem}
+th{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);background:#fbfcfd;white-space:nowrap;position:sticky;top:0}
+th.sortable{cursor:pointer;user-select:none}
+th.sortable:hover{color:var(--accent)}
+th .arr{font-size:.72rem;color:var(--accent)}
+.pager{display:flex;align-items:center;justify-content:center;gap:14px;margin:12px 0 2px}
+.pager button.pg{appearance:none;font:inherit;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:5px 13px;cursor:pointer;font-size:.82rem;color:var(--ink-soft)}
+.pager button.pg:hover:not(:disabled){background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.pager button.pg:disabled{opacity:.35;cursor:default}
+.pager .pgpos{font-size:.78rem;color:var(--ink-faint)}
+td{padding:9px 12px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tbody tr.rowlink{cursor:pointer}
+tbody tr.rowlink:hover{background:var(--accent-soft)}
+tbody tr.hl{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+.mono{font-family:var(--mono);font-size:.8rem}
+.nowrap{white-space:nowrap}
+
+/* ---------- chips ---------- */
+.chip{display:inline-block;font-family:var(--mono);font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:20px;color:#fff;white-space:nowrap}
+.chip.outl{background:none;border:1.5px solid currentColor}
+.dchip{display:inline-block;font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:5px;white-space:nowrap}
+.d-mco{background:#e5edfa;color:#2456a8}
+.d-ffs{background:#eceff2;color:#5c6672}
+.d-harp{background:#efe7f8;color:#6a3fa0}
+.d-mltc{background:#e2f2f2;color:#1f6f6f}
+.st-act{color:var(--ok);font-weight:600}
+.st-gap{color:var(--warn);font-weight:600}
+.st-cls{color:var(--ink-faint);font-weight:600}
+.flag{display:inline-block;font-size:.7rem;font-weight:600;background:#fdf1e0;color:#96660f;border:1px solid #f0d9ae;border-radius:5px;padding:1px 7px;white-space:nowrap}
+
+/* ---------- registers ---------- */
+.reg{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin:12px 0}
+.reg h3{margin:0 0 4px;display:flex;align-items:center;gap:10px}
+.reg .rl{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;background:var(--accent);color:#fff;font-family:var(--mono);font-weight:600;font-size:.85rem;flex:none}
+.reg .q{font-family:var(--serif);font-style:italic;color:#2c3a4d;font-size:.95rem;margin:4px 0 10px}
+.reg .meta{font-size:.78rem;color:var(--ink-faint);margin-bottom:8px}
+
+/* ---------- 834 ---------- */
+.ediwrap{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:12px 0;overflow:hidden}
+.edihead{padding:12px 18px;border-bottom:1px solid var(--line);display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;background:#fbfcfd}
+.edihead .fn{font-family:var(--mono);font-size:.82rem;font-weight:600}
+.edirow{display:grid;grid-template-columns:minmax(300px,46%) 1fr;border-bottom:1px solid var(--line-soft)}
+.edirow:last-child{border-bottom:none}
+.edirow .seg{font-family:var(--mono);font-size:.78rem;padding:8px 16px;background:#f4f7fb;color:#1b3a66;overflow-wrap:anywhere;border-right:1px solid var(--line-soft)}
+.edirow .note{font-size:.8rem;padding:8px 16px;color:var(--ink-soft)}
+.edirow.loop .seg{background:#e8effb;font-weight:600}
+@media(max-width:780px){.edirow{grid-template-columns:1fr}.edirow .seg{border-right:none}}
+
+/* ---------- modal ---------- */
+.overlay{position:fixed;inset:0;background:rgba(20,28,40,.42);opacity:0;pointer-events:none;transition:opacity .22s;z-index:40}
+.overlay.on{opacity:1;pointer-events:auto}
+.slideover{position:fixed;top:0;right:0;bottom:0;width:640px;max-width:94vw;background:var(--card);box-shadow:-12px 0 40px rgba(15,25,45,.22);transform:translateX(102%);transition:transform .26s ease;z-index:50;display:flex;flex-direction:column}
+.slideover.on{transform:translateX(0)}
+.mo-head{padding:16px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+.mo-head .who{min-width:0}
+.mo-head .nm{font-weight:700;font-size:1.05rem}
+.mo-head .idz{font-family:var(--mono);font-size:.76rem;color:var(--ink-soft)}
+.mo-x{margin-left:auto;appearance:none;border:1px solid var(--line);background:none;border-radius:8px;width:32px;height:32px;font-size:1rem;cursor:pointer;color:var(--ink-soft);flex:none}
+.mo-x:hover{background:var(--line-soft)}
+.mo-body{overflow-y:auto;padding:18px 22px;flex:1}
+.mo-foot{border-top:1px solid var(--line);padding:10px 22px;display:flex;align-items:center;gap:12px}
+.mo-foot button{appearance:none;font:inherit;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:.9rem}
+.mo-foot button:hover:not(:disabled){background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.mo-foot button:disabled{opacity:.35;cursor:default}
+.mo-foot .pos{font-family:var(--mono);font-size:.78rem;color:var(--ink-faint);margin-left:auto}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:4px 12px;font-size:.85rem;margin:8px 0 14px}
+.kv .k{color:var(--ink-faint)}
+.kv .v{color:var(--ink)}
+.mo-body h4{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);margin:16px 0 8px}
+.mo-body .plain{font-size:.93rem;padding:12px 15px}
+
+/* ---------- mini timeline ---------- */
+.tl{margin:6px 0 4px}
+.tl .band{display:grid;grid-template-columns:78px 1fr;gap:8px;align-items:center;margin:5px 0}
+.tl .bl{font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-faint);text-align:right}
+.tl .lane{position:relative;height:18px;background:var(--line-soft);border-radius:4px}
+.tl .bar{position:absolute;top:0;bottom:0;border-radius:4px;min-width:3px}
+.tl .bar.striped{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.28) 0 5px,transparent 5px 10px)}
+.tl .axis{display:grid;grid-template-columns:78px 1fr;gap:8px;margin-top:3px}
+.tl .ax{position:relative;height:14px;font-size:.62rem;color:var(--ink-faint);font-family:var(--mono)}
+.tl .ax span{position:absolute;transform:translateX(-50%)}
+.tl .todayline{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--bad);opacity:.7}
+.tl-note{font-size:.7rem;color:var(--ink-faint);margin-top:6px}
+
+/* ---------- reference ---------- */
+.refgrid{display:grid;grid-template-columns:1fr;gap:4px}
+dl.gloss{display:grid;grid-template-columns:200px 1fr;gap:8px 16px;font-size:.85rem}
+dl.gloss dt{font-weight:600}
+dl.gloss dd{color:var(--ink-soft)}
+@media(max-width:700px){dl.gloss{grid-template-columns:1fr}dl.gloss dd{margin-bottom:8px}}
+footer{max-width:1280px;margin:0 auto;padding:0 28px 40px;color:var(--ink-faint);font-size:.75rem;line-height:1.6}
+@media(max-width:700px){header{padding:14px 16px 0}main{padding:18px 14px 60px}.kv{grid-template-columns:120px 1fr}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brandrow">
+    <div class="wordmark">Nevada Medicaid Eligibility <span class="st">Central</span></div>
+    <div class="tagline">The city limit, hospital PE, the Culinary Fund, and the 834 &mdash; a synthetic demonstration</div>
+    <div class="credit">Robert Thomas Keyes</div>
+  </div>
+  <nav id="nav" aria-label="Sections">
+    <button data-pg="overview" class="on">Overview</button>
+    <button data-pg="members">Members</button>
+    <button data-pg="spans">Eligibility Spans</button>
+    <button data-pg="delivery">The City Limit</button>
+    <button data-pg="registers">Scenario Registers</button>
+    <button data-pg="file">What the File Says</button>
+    <button data-pg="reference">Reference Codes</button>
+  </nav>
+</header>
+<main>
+  <section class="page on" id="pg-overview">
+    <h2>Overview</h2>
+    <p class="sub">A synthetic Nevada Medicaid population across a 24-month window (January 2025 &ndash; December 2026), viewed as of <b>July 2026</b>. Every value is deterministic &mdash; seeded PRNG, identical on every load.</p>
+    <div class="plain" id="ov-plain"></div>
+    <div class="statrow" id="ov-stats"></div>
+    <div class="twocol">
+      <div class="card">
+        <h3 style="margin-top:0">Coverage groups in the population</h3>
+        <div class="leg" id="ov-groups"></div>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Where members get their care today</h3>
+        <div class="barlist" id="ov-mcos"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="pg-members">
+    <h2>Members</h2>
+    <p class="sub">The full synthetic roster. Click any row for the member record; click a column header to sort.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>Every person here has an eleven-digit <b>Nevada Medicaid ID</b> that never changes — and one map fact organizes the whole file: <b>managed care runs in Clark and Washoe counties only</b>. Las Vegas and Reno have plans; the other fourteen counties are fee-for-service. The delivery system has a city limit, so whether a member has a plan at all is decided by an address — and register D drives across that line in both directions, watching capitation switch on and off. The other Nevada texture is economic: the Strip’s union coverage (register E’s <b>Culinary Health Fund</b> TPL records) sitting primary above Medicaid, in the most transient state in the nation.</div>
+    <div class="controls">
+      <input type="search" id="m-search" placeholder="Search name, Medicaid ID, city&hellip;" aria-label="Search members">
+      <select id="m-group" aria-label="Filter by coverage group"></select>
+      <select id="m-del" aria-label="Filter by delivery system"></select>
+      <select id="m-reg" aria-label="Filter by register"></select>
+      <select id="m-status" aria-label="Filter by status">
+        <option value="">Status today: all</option>
+        <option value="Active">Active</option>
+        <option value="Gap">In gap</option>
+        <option value="Closed">Closed</option>
+      </select>
+      <span class="hint" id="m-count"></span>
+    </div>
+    <div class="tblwrap"><table id="m-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">Medicaid ID</th>
+        <th class="sortable" data-k="name">Name</th>
+        <th class="sortable" data-k="age">Age</th>
+        <th class="sortable" data-k="sex">Sex</th>
+        <th class="sortable" data-k="grp">Coverage Group</th>
+        <th class="sortable" data-k="del">Delivery Today</th>
+        <th class="sortable" data-k="county">County</th>
+        <th class="sortable" data-k="reg">Register</th>
+        <th class="sortable" data-k="status">Status Today</th>
+      </tr></thead>
+      <tbody id="m-body"></tbody>
+    </table></div>
+    <div class="pager" id="m-pager"></div>
+  </section>
+
+  <section class="page" id="pg-spans">
+    <h2>Eligibility Spans</h2>
+    <p class="sub">One row per coverage-group span &mdash; the state's answer to <i>&ldquo;from when to when, and under which door did this person enter?&rdquo;</i> Click a row to open the member.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>A span is a promise with dates on it — and Nevada’s file adds a promise-maker no other app in this series has: <b>the hospital</b>. Register C’s <b>PE01</b> spans were granted on the spot by qualified hospitals — presumptive eligibility, real and billable that same day, weeks before the county determination existed — temporary spans the paperwork later closes behind itself. And read the end reasons closely: in the most transient state in the nation, <i>moved out of state</i> closes as many cases as the renewal packet does. Sixty of register B’s members made the full round trip.</div>
+    <div class="controls">
+      <select id="s-group" aria-label="Filter spans by coverage group"></select>
+      <select id="s-open" aria-label="Filter by open or closed">
+        <option value="">Open + closed</option><option value="open">Open only</option><option value="closed">Closed only</option>
+      </select>
+      <span class="hint" id="s-count"></span>
+    </div>
+    <div class="tblwrap"><table id="s-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">Medicaid ID</th>
+        <th class="sortable" data-k="name">Member</th>
+        <th class="sortable" data-k="grp">Group</th>
+        <th class="sortable" data-k="start">Begin</th>
+        <th class="sortable" data-k="end">End</th>
+        <th class="sortable" data-k="months">Months</th>
+        <th>End Reason</th>
+      </tr></thead>
+      <tbody id="s-body"></tbody>
+    </table></div>
+    <div class="pager" id="s-pager"></div>
+  </section>
+
+  <section class="page" id="pg-delivery">
+    <h2>The City Limit</h2>
+    <p class="sub">One row per delivery span: one of the four urban MCOs — Health Plan of Nevada (provider-integrated), Anthem, SilverSummit, Molina — or fee-for-service, which in this state is not a residue but a <b>region</b>: everything outside the Clark and Washoe county lines. Click a row to open the member.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>Nevada draws the sharpest delivery boundary in this series with a road atlas: <b>mandatory managed care inside Clark and Washoe counties, fee-for-service everywhere else</b>. It is not a phase-in or a residue — it is the standing architecture, decided by where the people are (nine in ten Nevadans live in those two counties). The consequence is register D’s teaching: a member who moves from Pahrump to Las Vegas acquires a capitation; one who moves from Henderson to Elko generates a plan termination for a member who lost nothing and chose nothing. <b>The plan ends because the map says so.</b> One more Nevada original rides the procurement: the state’s public option law ties marketplace participation to these Medicaid contracts — the Medicaid procurement as leverage — noted in the glossary, one layer above this file.</div>
+    <div class="controls">
+      <select id="d-sys" aria-label="Filter by delivery system"></select>
+      <span class="hint" id="d-count"></span>
+    </div>
+    <div class="tblwrap"><table id="d-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">Medicaid ID</th>
+        <th class="sortable" data-k="name">Member</th>
+        <th class="sortable" data-k="sys">Delivery</th>
+        <th class="sortable" data-k="start">Begin</th>
+        <th class="sortable" data-k="end">End</th>
+        <th class="sortable" data-k="months">Months</th>
+        <th>Begin / End Reason</th>
+      </tr></thead>
+      <tbody id="d-body"></tbody>
+    </table></div>
+    <div class="pager" id="d-pager"></div>
+  </section>
+
+  <section class="page" id="pg-registers">
+    <h2>Scenario Registers</h2>
+    <p class="sub">Six business questions, each answered by a register of members whose data was planted to demonstrate exactly that scenario. Click any member to inspect the record behind the answer.</p>
+    <div id="reg-list"></div>
+  </section>
+
+  <section class="page" id="pg-file">
+    <h2>What the File Says</h2>
+    <p class="sub">Nevada really does speak X12N 834 — DHCFP’s roster files to the four urban MCOs. Pick a member and read the transaction the plan would receive for that member's most recent enrollment event, segment by segment, with a plain-language note on every line.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>An 834 is the state telling a health plan: <b>this person is yours now</b> (or isn't anymore) — and Nevada’s stream carries two segments worth studying. Register E’s files carry <b>TPL</b>: the other-coverage loop naming the Culinary Health Fund or an employer plan as primary — a segment that changes no dates and no enrollment, only <i>who pays first</i>, which downstream is everything. And register D’s county-line terminations are the strangest 024s in this series: cut for members who lost nothing, chose nothing, and remain fully eligible — the plan relationship ended because an address crossed a line on a map. Rural members generate no plan file at all; theirs is the state’s own record, in standard shape.</div>
+    <div class="controls">
+      <select id="f-member" aria-label="Choose member for 834"></select>
+      <span class="hint">Members are grouped by register; the transaction is rebuilt live from the member's actual spans.</span>
+    </div>
+    <div id="f-out"></div>
+  </section>
+
+  <section class="page" id="pg-reference">
+    <h2>Reference Codes</h2>
+    <p class="sub">The teaching code sets used throughout the app. Codes are patterned on Nevada's conventions; verify against current Division of Health Care Financing and Policy publications before any non-demonstration use.</p>
+    <div id="ref-out"></div>
+  </section>
+</main>
+
+<footer>
+  <p><b>Nevada Medicaid Eligibility Central</b> &mdash; a single-file demonstration app in the Central series. All members, identifiers, addresses, phone numbers, and dates are synthetic and deterministic (seeded PRNG, seed 702001); any resemblance to real persons is coincidental. Program facts reflect public Nevada Division of Health Care Financing and Policy policy of the mid-2020s and change year to year — in particular, statewide managed care expansion has been on Nevada’s policy calendar, so the urban/rural boundary shown here should be verified against current DHCFP and CMS publications before any non-demonstration use. The 834 rendering is a teaching aid, not an implementation guide. &copy; Robert Thomas Keyes.</p>
+</footer>
+
+<div class="overlay" id="overlay"></div>
+<aside class="slideover" id="modal" role="dialog" aria-modal="true" aria-labelledby="mo-nm">
+  <div class="mo-head">
+    <div class="who">
+      <div class="nm" id="mo-nm"></div>
+      <div class="idz" id="mo-id"></div>
+    </div>
+    <button class="mo-x" id="mo-x" aria-label="Close">&#10005;</button>
+  </div>
+  <div class="mo-body" id="mo-body"></div>
+  <div class="mo-foot">
+    <button id="mo-prev" aria-label="Previous member">&#9664;</button>
+    <button id="mo-next" aria-label="Next member">&#9654;</button>
+    <span class="pos" id="mo-pos"></span>
+  </div>
+</aside>
+<script>
+'use strict';
+/* ============ Nevada Medicaid Eligibility Central ============
+   Central series -- Robert Thomas Keyes
+   Deterministic synthetic data. Seed 702001 (Las Vegas's area code).
+   Window: Jan 2025 (idx 0) .. Dec 2026 (idx 23). "Today" = Jul 2026 (idx 18).
+================================================================= */
+
+/* ---------- seeded PRNG (mulberry32) ---------- */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+var R = mulberry32(702001);
+function ri(lo,hi){return lo+Math.floor(R()*(hi-lo+1))}
+function pick(arr){return arr[Math.floor(R()*arr.length)]}
+function wpick(pairs){var tot=0,i;for(i=0;i<pairs.length;i++)tot+=pairs[i][1];var x=R()*tot;for(i=0;i<pairs.length;i++){x-=pairs[i][1];if(x<0)return pairs[i][0]}return pairs[pairs.length-1][0]}
+
+/* ---------- window ---------- */
+var WIN_START_Y=2025, WIN_MONTHS=24, TODAY_IDX=18; /* Jul 2026 */
+var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function mLabel(idx){ if(idx===null||idx===undefined)return '&mdash;';
+  var y=WIN_START_Y+Math.floor(idx/12), m=((idx%12)+12)%12;
+  return MONTHS[m]+' '+y }
+function mFirstD8(idx){var y=WIN_START_Y+Math.floor(idx/12),m=((idx%12)+12)%12;return ''+y+String(m+1).padStart(2,'0')+'01'}
+function mLastD8(idx){var y=WIN_START_Y+Math.floor(idx/12),m=((idx%12)+12)%12;var last=new Date(y,m+1,0).getDate();return ''+y+String(m+1).padStart(2,'0')+String(last).padStart(2,'0')}
+function spanMonths(s,e){var last=(e===null?TODAY_IDX:e);return Math.max(1,last-Math.max(s,-990)+1)}
+
+/* ---------- coverage groups ---------- */
+var GROUPS={
+ CH19:{name:'Children',                  magi:true,  color:'--g-CH19', blurb:'Children through 18 \u2014 Nevada Check Up wraps the separate CHIP tier above.'},
+ AE02:{name:'Adult Expansion',           magi:true,  color:'--g-SI02', blurb:'Adults 19\u201364 to 138% FPL \u2014 Nevada expanded January 2014 under Governor Sandoval, the first Republican governor in the nation to do it.'},
+ PW02:{name:'Pregnant & Postpartum',     magi:true,  color:'--g-EA02', blurb:'Pregnancy coverage plus twelve months postpartum.'},
+ FM01:{name:'Parents & Caretakers',      magi:true,  color:'--g-FC01', blurb:'Parents and caretaker relatives \u2014 a routing distinction in an expansion state.'},
+ AB03:{name:'Aged / Blind / Disabled',   magi:false, color:'--g-MN98', blurb:'SSI-related budgeting.'},
+ FF26:{name:'Former Foster Care',        magi:true,  color:'--g-FF26', blurb:'Young adults formerly in foster care, covered to 26 regardless of income.'},
+ PE01:{name:'Hospital Presumptive Eligibility', magi:true, color:'--g-WD02', blurb:'Eligibility granted <b>by a hospital, on the spot</b> \u2014 a temporary span, weeks long, that starts before the county determination exists. Register C\u2019s newest teaching: the span the paperwork hasn\u2019t caught up to yet.'}
+};
+var GROUP_KEYS=Object.keys(GROUPS);
+
+/* ---------- delivery: the system with a city limit ---------- */
+var NVPLANS=[
+ {code:'HPN',    name:'Health Plan of Nevada',        note:'UnitedHealth \u2014 the dominant plan, and provider-integrated: it owns Southwest Medical, the valley\u2019s largest medical group'},
+ {code:'ANTHEM', name:'Anthem Blue Cross Blue Shield',note:''},
+ {code:'SSHP',   name:'SilverSummit Healthplan',      note:'Centene'},
+ {code:'MOLINA', name:'Molina Healthcare of Nevada',  note:'Entered with the 2022 contract cycle'}
+];
+var PLANBY={}; NVPLANS.forEach(function(p){PLANBY[p.code]=p});
+function sysLabel(code){ return code==='FFS'?'Fee-for-Service (rural Nevada, tails, PE months)':(PLANBY[code]?PLANBY[code].name:code) }
+function sysKind(code){ return code==='FFS'?'FFS':'MCO' }
+function sysClass(code){ return code==='FFS'?'d-ffs':'d-mco' }
+function pickPlan(){ return wpick([['HPN',4],['ANTHEM',2],['SSHP',2],['MOLINA',2]]) }
+
+/* ---------- TPL carriers ---------- */
+var TPLSRC={
+ CULINARY:{name:'Culinary Health Fund', story:'the health fund of the Culinary Workers Union \u2014 the Strip\u2019s room attendants, cooks, cocktail servers, and porters, with some of the best employer coverage in hospitality'},
+ EMP:{name:'Employer group health plan', story:'an ordinary employer plan \u2014 warehouse, construction, retail'},
+ CHASE:{name:'(discovered retroactively)', story:''}
+};
+
+/* ---------- jurisdictions ---------- */
+var COUNTIES=[
+ {name:'Clark',      w:14, urban:true,  zips:['89101','89110','89030'], city:null, cities:['Las Vegas','Las Vegas','North Las Vegas'],
+  streets:['E Fremont St','N Eastern Ave','E Charleston Blvd','N Nellis Blvd','E Lake Mead Blvd','S Maryland Pkwy']},
+ {name:'Washoe',     w:4,  urban:true,  zips:['89502','89431'], city:null, cities:['Reno','Sparks'],
+  streets:['E 4th St','S Wells Ave','Oddie Blvd','Sutro St','Prater Way']},
+ {name:'Elko',       w:1.5,urban:false, zips:['89801'], city:'Elko',
+  streets:['Idaho St','Silver St','College Ave']},
+ {name:'Nye',        w:1.5,urban:false, zips:['89048'], city:'Pahrump',
+  streets:['E Basin Ave','S Blagg Rd','W Charleston Park Ave']},
+ {name:'Lyon',       w:1,  urban:false, zips:['89408'], city:'Fernley',
+  streets:['E Main St','Hardie Ln','Cottonwood Ln']},
+ {name:'Carson City',w:1,  urban:false, zips:['89701'], city:'Carson City',
+  streets:['E William St','N Carson St','E 5th St']},
+ {name:'Churchill',  w:0.8,urban:false, zips:['89406'], city:'Fallon',
+  streets:['W Williams Ave','S Maine St','Auction Rd']},
+ {name:'Humboldt',   w:0.8,urban:false, zips:['89445'], city:'Winnemucca',
+  streets:['W Winnemucca Blvd','Grass Valley Rd','Hanson St']},
+ {name:'Douglas',    w:0.8,urban:false, zips:['89410'], city:'Gardnerville',
+  streets:['US Highway 395','Waterloo Ln','Centerville Ln']},
+ {name:'White Pine', w:0.5,urban:false, zips:['89301'], city:'Ely',
+  streets:['Aultman St','Great Basin Blvd','Avenue F']}
+];
+var COUNTYBY={}; COUNTIES.forEach(function(c){COUNTYBY[c.name]=c});
+function countyLabel(n){ return n==='Carson City'?'Carson City':(n+' County') } /* independent city */
+function pickCounty(){return wpick(COUNTIES.map(function(c){return [c,c.w]}))}
+var AREA=['702','725','775'];
+
+/* ---------- names & languages ---------- */
+var FIRST_F=['Maria','Guadalupe','Yesenia','Marisol','Rocio','Lourdes','Esperanza','Analyn','Maricel','Jocelyn','Divina','Grace','Ashley','Madison','Brittany','Tiffany','Destiny','Dawn','Crystal','Keisha','Latoya','Linh','Selam','Tigist','Mei','June','Dolores','Cherry','Angelica','Corazon','Pearl','Vanessa'],
+    FIRST_M=['Jose','Juan','Luis','Miguel','Carlos','Rogelio','Efren','Ernesto','Angelo','Joel','Rodel','Reynaldo','Marlon','Tyler','Hunter','Brandon','Cody','Darnell','Jamal','Terrell','Minh','Dawit','Yonas','Wei','Ray','Billy','Frank','Dennis','Alton','Romeo','Dante','Federico'];
+var LAST=['Garcia','Hernandez','Ramirez','Gonzalez','Lopez','Ochoa','Fuentes','Mendoza','Torres','Castillo','Santos','Bautista','DelaCruz','Villanueva','Ramos','Mercado','Aquino','Ocampo','Smith','Johnson','Williams','Brown','Jackson','Washington','Robinson','Chen','Wong','Nguyen','Tran','Tesfaye','Bekele','Kim','Miller','Davis','Martinez','Flores','Reyes','Aguilar','Padilla','Salas'];
+var LANGS=[['English',54],['Spanish',31],['Tagalog',6],['Vietnamese',2],['Amharic',2],['Cantonese',2],['Korean',1.5]];
+
+/* ---------- end reasons ---------- */
+var ELIG_END={
+ REDET:'Renewal not completed \u2014 case closed at annual renewal',
+ INCOME:'Over income at renewal',
+ MOVED:'Moved out of state',
+ PEEND:'Presumptive period closed \u2014 full determination approved',
+ MEDI:'Medicare entitlement \u2014 redetermined under SSI-related rules'
+};
+</script>
+<script>
+'use strict';
+/* ================= population generator ================= */
+var MEMBERS=[];
+var usedIds={};
+function genId(){ var s; do{ s=String(ri(10000000000,89999999999)) }while(usedIds[s]); usedIds[s]=1; return s }
+function genPhone(){ var c=COUNTYBY; return '('+pick(AREA)+') '+ri(200,989)+'-'+String(ri(0,9999)).padStart(4,'0') }
+function genAddr(c){ var city=c.city||pick(c.cities); return {street:ri(100,9999)+' '+pick(c.streets), city:city, zip:pick(c.zips)} }
+function genName(sex){ return {first:(sex==='F'?pick(FIRST_F):pick(FIRST_M)), last:pick(LAST)} }
+function dobForAge(age){ var y=2026-age; var m=ri(0,11); if(m>6)y--; return {y:y,m:m,d:ri(1,28)} }
+function dobD8(d){return ''+d.y+String(d.m+1).padStart(2,'0')+String(d.d).padStart(2,'0')}
+function dobLabel(d){return MONTHS[d.m]+' '+d.d+', '+d.y}
+
+function baseMember(reg){
+  var sex=pick(['F','F','F','M','M']);
+  var nm=genName(sex), c=pickCounty(), a=genAddr(c);
+  return { id:genId(), first:nm.first, last:nm.last, sex:sex, county:c.name, urban:c.urban,
+    street:a.street, city:a.city, zip:a.zip, phone:genPhone(),
+    lang:wpick(LANGS), reg:reg, eligSpans:[], delSpans:[], flags:[],
+    tpl:null, moveIdx:null, countyOld:null };
+}
+function addElig(m,grp,s,e,reason){m.eligSpans.push({grp:grp,start:s,end:e,reason:reason||null})}
+function addDel(m,sys,s,e,note){m.delSpans.push({sys:sys,start:s,end:e,note:note||null})}
+/* Delivery obeys the map: MCO in Clark and Washoe, FFS everywhere else. */
+function enrollNV(m,s,e,note){
+  if(m.urban){
+    var plan=pickPlan();
+    addDel(m,plan,s,(e===undefined?null:e),note||null);
+    return plan;
+  }
+  addDel(m,'FFS',s,(e===undefined?null:e),note||'Rural county \u2014 fee-for-service: managed care stops at the Clark and Washoe county lines');
+  return 'FFS';
+}
+
+/* ----- Register A: steady state -- the delivery system with a city limit (1100) ----- */
+(function(){
+  var grpsA=[['CH19',7],['AE02',6],['FM01',1],['PW02',1],['AB03',2],['FF26',1]];
+  for(var i=0;i<1100;i++){
+    var grp=wpick(grpsA);
+    var m=baseMember('A');
+    var age = grp==='CH19'?ri(0,18) : grp==='FF26'?ri(18,25) : grp==='AB03'?ri(28,62) : grp==='PW02'?ri(19,38) : ri(19,60);
+    m.age=age; m.dob=dobForAge(age); if(grp==='PW02')m.sex='F';
+    var s=ri(-20,2);
+    addElig(m,grp,s,null,null);
+    var plan=enrollNV(m,s);
+    if(!m.urban&&R()<0.4){
+      m.flags.push(countyLabel(m.county)+' is fee-for-service \u2014 Nevada\u2019s managed care runs in Clark and Washoe only. The delivery system has a city limit, and '+(m.city)+' is outside it.');
+    } else if(plan==='HPN'&&R()<0.35){
+      m.flags.push('Enrolled with <b>Health Plan of Nevada</b> \u2014 the dominant plan, and provider-integrated: the same corporate family owns Southwest Medical, the valley\u2019s largest medical group. The insurer and the clinic share a parent.');
+    } else if(m.urban&&R()<0.15){
+      m.flags.push('One of the four urban MCOs, in the state where the plan question only exists inside two county lines');
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register B: renewal churn -- in the most transient state (500) ----- */
+(function(){
+  for(var i=0;i<500;i++){
+    var grp=wpick([['CH19',3],['AE02',5],['FM01',1]]);
+    var m=baseMember('B');
+    m.age = grp==='CH19'?ri(1,17):ri(19,60); m.dob=dobForAge(m.age);
+    var s=ri(-18,-2);
+    var inGapNow=(i<125);
+    var term=inGapNow?ri(15,16):ri(4,12);
+    var gap=inGapNow?ri(3,4):ri(1,4);
+    var regain=term+gap+1;
+    var interstate=(i>=125&&i<185); /* 60 round-trips out of state and back */
+    addElig(m,grp,s,term,interstate?ELIG_END.MOVED:ELIG_END.REDET);
+    addElig(m,grp,regain,null,null);
+    enrollNV(m,s,term);
+    enrollNV(m,regain,undefined,m.urban?(R()<0.4?'Auto-assignment landed differently on return':null):undefined);
+    if(interstate){
+      m.flags.push('Left for '+pick(['California','Arizona','Utah','Texas'])+' after '+mLabel(term)+', back in '+mLabel(regain)+' \u2014 the Nevada round-trip: the most transient state in the nation, where cases close for the border as often as for the paperwork');
+    } else {
+      m.flags.push('Gap '+mLabel(term+1)+'\u2013'+mLabel(regain-1)+' ('+gap+' mo) \u2014 renewal through Access Nevada; in a 24-hour economy of shift work and address changes, the mail loses more cases than the income test does');
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register C: two ways in -- classic retro and the hospital's on-the-spot grant (375) ----- */
+(function(){
+  for(var i=0;i<375;i++){
+    var isPE=(i>=225); /* 150 hospital presumptive eligibility */
+    var m=baseMember('C');
+    var grp=wpick(isPE?[['AE02',5],['PW02',3]]:[['CH19',4],['AE02',4],['PW02',2]]);
+    if(grp==='PW02')m.sex='F';
+    m.age = grp==='CH19'?ri(0,16) : grp==='PW02'?ri(19,36) : ri(19,55);
+    m.dob=dobForAge(m.age);
+    var app=ri(5,14);
+    if(isPE){
+      /* hospital PE: urban members (the hospitals that run PE at volume) */
+      if(!m.urban){ var c=COUNTYBY['Clark']; m.county='Clark'; m.urban=true; var a=genAddr(c); m.street=a.street; m.city=a.city; m.zip=a.zip; }
+      addElig(m,'PE01',app,app+1,ELIG_END.PEEND);
+      addElig(m,grp,app+2,null,null);
+      addDel(m,'FFS',app,app+2,'Presumptive months pay fee-for-service \u2014 no plan can be capitated for a span a determination hasn\u2019t confirmed');
+      enrollNV(m,app+3);
+      var hosp=pick(['UMC \u2014 University Medical Center','Sunrise Hospital','Valley Hospital','MountainView Hospital']);
+      m.flags.push('<b>Hospital presumptive eligibility</b> \u2014 granted on the spot at '+hosp+' in '+mLabel(app)+': a qualified hospital screened '+(m.sex==='F'?'her':'him')+' and eligibility began <b>that day</b>, weeks before the county determination existed. The PE span is temporary and real \u2014 claims paid against it \u2014 and the full determination arrived '+mLabel(app+2)+', closing the presumptive period behind it. Eligibility, briefly, on the hospital\u2019s signature.');
+    } else {
+      var retro=ri(1,3), retroS=app-retro;
+      addElig(m,grp,retroS,null,null);
+      if(m.urban){
+        addDel(m,'FFS',retroS,app,'The retro months and the processing month \u2014 fee-for-service; capitation only runs forward');
+        enrollNV(m,app+1);
+        m.flags.push('Retro grant: '+retro+' month'+(retro>1?'s':'')+' back to '+mLabel(retroS)+' \u2014 the classic reach-back, with the plan picking up prospectively');
+      } else {
+        addDel(m,'FFS',retroS,null,'Rural county \u2014 the retro tail and the ongoing coverage are the same color, because there is no capitation waiting');
+        m.flags.push('Retro grant: '+retro+' month'+(retro>1?'s':'')+' back to '+mLabel(retroS)+' \u2014 and in a rural FFS county, the tail dissolves: nothing distinguishes the backward months from the forward ones. The two-clock lesson only exists where a plan does.');
+      }
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register D: the county line -- capitation appears and disappears with the map (375) ----- */
+(function(){
+  var ruralNames=COUNTIES.filter(function(c){return !c.urban}).map(function(c){return c.name});
+  for(var i=0;i<375;i++){
+    var grp=wpick([['AE02',5],['CH19',3],['FM01',1],['AB03',1.5]]);
+    var m=baseMember('D');
+    m.age = grp==='CH19'?ri(3,17) : grp==='AB03'?ri(28,62) : ri(19,60);
+    m.dob=dobForAge(m.age);
+    var s=ri(-24,-6), mv=ri(4,15);
+    addElig(m,grp,s,null,null);
+    var kind = i<150?'TOMCO' : (i<265?'TOFFS':'URBAN');
+    if(kind==='TOMCO'){
+      var fromC=COUNTYBY[pick(ruralNames)];
+      m.countyOld=fromC.name;
+      addDel(m,'FFS',s,mv-1,'Rural fee-for-service \u2014 '+fromC.name+' County');
+      var toC=COUNTYBY[R()<0.85?'Clark':'Washoe'];
+      m.county=toC.name; m.urban=true;
+      var a=genAddr(toC); m.street=a.street; m.city=a.city; m.zip=a.zip;
+      var plan=pickPlan();
+      addDel(m,plan,mv,null,(i%2===0?'Member chose '+sysLabel(plan)+' on arrival':'Auto-assigned \u2014 the choice window closed unanswered'));
+      m.moveIdx=mv;
+      m.flags.push('Moved '+fromC.name+' \u2192 <b>'+toC.name+'</b> in '+mLabel(mv)+' \u2014 and <b>capitation appeared</b>: crossing into an urban county created a plan enrollment where none had ever existed. Same person, same eligibility, same benefits \u2014 the delivery system switched on at a county line.');
+    } else if(kind==='TOFFS'){
+      var fromC2=COUNTYBY[R()<0.85?'Clark':'Washoe'];
+      m.countyOld=fromC2.name;
+      var plan2=pickPlan();
+      addDel(m,plan2,s,mv-1,null);
+      var toC2=COUNTYBY[pick(ruralNames)];
+      m.county=toC2.name; m.urban=false;
+      var a2=genAddr(toC2); m.street=a2.street; m.city=a2.city; m.zip=a2.zip;
+      addDel(m,'FFS',mv,null,'Rural county \u2014 the plan enrollment ended because the map says so');
+      m.moveIdx=mv;
+      m.flags.push('Moved '+fromC2.name+' \u2192 <b>'+toC2.name+'</b> in '+mLabel(mv)+' \u2014 and <b>capitation disappeared</b>: '+sysLabel(plan2)+' cut a termination for a member who lost nothing and chose nothing. The plan ended because the address did. Eligibility never blinked; the delivery system just ran out of map.');
+    } else {
+      var pair=(R()<0.5)?['Clark','Washoe']:['Washoe','Clark'];
+      var fA=COUNTYBY[pair[0]], fB=COUNTYBY[pair[1]];
+      m.countyOld=fA.name;
+      var p1=pickPlan();
+      addDel(m,p1,s,mv-1,null);
+      m.county=fB.name; m.urban=true;
+      var a3=genAddr(fB); m.street=a3.street; m.city=a3.city; m.zip=a3.zip;
+      var p2=pickPlan();
+      addDel(m,p2,mv,null,'Re-assignment in the new service area');
+      m.moveIdx=mv;
+      m.flags.push('Moved '+fA.name+' \u2192 '+fB.name+' in '+mLabel(mv)+' \u2014 urban to urban: the control case. The plan changed with the service area, but the member never left managed care. Hold it against the other two-thirds of this register, where the county line switched the whole system on or off.');
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register E: TPL -- the other coverage (325) ----- */
+(function(){
+  var JOBS=['a guest room attendant','a line cook','a cocktail server','a porter','a banquet server','a barista in a casino coffee shop','a bell captain'];
+  for(var i=0;i<325;i++){
+    var kind = i<200?'CULINARY' : (i<275?'EMP':'CHASE');
+    var grp=wpick([['CH19',5],['AE02',3],['PW02',1]]);
+    var m=baseMember('E');
+    /* the casino economy lives in Clark */
+    var c=COUNTYBY[kind==='EMP'&&R()<0.3?'Washoe':'Clark'];
+    m.county=c.name; m.urban=true;
+    var a=genAddr(c); m.street=a.street; m.city=a.city; m.zip=a.zip;
+    if(grp==='PW02')m.sex='F';
+    m.age = grp==='CH19'?ri(1,17) : grp==='PW02'?ri(19,36) : ri(21,58);
+    m.dob=dobForAge(m.age);
+    var s=ri(-22,-3);
+    addElig(m,grp,s,null,null);
+    enrollNV(m,s);
+    if(kind==='CULINARY'){
+      var job=pick(JOBS);
+      m.tpl={src:'CULINARY', since:s};
+      m.flags.push('<b>TPL: Culinary Health Fund primary</b> \u2014 '+(grp==='CH19'?'a parent works the Strip as '+job:'works the Strip as '+job)+', and the union\u2019s health fund covers the household. Medicaid is <b>secondary</b>: the TPL segment reorders every claim \u2014 fund first, Medicaid wraps. Coverage that doesn\u2019t end Medicaid; it changes who pays first. In Las Vegas, this is not an edge case \u2014 it is the neighborhood.');
+    } else if(kind==='EMP'){
+      m.tpl={src:'EMP', since:s};
+      m.flags.push('<b>TPL: employer group plan primary</b> \u2014 ordinary commercial coverage riding above Medicaid: the state cost-avoids, paying only what the employer plan leaves behind. The eligibility span and the plan enrollment look like anyone else\u2019s; the TPL segment quietly rewrites the payment order underneath.');
+    } else {
+      var disc=ri(6,16), had=disc-ri(6,14);
+      m.tpl={src:'CHASE', since:had, disc:disc};
+      m.flags.push('<b>TPL discovered '+mLabel(disc)+'</b> \u2014 a data match found employer coverage that had existed since '+mLabel(had)+'. Every Medicaid claim paid in between converts to a recovery: <b>pay-and-chase</b>, the expensive cousin of cost avoidance. The coverage was always there; the data arrived late, and the ledger runs backward to catch up.');
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register F: Medicare arrives -- one state, two answers (325) ----- */
+(function(){
+  var ruralNames=COUNTIES.filter(function(c){return !c.urban}).map(function(c){return c.name});
+  for(var i=0;i<325;i++){
+    var m=baseMember('F');
+    var rural=(i>=195); /* 130 rural: the stillness */
+    var ssdi=(R()<0.6);
+    var medi=ri(6,16), lag=ri(1,3);
+    if(ssdi){ m.age=ri(38,62); m.dob=dobForAge(m.age); }
+    else { m.age=(medi<=TODAY_IDX)?65:64; m.dob={y:WIN_START_Y+Math.floor(medi/12)-65, m:medi%12, d:ri(1,28)}; }
+    var s=ri(-20,-8);
+    if(rural){
+      var rc=COUNTYBY[pick(ruralNames)];
+      m.county=rc.name; m.urban=false;
+      var a=genAddr(rc); m.street=a.street; m.city=a.city; m.zip=a.zip;
+      addElig(m,'AB03',s,null,null);
+      addDel(m,'FFS',s,null,'Rural fee-for-service throughout \u2014 Medicare primary from '+mLabel(medi)+'; the wrap continues, claim by claim, as it always did');
+      m.flags.push((ssdi?'Medicare via SSDI ':'Turned 65 ')+mLabel(medi)+' in '+countyLabel(m.county)+' \u2014 and <b>nothing moved</b>: there was no plan to leave, because the map never gave this member one. The rural half of Nevada\u2019s answer is stillness \u2014 the only dated facts are the entitlement and the buy-in, '+mLabel(medi+lag)+'.');
+    } else {
+      var uc=COUNTYBY[R()<0.85?'Clark':'Washoe'];
+      m.county=uc.name; m.urban=true;
+      var a2=genAddr(uc); m.street=a2.street; m.city=a2.city; m.zip=a2.zip;
+      addElig(m,'AE02',s,medi-1,ELIG_END.MEDI);
+      addElig(m,'AB03',medi,null,null);
+      var plan=pickPlan();
+      addDel(m,plan,s,medi-1,'MCO enrollment ends at Medicare \u2014 duals sit outside Nevada\u2019s managed care');
+      addDel(m,'FFS',medi,null,'FFS wrap \u2014 Medicare primary; the D-SNP market (HPN\u2019s above all) takes the Medicare side');
+      m.flags.push((ssdi?'Medicare via SSDI ':'Turned 65 ')+mLabel(medi)+' in '+countyLabel(m.county)+' \u2014 the urban half of Nevada\u2019s answer: the plan let go, the wrap went FFS, the buy-in accreted '+mLabel(medi+lag)+'. Twenty miles east, in Nye County, the same birthday moves nothing at all.');
+    }
+    m.medicareIdx=medi; m.buyinIdx=medi+lag; m.ssdi=ssdi; m.rural=rural;
+    MEMBERS.push(m);
+  }
+})();
+
+/* ---------- derived member state ---------- */
+function eligToday(m){ for(var i=0;i<m.eligSpans.length;i++){var s=m.eligSpans[i]; if(s.start<=TODAY_IDX&&(s.end===null||s.end>=TODAY_IDX))return s} return null }
+function delToday(m){ for(var i=0;i<m.delSpans.length;i++){var s=m.delSpans[i]; if(s.start<=TODAY_IDX&&(s.end===null||s.end>=TODAY_IDX))return s} return null }
+function lastElig(m){ return m.eligSpans[m.eligSpans.length-1] }
+function statusToday(m){
+  if(eligToday(m))return 'Active';
+  var le=lastElig(m);
+  if(le.end!==null&&le.end<TODAY_IDX){
+    for(var i=0;i<m.eligSpans.length;i++){ if(m.eligSpans[i].start>TODAY_IDX)return 'Gap' }
+    return 'Closed';
+  }
+  return 'Gap';
+}
+MEMBERS.forEach(function(m,ix){
+  m.ix=ix;
+  /* name/sex coherence: deterministic, PRNG-free remap */
+  if(m.sex==='F'&&FIRST_F.indexOf(m.first)<0)m.first=FIRST_F[(m.first.length*7+m.last.length)%FIRST_F.length];
+  if(m.sex==='M'&&FIRST_M.indexOf(m.first)<0)m.first=FIRST_M[(m.first.length*7+m.last.length)%FIRST_M.length];
+  m.name=m.last+', '+m.first;
+  var et=eligToday(m), le=lastElig(m);
+  m.grpToday = et?et.grp:le.grp;
+  var dt=delToday(m);
+  m.delTodayCode = dt?dt.sys:'\u2014';
+  m.status=statusToday(m);
+});
+</script>
+<script>
+'use strict';
+/* ================= shared render helpers ================= */
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function grpChip(g){ if(!GROUPS[g])return esc(g);
+  return '<span class="chip" style="background:var('+GROUPS[g].color+')" title="'+esc(GROUPS[g].name)+'">'+g+'</span>' }
+function delChip(code){ if(code==='\u2014')return '<span class="st-cls">\u2014</span>';
+  var cls=sysClass(code), lbl=code;
+  return '<span class="dchip '+cls+'" title="'+esc(sysLabel(code))+'">'+esc(lbl)+'</span>' }
+function statusHtml(st){ return st==='Active'?'<span class="st-act">Active</span>':(st==='Gap'?'<span class="st-gap">In gap</span>':'<span class="st-cls">Closed</span>') }
+function regBadge(r){return '<span class="mono" style="font-weight:600;color:var(--accent)">'+r+'</span>'}
+
+/* ================= overview ================= */
+function renderOverview(){
+  var n=MEMBERS.length, act=0, mco=0, ffs=0, ruralN=0, tplN=0, cul=0, pe=0, crossers=0, gaps=0;
+  MEMBERS.forEach(function(m){
+    if(m.status==='Active')act++;
+    if(m.status==='Gap')gaps++;
+    var d=m.delTodayCode;
+    if(d!=='\u2014'){ if(sysKind(d)==='MCO')mco++; else ffs++; }
+    if(!m.urban&&m.status==='Active')ruralN++;
+    if(m.tpl)tplN++;
+    if(m.tpl&&m.tpl.src==='CULINARY')cul++;
+    if(m.eligSpans[0].grp==='PE01')pe++;
+    if(m.moveIdx!==null)crossers++;
+  });
+  var st=document.getElementById('ov-stats');
+  st.innerHTML =
+    stat(n,'Synthetic members',true)+
+    stat(act,'Eligible today (Jul 2026)')+
+    stat(mco,'In an MCO today (Clark & Washoe only)')+
+    stat(ffs,'Fee-for-service today \u2014 mostly a region, not a residue')+
+    stat(ruralN,'Living outside the city limit')+
+    stat(pe,'Entered via hospital presumptive eligibility')+
+    stat(tplN,'Carry TPL \u2014 other coverage pays first')+
+    stat(cul,'\u2026 Culinary Health Fund households')+
+    stat(gaps,'In an eligibility gap today');
+  function stat(nv,l,acc){return '<div class="stat'+(acc?' acc':'')+'"><div class="n">'+(typeof nv==='number'?nv.toLocaleString():nv)+'</div><div class="l">'+l+'</div></div>'}
+
+  /* group legend with counts (by current/last group) */
+  var gc={}; MEMBERS.forEach(function(m){gc[m.grpToday]=(gc[m.grpToday]||0)+1});
+  var lg=document.getElementById('ov-groups'); lg.innerHTML='';
+  GROUP_KEYS.forEach(function(g){
+    var c=gc[g]||0;
+    lg.innerHTML+='<div class="legrow"><span class="swatch" style="background:var('+GROUPS[g].color+')"></span>'+
+      '<span class="code">'+g+'</span><span>'+esc(GROUPS[g].name)+'</span>'+
+      '<span class="cnt">'+c+'</span></div>';
+  });
+
+  /* delivery distribution today */
+  var dc={}; MEMBERS.forEach(function(m){ if(m.delTodayCode!=='\u2014') dc[m.delTodayCode]=(dc[m.delTodayCode]||0)+1 });
+  var rows=NVPLANS.map(function(p){return {label:p.name+(p.code==='HPN'?' \u2014 provider-integrated (owns Southwest Medical)':''), code:p.code, n:dc[p.code]||0, cls:'var(--d-mco)'}});
+  rows.push({label:'Fee-for-service \u2014 the fourteen rural counties, tails, PE months, dual wraps', code:'FFS', n:dc.FFS||0, cls:'var(--d-ffs)'});
+  rows.sort(function(a,b){return b.n-a.n});
+  var mx=rows.reduce(function(a,r){return Math.max(a,r.n)},1);
+  var bl=document.getElementById('ov-mcos'); bl.innerHTML='';
+  rows.forEach(function(r){
+    bl.innerHTML+='<div class="barrow"><span title="'+esc(r.label)+'">'+esc(r.label)+'</span>'+
+      '<span class="track"><span class="fill" style="width:0;background:'+r.cls+'" data-w="'+(100*r.n/mx)+'"></span></span>'+
+      '<span class="bn">'+r.n+'</span></div>';
+  });
+  requestAnimationFrame(function(){ setTimeout(function(){
+    bl.querySelectorAll('.fill').forEach(function(f){f.style.width=f.getAttribute('data-w')+'%'}) },60) });
+
+  document.getElementById('ov-plain').innerHTML='<span class="pe-label">In plain English</span>'+
+    'Nevada\u2019s file is organized by one line on a map: <b>managed care runs in Clark and Washoe counties \u2014 Las Vegas and Reno \u2014 and nowhere else</b>. Nine in ten Nevadans live inside that line, so the four MCOs carry most of the program while fourteen rural counties stay fee-for-service: gray as a region, not a residue. Register D drives across the boundary in both directions and watches <b>capitation switch on and off with an address</b> \u2014 including the strangest 024 in this series, a plan termination for a member who lost nothing and chose nothing. '+
+    'Register C adds a promise-maker no other app has: the <b>hospital</b> \u2014 presumptive eligibility granted on the spot, a real, billable span weeks ahead of the county determination. Register E is the series\u2019 first <b>TPL</b> register: the Strip\u2019s <b>Culinary Health Fund</b> and employer plans sitting primary above Medicaid \u2014 segments that change no dates, only who pays first \u2014 with fifty pay-and-chase discoveries running the ledger backward. And register F gives the fifteenth Medicare answer, which is really two: <b>the urban letgo and the rural stillness, in the same state, decided by geography</b>. In Nevada, even the birthday depends on your county.';
+}
+
+/* ================= reference ================= */
+function renderReference(){
+  var h='';
+  h+='<div class="card"><h3 style="margin-top:0">Coverage groups (teaching set)</h3>'+
+     '<p class="sub" style="margin-bottom:8px">Patterned on Nevada categories \u2014 PE01 is the one to study: the only group in this series a hospital can grant.</p>'+
+     '<div class="tblwrap"><table><thead><tr><th>Code</th><th>Name</th><th>Determination</th><th>What it means</th></tr></thead><tbody>';
+  GROUP_KEYS.forEach(function(g){var G=GROUPS[g];
+    h+='<tr'+(g==='PE01'?' style="background:#f8f6f2"':'')+'><td>'+grpChip(g)+'</td><td>'+esc(G.name)+'</td><td>'+(g==='PE01'?'Qualified hospital, on the spot':(G.magi?'MAGI (Access Nevada / DWSS)':'Non-MAGI'))+'</td><td>'+G.blurb+'</td></tr>'});
+  h+='</tbody></table></div></div>';
+
+  h+='<div class="card"><h3 style="margin-top:0">Delivery \u2014 four plans and a map</h3>'+
+     '<p class="sub" style="margin-bottom:8px">Mandatory managed care in Clark and Washoe; fee-for-service in the other fourteen counties. The boundary is the architecture.</p>'+
+     '<div class="tblwrap"><table><thead><tr><th>Code</th><th>Plan</th><th>Worth knowing</th></tr></thead><tbody>';
+  NVPLANS.forEach(function(p){
+    h+='<tr><td class="mono">'+p.code+'</td><td>'+esc(p.name)+'</td><td>'+p.note+'</td></tr>';
+  });
+  h+='<tr><td class="mono">FFS</td><td>Fee-for-service</td><td><b>A region, not a residue:</b> rural Nevada entire, plus retro tails, PE months, and dual wraps</td></tr>'+
+     '</tbody></table></div></div>';
+
+  h+='<div class="card"><h3 style="margin-top:0">834 maintenance codes used in this app</h3>'+
+     '<div class="tblwrap"><table><thead><tr><th>INS03</th><th>Meaning</th><th>Where you\u2019ll see it</th></tr></thead><tbody>'+
+     '<tr><td class="mono">021</td><td>Addition</td><td>New enrollments \u2014 including register D\u2019s arrivals: capitation created by a change of address</td></tr>'+
+     '<tr><td class="mono">024</td><td>Cancellation / termination</td><td>Renewal churn, the Medicare exclusion \u2014 and the county-line termination: a 024 for a member who lost nothing and chose nothing. The plan ended because the map says so</td></tr>'+
+     '<tr><td class="mono">001</td><td>Change</td><td>Demographic changes \u2014 and TPL updates: the segment that changes no dates, only who pays first</td></tr>'+
+     '</tbody></table></div></div>';
+
+  h+='<div class="card"><h3 style="margin-top:0">Glossary</h3><dl class="gloss">'+
+    gl('The city limit','Nevada\u2019s standing delivery architecture: mandatory MCO enrollment in Clark and Washoe counties, fee-for-service in the fourteen rural counties. Nine in ten Nevadans live inside the line \u2014 which is exactly why the line was drawn there. (Statewide expansion has been on the policy calendar; verify current status.)')+
+    gl('Hospital presumptive eligibility','A qualified hospital screens a patient and grants temporary Medicaid on the spot \u2014 a real, billable span beginning that day, weeks before the county determination exists. The full determination closes the presumptive period behind it. Eligibility, briefly, on the hospital\u2019s signature.')+
+    gl('TPL','Third-party liability \u2014 other coverage that pays before Medicaid. The TPL segment changes no eligibility dates and no enrollment; it reorders the payment queue, which downstream is everything.')+
+    gl('The Culinary Health Fund','The health fund of the Culinary Workers Union \u2014 the Strip\u2019s room attendants, cooks, cocktail servers, and porters, with some of the strongest employer coverage in American hospitality. In Las Vegas, union coverage riding primary above a household\u2019s Medicaid is not an edge case; it is the neighborhood.')+
+    gl('Cost avoidance vs. pay-and-chase','The two TPL postures: cost avoidance denies the claim to the other carrier up front; pay-and-chase pays first and recovers later, when the coverage is discovered after the fact. Register E holds fifty discoveries \u2014 ledgers running backward to catch up with data that arrived late.')+
+    gl('The round trip','Nevada is the most transient state in the nation; register B\u2019s end reasons include the border as often as the paperwork. Sixty members left for California, Arizona, Utah, or Texas and came back inside the window.')+
+    gl('Health Plan of Nevada','UnitedHealth\u2019s plan \u2014 dominant, and provider-integrated: the same corporate family owns Southwest Medical, the valley\u2019s largest medical group. Insurer and clinic, one parent.')+
+    gl('The public-option tie','Nevada\u2019s public option law (the first state-based public option enacted after Washington\u2019s) leans on this very procurement: carriers seeking Medicaid MCO contracts are expected to offer public-option plans on the marketplace. The Medicaid contract as leverage \u2014 one layer above this file.')+
+    gl('Access Nevada / DWSS','The eligibility portal and the Division of Welfare and Supportive Services \u2014 the determination side; DHCFP runs the program.')+
+    gl('Buy-in','The state paying a dual member\u2019s Medicare Part B premium; accretion runs one to three months behind entitlement.')+
+    gl('834','The X12N enrollment and maintenance transaction \u2014 whose strangest Nevada specimen is the county-line 024: a termination with no loss, no choice, and no complaint, generated entirely by geography.')+
+    '</dl></div>';
+  function gl(t,d){return '<dt>'+t+'</dt><dd>'+d+'</dd>'}
+
+  h+='<div class="card"><h3 style="margin-top:0">Counties in this population</h3><p class="sub" style="margin-bottom:8px">Ten of Nevada\u2019s seventeen counties \u2014 the two urban MCO counties and eight of the rural FFS fourteen, from Pahrump to Ely. The languages of this file \u2014 Spanish, Tagalog above all \u2014 are the working languages of the hospitality economy; Las Vegas holds one of the largest Filipino communities in the country.</p><p style="font-size:.85rem">'+COUNTIES.map(function(c){return esc(c.name)+(c.urban?' (MCO)':' (FFS)')}).join(' \u00b7 ')+'</p></div>';
+
+  document.getElementById('ref-out').innerHTML=h;
+}
+</script>
+<script>
+'use strict';
+/* ================= generic sortable table state ================= */
+var SORT={};
+function bindSort(tblId, renderFn){
+  document.querySelectorAll('#'+tblId+' th.sortable').forEach(function(th){
+    th.addEventListener('click',function(){
+      var k=th.getAttribute('data-k');
+      var cur=SORT[tblId]||{};
+      SORT[tblId]={k:k, dir:(cur.k===k&&cur.dir==='asc')?'desc':'asc'};
+      renderFn();
+    });
+  });
+}
+function sortRows(tblId, rows){
+  var s=SORT[tblId]; if(!s)return rows;
+  var dir=s.dir==='asc'?1:-1;
+  rows.sort(function(a,b){
+    var x=a[s.k],y=b[s.k];
+    if(x===null||x===undefined)x=-Infinity; if(y===null||y===undefined)y=-Infinity;
+    if(typeof x==='string'){x=x.toLowerCase();y=String(y).toLowerCase();return x<y?-dir:(x>y?dir:0)}
+    return (x-y)*dir;
+  });
+  return rows;
+}
+function sortMarks(tblId){
+  var s=SORT[tblId];
+  document.querySelectorAll('#'+tblId+' th.sortable').forEach(function(th){
+    var base=th.textContent.replace(/[\u25b2\u25bc]\s*$/,'').trim();
+    th.innerHTML=esc(base)+(s&&s.k===th.getAttribute('data-k')?' <span class="arr">'+(s.dir==='asc'?'\u25b2':'\u25bc')+'</span>':'');
+  });
+}
+
+/* ================= pagination ================= */
+var PAGE={}, PAGE_SIZE=50;
+function pager(tblId, total, renderFn, pagerId){
+  var pages=Math.max(1,Math.ceil(total/PAGE_SIZE));
+  var p=Math.min(PAGE[tblId]||1,pages); if(p<1)p=1; PAGE[tblId]=p;
+  var el=document.getElementById(pagerId);
+  if(el){
+    if(pages===1){ el.innerHTML=''; }
+    else{
+      el.innerHTML='<button class="pg"'+(p<=1?' disabled':'')+' data-d="-1">\u25c0 Prev</button>'+
+        '<span class="mono pgpos">page '+p+' of '+pages.toLocaleString()+'</span>'+
+        '<button class="pg"'+(p>=pages?' disabled':'')+' data-d="1">Next \u25b6</button>';
+      el.querySelectorAll('button.pg').forEach(function(b){
+        b.addEventListener('click',function(){ PAGE[tblId]=p+parseInt(b.getAttribute('data-d'),10); renderFn(); });
+      });
+    }
+  }
+  return {from:(p-1)*PAGE_SIZE, to:Math.min(total,p*PAGE_SIZE)};
+}
+function resetPage(tblId){ PAGE[tblId]=1 }
+
+/* ================= members roster ================= */
+var ROSTER_VIEW=[]; /* current filtered order (all pages), for modal nav */
+function fillSelect(id, opts, allLabel){
+  var el=document.getElementById(id);
+  el.innerHTML='<option value="">'+allLabel+'</option>'+opts.map(function(o){return '<option value="'+o[0]+'">'+o[1]+'</option>'}).join('');
+}
+function initRosterControls(){
+  fillSelect('m-group',GROUP_KEYS.map(function(g){return[g,g+' \u2014 '+GROUPS[g].name]}),'Coverage group: all');
+  var dopts=NVPLANS.map(function(m){return[m.code,m.name]});
+  dopts.push(['FFS','Fee-for-Service \u2014 rural Nevada, tails, PE months']);
+  fillSelect('m-del',dopts,'Delivery today: all');
+  fillSelect('m-reg',['A','B','C','D','E','F'].map(function(r){return[r,'Register '+r]}),'Register: all');
+  ['m-search','m-group','m-del','m-reg','m-status'].forEach(function(id){
+    document.getElementById(id).addEventListener('input',function(){resetPage('m-tbl');renderRoster()});
+  });
+  bindSort('m-tbl',renderRoster);
+}
+function renderRoster(){
+  var q=document.getElementById('m-search').value.trim().toLowerCase();
+  var fg=document.getElementById('m-group').value, fd=document.getElementById('m-del').value,
+      fr=document.getElementById('m-reg').value, fs=document.getElementById('m-status').value;
+  var rows=MEMBERS.filter(function(m){
+    if(fg&&m.grpToday!==fg)return false;
+    if(fd&&m.delTodayCode!==fd)return false;
+    if(fr&&m.reg!==fr)return false;
+    if(fs&&m.status!==fs)return false;
+    if(q){ var hay=(m.name+' '+m.id+' '+m.city+' '+m.county).toLowerCase(); if(hay.indexOf(q)<0)return false }
+    return true;
+  }).map(function(m){return {ix:m.ix,id:m.id,name:m.name,age:m.age,sex:m.sex,grp:m.grpToday,del:m.delTodayCode,county:m.county,reg:m.reg,status:m.status}});
+  rows=sortRows('m-tbl',rows); sortMarks('m-tbl');
+  ROSTER_VIEW=rows.map(function(r){return r.ix});
+  var pg=pager('m-tbl',rows.length,renderRoster,'m-pager');
+  var tb=document.getElementById('m-body'); tb.innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+r.age+'</td><td>'+r.sex+'</td>'+
+    '<td>'+grpChip(r.grp)+'</td><td>'+delChip(r.del)+'</td><td class="nowrap">'+esc(r.county)+'</td><td>'+regBadge(r.reg)+'</td><td>'+statusHtml(r.status)+'</td></tr>'}).join('');
+  document.getElementById('m-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' matching (population '+MEMBERS.length.toLocaleString()+')';
+  tb.querySelectorAll('tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'roster')})});
+}
+
+/* ================= eligibility spans ================= */
+var SPAN_VIEW=[];
+function initSpanControls(){
+  fillSelect('s-group',GROUP_KEYS.map(function(g){return[g,g+' \u2014 '+GROUPS[g].name]}),'Coverage group: all');
+  ['s-group','s-open'].forEach(function(id){document.getElementById(id).addEventListener('input',function(){resetPage('s-tbl');renderSpans()})});
+  bindSort('s-tbl',renderSpans);
+}
+function renderSpans(){
+  var fg=document.getElementById('s-group').value, fo=document.getElementById('s-open').value;
+  var rows=[];
+  MEMBERS.forEach(function(m){ m.eligSpans.forEach(function(s){
+    if(fg&&s.grp!==fg)return;
+    if(fo==='open'&&s.end!==null)return;
+    if(fo==='closed'&&s.end===null)return;
+    rows.push({ix:m.ix,id:m.id,name:m.name,grp:s.grp,start:s.start,end:(s.end===null?9999:s.end),endRaw:s.end,
+      months:spanMonths(s.start,s.end),reason:s.reason});
+  })});
+  rows=sortRows('s-tbl',rows); sortMarks('s-tbl');
+  SPAN_VIEW=[]; var seenS={}; rows.forEach(function(r){ if(!seenS[r.ix]){seenS[r.ix]=1;SPAN_VIEW.push(r.ix)} });
+  var pg=pager('s-tbl',rows.length,renderSpans,'s-pager');
+  document.getElementById('s-body').innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+grpChip(r.grp)+'</td>'+
+    '<td class="nowrap">'+startLabel(r.start)+'</td><td class="nowrap">'+(r.endRaw===null?'<span class="st-act">open</span>':mLabel(r.endRaw))+'</td>'+
+    '<td class="mono">'+r.months+(r.start<0?'+':'')+'</td><td>'+(r.reason?esc(r.reason):'\u2014')+'</td></tr>'}).join('');
+  document.getElementById('s-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' spans';
+  document.querySelectorAll('#s-body tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'spans')})});
+}
+function startLabel(s){ return s<0 ? mLabel(s)+' <span class="hint">(pre-window)</span>' : mLabel(s) }
+
+/* ================= delivery spans ================= */
+var DEL_VIEW=[];
+function initDelControls(){
+  var dopts=NVPLANS.map(function(m){return[m.code,m.name]});
+  dopts.push(['FFS','Fee-for-Service \u2014 rural Nevada, tails, PE months']);
+  fillSelect('d-sys',dopts,'Delivery system: all');
+  document.getElementById('d-sys').addEventListener('input',function(){resetPage('d-tbl');renderDel()});
+  bindSort('d-tbl',renderDel);
+}
+function renderDel(){
+  var fd=document.getElementById('d-sys').value;
+  var rows=[];
+  MEMBERS.forEach(function(m){ m.delSpans.forEach(function(s){
+    if(fd&&s.sys!==fd)return;
+    rows.push({ix:m.ix,id:m.id,name:m.name,sys:s.sys,start:s.start,end:(s.end===null?9999:s.end),endRaw:s.end,
+      months:spanMonths(s.start,s.end),note:s.note});
+  })});
+  rows=sortRows('d-tbl',rows); sortMarks('d-tbl');
+  DEL_VIEW=[]; var seenD={}; rows.forEach(function(r){ if(!seenD[r.ix]){seenD[r.ix]=1;DEL_VIEW.push(r.ix)} });
+  var pg=pager('d-tbl',rows.length,renderDel,'d-pager');
+  document.getElementById('d-body').innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+delChip(r.sys)+'</td>'+
+    '<td class="nowrap">'+startLabel(r.start)+'</td><td class="nowrap">'+(r.endRaw===null?'<span class="st-act">open</span>':mLabel(r.endRaw))+'</td>'+
+    '<td class="mono">'+r.months+(r.start<0?'+':'')+'</td><td>'+(r.note?esc(r.note):'\u2014')+'</td></tr>'}).join('');
+  document.getElementById('d-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' delivery spans';
+  document.querySelectorAll('#d-body tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'delivery')})});
+}
+</script>
+<script>
+'use strict';
+/* ================= scenario registers ================= */
+var REGDEFS={
+ A:{title:'Steady state \u2014 the delivery system with a city limit', q:'What decides whether a Nevadan has a health plan? An address.',
+    body:'The baseline population, split by the map: Clark and Washoe members in the four MCOs \u2014 <b>Health Plan of Nevada</b> above all, the provider-integrated giant whose corporate family owns the valley\u2019s largest medical group \u2014 and rural members in fee-for-service, because managed care stops at two county lines. Not a phase-in, not a residue: the standing architecture, drawn where nine in ten Nevadans live.'},
+ B:{title:'Renewal churn \u2014 in the most transient state', q:'What closes more cases here: the paperwork, or the border?',
+    body:'Cases close and reopen \u2014 125 members are in the gap right now \u2014 and Nevada adds its signature: <b>sixty round trips</b>. Members whose cases closed because they left for California, Arizona, Utah, or Texas, and reopened when the U-Haul came back. In a 24-hour economy of shift work, address changes, and interstate moves, the churn file reads like a road map.'},
+ C:{title:'Two ways in \u2014 classic retro, and the hospital\u2019s on-the-spot grant', q:'Who can create an eligibility span? Add one answer: a hospital.',
+    body:'225 members entered the classic way: a determination with backward reach, the FFS tail, the plan picking up prospectively \u2014 with a rural variation worth noticing, where the tail dissolves into the same gray as everything after it, because the two-clock lesson only exists where a plan does. The other 150 are the register\u2019s original: <b>hospital presumptive eligibility</b> \u2014 screened at UMC or Sunrise and granted a temporary span <i>that same day</i>, weeks before the county determination existed. Real coverage, real claims, on the hospital\u2019s signature \u2014 the span the paperwork hadn\u2019t caught up to yet, closed cleanly behind by the full determination two months later.'},
+ D:{title:'The county line \u2014 capitation appears and disappears with the map', q:'What is the strangest 024 in this series?',
+    body:'375 movers, and the boundary does the teaching. 150 moved <b>into</b> Clark or Washoe \u2014 and capitation appeared: a plan enrollment created by a change of address, some chosen, some auto-assigned when the window closed. 115 moved <b>out</b> \u2014 and their plans cut terminations for members who <b>lost nothing and chose nothing</b>: fully eligible before and after, benefits identical, and the 024 fired anyway, because the delivery system ran out of map. 110 moved urban-to-urban as the control: Reno to Vegas, plan reassigned, never leaving managed care. In nineteen prior states, delivery boundaries were models, regions, and programs; Nevada\u2019s is a literal line in the desert.'},
+ E:{title:'TPL \u2014 the other coverage', q:'What does the Strip\u2019s union card do to a Medicaid record?',
+    body:'The series\u2019 first third-party-liability register, built on Las Vegas\u2019s defining benefit: 200 households where the <b>Culinary Health Fund</b> \u2014 the union coverage of the Strip\u2019s room attendants, cooks, cocktail servers, and porters \u2014 rides <b>primary</b> above Medicaid, and 75 more with ordinary employer plans doing the same. The TPL segment is the quietest powerful thing in enrollment data: it changes no dates and no eligibility \u2014 it reorders the payment queue, and downstream that is everything (the state cost-avoids; Medicaid pays what the fund leaves behind). The last 50 are <b>pay-and-chase</b>: coverage discovered by data match months after it began, converting every claim already paid into a recovery \u2014 the ledger running backward to catch up with data that arrived late.'},
+ F:{title:'Medicare arrives \u2014 one state, two answers', q:'The fifteenth answer \u2014 or is it the fifteenth and sixteenth?',
+    body:'Nevada gives the Medicare question two answers at once, and geography decides which one you get. 195 <b>urban</b> members: the familiar letgo \u2014 the MCO ends at entitlement, the wrap goes FFS, the buy-in accretes, and HPN\u2019s D-SNP empire takes the Medicare side. 130 <b>rural</b> members: the Alabama stillness \u2014 nothing moves, because the map never gave them a plan to leave; the only dated facts are the entitlement and the buy-in. Same statute, same state, same birthday \u2014 and twenty miles of desert between two entirely different data events. The series has now collected fifteen answers, and Nevada\u2019s is the first that depends on where you\u2019re standing.'}
+};
+function renderRegisters(){
+  var out=document.getElementById('reg-list'); var h='';
+  ['A','B','C','D','E','F'].forEach(function(r){
+    var d=REGDEFS[r], list=MEMBERS.filter(function(m){return m.reg===r});
+    var sample=list.slice(0,12);
+    h+='<div class="reg"><h3><span class="rl">'+r+'</span>'+esc(d.title)+'<span class="meta" style="margin-left:auto">'+list.length.toLocaleString()+' members</span></h3>'+
+       '<div class="q">'+d.q+'</div><p class="sub" style="margin-bottom:10px">'+d.body+'</p>'+
+       '<div class="tblwrap"><table><thead><tr><th>Medicaid ID</th><th>Member</th><th>Group</th><th>Delivery today</th><th>The planted story</th></tr></thead><tbody>';
+    sample.forEach(function(m){
+      h+='<tr class="rowlink" data-ix="'+m.ix+'"><td class="mono">'+m.id+'</td><td class="nowrap">'+esc(m.name)+'</td><td>'+grpChip(m.grpToday)+'</td><td>'+delChip(m.delTodayCode)+'</td>'+
+         '<td>'+(m.flags.length?m.flags[0]:'Clean spans \u2014 the control group')+'</td></tr>';
+    });
+    h+='</tbody></table></div>';
+    if(list.length>sample.length){
+      h+='<div class="hint" style="margin-top:8px">Showing the first '+sample.length+' of '+list.length.toLocaleString()+'. Open any row \u2014 the \u25c0 \u25b6 arrows walk the entire register \u2014 or filter the Members tab by register for the full list.</div>';
+    }
+    h+='</div>';
+  });
+  out.innerHTML=h;
+  out.querySelectorAll('tr.rowlink').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'register')})});
+}
+
+/* ================= 834 builder ================= */
+function lastDelEvent(m){
+  var spans=m.delSpans.filter(function(s){return s.sys!=='FFS'});
+  if(!spans.length){
+    return {kind:'021',state:true,why:(m.reg==='F'?'A rural dual \u2014 no plan file exists, because the map never created a plan relationship. The state\u2019s own record, in standard shape: the stillest half of Nevada\u2019s Medicare answer.':'A rural member \u2014 no plan receives this record; fee-for-service is the region\u2019s whole delivery system. The state\u2019s own record, in standard shape.')};
+  }
+  var last=spans[spans.length-1];
+  if(m.reg==='D'&&m.delSpans[m.delSpans.length-1].sys==='FFS'){
+    return {kind:'024',del:spans[0],county:true,why:'The county-line termination \u2014 the strangest 024 in this series: cut for a member who lost nothing and chose nothing. Fully eligible before and after; the plan ended because the address crossed a line on the map.'};
+  }
+  if(m.reg==='D'&&spans.length&&m.delSpans[0].sys==='FFS'){
+    return {kind:'021',del:last,why:'Capitation created by a change of address \u2014 the member crossed into an urban county and a plan enrollment came into existence where none had ever been. '+(last.note&&last.note.indexOf('Member chose')===0?'The member chose on arrival.':'Auto-assigned when the window closed.')};
+  }
+  if(m.reg==='F'&&!m.rural){
+    return {kind:'024',del:spans[0],why:'Terminated at Medicare entitlement \u2014 the urban half of Nevada\u2019s answer: duals sit outside the MCOs; the wrap goes FFS and the D-SNP market takes the Medicare side.'};
+  }
+  if(m.reg==='C'&&m.eligSpans[0].grp==='PE01'){
+    return {kind:'021',del:last,why:'Enrollment following a hospital presumptive grant \u2014 the eligibility this file reports began on a hospital\u2019s signature, weeks before the county determination existed. Read the two begin dates below against each other.'};
+  }
+  if(m.reg==='B'&&last.start>TODAY_IDX){
+    return {kind:'024',del:spans[0],why:'Eligibility closed \u2014 '+(m.eligSpans[0].reason===ELIG_END.MOVED?'the member left the state. The Nevada round-trip\u2019s outbound leg.':'renewal not completed. The member is in the gap today.')};
+  }
+  if(m.tpl){
+    return {kind:'001',del:last,why:(m.tpl.src==='CHASE'?'A TPL update \u2014 other coverage discovered by data match, effective retroactively: every claim already paid converts to a recovery. Pay-and-chase, in one segment.':'A TPL record \u2014 the other-coverage segment names '+TPLSRC[m.tpl.src].name+' as primary. No dates change, no enrollment changes; only the payment order \u2014 which downstream is everything.')};
+  }
+  return {kind:'021',del:last,why:(m.reg==='B'?'Re-enrollment after the gap.':'Enrollment addition \u2014 inside the city limit, where the plan question exists.')};
+}
+function ediRow(seg,note,loop){return '<div class="edirow'+(loop?' loop':'')+'"><div class="seg">'+esc(seg)+'</div><div class="note">'+note+'</div></div>'}
+function build834(m){
+  var ev=lastDelEvent(m);
+  var eligSpan=m.eligSpans[m.eligSpans.length-1];
+  var eligBegin=m.eligSpans[0].start;
+  var ctl=String(702000+m.ix*7);
+  var kindLabel={ '021':'Addition','001':'Change','024':'Termination' }[ev.kind];
+  var out='<div class="ediwrap"><div class="edihead"><span class="fn">834 \u2014 '+kindLabel+(ev.state?' (state record \u2014 rural FFS)':(ev.county?' (the county-line termination)':''))+'</span><span class="hint">'+esc(ev.why)+'</span></div>';
+  var recvName = ev.state?'DHCFP (STATE RECORD)':sysLabel(ev.del.sys).toUpperCase().replace(/\(.*\)/,'').trim();
+  var recvId = ev.state?'NVDHCFP':ev.del.sys;
+  out+=ediRow('ISA*00*          *00*          *ZZ*NVDHCFP        *ZZ*'+(recvId+'          ').slice(0,10)+'    *260701*0800*^*00501*'+ctl.padStart(9,'0')+'*0*P*:~','Interchange envelope: the Division of Health Care Financing and Policy to <b>'+esc(recvName)+'</b>.');
+  out+=ediRow('GS*BE*NVDHCFP*'+recvId+'*20260701*0800*'+ctl+'*X*005010X220A1~','Functional group: <b>BE</b> = benefit enrollment.');
+  out+=ediRow('ST*834*'+ctl.slice(-4)+'*005010X220A1~','Transaction set header. One ST/SE per batch; this rendering shows a single member for teaching.');
+  out+=ediRow('BGN*00*'+m.id.slice(-6)+'-'+ctl.slice(-3)+'*20260701*0800****4~','Beginning segment. Purpose 00 = original. Action 4 = verify/full audit.');
+  out+=ediRow('N1*P5*NEVADA DIVISION OF HEALTH CARE FINANCING AND POLICY*FI*886000022~','Loop 1000A \u2014 plan sponsor: DHCFP.', true);
+  out+=ediRow('N1*IN*'+recvName+'*FI*'+String(880000000+m.ix*13)+'~','Loop 1000B \u2014 the receiver'+(ev.del&&ev.del.sys==='HPN'?' \u2014 provider-integrated: the insurer and the valley\u2019s largest medical group share a parent.':'.'), true);
+  out+=ediRow('INS*Y*18*'+ev.kind+'*'+(ev.kind==='024'?'07':(ev.kind==='001'?'43':'28'))+'*A***FT~','Loop 2000. Subscriber (Y/18). Maintenance <b>'+ev.kind+'</b>'+(ev.county?' \u2014 no loss, no choice, no complaint: geography\u2019s own maintenance reason.':'.'), true);
+  out+=ediRow('REF*0F*'+m.id+'~','The <b>Nevada Medicaid ID</b> \u2014 eleven digits. The person, permanently, on both sides of every county line.');
+  out+=ediRow('DTP*356*D8*'+mFirstD8(Math.max(eligBegin,-24))+'~','<b>Eligibility</b> begin date'+(m.eligSpans[0].grp==='PE01'?' \u2014 the day of the hospital screening: eligibility on the hospital\u2019s signature, before any county determination existed.':'.'));
+  if(ev.kind==='024'&&ev.del&&ev.del.end!==null) out+=ediRow('DTP*357*D8*'+mLastD8(ev.del.end)+'~',(ev.county?'The last day inside the service area \u2014 the eligibility continues; only the map ends here.':'End date \u2014 last day of the final capitated month.'));
+  out+=ediRow('NM1*IL*1*'+m.last.toUpperCase()+'*'+m.first.toUpperCase()+'****34*'+String(530000000+m.ix*311)+'~','Member name. The 34 qualifier carries an SSN in real files; synthetic here.');
+  out+=ediRow('PER*IP**TE*'+m.phone.replace(/\D/g,'')+'~','Contact telephone.');
+  out+=ediRow('N3*'+m.street.toUpperCase()+'~','Street address \u2014 in this state, the single most consequential field in the file.');
+  out+=ediRow('N4*'+m.city.toUpperCase()+'*NV*'+m.zip+'~','City/state/ZIP: '+esc(m.city)+', '+esc(countyLabel(m.county))+' \u2014 '+(m.urban?'inside':'outside')+' the city limit.');
+  out+=ediRow('DMG*D8*'+dobD8(m.dob)+'*'+m.sex+'~','Date of birth and sex.');
+  if(m.lang!=='English') out+=ediRow('LUI*LD*'+({'Spanish':'SPA','Tagalog':'TGL','Vietnamese':'VIE','Amharic':'AMH','Cantonese':'YUE','Korean':'KOR'}[m.lang]||'ENG')+'**6~','Preferred language: '+esc(m.lang)+'.'+(m.lang==='Tagalog'?' Las Vegas holds one of the largest Filipino communities in the country \u2014 the hospitality economy\u2019s backbone, and this file\u2019s second-largest language after Spanish.':''));
+  if(!ev.state){
+    out+=ediRow('HD*'+ev.kind+'**HLT*'+ev.del.sys+'~','Loop 2300 \u2014 MCO coverage: the plan question, which in Nevada only exists inside two county lines.', true);
+    out+=ediRow('DTP*348*D8*'+mFirstD8(Math.max(ev.del.start,-24))+'~','<b>Plan</b> begin date \u2014 first of the month, always prospective.');
+    if(ev.del.end!==null&&ev.kind!=='024') out+=ediRow('DTP*349*D8*'+mLastD8(ev.del.end)+'~','Plan end date \u2014 last day of the final capitated month.');
+  } else {
+    out+=ediRow('HD*021**HLT*NVFFS~','Loop 2300 \u2014 the \u201cplan code\u201d names fee-for-service: the delivery system of fourteen counties.', true);
+    out+=ediRow('DTP*348*D8*'+mFirstD8(Math.max(eligBegin,-24))+'~','Coverage begin for the FFS record.');
+  }
+  out+=ediRow('LS*2700~','Open the member-reporting loop.', true);
+  out+=ediRow('LX*1~ N1*75*COVERAGE GROUP~ REF*ZZ*'+eligSpan.grp+'~','The coverage group ('+esc(GROUPS[eligSpan.grp].name)+').');
+  if(m.tpl) out+=ediRow('LX*2~ N1*75*TPL~ REF*ZZ*'+m.tpl.src+'~ DTP*344*D8*'+mFirstD8(Math.max(m.tpl.since,-24))+'~','<b>The TPL loop</b> \u2014 other coverage primary: '+esc(TPLSRC[m.tpl.src].name)+(m.tpl.src==='CHASE'?', effective back to '+mLabel(m.tpl.since)+' though discovered only in '+mLabel(m.tpl.disc)+'. The retroactive effective date is the pay-and-chase trigger.':'. No dates change; the payment order does.'));
+  if(m.reg==='F') out+=ediRow('LX*3~ N1*75*MEDICARE STATUS~ REF*ZZ*AB~','Medicare A+B from '+mLabel(m.medicareIdx)+' \u2014 buy-in accreted '+mLabel(m.buyinIdx)+'.');
+  out+=ediRow('LE*2700~','Close the reporting loop.', true);
+  out+=ediRow('SE*'+ri(15,21)+'*'+ctl.slice(-4)+'~ GE*1*'+ctl+'~ IEA*1*'+ctl.padStart(9,'0')+'~','Trailers: segment count, group close, interchange close. Counts must reconcile or the whole file bounces.');
+  out+='</div>';
+  if(ev.county){
+    out+='<div class="plain" style="margin-top:14px"><span class="pe-label">Worth noticing</span>File this 024 next to every other termination in this series: renewal failures, Medicare exclusions, plan exits, procurement losses. This one has no adverse event anywhere in it \u2014 the member is eligible, enrolled in benefits, and satisfied; the plan performed; nothing was decided. A capitated relationship ended because an address moved across an administrative boundary. Systems that treat plan terminations as risk signals \u2014 churn models, continuity metrics, quality attributions \u2014 need to know this reason code exists, or Nevada\u2019s geography will read as a retention crisis.</div>';
+  }
+  return out;
+}
+function initFileTab(){
+  var sel=document.getElementById('f-member');
+  var h='';
+  ['A','B','C','D','E','F'].forEach(function(r){
+    h+='<optgroup label="Register '+r+' \u2014 '+esc(REGDEFS[r].title)+'">';
+    MEMBERS.filter(function(m){return m.reg===r}).slice().sort(function(a,b){return a.name.localeCompare(b.name)}).forEach(function(m){
+      h+='<option value="'+m.ix+'">'+esc(m.name)+' \u2014 '+m.id+'</option>';
+    });
+    h+='</optgroup>';
+  });
+  sel.innerHTML=h;
+  sel.addEventListener('input',function(){renderFile(+sel.value)});
+  renderFile(+sel.value);
+}
+function renderFile(ix){
+  document.getElementById('f-out').innerHTML=build834(MEMBERS[ix]);
+}
+</script>
+<script>
+'use strict';
+/* ================= modal ================= */
+var MODAL={ix:null, ctx:'roster'};
+function navList(){
+  if(MODAL.ctx==='spans'&&SPAN_VIEW.length)return SPAN_VIEW;
+  if(MODAL.ctx==='delivery'&&DEL_VIEW.length)return DEL_VIEW;
+  if(MODAL.ctx==='register'&&MODAL.ix!==null){
+    var r=MEMBERS[MODAL.ix].reg;
+    return MEMBERS.filter(function(m){return m.reg===r}).map(function(m){return m.ix});
+  }
+  return ROSTER_VIEW.length?ROSTER_VIEW:MEMBERS.map(function(m){return m.ix});
+}
+function openModal(ix,ctx){
+  MODAL.ix=ix; if(ctx)MODAL.ctx=ctx;
+  var m=MEMBERS[ix];
+  document.getElementById('mo-nm').textContent=m.first+' '+m.last;
+  document.getElementById('mo-id').textContent='Medicaid ID '+m.id+'  \u00b7  Register '+m.reg;
+  document.getElementById('mo-body').innerHTML=modalBody(m);
+  var list=navList(), pos=list.indexOf(ix);
+  document.getElementById('mo-pos').textContent=(pos+1)+' / '+list.length+' ('+MODAL.ctx+')';
+  document.getElementById('mo-prev').disabled=pos<=0;
+  document.getElementById('mo-next').disabled=pos<0||pos>=list.length-1;
+  document.getElementById('overlay').classList.add('on');
+  document.getElementById('modal').classList.add('on');
+  highlightRow(ix);
+  document.getElementById('mo-x').focus();
+}
+function closeModal(){
+  document.getElementById('overlay').classList.remove('on');
+  document.getElementById('modal').classList.remove('on');
+  highlightRow(null);
+  MODAL.ix=null;
+}
+function stepModal(d){
+  var list=navList(), pos=list.indexOf(MODAL.ix), np=pos+d;
+  if(np<0||np>=list.length)return;
+  openModal(list[np]);
+}
+function highlightRow(ix){
+  document.querySelectorAll('tr.hl').forEach(function(tr){tr.classList.remove('hl')});
+  if(ix===null)return;
+  document.querySelectorAll('tr.rowlink[data-ix="'+ix+'"]').forEach(function(tr){tr.classList.add('hl')});
+}
+
+/* ---------- mini two-band timeline ---------- */
+function tlBar(startIdx,endIdx,color,striped,title){
+  var s=Math.max(startIdx,0), e=(endIdx===null?WIN_MONTHS-1:Math.min(endIdx,WIN_MONTHS-1));
+  if(e<0||s>WIN_MONTHS-1)return '';
+  var l=100*s/WIN_MONTHS, w=100*(e-s+1)/WIN_MONTHS;
+  return '<span class="bar'+(striped?' striped':'')+'" style="left:'+l+'%;width:'+w+'%;background:'+color+'" title="'+esc(title)+'"></span>';
+}
+function timeline(m){
+  var h='<div class="tl">';
+  h+='<div class="band"><span class="bl">Eligibility</span><span class="lane">';
+  m.eligSpans.forEach(function(s){
+    h+=tlBar(s.start,s.end,'var('+GROUPS[s.grp].color+')',false,s.grp+' '+mLabel(s.start)+' \u2013 '+(s.end===null?'open':mLabel(s.end)));
+  });
+  h+='<span class="todayline" style="left:'+(100*(TODAY_IDX+0.5)/WIN_MONTHS)+'%"></span></span></div>';
+  h+='<div class="band"><span class="bl">Delivery</span><span class="lane">';
+  m.delSpans.forEach(function(s){
+    var col = sysKind(s.sys)==='FFS'?'var(--d-ffs)':'var(--d-mco)';
+    h+=tlBar(s.start,s.end,col,s.sys!=='FFS',sysLabel(s.sys)+' '+mLabel(s.start)+' \u2013 '+(s.end===null?'open':mLabel(s.end)));
+  });
+  h+='<span class="todayline" style="left:'+(100*(TODAY_IDX+0.5)/WIN_MONTHS)+'%"></span></span></div>';
+  h+='<div class="axis"><span></span><span class="ax">'+
+     '<span style="left:2%">Jan 25</span><span style="left:27%">Jul 25</span><span style="left:52%">Jan 26</span><span style="left:77%">Jul 26</span></span></div>';
+  h+='<div class="tl-note">Striped blue = urban MCO (Clark & Washoe only) \u00b7 solid gray = fee-for-service \u2014 which in Nevada is mostly a <b>region</b>: the fourteen rural counties, plus retro tails, PE months, and dual wraps \u00b7 red line = today (Jul 2026). Register D\u2019s bars switch color at a county line. Bars clamp to the 24-month window; pre-window starts are noted in the span tables.</div></div>';
+  return h;
+}
+
+/* ---------- per-member plain english ---------- */
+function plainFor(m){
+  var p='';
+  var first=m.first;
+  var last=m.delSpans[m.delSpans.length-1];
+  if(m.reg==='A'){
+    if(!m.urban){
+      p=first+' lives in '+esc(countyLabel(m.county))+' \u2014 outside the city limit \u2014 so there is no plan and never has been: Nevada\u2019s managed care runs in Clark and Washoe only, and the other fourteen counties are fee-for-service by design. Gray here is a region, not a residue.';
+    } else if(m.delTodayCode==='HPN'){
+      p=first+' is enrolled with <b>Health Plan of Nevada</b> \u2014 the dominant plan, and provider-integrated: the same corporate family owns Southwest Medical, the valley\u2019s largest medical group. The insurer and the clinic share a parent, which in Las Vegas is simply how the market grew up.';
+    } else {
+      p=first+' is the modal urban record: eligible under <b>'+m.grpToday+' ('+esc(GROUPS[m.grpToday].name)+')</b>, enrolled with '+esc(sysLabel(m.delTodayCode))+' in '+esc(m.county)+' County \u2014 inside the two-county line where Nevada\u2019s plan question exists at all.';
+    }
+  } else if(m.reg==='B'){
+    var t2=m.eligSpans[0].end, rg=m.eligSpans[1].start, gap=rg-t2-1;
+    var moved=(m.eligSpans[0].reason===ELIG_END.MOVED);
+    if(rg>TODAY_IDX){
+      p=first+'\u2019s case closed after '+mLabel(t2)+' \u2014 '+(moved?'the member left the state':'the renewal never came back through Access Nevada')+'. As of today '+first+' is <b>in the gap</b>; the data shows the case reopening in '+mLabel(rg)+'.';
+    } else if(moved){
+      p=first+' made the <b>Nevada round trip</b>: the case closed after '+mLabel(t2)+' for an out-of-state move, and reopened in '+mLabel(rg)+' when the U-Haul came back. In the most transient state in the nation, the border closes as many cases as the paperwork does \u2014 and the eleven-digit ID was waiting, unchanged, on the return.';
+    } else {
+      p=first+' churned: closed at renewal after '+mLabel(t2)+', '+gap+' month'+(gap>1?'s':'')+' in the gap, back on in '+mLabel(rg)+'. In a 24-hour economy of shift work and address changes, the mail loses more cases than the income test does.';
+    }
+  } else if(m.reg==='C'){
+    if(m.eligSpans[0].grp==='PE01'){
+      var app=m.eligSpans[0].start;
+      p='In '+mLabel(app)+', a qualified hospital screened '+first+' and granted <b>presumptive eligibility on the spot</b> \u2014 a real, billable span beginning that day, weeks before any county determination existed. The PE period ran two months; the full determination arrived and closed it cleanly behind, the ongoing span taking over without a gap. The rarest promise-maker in this series: eligibility, briefly, on a hospital\u2019s signature.';
+    } else if(m.urban){
+      var s=m.eligSpans[0].start;
+      p=first+' applied and the grant reached backward to '+mLabel(s)+' \u2014 the classic retro, with the FFS tail and '+esc(sysLabel(m.delTodayCode))+' picking up prospectively. Two clocks, one record \u2014 the series\u2019 oldest lesson, alive inside the city limit.';
+    } else {
+      var s2=m.eligSpans[0].start;
+      p=first+'\u2019s grant reached backward to '+mLabel(s2)+' \u2014 and in '+esc(countyLabel(m.county))+' the retro tail <b>dissolves</b>: everything is fee-for-service, so nothing distinguishes the backward months from the forward ones. The two-clock lesson only exists where a plan does; outside the city limit, retro is just eligibility.';
+    }
+  } else if(m.reg==='D'){
+    var mv=m.moveIdx;
+    if(last.sys==='FFS'){
+      p='In '+mLabel(mv)+', '+first+' moved from '+esc(m.countyOld)+' to <b>'+esc(countyLabel(m.county))+'</b> \u2014 and <b>capitation disappeared</b>: the plan cut a termination for a member who lost nothing and chose nothing. Fully eligible before and after, benefits identical \u2014 the 024 fired because the delivery system ran out of map. The strangest termination in this series, and Nevada generates it routinely.';
+    } else if(m.delSpans[0].sys==='FFS'){
+      p='In '+mLabel(mv)+', '+first+' moved from '+esc(countyLabel(m.countyOld))+' to <b>'+esc(m.county)+'</b> \u2014 and <b>capitation appeared</b>: crossing the county line created a plan enrollment where none had ever existed. '+(last.note&&last.note.indexOf('Member chose')===0?first+' chose '+esc(sysLabel(last.sys))+' on arrival.':'The choice window closed unanswered, and auto-assignment picked '+esc(sysLabel(last.sys))+'.')+' Same person, same eligibility \u2014 the delivery system switched on with the address.';
+    } else {
+      p='In '+mLabel(mv)+', '+first+' moved '+esc(m.countyOld)+' \u2192 '+esc(m.county)+' \u2014 urban to urban, the control case: reassigned from '+esc(sysLabel(m.delSpans[0].sys))+' to '+esc(sysLabel(last.sys))+' with the service area, never leaving managed care. Hold it against the rest of this register, where the same-sized move switched the entire system on or off.';
+    }
+  } else if(m.reg==='E'){
+    if(m.tpl.src==='CULINARY'){
+      p=(m.grpToday==='CH19'?first+'\u2019s parent works the Strip, and the household carries the <b>Culinary Health Fund</b>':first+' works the Strip and carries the <b>Culinary Health Fund</b>')+' \u2014 the union coverage of the hospitality economy, and it pays <b>first</b>. Medicaid is secondary: the TPL segment changes no dates and no eligibility; it reorders every claim \u2014 fund first, Medicaid wraps what remains. In Las Vegas this is not an edge case; it is the neighborhood, and the state\u2019s cost-avoidance logic runs on segments exactly like this one.';
+    } else if(m.tpl.src==='EMP'){
+      p=first+' carries employer group coverage above the Medicaid \u2014 ordinary commercial insurance riding primary. The record looks like anyone else\u2019s until the TPL loop, where the payment order quietly inverts: the employer plan pays, Medicaid cost-avoids, and the state\u2019s spend on this member is whatever the primary leaves behind.';
+    } else {
+      p='In '+mLabel(m.tpl.disc)+', a data match found what '+first+'\u2019s record had been missing since '+mLabel(m.tpl.since)+': <b>employer coverage that was primary all along</b>. Every Medicaid claim paid in the intervening months converts to a recovery \u2014 <b>pay-and-chase</b>, the expensive cousin of cost avoidance. The coverage was always there; the data arrived late, and now the ledger runs backward to catch up. The best argument in this file for TPL data matches running early and often.';
+    }
+  } else {
+    var mi=m.medicareIdx, bi=m.buyinIdx, lag=bi-mi;
+    if(m.rural){
+      p=(m.ssdi?'Medicare arrived for '+first+' in '+mLabel(mi)+'.':'In '+mLabel(mi)+', '+first+' turned 65 and Medicare arrived.')+' And in '+esc(countyLabel(m.county))+', <b>nothing moved</b>: there was no plan to leave, because the map never gave '+(m.sex==='F'?'her':'him')+' one. Fee-for-service became the wrap without a seam; the only dated facts are the entitlement and the buy-in, '+mLabel(bi)+'. The rural half of Nevada\u2019s answer is stillness.';
+    } else {
+      p=(m.ssdi?'Medicare arrived for '+first+' in '+mLabel(mi)+' \u2014 SSDI\u2019s 24-month clock ended.':'In '+mLabel(mi)+', '+first+' turned 65 and Medicare arrived.')+' The urban half of Nevada\u2019s answer: '+esc(sysLabel(m.delSpans[0].sys))+' let go \u2014 duals sit outside the MCOs \u2014 the wrap went FFS, the buy-in accreted '+mLabel(bi)+' ('+lag+'-month limbo), and the D-SNP market takes the Medicare side. Twenty miles into the desert, the same birthday moves nothing at all. <b>One state, two answers, decided by geography</b> \u2014 the fifteenth entry in the collection, and the first that depends on where you\u2019re standing.';
+    }
+  }
+  return '<div class="plain"><span class="pe-label">In plain English</span>'+p+'</div>';
+}
+
+/* ---------- modal body ---------- */
+function modalBody(m){
+  var h='';
+  var et=eligToday(m);
+  h+='<div class="kv">'+
+    kv('Status today',statusHtml(m.status))+
+    kv('Coverage group',grpChip(m.grpToday)+' <span style="font-size:.8rem;color:var(--ink-soft)">'+esc(GROUPS[m.grpToday].name)+'</span>')+
+    kv('Delivery today',delChip(m.delTodayCode)+(m.delTodayCode!=='\u2014'?' <span style="font-size:.8rem;color:var(--ink-soft)">'+esc(sysLabel(m.delTodayCode))+'</span>':''))+
+    kv('Date of birth',dobLabel(m.dob)+' <span class="hint">(age '+m.age+')</span>')+
+    kv('Sex',m.sex)+
+    kv('Address',esc(m.street)+', '+esc(m.city)+', NV '+m.zip)+
+    kv('County',esc(m.county)+' \u2014 '+(m.urban?'inside the city limit (MCO)':'outside (FFS)'))+
+    kv('Phone','<span class="mono">'+m.phone+'</span>')+
+    kv('Preferred language',esc(m.lang))+
+    (m.tpl?kv('TPL \u2014 pays first',TPLSRC[m.tpl.src].name+(m.tpl.src==='CHASE'?' (discovered '+mLabel(m.tpl.disc)+', effective '+mLabel(m.tpl.since)+')':'')):'')+(m.countyOld?kv('The move',esc(m.countyOld)+' \u2192 '+esc(m.county)+', '+mLabel(m.moveIdx)):'')+
+    '</div>';
+  function kv(k,v){return '<div class="k">'+k+'</div><div class="v">'+v+'</div>'}
+  h+='<h4>24-month picture</h4>'+timeline(m);
+  h+=plainFor(m);
+  h+='<h4>Eligibility spans</h4><div class="tblwrap"><table><thead><tr><th>Group</th><th>Begin</th><th>End</th><th>Reason</th></tr></thead><tbody>';
+  m.eligSpans.forEach(function(s){
+    h+='<tr><td>'+grpChip(s.grp)+'</td><td class="nowrap">'+startLabel(s.start)+'</td><td class="nowrap">'+(s.end===null?'<span class="st-act">open</span>':mLabel(s.end))+'</td><td>'+(s.reason?esc(s.reason):'\u2014')+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  h+='<h4>Delivery spans</h4><div class="tblwrap"><table><thead><tr><th>System</th><th>Begin</th><th>End</th><th>Note</th></tr></thead><tbody>';
+  m.delSpans.forEach(function(s){
+    h+='<tr><td>'+delChip(s.sys)+'</td><td class="nowrap">'+startLabel(s.start)+'</td><td class="nowrap">'+(s.end===null?'<span class="st-act">open</span>':mLabel(s.end))+'</td><td>'+(s.note?esc(s.note):'\u2014')+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  if(m.flags.length){
+    h+='<h4>Flags</h4><p>'+m.flags.map(function(f){return '<span class="flag">'+esc(f)+'</span>'}).join(' ')+'</p>';
+  }
+  h+='<h4>See the file</h4><p style="font-size:.84rem;color:var(--ink-soft)">Open <b>What the File Says</b> and choose '+esc(m.first+' '+m.last)+' to read the 834 the plan received for this member\u2019s most recent enrollment event.</p>';
+  return h;
+}
+
+/* ================= navigation & boot ================= */
+function showPage(pg){
+  document.querySelectorAll('nav button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-pg')===pg)});
+  document.querySelectorAll('.page').forEach(function(p){p.classList.toggle('on',p.id==='pg-'+pg)});
+  if(pg==='overview')renderOverview();
+}
+document.getElementById('nav').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b)return; showPage(b.getAttribute('data-pg'));
+});
+document.getElementById('mo-x').addEventListener('click',closeModal);
+document.getElementById('overlay').addEventListener('click',closeModal);
+document.getElementById('mo-prev').addEventListener('click',function(){stepModal(-1)});
+document.getElementById('mo-next').addEventListener('click',function(){stepModal(1)});
+document.addEventListener('keydown',function(e){
+  if(MODAL.ix===null)return;
+  if(e.key==='Escape')closeModal();
+  else if(e.key==='ArrowLeft')stepModal(-1);
+  else if(e.key==='ArrowRight')stepModal(1);
+});
+
+/* boot */
+renderOverview();
+initRosterControls(); renderRoster();
+initSpanControls();  renderSpans();
+initDelControls();   renderDel();
+renderRegisters();
+initFileTab();
+renderReference();
+</script>
+</body>
+</html>

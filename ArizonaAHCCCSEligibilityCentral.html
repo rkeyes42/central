@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arizona AHCCCS Eligibility Central</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@1,8..60,400;1,8..60,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#1E5FCC;
+  --accent-soft:#E8EFFB;
+  --ink:#1b2430;
+  --ink-soft:#4a5568;
+  --ink-faint:#8a94a3;
+  --line:#dde3ea;
+  --line-soft:#eceff3;
+  --bg:#f7f8fa;
+  --card:#ffffff;
+  --serif:'Source Serif 4', Georgia, serif;
+  --sans:'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono:'IBM Plex Mono', 'Consolas', monospace;
+  --g-FC01:#2E7D5B; --g-PG02:#B0568C; --g-CH19:#C98A2B; --g-EA02:#1E5FCC;
+  --g-SI02:#6A4FB6; --g-MN98:#5B8AA6; --g-FF26:#C25B4A; --g-WD02:#3E9C9C; --g-LT01:#7A7A52;
+  --d-mco:#4a7fd6; --d-ffs:#9aa3ad; --d-harp:#8a5fc0; --d-mltc:#2e8f8f;
+  --ok:#2E7D5B; --warn:#C98A2B; --bad:#C0392B;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+
+/* ---------- header ---------- */
+header{background:var(--card);border-bottom:1px solid var(--line);padding:18px 28px 0}
+.brandrow{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.wordmark{font-family:var(--serif);font-style:italic;font-weight:600;font-size:1.65rem;color:var(--accent);letter-spacing:.01em}
+.wordmark .st{color:var(--ink)}
+.tagline{color:var(--ink-faint);font-size:.85rem}
+.credit{margin-left:auto;color:var(--ink-faint);font-size:.78rem}
+nav{display:flex;gap:2px;margin-top:14px;flex-wrap:wrap}
+nav button{appearance:none;border:none;background:none;font:inherit;font-size:.86rem;font-weight:500;color:var(--ink-soft);padding:9px 14px;cursor:pointer;border-bottom:3px solid transparent;border-radius:6px 6px 0 0}
+nav button:hover{background:var(--line-soft)}
+nav button.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+nav button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+/* ---------- layout ---------- */
+main{max-width:1280px;margin:0 auto;padding:24px 28px 80px}
+.page{display:none}
+.page.on{display:block}
+h2{font-size:1.22rem;font-weight:700;margin:4px 0 4px}
+h3{font-size:.98rem;font-weight:600;margin:22px 0 8px}
+.sub{color:var(--ink-soft);font-size:.88rem;margin-bottom:16px;max-width:70ch}
+
+/* ---------- plain english callout ---------- */
+.plain{font-family:var(--serif);font-style:italic;font-size:1.02rem;line-height:1.65;color:#2c3a4d;background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:14px 18px;margin:14px 0 20px;max-width:86ch}
+.plain b{font-style:italic;font-weight:600}
+.plain .pe-label{display:block;font-family:var(--sans);font-style:normal;font-weight:700;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:5px}
+
+/* ---------- cards / stats ---------- */
+.statrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.stat .n{font-family:var(--mono);font-size:1.55rem;font-weight:600;color:var(--ink)}
+.stat .l{font-size:.74rem;color:var(--ink-soft);margin-top:2px;line-height:1.35}
+.stat.acc .n{color:var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:14px 0}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:900px){.twocol{grid-template-columns:1fr}}
+
+/* ---------- legend / bars ---------- */
+.leg{display:flex;flex-direction:column;gap:7px}
+.legrow{display:grid;grid-template-columns:16px 64px 1fr 46px;gap:10px;align-items:center;font-size:.84rem}
+.legrow .swatch{width:14px;height:14px;border-radius:4px}
+.legrow .code{font-family:var(--mono);font-size:.8rem;font-weight:600}
+.legrow .cnt{font-family:var(--mono);text-align:right;color:var(--ink-soft)}
+.barlist{display:flex;flex-direction:column;gap:8px}
+.barrow{display:grid;grid-template-columns:210px 1fr 40px;gap:10px;align-items:center;font-size:.83rem}
+.barrow .track{background:var(--line-soft);border-radius:5px;height:14px;overflow:hidden}
+.barrow .fill{display:block;height:100%;background:var(--d-mco);border-radius:5px;transition:width .8s ease}
+.barrow .bn{font-family:var(--mono);text-align:right;color:var(--ink-soft)}
+@media(max-width:700px){.barrow{grid-template-columns:130px 1fr 36px}}
+
+/* ---------- controls ---------- */
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;align-items:center}
+.controls input[type=search],.controls select{font:inherit;font-size:.85rem;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
+.controls input[type=search]{min-width:220px}
+.controls select:focus,.controls input:focus{outline:2px solid var(--accent);outline-offset:0}
+.hint{font-size:.76rem;color:var(--ink-faint)}
+
+/* ---------- tables ---------- */
+.tblwrap{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:auto;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:.83rem}
+th{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);background:#fbfcfd;white-space:nowrap;position:sticky;top:0}
+th.sortable{cursor:pointer;user-select:none}
+th.sortable:hover{color:var(--accent)}
+th .arr{font-size:.72rem;color:var(--accent)}
+.pager{display:flex;align-items:center;justify-content:center;gap:14px;margin:12px 0 2px}
+.pager button.pg{appearance:none;font:inherit;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:5px 13px;cursor:pointer;font-size:.82rem;color:var(--ink-soft)}
+.pager button.pg:hover:not(:disabled){background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.pager button.pg:disabled{opacity:.35;cursor:default}
+.pager .pgpos{font-size:.78rem;color:var(--ink-faint)}
+td{padding:9px 12px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tbody tr.rowlink{cursor:pointer}
+tbody tr.rowlink:hover{background:var(--accent-soft)}
+tbody tr.hl{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+.mono{font-family:var(--mono);font-size:.8rem}
+.nowrap{white-space:nowrap}
+
+/* ---------- chips ---------- */
+.chip{display:inline-block;font-family:var(--mono);font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:20px;color:#fff;white-space:nowrap}
+.chip.outl{background:none;border:1.5px solid currentColor}
+.dchip{display:inline-block;font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:5px;white-space:nowrap}
+.d-mco{background:#e5edfa;color:#2456a8}
+.d-ffs{background:#eceff2;color:#5c6672}
+.d-harp{background:#efe7f8;color:#6a3fa0}
+.d-mltc{background:#e2f2f2;color:#1f6f6f}
+.st-act{color:var(--ok);font-weight:600}
+.st-gap{color:var(--warn);font-weight:600}
+.st-cls{color:var(--ink-faint);font-weight:600}
+.flag{display:inline-block;font-size:.7rem;font-weight:600;background:#fdf1e0;color:#96660f;border:1px solid #f0d9ae;border-radius:5px;padding:1px 7px;white-space:nowrap}
+
+/* ---------- registers ---------- */
+.reg{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin:12px 0}
+.reg h3{margin:0 0 4px;display:flex;align-items:center;gap:10px}
+.reg .rl{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;background:var(--accent);color:#fff;font-family:var(--mono);font-weight:600;font-size:.85rem;flex:none}
+.reg .q{font-family:var(--serif);font-style:italic;color:#2c3a4d;font-size:.95rem;margin:4px 0 10px}
+.reg .meta{font-size:.78rem;color:var(--ink-faint);margin-bottom:8px}
+
+/* ---------- 834 ---------- */
+.ediwrap{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:12px 0;overflow:hidden}
+.edihead{padding:12px 18px;border-bottom:1px solid var(--line);display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;background:#fbfcfd}
+.edihead .fn{font-family:var(--mono);font-size:.82rem;font-weight:600}
+.edirow{display:grid;grid-template-columns:minmax(300px,46%) 1fr;border-bottom:1px solid var(--line-soft)}
+.edirow:last-child{border-bottom:none}
+.edirow .seg{font-family:var(--mono);font-size:.78rem;padding:8px 16px;background:#f4f7fb;color:#1b3a66;overflow-wrap:anywhere;border-right:1px solid var(--line-soft)}
+.edirow .note{font-size:.8rem;padding:8px 16px;color:var(--ink-soft)}
+.edirow.loop .seg{background:#e8effb;font-weight:600}
+@media(max-width:780px){.edirow{grid-template-columns:1fr}.edirow .seg{border-right:none}}
+
+/* ---------- modal ---------- */
+.overlay{position:fixed;inset:0;background:rgba(20,28,40,.42);opacity:0;pointer-events:none;transition:opacity .22s;z-index:40}
+.overlay.on{opacity:1;pointer-events:auto}
+.slideover{position:fixed;top:0;right:0;bottom:0;width:640px;max-width:94vw;background:var(--card);box-shadow:-12px 0 40px rgba(15,25,45,.22);transform:translateX(102%);transition:transform .26s ease;z-index:50;display:flex;flex-direction:column}
+.slideover.on{transform:translateX(0)}
+.mo-head{padding:16px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+.mo-head .who{min-width:0}
+.mo-head .nm{font-weight:700;font-size:1.05rem}
+.mo-head .idz{font-family:var(--mono);font-size:.76rem;color:var(--ink-soft)}
+.mo-x{margin-left:auto;appearance:none;border:1px solid var(--line);background:none;border-radius:8px;width:32px;height:32px;font-size:1rem;cursor:pointer;color:var(--ink-soft);flex:none}
+.mo-x:hover{background:var(--line-soft)}
+.mo-body{overflow-y:auto;padding:18px 22px;flex:1}
+.mo-foot{border-top:1px solid var(--line);padding:10px 22px;display:flex;align-items:center;gap:12px}
+.mo-foot button{appearance:none;font:inherit;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:.9rem}
+.mo-foot button:hover:not(:disabled){background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.mo-foot button:disabled{opacity:.35;cursor:default}
+.mo-foot .pos{font-family:var(--mono);font-size:.78rem;color:var(--ink-faint);margin-left:auto}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:4px 12px;font-size:.85rem;margin:8px 0 14px}
+.kv .k{color:var(--ink-faint)}
+.kv .v{color:var(--ink)}
+.mo-body h4{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);margin:16px 0 8px}
+.mo-body .plain{font-size:.93rem;padding:12px 15px}
+
+/* ---------- mini timeline ---------- */
+.tl{margin:6px 0 4px}
+.tl .band{display:grid;grid-template-columns:78px 1fr;gap:8px;align-items:center;margin:5px 0}
+.tl .bl{font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-faint);text-align:right}
+.tl .lane{position:relative;height:18px;background:var(--line-soft);border-radius:4px}
+.tl .bar{position:absolute;top:0;bottom:0;border-radius:4px;min-width:3px}
+.tl .bar.striped{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.28) 0 5px,transparent 5px 10px)}
+.tl .axis{display:grid;grid-template-columns:78px 1fr;gap:8px;margin-top:3px}
+.tl .ax{position:relative;height:14px;font-size:.62rem;color:var(--ink-faint);font-family:var(--mono)}
+.tl .ax span{position:absolute;transform:translateX(-50%)}
+.tl .todayline{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--bad);opacity:.7}
+.tl-note{font-size:.7rem;color:var(--ink-faint);margin-top:6px}
+
+/* ---------- reference ---------- */
+.refgrid{display:grid;grid-template-columns:1fr;gap:4px}
+dl.gloss{display:grid;grid-template-columns:200px 1fr;gap:8px 16px;font-size:.85rem}
+dl.gloss dt{font-weight:600}
+dl.gloss dd{color:var(--ink-soft)}
+@media(max-width:700px){dl.gloss{grid-template-columns:1fr}dl.gloss dd{margin-bottom:8px}}
+footer{max-width:1280px;margin:0 auto;padding:0 28px 40px;color:var(--ink-faint);font-size:.75rem;line-height:1.6}
+@media(max-width:700px){header{padding:14px 16px 0}main{padding:18px 14px 60px}.kv{grid-template-columns:120px 1fr}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brandrow">
+    <div class="wordmark">Arizona AHCCCS Eligibility <span class="st">Central</span></div>
+    <div class="tagline">Born capitated, ALTCS, AIHP, and the 834 &mdash; a synthetic demonstration</div>
+    <div class="credit">Robert Thomas Keyes</div>
+  </div>
+  <nav id="nav" aria-label="Sections">
+    <button data-pg="overview" class="on">Overview</button>
+    <button data-pg="members">Members</button>
+    <button data-pg="spans">Eligibility Spans</button>
+    <button data-pg="delivery">AHCCCS Complete Care</button>
+    <button data-pg="registers">Scenario Registers</button>
+    <button data-pg="file">What the File Says</button>
+    <button data-pg="reference">Reference Codes</button>
+  </nav>
+</header>
+<main>
+  <section class="page on" id="pg-overview">
+    <h2>Overview</h2>
+    <p class="sub">A synthetic Arizona AHCCCS population across a 24-month window (January 2025 &ndash; December 2026), viewed as of <b>July 2026</b>. Every value is deterministic &mdash; seeded PRNG, identical on every load.</p>
+    <div class="plain" id="ov-plain"></div>
+    <div class="statrow" id="ov-stats"></div>
+    <div class="twocol">
+      <div class="card">
+        <h3 style="margin-top:0">Coverage groups in the population</h3>
+        <div class="leg" id="ov-groups"></div>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Where members get their care today</h3>
+        <div class="barlist" id="ov-mcos"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="pg-members">
+    <h2>Members</h2>
+    <p class="sub">The full synthetic roster. Click any row for the member record; click a column header to sort.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>Every person here has an <b>AHCCCS ID</b> — one letter, eight digits — that never changes. Arizona joined Medicaid <b>last</b>, in 1982, and joined it <b>capitated from the first day</b>: there has never been a traditional fee-for-service era here, no conversion, no seam, no birthmark. Oklahoma’s app in this series shows the last state to adopt managed care; this one shows the state that never knew anything else. Scan the delivery column for gray and you will barely find it — in Arizona, <b>gray is the rarest color</b>, and register C explains the only place it survives.</div>
+    <div class="controls">
+      <input type="search" id="m-search" placeholder="Search name, AHCCCS ID, city&hellip;" aria-label="Search members">
+      <select id="m-group" aria-label="Filter by coverage group"></select>
+      <select id="m-del" aria-label="Filter by delivery system"></select>
+      <select id="m-reg" aria-label="Filter by register"></select>
+      <select id="m-status" aria-label="Filter by status">
+        <option value="">Status today: all</option>
+        <option value="Active">Active</option>
+        <option value="Gap">In gap</option>
+        <option value="Closed">Closed</option>
+      </select>
+      <span class="hint" id="m-count"></span>
+    </div>
+    <div class="tblwrap"><table id="m-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">AHCCCS ID</th>
+        <th class="sortable" data-k="name">Name</th>
+        <th class="sortable" data-k="age">Age</th>
+        <th class="sortable" data-k="sex">Sex</th>
+        <th class="sortable" data-k="grp">Coverage Group</th>
+        <th class="sortable" data-k="del">Delivery Today</th>
+        <th class="sortable" data-k="county">County</th>
+        <th class="sortable" data-k="reg">Register</th>
+        <th class="sortable" data-k="status">Status Today</th>
+      </tr></thead>
+      <tbody id="m-body"></tbody>
+    </table></div>
+    <div class="pager" id="m-pager"></div>
+  </section>
+
+  <section class="page" id="pg-spans">
+    <h2>Eligibility Spans</h2>
+    <p class="sub">One row per coverage-group span &mdash; the state's answer to <i>&ldquo;from when to when, and under which door did this person enter?&rdquo;</i> Click a row to open the member.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>A span is a promise with dates on it — and Arizona’s eligibility side carries two facts worth pausing on. The <b>ALTCS groups</b> (LTEPD, LTDD) route members into the Arizona Long Term Care System — a second, fully capitated universe running since 1989, with its own contractors and, on the DD side, a <b>state agency</b> serving as the plan. And register C’s split: Arizona’s waiver restricts <b>prior quarter coverage</b> for most adults — their spans begin with the application month — while children and pregnant members keep the classic backward reach, producing the only fee-for-service spans in the entire file.</div>
+    <div class="controls">
+      <select id="s-group" aria-label="Filter spans by coverage group"></select>
+      <select id="s-open" aria-label="Filter by open or closed">
+        <option value="">Open + closed</option><option value="open">Open only</option><option value="closed">Closed only</option>
+      </select>
+      <span class="hint" id="s-count"></span>
+    </div>
+    <div class="tblwrap"><table id="s-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">AHCCCS ID</th>
+        <th class="sortable" data-k="name">Member</th>
+        <th class="sortable" data-k="grp">Group</th>
+        <th class="sortable" data-k="start">Begin</th>
+        <th class="sortable" data-k="end">End</th>
+        <th class="sortable" data-k="months">Months</th>
+        <th>End Reason</th>
+      </tr></thead>
+      <tbody id="s-body"></tbody>
+    </table></div>
+    <div class="pager" id="s-pager"></div>
+  </section>
+
+  <section class="page" id="pg-delivery">
+    <h2>AHCCCS Complete Care</h2>
+    <p class="sub">One row per delivery span: an <b>ACC</b> plan (integrated physical + behavioral), an <b>ALTCS</b> program contractor (teal — the capitated long-term care system), <b>AIHP</b> (purple — the American Indian Health Program), <b>DDD</b> (the state agency as contractor), or the vanishingly rare gray FFS retro tail. Click a row to open the member.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>In 1982, the last state finally joined Medicaid — on the condition that it could skip everything that came before. <b>AHCCCS</b> launched under an 1115 waiver as mandatory statewide capitation from day one: the oldest continuously running demonstration in the country, and the only program with no fee-for-service past to convert, reconcile, or apologize for. Seven years later Arizona did it again with <b>ALTCS</b> (1989): long-term care — nursing facilities, HCBS, all of it — fully capitated, decades before the states this series has visited worked up the nerve. Two more originals ride the roster: <b>Banner – University Family Care</b>, the academic medical center that owns its plan, and <b>DES/DDD</b> — a division of state government holding a capitated contract like any other plan. And for tribal members, Arizona did not leave the managed care exemption as an absence: it built <b>AIHP</b>, the American Indian Health Program — the choice, formalized, with a card.</div>
+    <div class="controls">
+      <select id="d-sys" aria-label="Filter by delivery system"></select>
+      <span class="hint" id="d-count"></span>
+    </div>
+    <div class="tblwrap"><table id="d-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">AHCCCS ID</th>
+        <th class="sortable" data-k="name">Member</th>
+        <th class="sortable" data-k="sys">Delivery</th>
+        <th class="sortable" data-k="start">Begin</th>
+        <th class="sortable" data-k="end">End</th>
+        <th class="sortable" data-k="months">Months</th>
+        <th>Begin / End Reason</th>
+      </tr></thead>
+      <tbody id="d-body"></tbody>
+    </table></div>
+    <div class="pager" id="d-pager"></div>
+  </section>
+
+  <section class="page" id="pg-registers">
+    <h2>Scenario Registers</h2>
+    <p class="sub">Six business questions, each answered by a register of members whose data was planted to demonstrate exactly that scenario. Click any member to inspect the record behind the answer.</p>
+    <div id="reg-list"></div>
+  </section>
+
+  <section class="page" id="pg-file">
+    <h2>What the File Says</h2>
+    <p class="sub">Arizona really does speak X12N 834 — AHCCCS has been cutting roster files to plans longer than any Medicaid agency in America; its enrollment EDI predates the HIPAA standards it now uses. Pick a member and read the transaction, segment by segment, with a plain-language note on every line.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>An 834 is the state telling a health plan: <b>this person is yours now</b> (or isn't anymore) — and Arizona has been saying it since before the standard existed. Watch two things in this file. Register F’s LTSS transitions are <b>plan-to-plan pairs</b>: an ACC termination and an ALTCS addition, same member, same month, with no FFS interlude — the hand-off between two capitated systems is the only kind of hand-off this state has. And register D’s AIHP transactions carry a delivery code that is neither a commercial plan nor an absence: a named program for the tribal FFS pathway, switchable any month in either direction — the most fluid HD segment in this series.</div>
+    <div class="controls">
+      <select id="f-member" aria-label="Choose member for 834"></select>
+      <span class="hint">Members are grouped by register; the transaction is rebuilt live from the member's actual spans.</span>
+    </div>
+    <div id="f-out"></div>
+  </section>
+
+  <section class="page" id="pg-reference">
+    <h2>Reference Codes</h2>
+    <p class="sub">The teaching code sets used throughout the app. Codes are patterned on Arizona's conventions; verify against current AHCCCS publications before any non-demonstration use.</p>
+    <div id="ref-out"></div>
+  </section>
+</main>
+
+<footer>
+  <p><b>Arizona AHCCCS Eligibility Central</b> &mdash; a single-file demonstration app in the Central series. All members, identifiers, addresses, phone numbers, and dates are synthetic and deterministic (seeded PRNG, seed 602001); any resemblance to real persons is coincidental. Program facts reflect public AHCCCS policy of the mid-2020s and change year to year — plan rosters, GSA assignments (simplified to statewide here), and prior-quarter rules shift with waivers and procurements; verify against current AHCCCS and CMS publications before any non-demonstration use. The 834 rendering is a teaching aid, not an implementation guide. &copy; Robert Thomas Keyes.</p>
+</footer>
+
+<div class="overlay" id="overlay"></div>
+<aside class="slideover" id="modal" role="dialog" aria-modal="true" aria-labelledby="mo-nm">
+  <div class="mo-head">
+    <div class="who">
+      <div class="nm" id="mo-nm"></div>
+      <div class="idz" id="mo-id"></div>
+    </div>
+    <button class="mo-x" id="mo-x" aria-label="Close">&#10005;</button>
+  </div>
+  <div class="mo-body" id="mo-body"></div>
+  <div class="mo-foot">
+    <button id="mo-prev" aria-label="Previous member">&#9664;</button>
+    <button id="mo-next" aria-label="Next member">&#9654;</button>
+    <span class="pos" id="mo-pos"></span>
+  </div>
+</aside>
+<script>
+'use strict';
+/* ============ Arizona AHCCCS Eligibility Central ============
+   Central series -- Robert Thomas Keyes
+   Deterministic synthetic data. Seed 602001 (Phoenix's area code).
+   Window: Jan 2025 (idx 0) .. Dec 2026 (idx 23). "Today" = Jul 2026 (idx 18).
+================================================================= */
+
+/* ---------- seeded PRNG (mulberry32) ---------- */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+var R = mulberry32(602001);
+function ri(lo,hi){return lo+Math.floor(R()*(hi-lo+1))}
+function pick(arr){return arr[Math.floor(R()*arr.length)]}
+function wpick(pairs){var tot=0,i;for(i=0;i<pairs.length;i++)tot+=pairs[i][1];var x=R()*tot;for(i=0;i<pairs.length;i++){x-=pairs[i][1];if(x<0)return pairs[i][0]}return pairs[pairs.length-1][0]}
+
+/* ---------- window ---------- */
+var WIN_START_Y=2025, WIN_MONTHS=24, TODAY_IDX=18; /* Jul 2026 */
+var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function mLabel(idx){ if(idx===null||idx===undefined)return '&mdash;';
+  var y=WIN_START_Y+Math.floor(idx/12), m=((idx%12)+12)%12;
+  return MONTHS[m]+' '+y }
+function mFirstD8(idx){var y=WIN_START_Y+Math.floor(idx/12),m=((idx%12)+12)%12;return ''+y+String(m+1).padStart(2,'0')+'01'}
+function mLastD8(idx){var y=WIN_START_Y+Math.floor(idx/12),m=((idx%12)+12)%12;var last=new Date(y,m+1,0).getDate();return ''+y+String(m+1).padStart(2,'0')+String(last).padStart(2,'0')}
+function spanMonths(s,e){var last=(e===null?TODAY_IDX:e);return Math.max(1,last-Math.max(s,-990)+1)}
+
+/* ---------- coverage groups ---------- */
+var GROUPS={
+ CH19:{name:'Children (KidsCare below the line)', magi:true, color:'--g-CH19', blurb:'Children through 18 \u2014 KidsCare is the CHIP tier above; below the line, straight AHCCCS.'},
+ AE02:{name:'Adult Expansion',           magi:true,  color:'--g-SI02', blurb:'Adults 19\u2013138% FPL \u2014 Arizona expanded in 2014 under a Republican governor, funded partly by a hospital assessment, with its own circuit breaker if the federal match ever falls below 80%.'},
+ PW02:{name:'Pregnant & Postpartum',     magi:true,  color:'--g-EA02', blurb:'Pregnancy coverage plus twelve months postpartum.'},
+ FM01:{name:'Parents & Caretakers',      magi:true,  color:'--g-FC01', blurb:'Parents and caretaker relatives \u2014 restored alongside expansion after the recession-era freeze.'},
+ AB03:{name:'Aged / Blind / Disabled',   magi:false, color:'--g-MN98', blurb:'SSI-related budgeting \u2014 and still capitated: in Arizona, everyone rides a plan.'},
+ FF26:{name:'Former Foster Care',        magi:true,  color:'--g-FF26', blurb:'Young adults formerly in foster care, covered to 26 regardless of income.'},
+ LTEPD:{name:'ALTCS \u2014 Elderly & Physical Disability', magi:false, color:'--g-LT01', blurb:'The Arizona Long Term Care System \u2014 nursing-home level of care, <b>fully capitated since 1989</b>, decades before most states dared. Program contractors hold the whole risk, HCBS and facility alike.'},
+ LTDD:{name:'ALTCS \u2014 Developmental Disabilities', magi:false, color:'--g-WD02', blurb:'The DD side of ALTCS \u2014 where the managed care contractor is <b>a state agency</b>: the Division of Developmental Disabilities acts as the plan. A government operating as an MCO inside a plan state.'}
+};
+var GROUP_KEYS=Object.keys(GROUPS);
+
+/* ---------- delivery: born capitated ---------- */
+var ACCPLANS=[
+ {code:'BANNER', name:'Banner \u2013 University Family Care', note:'Hospital-owned \u2014 Banner Health and the University of Arizona'},
+ {code:'MERCY',  name:'Mercy Care',                        note:'The historic plan \u2014 in AHCCCS since the 1980s (Aetna/CVS)'},
+ {code:'AZCH',   name:'Arizona Complete Health',           note:'Centene'},
+ {code:'MOLINA', name:'Molina Healthcare of Arizona',      note:''},
+ {code:'UHC',    name:'UnitedHealthcare Community Plan',   note:''},
+ {code:'HCAZ',   name:'Health Choice Arizona',             note:'Blue Cross Blue Shield of Arizona'}
+];
+var ALTCS_EPD=[
+ {code:'MERCYLTC', name:'Mercy Care ALTCS'},
+ {code:'BANLTC',   name:'Banner \u2013 University ALTCS'},
+ {code:'UHCLTC',   name:'UnitedHealthcare ALTCS'}
+];
+var DDD={code:'DDD', name:'DES Division of Developmental Disabilities (state agency as contractor)'};
+var AIHP={code:'AIHP', name:'American Indian Health Program'};
+var PLANBY={}; ACCPLANS.forEach(function(p){PLANBY[p.code]=p}); ALTCS_EPD.forEach(function(p){PLANBY[p.code]=p}); PLANBY[DDD.code]=DDD; PLANBY[AIHP.code]=AIHP;
+function sysLabel(code){ return code==='FFS'?'Fee-for-Service (retro tails only)':(PLANBY[code]?PLANBY[code].name:code) }
+function sysKind(code){
+  if(code==='FFS')return 'FFS';
+  if(code==='AIHP')return 'AIHP';
+  if(code==='DDD')return 'DDD';
+  if(code==='MERCYLTC'||code==='BANLTC'||code==='UHCLTC')return 'LTC';
+  return 'ACC';
+}
+function sysClass(code){ var k=sysKind(code); return k==='FFS'?'d-ffs':(k==='AIHP'?'d-harp':(k==='LTC'||k==='DDD'?'d-mltc':'d-mco')) }
+function pickPlan(){ return wpick([['MERCY',3],['BANNER',2.5],['AZCH',2],['HCAZ',1.5],['UHC',1.5],['MOLINA',1]]) }
+function pickLtc(){ return pick(ALTCS_EPD).code }
+
+/* ---------- tribal nations & facilities ---------- */
+var TRIBES=[['Navajo Nation',8],['Tohono O\u2019odham Nation',3],['San Carlos Apache Tribe',2],['White Mountain Apache Tribe',2],['Gila River Indian Community',2],['Salt River Pima-Maricopa Indian Community',1.5],['Hopi Tribe',1.5],['Pascua Yaqui Tribe',1.5]];
+var IHS_FAC={
+ 'Navajo Nation':'Chinle Comprehensive Health Care Facility / Tuba City Regional',
+ 'Tohono O\u2019odham Nation':'Sells Hospital (Tohono O\u2019odham Nation Health Care)',
+ 'San Carlos Apache Tribe':'San Carlos Apache Healthcare Corporation',
+ 'White Mountain Apache Tribe':'Whiteriver Indian Hospital',
+ 'Gila River Indian Community':'Gila River Health Care (Hu Hu Kam Memorial)',
+ 'Salt River Pima-Maricopa Indian Community':'River People Health Center',
+ 'Hopi Tribe':'Hopi Health Care Center (Polacca)',
+ 'Pascua Yaqui Tribe':'Pascua Yaqui Health Services / El Rio partnership'
+};
+
+/* ---------- jurisdictions ---------- */
+var COUNTIES=[
+ {name:'Maricopa',  w:14, zips:['85009','85017'], city:'Phoenix',
+  streets:['W McDowell Rd','N 27th Ave','W Indian School Rd','W Van Buren St','N 35th Ave']},
+ {name:'Pima',      w:8,  zips:['85713','85706'], city:'Tucson',
+  streets:['S 6th Ave','W Ajo Way','S 12th Ave','E Irvington Rd','S Nogales Hwy']},
+ {name:'Pinal',     w:3,  zips:['85122'], city:'Casa Grande',
+  streets:['N Pinal Ave','E Florence Blvd','W McMurray Blvd']},
+ {name:'Yuma',      w:3,  zips:['85364'], city:'Yuma',
+  streets:['S 4th Ave','W 24th St','S Avenue B','E 32nd St']},
+ {name:'Coconino',  w:3,  zips:['86001','86045'], city:null, cities:['Flagstaff','Tuba City'],
+  streets:['E Route 66','N 4th St','S Milton Rd','Main St']},
+ {name:'Navajo',    w:3,  zips:['86025','86505'], city:null, cities:['Holbrook','Ganado'],
+  streets:['W Hopi Dr','Navajo Blvd','US Highway 191']},
+ {name:'Apache',    w:3,  zips:['86503','86515'], city:null, cities:['Chinle','Window Rock'],
+  streets:['US Highway 191','Indian Route 7','State Highway 264']},
+ {name:'Yavapai',   w:2,  zips:['86301'], city:'Prescott',
+  streets:['E Gurley St','Miller Valley Rd','Willow Creek Rd']},
+ {name:'Mohave',    w:2,  zips:['86401'], city:'Kingman',
+  streets:['E Andy Devine Ave','Stockton Hill Rd','Hualapai Mountain Rd']},
+ {name:'Santa Cruz',w:2,  zips:['85621'], city:'Nogales',
+  streets:['N Grand Ave','W Mariposa Rd','N Morley Ave']},
+ {name:'Graham',    w:1,  zips:['85546'], city:'Safford',
+  streets:['W Thatcher Blvd','S 20th Ave','US Highway 70']},
+ {name:'La Paz',    w:1,  zips:['85344'], city:'Parker',
+  streets:['S California Ave','W Riverside Dr','Arizona Ave']}
+];
+function pickCounty(){return wpick(COUNTIES.map(function(c){return [c,c.w]}))}
+var AREA=['602','623','480','520','928'];
+
+/* ---------- names & languages ---------- */
+var FIRST_F=['Maria','Guadalupe','Alejandra','Yesenia','Xochitl','Lucia','Marisol','Araceli','Ashley','Madison','Emily','Dawn','Crystal','Amber','Cheyenne','Shandiin','Nizhoni','Doli','Haseya','Alice','Bernice','Verna','Ramona','Frances','Juanita','Evangeline','Fadumo','Linh','Autumn','Sage','Dolores','Petra'],
+    FIRST_M=['Jose','Juan','Miguel','Luis','Carlos','Angel','Ramon','Alejandro','Emiliano','Santiago','Tyler','Hunter','Cody','Dakota','Levi','Hosteen','Notah','Tsela','Chayton','Delbert','Marvin','Elroy','Wilbert','Leander','Franklin','Mohamed','Minh','Robert','Billy','Ray','Gilbert','Ruben'];
+var LAST=['Garcia','Martinez','Hernandez','Lopez','Ramirez','Torres','Valenzuela','Federico','Molina','Rascon','Urias','Verdugo','Smith','Johnson','Williams','Brown','Miller','Davis','Begay','Yazzie','Benally','Tsosie','Nez','Manuelito','Chee','Yellowhair','Etsitty','Todacheene','Antone','Manuel','Juan','Norris','Altaha','Dosela','Goseyun','Cosen','Enos','Rios','Nguyen','Tran'];
+var LANGS=[['English',55],['Spanish',35],['Navajo',4],['Apache',1.5],['O\u2019odham',1.5],['Vietnamese',1],['Somali',1],['Arabic',1]];
+
+/* ---------- end reasons ---------- */
+var ELIG_END={
+ REDET:'Renewal not completed \u2014 case closed at annual renewal',
+ INCOME:'Over income at renewal',
+ MOVED:'Moved out of state',
+ ALTCS:'ALTCS enrollment \u2014 assessed at nursing-home level of care; moved to the long-term care system',
+ MEDI:'Medicare entitlement \u2014 category redetermined'
+};
+</script>
+<script>
+'use strict';
+/* ================= population generator ================= */
+var MEMBERS=[];
+var usedIds={};
+function genId(){ var s; do{ s='A'+String(ri(10000000,89999999)) }while(usedIds[s]); usedIds[s]=1; return s }
+function genPhone(){ return '('+pick(AREA)+') '+ri(200,989)+'-'+String(ri(0,9999)).padStart(4,'0') }
+function genAddr(c){ var city=c.city||pick(c.cities); return {street:ri(100,9999)+' '+pick(c.streets), city:city, zip:pick(c.zips)} }
+function genName(sex){ return {first:(sex==='F'?pick(FIRST_F):pick(FIRST_M)), last:pick(LAST)} }
+function dobForAge(age){ var y=2026-age; var m=ri(0,11); if(m>6)y--; return {y:y,m:m,d:ri(1,28)} }
+function dobD8(d){return ''+d.y+String(d.m+1).padStart(2,'0')+String(d.d).padStart(2,'0')}
+function dobLabel(d){return MONTHS[d.m]+' '+d.d+', '+d.y}
+
+function baseMember(reg){
+  var sex=pick(['F','F','F','M','M']);
+  var nm=genName(sex), c=pickCounty(), a=genAddr(c);
+  return { id:genId(), first:nm.first, last:nm.last, sex:sex, county:c.name,
+    street:a.street, city:a.city, zip:a.zip, phone:genPhone(),
+    lang:wpick(LANGS), reg:reg, eligSpans:[], delSpans:[], flags:[],
+    aian:false, tribe:null };
+}
+function addElig(m,grp,s,e,reason){m.eligSpans.push({grp:grp,start:s,end:e,reason:reason||null})}
+function addDel(m,sys,s,e,note){m.delSpans.push({sys:sys,start:s,end:e,note:note||null})}
+/* Born capitated: enrollment is effective with eligibility. No processing
+   sliver, no FFS interlude -- there has never been an FFS program to sit in. */
+function enrollACC(m,s,e,note){
+  var plan=pickPlan();
+  addDel(m,plan,s,(e===undefined?null:e),note||null);
+  return plan;
+}
+
+/* ----- Register A: steady state -- the program born capitated (1100) ----- */
+(function(){
+  var grpsA=[['CH19',7],['AE02',6],['FM01',1],['PW02',1],['AB03',2],['FF26',1]];
+  for(var i=0;i<1100;i++){
+    var grp=wpick(grpsA);
+    var m=baseMember('A');
+    var age = grp==='CH19'?ri(0,18) : grp==='FF26'?ri(18,25) : grp==='AB03'?ri(28,62) : grp==='PW02'?ri(19,38) : ri(19,60);
+    m.age=age; m.dob=dobForAge(age); if(grp==='PW02')m.sex='F';
+    var s=ri(-20,2);
+    addElig(m,grp,s,null,null);
+    var plan=enrollACC(m,s);
+    if(plan==='BANNER'&&R()<0.5)m.flags.push('Enrolled with Banner \u2013 University Family Care \u2014 hospital-owned: the academic medical center and its plan share a balance sheet');
+    else if(plan==='MERCY'&&R()<0.4)m.flags.push('Mercy Care \u2014 in AHCCCS since the 1980s: a plan as old as the program, in the state that never had anything but plans');
+    else if(R()<0.2)m.flags.push('Enrollment effective with eligibility \u2014 no FFS interlude, because Arizona has no FFS program to sit in. Born capitated, 1982, the last state in and the first to skip the queue');
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register B: renewal churn (500) ----- */
+(function(){
+  for(var i=0;i<500;i++){
+    var grp=wpick([['CH19',3],['AE02',5],['FM01',1]]);
+    var m=baseMember('B');
+    m.age = grp==='CH19'?ri(1,17):ri(19,60); m.dob=dobForAge(m.age);
+    var s=ri(-18,-2);
+    var inGapNow=(i<125);
+    var term=inGapNow?ri(15,16):ri(4,12);
+    var gap=inGapNow?ri(3,4):ri(1,4);
+    var regain=term+gap+1;
+    addElig(m,grp,s,term,ELIG_END.REDET);
+    addElig(m,grp,regain,null,null);
+    enrollACC(m,s,term);
+    enrollACC(m,regain,undefined,R()<0.4?'Auto-assignment landed differently on return':null);
+    m.flags.push('Gap '+mLabel(term+1)+'\u2013'+mLabel(regain-1)+' ('+gap+' mo) \u2014 and the return goes straight into a plan, same-month: with no FFS layer, there is nowhere else to land');
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register C: prior quarter coverage -- the only gray in Arizona (375) ----- */
+(function(){
+  for(var i=0;i<375;i++){
+    var isAdult=(i>=225); /* 225 kids/pregnant with retro, 150 adults without */
+    var grp=isAdult?wpick([['AE02',4],['FM01',1]]):wpick([['CH19',5],['PW02',3]]);
+    var m=baseMember('C');
+    if(grp==='PW02')m.sex='F';
+    m.age = grp==='CH19'?ri(0,16) : grp==='PW02'?ri(19,36) : ri(19,55);
+    m.dob=dobForAge(m.age);
+    var app=ri(6,15);
+    if(isAdult){
+      addElig(m,grp,app,null,null);
+      enrollACC(m,app);
+      m.flags.push('Adult application in '+mLabel(app)+' \u2014 coverage begins with the application month: Arizona\u2019s waiver restricts <b>prior quarter coverage</b> for most adults. The same ER visit one month earlier is unreachable \u2014 and the timeline shows no gray, because there is nothing backward to pay.');
+    } else {
+      var retro=ri(1,3), retroS=app-retro;
+      addElig(m,grp,retroS,null,null);
+      addDel(m,'FFS',retroS,app,'Prior quarter coverage \u2014 the ONLY fee-for-service spans in this entire file: retroactive months capitation cannot reach');
+      enrollACC(m,app+1);
+      m.flags.push('Prior quarter coverage: '+retro+' month'+(retro>1?'s':'')+' back to '+mLabel(retroS)+' \u2014 retained for children and pregnant members. Look at the gray tail and savor it: <b>these are the only FFS spans in the whole file</b>. In Arizona, gray is the rarest color.');
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register D: AIHP -- the choice, formalized as a program (375) ----- */
+(function(){
+  for(var i=0;i<375;i++){
+    var grp=wpick([['CH19',4],['AE02',4],['PW02',1],['FM01',1]]);
+    var m=baseMember('D');
+    m.aian=true; m.tribe=wpick(TRIBES);
+    if(m.tribe==='Navajo Nation'&&R()<0.4)m.lang='Navajo';
+    if((m.tribe==='San Carlos Apache Tribe'||m.tribe==='White Mountain Apache Tribe')&&R()<0.3)m.lang='Apache';
+    if(m.tribe==='Tohono O\u2019odham Nation'&&R()<0.35)m.lang='O\u2019odham';
+    if(R()<0.65)m.last=pick(['Begay','Yazzie','Benally','Tsosie','Nez','Manuelito','Chee','Yellowhair','Etsitty','Todacheene','Antone','Manuel','Juan','Norris','Altaha','Dosela','Goseyun','Cosen','Enos']);
+    if(grp==='PW02')m.sex='F';
+    m.age = grp==='CH19'?ri(0,17) : grp==='PW02'?ri(19,36) : ri(19,60);
+    m.dob=dobForAge(m.age);
+    var s=ri(-22,-4);
+    addElig(m,grp,s,null,null);
+    var kind = i<190?'AIHP' : (i<285?'ACC':'SWITCH');
+    if(kind==='AIHP'){
+      addDel(m,'AIHP',s,null,'The American Indian Health Program \u2014 the tribal FFS pathway, branded and administered as a named program with an ID card of its own');
+      m.flags.push(m.tribe+' \u2014 enrolled in <b>AIHP</b>: Arizona did not leave the tribal exemption as an absence; it built it a name, a program office, and a card. Care through '+IHS_FAC[m.tribe]+'.');
+    } else if(kind==='ACC'){
+      enrollACC(m,s,undefined,'AI/AN member enrolled in an ACC plan \u2014 the choice runs both ways, Indian health providers protected in-network');
+      m.flags.push(m.tribe+' \u2014 chose an ACC plan over AIHP; '+IHS_FAC[m.tribe]+' remains in-network under the Indian health provisions. The choice can be reversed any month.');
+    } else {
+      var sw=ri(6,15);
+      var toPlan=(i%2===0);
+      if(toPlan){
+        addDel(m,'AIHP',s,sw-1,null);
+        enrollACC(m,sw,undefined,'Switched from AIHP to an ACC plan \u2014 effective the following month, no questions asked');
+        m.flags.push(m.tribe+' \u2014 switched AIHP \u2192 ACC plan in '+mLabel(sw)+'. AI/AN members can move between AIHP and a plan <b>any month</b>: the most fluid delivery choice in this series, and both directions appear in this register.');
+      } else {
+        enrollACC(m,s,sw-1);
+        addDel(m,'AIHP',sw,null,'Switched from an ACC plan back to AIHP \u2014 the door swings both ways');
+        m.flags.push(m.tribe+' \u2014 switched ACC plan \u2192 AIHP in '+mLabel(sw)+'. The exemption is not a one-time election; it is a standing monthly option, exercised here in the return direction.');
+      }
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register E: ALTCS -- the 1989 marvel (325) ----- */
+(function(){
+  for(var i=0;i<325;i++){
+    var dd=(i>=230); /* 95 DD members with the state agency as contractor */
+    var m=baseMember('E');
+    if(dd){ m.age=ri(4,58); }
+    else { m.age=R()<0.75?ri(66,96):ri(45,64); }
+    m.dob=dobForAge(m.age);
+    var s=ri(-30,-4);
+    addElig(m,dd?'LTDD':'LTEPD',s,null,null);
+    if(dd){
+      addDel(m,'DDD',s,null,'ALTCS-DD \u2014 the managed care contractor is the DES Division of Developmental Disabilities: a state agency operating as the plan');
+      m.flags.push('ALTCS-DD \u2014 the contractor on this capitated enrollment is <b>a state agency</b>: DES/DDD acts as the managed care plan, holding the risk and coordinating the services. Vermont made the whole state the plan; Arizona made one division of government a plan among plans.');
+    } else {
+      var ltc=pickLtc();
+      addDel(m,ltc,s,null,'ALTCS-EPD program contractor \u2014 nursing-home level of care, fully capitated: HCBS and facility alike');
+      m.flags.push('ALTCS \u2014 '+(R()<0.65?'served at home through HCBS':'a nursing facility resident whose per diem flows through the contractor')+'. Arizona capitated long-term care in <b>1989</b>, decades before most states dared: even the nursing homes have never known state FFS here.');
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register F: Medicare arrives -- never gray (325) ----- */
+(function(){
+  for(var i=0;i<325;i++){
+    var m=baseMember('F');
+    var ssdi=(R()<0.55);
+    var medi=ri(6,16), lag=ri(1,3);
+    if(ssdi){ m.age=ri(38,62); m.dob=dobForAge(m.age); }
+    else { m.age=(medi<=TODAY_IDX)?65:64; m.dob={y:WIN_START_Y+Math.floor(medi/12)-65, m:medi%12, d:ri(1,28)}; }
+    var s=ri(-20,-8);
+    var toAltcs=(i<195);
+    if(toAltcs){
+      addElig(m,'AE02',s,medi-1,ELIG_END.ALTCS);
+      addElig(m,'LTEPD',medi,null,null);
+      enrollACC(m,s,medi-1,'ACC enrollment ends \u2014 the member assessed at nursing-home level of care as Medicare arrived');
+      addDel(m,pickLtc(),medi,null,'ALTCS program contractor \u2014 the second capitated system was waiting; the hand-off is plan to plan, never through FFS');
+      m.flags.push((ssdi?'Medicare via SSDI ':'Turned 65 ')+mLabel(medi)+' with long-term care needs \u2014 and the record moved from one capitated system to another: ACC plan out, ALTCS contractor in, same month. <b>No FFS wrap, no gray month</b> \u2014 in Arizona there is no FFS to wrap with. The 024/021 pair hands the member between capitations.');
+    } else {
+      addElig(m,'AE02',s,medi-1,ELIG_END.MEDI);
+      addElig(m,'AB03',medi,null,null);
+      var plan=pickPlan();
+      addDel(m,plan,s,medi-1,null);
+      addDel(m,plan,medi,null,'Same ACC plan continues for the Medicaid side \u2014 Arizona pushes aligned D-SNP enrollment hard');
+      m.flags.push((ssdi?'Medicare via SSDI ':'Turned 65 ')+mLabel(medi)+' without LTSS needs \u2014 the same plan continues, Medicare primary, with the aligned D-SNP push putting both enrollments under one parent company. And still: <b>no gray month anywhere</b>.');
+    }
+    m.medicareIdx=medi; m.buyinIdx=medi+lag; m.ssdi=ssdi; m.toAltcs=toAltcs;
+    m.flags.push('Buy-in effective '+mLabel(medi+lag)+' \u2014 the '+lag+'-month accretion limbo, the one clock even Arizona cannot capitate');
+    MEMBERS.push(m);
+  }
+})();
+
+/* ---------- derived member state ---------- */
+function eligToday(m){ for(var i=0;i<m.eligSpans.length;i++){var s=m.eligSpans[i]; if(s.start<=TODAY_IDX&&(s.end===null||s.end>=TODAY_IDX))return s} return null }
+function delToday(m){ for(var i=0;i<m.delSpans.length;i++){var s=m.delSpans[i]; if(s.start<=TODAY_IDX&&(s.end===null||s.end>=TODAY_IDX))return s} return null }
+function lastElig(m){ return m.eligSpans[m.eligSpans.length-1] }
+function statusToday(m){
+  if(eligToday(m))return 'Active';
+  var le=lastElig(m);
+  if(le.end!==null&&le.end<TODAY_IDX){
+    for(var i=0;i<m.eligSpans.length;i++){ if(m.eligSpans[i].start>TODAY_IDX)return 'Gap' }
+    return 'Closed';
+  }
+  return 'Gap';
+}
+MEMBERS.forEach(function(m,ix){
+  m.ix=ix;
+  /* name/sex coherence: deterministic, PRNG-free remap */
+  if(m.sex==='F'&&FIRST_F.indexOf(m.first)<0)m.first=FIRST_F[(m.first.length*7+m.last.length)%FIRST_F.length];
+  if(m.sex==='M'&&FIRST_M.indexOf(m.first)<0)m.first=FIRST_M[(m.first.length*7+m.last.length)%FIRST_M.length];
+  m.name=m.last+', '+m.first;
+  var et=eligToday(m), le=lastElig(m);
+  m.grpToday = et?et.grp:le.grp;
+  var dt=delToday(m);
+  m.delTodayCode = dt?dt.sys:'\u2014';
+  m.status=statusToday(m);
+});
+</script>
+<script>
+'use strict';
+/* ================= shared render helpers ================= */
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function grpChip(g){ if(!GROUPS[g])return esc(g);
+  return '<span class="chip" style="background:var('+GROUPS[g].color+')" title="'+esc(GROUPS[g].name)+'">'+g+'</span>' }
+function delChip(code){ if(code==='\u2014')return '<span class="st-cls">\u2014</span>';
+  var cls=sysClass(code), lbl=code;
+  return '<span class="dchip '+cls+'" title="'+esc(sysLabel(code))+'">'+esc(lbl)+'</span>' }
+function statusHtml(st){ return st==='Active'?'<span class="st-act">Active</span>':(st==='Gap'?'<span class="st-gap">In gap</span>':'<span class="st-cls">Closed</span>') }
+function regBadge(r){return '<span class="mono" style="font-weight:600;color:var(--accent)">'+r+'</span>'}
+
+/* ================= overview ================= */
+function renderOverview(){
+  var n=MEMBERS.length, act=0, acc=0, ltc=0, ddd=0, aihp=0, ffs=0, grayEver=0, gaps=0;
+  MEMBERS.forEach(function(m){
+    if(m.status==='Active')act++;
+    if(m.status==='Gap')gaps++;
+    var d=m.delTodayCode;
+    if(d!=='\u2014'){ var k=sysKind(d);
+      if(k==='ACC')acc++; else if(k==='LTC')ltc++; else if(k==='DDD')ddd++; else if(k==='AIHP')aihp++; else ffs++; }
+    if(m.delSpans.some(function(s){return s.sys==='FFS'}))grayEver++;
+  });
+  var st=document.getElementById('ov-stats');
+  st.innerHTML =
+    stat(n,'Synthetic members',true)+
+    stat(act,'Eligible today (Jul 2026)')+
+    stat(acc,'In an ACC plan today')+
+    stat(ltc,'ALTCS program contractors <span class="mono">(cap. since 1989)</span>')+
+    stat(ddd,'DDD \u2014 a state agency as the plan')+
+    stat(aihp,'AIHP \u2014 the tribal program, by choice')+
+    stat(grayEver,'Members with ANY gray FFS in their history')+
+    stat(ffs,'Fee-for-service today')+
+    stat(gaps,'In an eligibility gap today');
+  function stat(nv,l,acc){return '<div class="stat'+(acc?' acc':'')+'"><div class="n">'+(typeof nv==='number'?nv.toLocaleString():nv)+'</div><div class="l">'+l+'</div></div>'}
+
+  /* group legend with counts (by current/last group) */
+  var gc={}; MEMBERS.forEach(function(m){gc[m.grpToday]=(gc[m.grpToday]||0)+1});
+  var lg=document.getElementById('ov-groups'); lg.innerHTML='';
+  GROUP_KEYS.forEach(function(g){
+    var c=gc[g]||0;
+    lg.innerHTML+='<div class="legrow"><span class="swatch" style="background:var('+GROUPS[g].color+')"></span>'+
+      '<span class="code">'+g+'</span><span>'+esc(GROUPS[g].name)+'</span>'+
+      '<span class="cnt">'+c+'</span></div>';
+  });
+
+  /* delivery distribution today */
+  var dc={}; MEMBERS.forEach(function(m){ if(m.delTodayCode!=='\u2014') dc[m.delTodayCode]=(dc[m.delTodayCode]||0)+1 });
+  var rows=ACCPLANS.map(function(p){return {label:p.name+(p.code==='BANNER'?' \u2014 hospital-owned':''), code:p.code, n:dc[p.code]||0, cls:'var(--d-mco)'}});
+  ALTCS_EPD.forEach(function(p){ rows.push({label:p.name+' (ALTCS)', code:p.code, n:dc[p.code]||0, cls:'var(--d-mltc)'}) });
+  rows.push({label:DDD.name, code:'DDD', n:dc.DDD||0, cls:'var(--d-mltc)'});
+  rows.push({label:AIHP.name+' \u2014 tribal, by choice', code:'AIHP', n:dc.AIHP||0, cls:'var(--d-harp)'});
+  rows.push({label:'Fee-for-service \u2014 retro tails only: the rarest color', code:'FFS', n:dc.FFS||0, cls:'var(--d-ffs)'});
+  rows.sort(function(a,b){return b.n-a.n});
+  var mx=rows.reduce(function(a,r){return Math.max(a,r.n)},1);
+  var bl=document.getElementById('ov-mcos'); bl.innerHTML='';
+  rows.forEach(function(r){
+    bl.innerHTML+='<div class="barrow"><span title="'+esc(r.label)+'">'+esc(r.label)+'</span>'+
+      '<span class="track"><span class="fill" style="width:0;background:'+r.cls+'" data-w="'+(100*r.n/mx)+'"></span></span>'+
+      '<span class="bn">'+r.n+'</span></div>';
+  });
+  requestAnimationFrame(function(){ setTimeout(function(){
+    bl.querySelectorAll('.fill').forEach(function(f){f.style.width=f.getAttribute('data-w')+'%'}) },60) });
+
+  document.getElementById('ov-plain').innerHTML='<span class="pe-label">In plain English</span>'+
+    'Arizona is Oklahoma\u2019s mirror at the other end of history. The last state to join Medicaid (1982) joined it <b>born capitated</b> \u2014 mandatory statewide managed care from the first day, under the oldest continuously running 1115 demonstration in the country. No FFS era, no conversion, no seam: where Oklahoma\u2019s timelines carry the April 2024 birthmark, Arizona\u2019s carry <b>nothing</b>, because there was never anything to convert. Gray is the rarest color in this file \u2014 it survives only in register C\u2019s prior-quarter tails, and only for children and pregnant members, because the waiver restricted the backward reach for adults. '+
+    'Around that spine: <b>ALTCS</b>, long-term care fully capitated since 1989 \u2014 nursing homes that have never billed state FFS \u2014 with a genuine structural marvel on the DD side: <b>DES/DDD, a division of state government, holding a capitated contract as the plan</b>. <b>AIHP</b>, the American Indian Health Program \u2014 the tribal exemption built into a named program with a card, switchable with a plan any month in either direction. And register F\u2019s Medicare answer, the eleventh in the series: <b>never gray</b> \u2014 the hand-off runs plan to plan, ACC to ALTCS or ACC to aligned D-SNP, because in Arizona there is no FFS to fall back to. There never was.';
+}
+
+/* ================= reference ================= */
+function renderReference(){
+  var h='';
+  h+='<div class="card"><h3 style="margin-top:0">Coverage groups (teaching set)</h3>'+
+     '<p class="sub" style="margin-bottom:8px">Patterned on Arizona categories \u2014 note the two ALTCS groups: the second capitated universe has its own eligibility doors.</p>'+
+     '<div class="tblwrap"><table><thead><tr><th>Code</th><th>Name</th><th>Determination</th><th>What it means</th></tr></thead><tbody>';
+  GROUP_KEYS.forEach(function(g){var G=GROUPS[g];
+    h+='<tr><td>'+grpChip(g)+'</td><td>'+esc(G.name)+'</td><td>'+(G.magi?'MAGI (Health-e-Arizona Plus)':'Non-MAGI / PAS assessment')+'</td><td>'+G.blurb+'</td></tr>'});
+  h+='</tbody></table></div></div>';
+
+  h+='<div class="card"><h3 style="margin-top:0">Delivery \u2014 the state with no gray</h3>'+
+     '<p class="sub" style="margin-bottom:8px">ACC = AHCCCS Complete Care, integrated physical + behavioral since 2018. Geographic service areas simplified to statewide here.</p>'+
+     '<div class="tblwrap"><table><thead><tr><th>Code</th><th>Entity</th><th>Worth knowing</th></tr></thead><tbody>';
+  ACCPLANS.forEach(function(p){
+    h+='<tr><td class="mono">'+p.code+'</td><td>'+esc(p.name)+'</td><td>'+esc(p.note)+'</td></tr>';
+  });
+  ALTCS_EPD.forEach(function(p){
+    h+='<tr style="background:#eef6f6"><td class="mono">'+p.code+'</td><td>'+esc(p.name)+'</td><td>ALTCS program contractor \u2014 long-term care fully capitated since 1989</td></tr>';
+  });
+  h+='<tr style="background:#eef6f6"><td class="mono">DDD</td><td>'+esc(DDD.name)+'</td><td><b>A state agency holding a capitated contract</b> \u2014 the DES Division of Developmental Disabilities acts as the ALTCS-DD plan. Vermont made the whole state the plan; Arizona made one division a plan among plans</td></tr>'+
+     '<tr style="background:#f6f2fa"><td class="mono">AIHP</td><td>'+esc(AIHP.name)+'</td><td>The tribal FFS pathway, <b>built as a named program</b> with its own card \u2014 switchable with an ACC plan any month, either direction</td></tr>'+
+     '<tr><td class="mono">FFS</td><td>Fee-for-service</td><td><b>Retro tails only.</b> The only gray in the file \u2014 prior-quarter months for children and pregnant members that capitation cannot reach backward to cover</td></tr>'+
+     '</tbody></table></div></div>';
+
+  h+='<div class="card"><h3 style="margin-top:0">834 maintenance codes used in this app</h3>'+
+     '<div class="tblwrap"><table><thead><tr><th>INS03</th><th>Meaning</th><th>Where you\u2019ll see it</th></tr></thead><tbody>'+
+     '<tr><td class="mono">021</td><td>Addition</td><td>New enrollments \u2014 effective with eligibility, no FFS interlude \u2014 plus AIHP\u2194ACC switches and the ALTCS half of register F\u2019s plan-to-plan pairs</td></tr>'+
+     '<tr><td class="mono">024</td><td>Cancellation / termination</td><td>Renewal churn (B) and the ACC half of the register F hand-offs \u2014 goodbyes that are immediately hellos somewhere capitated</td></tr>'+
+     '<tr><td class="mono">001</td><td>Change</td><td>Register F\u2019s non-LTSS duals: Medicare arrives, the same ACC plan continues, the aligned D-SNP push puts both enrollments under one parent</td></tr>'+
+     '</tbody></table></div></div>';
+
+  h+='<div class="card"><h3 style="margin-top:0">Glossary</h3><dl class="gloss">'+
+    gl('AHCCCS','The Arizona Health Care Cost Containment System \u2014 pronounced \u201caccess.\u201d The last state Medicaid program in America (1982), launched as mandatory statewide capitation under an 1115 waiver: the oldest continuously running demonstration in the country, and the only program born with no FFS past.')+
+    gl('Born capitated','Arizona\u2019s defining data fact: there was never a traditional fee-for-service era, so there is no conversion seam, no legacy claims architecture, no birthmark. Compare Oklahoma \u2014 the same absence of history, reached from the opposite direction.')+
+    gl('ACC','AHCCCS Complete Care \u2014 the integrated acute program since 2018: physical and behavioral health in one plan capitation.')+
+    gl('ALTCS','The Arizona Long Term Care System (1989) \u2014 the nation\u2019s first fully capitated LTSS program: nursing facilities, HCBS, everything through program contractors at risk. The nursing homes of register E have never billed state FFS, because there has never been one to bill.')+
+    gl('DES/DDD','The Division of Developmental Disabilities \u2014 a state agency that holds the ALTCS-DD contract and operates as the managed care plan: government as a plan among plans, the structural inverse of privatization.')+
+    gl('AIHP','The American Indian Health Program \u2014 Arizona\u2019s formalization of the tribal managed-care exemption: not an absence but a named program with an ID card, administering FFS through the IHS, tribal, and urban Indian systems. Members may switch between AIHP and an ACC plan any month, in either direction \u2014 the most fluid delivery choice in this series.')+
+    gl('Prior quarter coverage','Arizona\u2019s term for retroactive eligibility \u2014 restricted by waiver for most adults (coverage begins with the application month) and retained for children and pregnant members, whose retro tails are the only FFS spans in this file.')+
+    gl('The circuit breaker','Arizona\u2019s expansion (2014) carries its own contingency: a hospital assessment funds the state share, and the statute unwinds if the federal match falls below 80% \u2014 a cousin of New Hampshire\u2019s trigger, one state over.')+
+    gl('Health-e-Arizona Plus','The eligibility portal \u2014 the front door of every span in this file.')+
+    gl('Buy-in','The state paying a dual member\u2019s Medicare Part B premium; accretion runs one to three months behind entitlement \u2014 the one clock even Arizona cannot capitate.')+
+    gl('834','The X12N enrollment and maintenance transaction \u2014 which AHCCCS was cutting to plans before the HIPAA standards existed. The oldest roster-file relationship in American Medicaid.')+
+    '</dl></div>';
+  function gl(t,d){return '<dt>'+t+'</dt><dd>'+d+'</dd>'}
+
+  h+='<div class="card"><h3 style="margin-top:0">Counties in this population</h3><p class="sub" style="margin-bottom:8px">Arizona has 15 counties; this roster draws from twelve \u2014 the Phoenix and Tucson cores, the border (Yuma, Nogales), and the northeastern counties where the Navajo Nation and Hopi lands hold register D\u2019s center of gravity: Coconino, Navajo, and Apache counties, from Tuba City to Chinle to Window Rock.</p><p style="font-size:.85rem">'+COUNTIES.map(function(c){return esc(c.name)}).join(' \u00b7 ')+'</p></div>';
+
+  document.getElementById('ref-out').innerHTML=h;
+}
+</script>
+<script>
+'use strict';
+/* ================= generic sortable table state ================= */
+var SORT={};
+function bindSort(tblId, renderFn){
+  document.querySelectorAll('#'+tblId+' th.sortable').forEach(function(th){
+    th.addEventListener('click',function(){
+      var k=th.getAttribute('data-k');
+      var cur=SORT[tblId]||{};
+      SORT[tblId]={k:k, dir:(cur.k===k&&cur.dir==='asc')?'desc':'asc'};
+      renderFn();
+    });
+  });
+}
+function sortRows(tblId, rows){
+  var s=SORT[tblId]; if(!s)return rows;
+  var dir=s.dir==='asc'?1:-1;
+  rows.sort(function(a,b){
+    var x=a[s.k],y=b[s.k];
+    if(x===null||x===undefined)x=-Infinity; if(y===null||y===undefined)y=-Infinity;
+    if(typeof x==='string'){x=x.toLowerCase();y=String(y).toLowerCase();return x<y?-dir:(x>y?dir:0)}
+    return (x-y)*dir;
+  });
+  return rows;
+}
+function sortMarks(tblId){
+  var s=SORT[tblId];
+  document.querySelectorAll('#'+tblId+' th.sortable').forEach(function(th){
+    var base=th.textContent.replace(/[\u25b2\u25bc]\s*$/,'').trim();
+    th.innerHTML=esc(base)+(s&&s.k===th.getAttribute('data-k')?' <span class="arr">'+(s.dir==='asc'?'\u25b2':'\u25bc')+'</span>':'');
+  });
+}
+
+/* ================= pagination ================= */
+var PAGE={}, PAGE_SIZE=50;
+function pager(tblId, total, renderFn, pagerId){
+  var pages=Math.max(1,Math.ceil(total/PAGE_SIZE));
+  var p=Math.min(PAGE[tblId]||1,pages); if(p<1)p=1; PAGE[tblId]=p;
+  var el=document.getElementById(pagerId);
+  if(el){
+    if(pages===1){ el.innerHTML=''; }
+    else{
+      el.innerHTML='<button class="pg"'+(p<=1?' disabled':'')+' data-d="-1">\u25c0 Prev</button>'+
+        '<span class="mono pgpos">page '+p+' of '+pages.toLocaleString()+'</span>'+
+        '<button class="pg"'+(p>=pages?' disabled':'')+' data-d="1">Next \u25b6</button>';
+      el.querySelectorAll('button.pg').forEach(function(b){
+        b.addEventListener('click',function(){ PAGE[tblId]=p+parseInt(b.getAttribute('data-d'),10); renderFn(); });
+      });
+    }
+  }
+  return {from:(p-1)*PAGE_SIZE, to:Math.min(total,p*PAGE_SIZE)};
+}
+function resetPage(tblId){ PAGE[tblId]=1 }
+
+/* ================= members roster ================= */
+var ROSTER_VIEW=[]; /* current filtered order (all pages), for modal nav */
+function fillSelect(id, opts, allLabel){
+  var el=document.getElementById(id);
+  el.innerHTML='<option value="">'+allLabel+'</option>'+opts.map(function(o){return '<option value="'+o[0]+'">'+o[1]+'</option>'}).join('');
+}
+function initRosterControls(){
+  fillSelect('m-group',GROUP_KEYS.map(function(g){return[g,g+' \u2014 '+GROUPS[g].name]}),'Coverage group: all');
+  var dopts=ACCPLANS.map(function(m){return[m.code,m.name]})
+    .concat(ALTCS_EPD.map(function(m){return[m.code,m.name]}));
+  dopts.push([DDD.code,DDD.name]);
+  dopts.push([AIHP.code,AIHP.name]);
+  dopts.push(['FFS','Fee-for-Service (retro tails)']);
+  fillSelect('m-del',dopts,'Delivery today: all');
+  fillSelect('m-reg',['A','B','C','D','E','F'].map(function(r){return[r,'Register '+r]}),'Register: all');
+  ['m-search','m-group','m-del','m-reg','m-status'].forEach(function(id){
+    document.getElementById(id).addEventListener('input',function(){resetPage('m-tbl');renderRoster()});
+  });
+  bindSort('m-tbl',renderRoster);
+}
+function renderRoster(){
+  var q=document.getElementById('m-search').value.trim().toLowerCase();
+  var fg=document.getElementById('m-group').value, fd=document.getElementById('m-del').value,
+      fr=document.getElementById('m-reg').value, fs=document.getElementById('m-status').value;
+  var rows=MEMBERS.filter(function(m){
+    if(fg&&m.grpToday!==fg)return false;
+    if(fd&&m.delTodayCode!==fd)return false;
+    if(fr&&m.reg!==fr)return false;
+    if(fs&&m.status!==fs)return false;
+    if(q){ var hay=(m.name+' '+m.id+' '+m.city+' '+m.county).toLowerCase(); if(hay.indexOf(q)<0)return false }
+    return true;
+  }).map(function(m){return {ix:m.ix,id:m.id,name:m.name,age:m.age,sex:m.sex,grp:m.grpToday,del:m.delTodayCode,county:m.county,reg:m.reg,status:m.status}});
+  rows=sortRows('m-tbl',rows); sortMarks('m-tbl');
+  ROSTER_VIEW=rows.map(function(r){return r.ix});
+  var pg=pager('m-tbl',rows.length,renderRoster,'m-pager');
+  var tb=document.getElementById('m-body'); tb.innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+r.age+'</td><td>'+r.sex+'</td>'+
+    '<td>'+grpChip(r.grp)+'</td><td>'+delChip(r.del)+'</td><td class="nowrap">'+esc(r.county)+'</td><td>'+regBadge(r.reg)+'</td><td>'+statusHtml(r.status)+'</td></tr>'}).join('');
+  document.getElementById('m-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' matching (population '+MEMBERS.length.toLocaleString()+')';
+  tb.querySelectorAll('tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'roster')})});
+}
+
+/* ================= eligibility spans ================= */
+var SPAN_VIEW=[];
+function initSpanControls(){
+  fillSelect('s-group',GROUP_KEYS.map(function(g){return[g,g+' \u2014 '+GROUPS[g].name]}),'Coverage group: all');
+  ['s-group','s-open'].forEach(function(id){document.getElementById(id).addEventListener('input',function(){resetPage('s-tbl');renderSpans()})});
+  bindSort('s-tbl',renderSpans);
+}
+function renderSpans(){
+  var fg=document.getElementById('s-group').value, fo=document.getElementById('s-open').value;
+  var rows=[];
+  MEMBERS.forEach(function(m){ m.eligSpans.forEach(function(s){
+    if(fg&&s.grp!==fg)return;
+    if(fo==='open'&&s.end!==null)return;
+    if(fo==='closed'&&s.end===null)return;
+    rows.push({ix:m.ix,id:m.id,name:m.name,grp:s.grp,start:s.start,end:(s.end===null?9999:s.end),endRaw:s.end,
+      months:spanMonths(s.start,s.end),reason:s.reason});
+  })});
+  rows=sortRows('s-tbl',rows); sortMarks('s-tbl');
+  SPAN_VIEW=[]; var seenS={}; rows.forEach(function(r){ if(!seenS[r.ix]){seenS[r.ix]=1;SPAN_VIEW.push(r.ix)} });
+  var pg=pager('s-tbl',rows.length,renderSpans,'s-pager');
+  document.getElementById('s-body').innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+grpChip(r.grp)+'</td>'+
+    '<td class="nowrap">'+startLabel(r.start)+'</td><td class="nowrap">'+(r.endRaw===null?'<span class="st-act">open</span>':mLabel(r.endRaw))+'</td>'+
+    '<td class="mono">'+r.months+(r.start<0?'+':'')+'</td><td>'+(r.reason?esc(r.reason):'\u2014')+'</td></tr>'}).join('');
+  document.getElementById('s-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' spans';
+  document.querySelectorAll('#s-body tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'spans')})});
+}
+function startLabel(s){ return s<0 ? mLabel(s)+' <span class="hint">(pre-window)</span>' : mLabel(s) }
+
+/* ================= delivery spans ================= */
+var DEL_VIEW=[];
+function initDelControls(){
+  var dopts=ACCPLANS.map(function(m){return[m.code,m.name]})
+    .concat(ALTCS_EPD.map(function(m){return[m.code,m.name]}));
+  dopts.push([DDD.code,DDD.name]);
+  dopts.push([AIHP.code,AIHP.name]);
+  dopts.push(['FFS','Fee-for-Service (retro tails)']);
+  fillSelect('d-sys',dopts,'Delivery system: all');
+  document.getElementById('d-sys').addEventListener('input',function(){resetPage('d-tbl');renderDel()});
+  bindSort('d-tbl',renderDel);
+}
+function renderDel(){
+  var fd=document.getElementById('d-sys').value;
+  var rows=[];
+  MEMBERS.forEach(function(m){ m.delSpans.forEach(function(s){
+    if(fd&&s.sys!==fd)return;
+    rows.push({ix:m.ix,id:m.id,name:m.name,sys:s.sys,start:s.start,end:(s.end===null?9999:s.end),endRaw:s.end,
+      months:spanMonths(s.start,s.end),note:s.note});
+  })});
+  rows=sortRows('d-tbl',rows); sortMarks('d-tbl');
+  DEL_VIEW=[]; var seenD={}; rows.forEach(function(r){ if(!seenD[r.ix]){seenD[r.ix]=1;DEL_VIEW.push(r.ix)} });
+  var pg=pager('d-tbl',rows.length,renderDel,'d-pager');
+  document.getElementById('d-body').innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+delChip(r.sys)+'</td>'+
+    '<td class="nowrap">'+startLabel(r.start)+'</td><td class="nowrap">'+(r.endRaw===null?'<span class="st-act">open</span>':mLabel(r.endRaw))+'</td>'+
+    '<td class="mono">'+r.months+(r.start<0?'+':'')+'</td><td>'+(r.note?esc(r.note):'\u2014')+'</td></tr>'}).join('');
+  document.getElementById('d-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' delivery spans';
+  document.querySelectorAll('#d-body tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'delivery')})});
+}
+</script>
+<script>
+'use strict';
+/* ================= scenario registers ================= */
+var REGDEFS={
+ A:{title:'Steady state \u2014 the program born capitated', q:'What does a roster look like when there was never anything to convert?',
+    body:'The baseline population of the oldest 1115 demonstration in the country \u2014 and the cleanest timelines in this series: enrollment effective with eligibility, no FFS interludes, no conversion seams, no birthmarks, because Arizona joined Medicaid in 1982 already capitated. Threaded through: <b>Banner \u2013 University</b> members on the hospital-owned plan of the academic medical center, and <b>Mercy Care</b> members on a plan as old as the program itself. Hold this register against Oklahoma\u2019s A \u2014 the same absence of FFS history, arrived at from opposite ends of four decades.'},
+ B:{title:'Renewal churn', q:'Where does a churned member land when there is no FFS layer to catch them?',
+    body:'Cases close at renewal, sit in a gap, and reopen \u2014 125 members are in the gap right now. The Arizona texture is the landing: the return goes straight into a plan, same month, because there is nowhere else to land. No FFS holding pattern, no interim gray \u2014 the gap ends the way it began, capitated on both edges.'},
+ C:{title:'Prior quarter coverage \u2014 the only gray in Arizona', q:'Where does fee-for-service survive in a state that never had it?',
+    body:'One place. Arizona\u2019s waiver restricts <b>prior quarter coverage</b> for most adults \u2014 150 members here applied and their coverage begins with the application month, full stop, no backward reach, no gray. But children and pregnant members kept the classic retro \u2014 and their 225 backward tails are <b>the only fee-for-service spans in this entire file</b>: months that capitation, which only runs forward, cannot touch. Filter the delivery tab to FFS and every row leads back to this register. In the state born capitated, gray is not a system; it is an arithmetic residue.'},
+ D:{title:'AIHP \u2014 the choice, formalized as a program', q:'What happens when a state builds the tribal exemption a name, an office, and a card?',
+    body:'Arizona holds one of the largest AI/AN Medicaid populations in the country \u2014 Navajo Nation, Tohono O\u2019odham, the Apache tribes, Hopi, the river communities \u2014 and rather than leaving the federal managed-care exemption as an absence, it built <b>AIHP</b>: the American Indian Health Program, the tribal FFS pathway administered as a named program with its own enrollment code and ID card. 190 members here are in AIHP with their IHS, tribal, and urban systems; 95 chose an ACC plan instead, Indian health providers protected in-network. And 90 <b>switched mid-window</b> \u2014 in both directions \u2014 because the choice is not a one-time election but a standing monthly option: the most fluid delivery decision in this series, exercised as easily as changing an address.'},
+ E:{title:'ALTCS \u2014 the 1989 marvel', q:'What does long-term care look like after thirty-six years of capitation \u2014 and what is a state agency doing holding a plan contract?',
+    body:'The Arizona Long Term Care System capitated nursing facilities and HCBS in <b>1989</b> \u2014 decades before the states this series has visited worked up the nerve \u2014 so the 230 EPD members here live in a world where even the nursing home per diem has never touched state FFS: program contractors hold the whole risk, home and facility alike. The other 95 are the register\u2019s structural marvel: <b>ALTCS-DD</b>, where the capitated contractor is <b>DES/DDD \u2014 a division of state government operating as the managed care plan</b>. Vermont made the whole state the plan; Arizona made one agency a plan among plans, holding a contract, taking the risk, coordinating the services. Government and market, occupying the same column.'},
+ F:{title:'Medicare arrives \u2014 never gray', q:'The eleventh Medicare answer: what does the birthday look like in a state with no FFS to fall back to?',
+    body:'Every prior state\u2019s answer involved gray somewhere \u2014 an FFS wrap, a Classic side, a tail. Arizona\u2019s cannot, because the color does not exist here. 195 members with long-term care needs hand off <b>plan to plan</b>: the ACC enrollment ends and an ALTCS contractor begins the same month \u2014 a 024/021 pair between two capitated systems, with no FFS interlude, because the second system was built for exactly this and has been waiting since 1989. The other 130, without LTSS needs, keep their ACC plan for the Medicaid side while Arizona\u2019s aggressive D-SNP alignment puts the Medicare enrollment under the same parent company. Eleven states, eleven architectures \u2014 and Arizona\u2019s is the only one where the answer, whatever else it is, is <b>never gray</b>.'}
+};
+function renderRegisters(){
+  var out=document.getElementById('reg-list'); var h='';
+  ['A','B','C','D','E','F'].forEach(function(r){
+    var d=REGDEFS[r], list=MEMBERS.filter(function(m){return m.reg===r});
+    var sample=list.slice(0,12);
+    h+='<div class="reg"><h3><span class="rl">'+r+'</span>'+esc(d.title)+'<span class="meta" style="margin-left:auto">'+list.length.toLocaleString()+' members</span></h3>'+
+       '<div class="q">'+d.q+'</div><p class="sub" style="margin-bottom:10px">'+d.body+'</p>'+
+       '<div class="tblwrap"><table><thead><tr><th>AHCCCS ID</th><th>Member</th><th>Group</th><th>Delivery today</th><th>The planted story</th></tr></thead><tbody>';
+    sample.forEach(function(m){
+      h+='<tr class="rowlink" data-ix="'+m.ix+'"><td class="mono">'+m.id+'</td><td class="nowrap">'+esc(m.name)+'</td><td>'+grpChip(m.grpToday)+'</td><td>'+delChip(m.delTodayCode)+'</td>'+
+         '<td>'+(m.flags.length?m.flags[0]:'Clean spans \u2014 the control group')+'</td></tr>';
+    });
+    h+='</tbody></table></div>';
+    if(list.length>sample.length){
+      h+='<div class="hint" style="margin-top:8px">Showing the first '+sample.length+' of '+list.length.toLocaleString()+'. Open any row \u2014 the \u25c0 \u25b6 arrows walk the entire register \u2014 or filter the Members tab by register for the full list.</div>';
+    }
+    h+='</div>';
+  });
+  out.innerHTML=h;
+  out.querySelectorAll('tr.rowlink').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'register')})});
+}
+
+/* ================= 834 builder ================= */
+function lastDelEvent(m){
+  var spans=m.delSpans.filter(function(s){return s.sys!=='FFS'});
+  if(!spans.length)return null;
+  var last=spans[spans.length-1];
+  if(m.reg==='F'&&m.toAltcs){
+    var prev=spans[spans.length-2];
+    return {kind:'021',del:last,pair:prev,why:'The ALTCS half of a plan-to-plan pair: the ACC termination and this addition hand the member between two capitated systems, same month, no FFS interlude. The second system has been waiting since 1989.'};
+  }
+  if(m.reg==='F'){
+    return {kind:'001',del:last,why:'Medicare arrived \u2014 and the same ACC plan continues for the Medicaid side, with the aligned D-SNP push putting both enrollments under one parent company. A change, not a goodbye \u2014 and, as always here, never gray.'};
+  }
+  if(m.reg==='D'&&spans.length>1){
+    return {kind:'021',del:last,why:(last.sys==='AIHP'?'A switch back to AIHP \u2014 the standing monthly option, exercised in the return direction. The exemption never hardens into a one-time election.':'A switch from AIHP to an ACC plan \u2014 effective the following month, no questions asked. The most fluid HD segment in this series.')};
+  }
+  if(m.reg==='B'&&last.start>TODAY_IDX){
+    return {kind:'024',del:spans[0],why:'Eligibility closed at renewal; the plan received a clean termination. The member is in the gap today \u2014 and will return straight into a plan, because there is nowhere else to land.'};
+  }
+  return {kind:'021',del:last,why:(m.reg==='C'?'Enrollment following the grant \u2014 for the retro members, note the two begin dates; for the adults, note there is only one.':(m.reg==='B'?'Re-enrollment after the gap \u2014 capitated on both edges.':(m.reg==='E'?(last.sys==='DDD'?'An ALTCS-DD enrollment \u2014 the receiver of this file is a division of state government, holding a capitated contract like any plan.':'An ALTCS enrollment \u2014 long-term care, fully capitated, as it has been since 1989.'):(last.sys==='AIHP'?'AIHP enrollment \u2014 the tribal pathway as a named program with a card of its own.':'Enrollment addition \u2014 effective with eligibility; born capitated means no interlude.'))))};
+}
+function ediRow(seg,note,loop){return '<div class="edirow'+(loop?' loop':'')+'"><div class="seg">'+esc(seg)+'</div><div class="note">'+note+'</div></div>'}
+function build834(m){
+  var ev=lastDelEvent(m);
+  var eligSpan=m.eligSpans[m.eligSpans.length-1];
+  var eligBegin=m.eligSpans[0].start;
+  var ctl=String(602000+m.ix*7);
+  var kindLabel={ '021':'Addition','001':'Change','024':'Termination' }[ev.kind];
+  var out='<div class="ediwrap"><div class="edihead"><span class="fn">834 \u2014 '+kindLabel+(ev.pair?' (half of a plan-to-plan pair)':'')+'</span><span class="hint">'+esc(ev.why)+'</span></div>';
+  var recvName = sysLabel(ev.del.sys).toUpperCase().replace(/\(.*\)/,'').trim().replace(/\u2013/g,'-');
+  var recvId = ev.del.sys;
+  out+=ediRow('ISA*00*          *00*          *ZZ*AZAHCCCS       *ZZ*'+(recvId+'          ').slice(0,10)+'    *260701*0800*^*00501*'+ctl.padStart(9,'0')+'*0*P*:~','Interchange envelope: AHCCCS to <b>'+esc(recvName)+'</b> \u2014 a roster-file relationship older than the HIPAA standard it now rides.');
+  out+=ediRow('GS*BE*AZAHCCCS*'+recvId+'*20260701*0800*'+ctl+'*X*005010X220A1~','Functional group: <b>BE</b> = benefit enrollment.');
+  out+=ediRow('ST*834*'+ctl.slice(-4)+'*005010X220A1~','Transaction set header. One ST/SE per batch; this rendering shows a single member for teaching.');
+  out+=ediRow('BGN*00*'+m.id+'-'+ctl.slice(-3)+'*20260701*0800****4~','Beginning segment. Purpose 00 = original. Action 4 = verify/full audit.');
+  out+=ediRow('N1*P5*ARIZONA HEALTH CARE COST CONTAINMENT SYSTEM*FI*866004791~','Loop 1000A \u2014 plan sponsor: AHCCCS, the 1982 original.', true);
+  out+=ediRow('N1*IN*'+recvName+'*FI*'+String(860000000+m.ix*13)+'~','Loop 1000B \u2014 the receiver'+(ev.del.sys==='DDD'?' \u2014 <b>a state agency</b>: the Division of Developmental Disabilities, holding this capitated contract like any commercial plan. Government in the plan column.':(ev.del.sys==='BANNER'?' \u2014 hospital-owned: the academic medical center and its plan share a balance sheet.':(ev.del.sys==='AIHP'?' \u2014 the American Indian Health Program: the tribal pathway, formalized.':'.'))), true);
+  out+=ediRow('INS*Y*18*'+ev.kind+'*'+(ev.kind==='024'?'07':(ev.kind==='001'?'43':'28'))+'*A***FT~','Loop 2000. Subscriber (Y/18). Maintenance <b>'+ev.kind+'</b>'+(ev.pair?' \u2014 half of a pair: the other half terminated the ACC plan the same cycle. Plan to plan; never through gray.':(m.reg==='F'&&!m.toAltcs?' \u2014 reason 43: Medicare entitlement, reported as a change.':'.')), true);
+  out+=ediRow('REF*0F*'+m.id+'~','The <b>AHCCCS ID</b> \u2014 one letter, eight digits. The person, permanently, across four decades of capitation.');
+  out+=ediRow('DTP*356*D8*'+mFirstD8(Math.max(eligBegin,-24))+'~','<b>Eligibility</b> begin date'+(m.reg==='C'&&m.delSpans[0].sys==='FFS'?' \u2014 note it precedes the plan begin below by the prior-quarter months: the only place in this file where the two clocks diverge.':(m.reg==='C'?' \u2014 equal to the application month: prior quarter coverage restricted by waiver. One clock, by subtraction.':'.')));
+  if(ev.kind==='024'&&ev.del.end!==null) out+=ediRow('DTP*357*D8*'+mLastD8(ev.del.end)+'~','End date \u2014 last day of the final capitated month.');
+  out+=ediRow('NM1*IL*1*'+m.last.toUpperCase()+'*'+m.first.toUpperCase()+'****34*'+String(526000000+m.ix*311)+'~','Member name. The 34 qualifier carries an SSN in real files; synthetic here.');
+  out+=ediRow('PER*IP**TE*'+m.phone.replace(/\D/g,'')+'~','Contact telephone.');
+  out+=ediRow('N3*'+m.street.toUpperCase()+'~','Street address.');
+  out+=ediRow('N4*'+m.city.toUpperCase()+'*AZ*'+m.zip+'~','City/state/ZIP: '+esc(m.city)+', '+esc(m.county)+' County.');
+  out+=ediRow('DMG*D8*'+dobD8(m.dob)+'*'+m.sex+'~','Date of birth and sex.');
+  if(m.lang!=='English') out+=ediRow('LUI*LD*'+({'Spanish':'SPA','Navajo':'NAV','Apache':'APA','O\u2019odham':'OOD','Vietnamese':'VIE','Somali':'SOM','Arabic':'ARA'}[m.lang]||'ENG')+'**6~','Preferred language: '+esc(m.lang)+'.'+(m.lang==='Navajo'?' Din\u00e9 bizaad \u2014 the most spoken Native language in the United States, and a working language of register D.':(m.lang==='O\u2019odham'?' The language of the Tohono O\u2019odham Nation \u2014 whose lands straddle the border this file\u2019s southern counties sit on.':'')));
+  out+=ediRow('HD*'+ev.kind+'**HLT*'+ev.del.sys+'~','Loop 2300 \u2014 '+(sysKind(ev.del.sys)==='LTC'?'the ALTCS contractor: long-term care, fully at risk since 1989.':(ev.del.sys==='DDD'?'the DDD contract \u2014 a state agency as the plan.':(ev.del.sys==='AIHP'?'AIHP \u2014 a delivery code that is neither a commercial plan nor an absence.':'the ACC plan: integrated physical and behavioral health.'))), true);
+  out+=ediRow('DTP*348*D8*'+mFirstD8(Math.max(ev.del.start,-24))+'~','<b>Plan</b> begin date \u2014 '+(m.reg==='A'||m.reg==='B'?'effective with eligibility: born capitated means no interlude.':'first of the month, always prospective.'));
+  if(ev.del.end!==null&&ev.kind!=='024') out+=ediRow('DTP*349*D8*'+mLastD8(ev.del.end)+'~','Plan end date \u2014 last day of the final capitated month.');
+  out+=ediRow('LS*2700~','Open the member-reporting loop.', true);
+  out+=ediRow('LX*1~ N1*75*COVERAGE GROUP~ REF*ZZ*'+eligSpan.grp+'~','The coverage group ('+esc(GROUPS[eligSpan.grp].name)+').');
+  if(m.aian) out+=ediRow('LX*2~ N1*75*AI-AN~ REF*ZZ*'+(m.delTodayCode==='AIHP'?'AIHP':'IHS')+'~','Tribal citizen \u2014 '+esc(m.tribe)+'; '+esc(IHS_FAC[m.tribe])+'. The AIHP\u2194plan choice is a standing monthly option.');
+  if(m.reg==='F') out+=ediRow('LX*3~ N1*75*MEDICARE STATUS~ REF*ZZ*AB~','Medicare A+B from '+mLabel(m.medicareIdx)+' \u2014 the fact behind the '+(m.toAltcs?'plan-to-plan hand-off':'payer-order change')+' above.');
+  out+=ediRow('LE*2700~','Close the reporting loop.', true);
+  out+=ediRow('SE*'+ri(16,22)+'*'+ctl.slice(-4)+'~ GE*1*'+ctl+'~ IEA*1*'+ctl.padStart(9,'0')+'~','Trailers: segment count, group close, interchange close. Counts must reconcile or the whole file bounces.');
+  out+='</div>';
+  if(m.reg==='F'&&m.toAltcs){
+    out+='<div class="plain" style="margin-top:14px"><span class="pe-label">Worth noticing</span>In every other state in this series, this life event routes through gray somewhere \u2014 an FFS wrap, a Classic ledger, a tail. Here the 024 and the 021 hand the member directly between two capitated systems, because Arizona built the second one in 1989 for precisely this moment. Reconciliation teams reading this pair should verify one thing above all: that the ALTCS begin date is the day after the ACC end date, with no orphan month between capitations. In the state with no FFS, an uncovered month has nowhere to hide \u2014 and no safety net to quietly absorb it.</div>';
+  }
+  return out;
+}
+function initFileTab(){
+  var sel=document.getElementById('f-member');
+  var h='';
+  ['A','B','C','D','E','F'].forEach(function(r){
+    h+='<optgroup label="Register '+r+' \u2014 '+esc(REGDEFS[r].title)+'">';
+    MEMBERS.filter(function(m){return m.reg===r}).slice().sort(function(a,b){return a.name.localeCompare(b.name)}).forEach(function(m){
+      h+='<option value="'+m.ix+'">'+esc(m.name)+' \u2014 '+m.id+'</option>';
+    });
+    h+='</optgroup>';
+  });
+  sel.innerHTML=h;
+  sel.addEventListener('input',function(){renderFile(+sel.value)});
+  renderFile(+sel.value);
+}
+function renderFile(ix){
+  document.getElementById('f-out').innerHTML=build834(MEMBERS[ix]);
+}
+</script>
+<script>
+'use strict';
+/* ================= modal ================= */
+var MODAL={ix:null, ctx:'roster'};
+function navList(){
+  if(MODAL.ctx==='spans'&&SPAN_VIEW.length)return SPAN_VIEW;
+  if(MODAL.ctx==='delivery'&&DEL_VIEW.length)return DEL_VIEW;
+  if(MODAL.ctx==='register'&&MODAL.ix!==null){
+    var r=MEMBERS[MODAL.ix].reg;
+    return MEMBERS.filter(function(m){return m.reg===r}).map(function(m){return m.ix});
+  }
+  return ROSTER_VIEW.length?ROSTER_VIEW:MEMBERS.map(function(m){return m.ix});
+}
+function openModal(ix,ctx){
+  MODAL.ix=ix; if(ctx)MODAL.ctx=ctx;
+  var m=MEMBERS[ix];
+  document.getElementById('mo-nm').textContent=m.first+' '+m.last;
+  document.getElementById('mo-id').textContent='AHCCCS ID '+m.id+'  \u00b7  Register '+m.reg;
+  document.getElementById('mo-body').innerHTML=modalBody(m);
+  var list=navList(), pos=list.indexOf(ix);
+  document.getElementById('mo-pos').textContent=(pos+1)+' / '+list.length+' ('+MODAL.ctx+')';
+  document.getElementById('mo-prev').disabled=pos<=0;
+  document.getElementById('mo-next').disabled=pos<0||pos>=list.length-1;
+  document.getElementById('overlay').classList.add('on');
+  document.getElementById('modal').classList.add('on');
+  highlightRow(ix);
+  document.getElementById('mo-x').focus();
+}
+function closeModal(){
+  document.getElementById('overlay').classList.remove('on');
+  document.getElementById('modal').classList.remove('on');
+  highlightRow(null);
+  MODAL.ix=null;
+}
+function stepModal(d){
+  var list=navList(), pos=list.indexOf(MODAL.ix), np=pos+d;
+  if(np<0||np>=list.length)return;
+  openModal(list[np]);
+}
+function highlightRow(ix){
+  document.querySelectorAll('tr.hl').forEach(function(tr){tr.classList.remove('hl')});
+  if(ix===null)return;
+  document.querySelectorAll('tr.rowlink[data-ix="'+ix+'"]').forEach(function(tr){tr.classList.add('hl')});
+}
+
+/* ---------- mini two-band timeline ---------- */
+function tlBar(startIdx,endIdx,color,striped,title){
+  var s=Math.max(startIdx,0), e=(endIdx===null?WIN_MONTHS-1:Math.min(endIdx,WIN_MONTHS-1));
+  if(e<0||s>WIN_MONTHS-1)return '';
+  var l=100*s/WIN_MONTHS, w=100*(e-s+1)/WIN_MONTHS;
+  return '<span class="bar'+(striped?' striped':'')+'" style="left:'+l+'%;width:'+w+'%;background:'+color+'" title="'+esc(title)+'"></span>';
+}
+function timeline(m){
+  var h='<div class="tl">';
+  h+='<div class="band"><span class="bl">Eligibility</span><span class="lane">';
+  m.eligSpans.forEach(function(s){
+    h+=tlBar(s.start,s.end,'var('+GROUPS[s.grp].color+')',false,s.grp+' '+mLabel(s.start)+' \u2013 '+(s.end===null?'open':mLabel(s.end)));
+  });
+  h+='<span class="todayline" style="left:'+(100*(TODAY_IDX+0.5)/WIN_MONTHS)+'%"></span></span></div>';
+  h+='<div class="band"><span class="bl">Delivery</span><span class="lane">';
+  m.delSpans.forEach(function(s){
+    var k=sysKind(s.sys);
+    var col = k==='FFS'?'var(--d-ffs)':(k==='AIHP'?'var(--d-harp)':(k==='LTC'||k==='DDD'?'var(--d-mltc)':'var(--d-mco)'));
+    h+=tlBar(s.start,s.end,col,s.sys!=='FFS',sysLabel(s.sys)+' '+mLabel(s.start)+' \u2013 '+(s.end===null?'open':mLabel(s.end)));
+  });
+  h+='<span class="todayline" style="left:'+(100*(TODAY_IDX+0.5)/WIN_MONTHS)+'%"></span></span></div>';
+  h+='<div class="axis"><span></span><span class="ax">'+
+     '<span style="left:2%">Jan 25</span><span style="left:27%">Jul 25</span><span style="left:52%">Jan 26</span><span style="left:77%">Jul 26</span></span></div>';
+  h+='<div class="tl-note">Striped blue = ACC plan \u00b7 striped teal = ALTCS contractor or DDD (capitated LTSS) \u00b7 striped purple = AIHP (the tribal program) \u00b7 solid gray = fee-for-service \u2014 which appears ONLY on register C\u2019s prior-quarter tails: the rarest color in Arizona \u00b7 red line = today (Jul 2026). Bars clamp to the 24-month window; pre-window starts are noted in the span tables.</div></div>';
+  return h;
+}
+
+/* ---------- per-member plain english ---------- */
+function plainFor(m){
+  var p='';
+  var first=m.first;
+  var last=m.delSpans[m.delSpans.length-1];
+  if(m.reg==='A'){
+    if(m.delTodayCode==='BANNER'){
+      p=first+' is enrolled with <b>Banner \u2013 University Family Care</b> \u2014 the academic medical center that owns its plan: the teaching hospital, the residents, and the insurer share one balance sheet. Hospital-owned coverage, Arizona edition.';
+    } else if(m.delTodayCode==='MERCY'){
+      p=first+' is a Mercy Care member \u2014 a plan that has been in AHCCCS since the 1980s, nearly as old as the program itself. In the state born capitated, even the plans have tenure.';
+    } else {
+      p=first+' is the modal AHCCCS record: eligible under <b>'+m.grpToday+' ('+esc(GROUPS[m.grpToday].name)+')</b>, enrolled with '+esc(sysLabel(m.delTodayCode))+' \u2014 effective with eligibility, no FFS interlude, because Arizona has no FFS program to sit in. The cleanest timeline shape in this series: no seam, because there was never anything to convert.';
+    }
+  } else if(m.reg==='B'){
+    var t2=m.eligSpans[0].end, rg=m.eligSpans[1].start, gap=rg-t2-1;
+    if(rg>TODAY_IDX){
+      p=first+'\u2019s renewal did not come back and the case closed after '+mLabel(t2)+'. As of today '+first+' is <b>in the gap</b>; the data shows the case reopening in '+mLabel(rg)+' \u2014 straight into a plan, same month, because there is nowhere else to land.';
+    } else {
+      p=first+' churned: closed at renewal after '+mLabel(t2)+', '+gap+' month'+(gap>1?'s':'')+' in the gap, back on in '+mLabel(rg)+' \u2014 capitated on both edges of the gap. In Arizona, churn has no gray lining.';
+    }
+  } else if(m.reg==='C'){
+    if(m.delSpans[0].sys==='FFS'){
+      var s=m.eligSpans[0].start;
+      p=first+'\u2019s grant reached backward to '+mLabel(s)+' \u2014 prior quarter coverage, retained for children and pregnant members \u2014 and the gray tail on this timeline is a collector\u2019s item: <b>the only fee-for-service spans in the entire file live in this register</b>. Capitation runs forward; these months are the arithmetic residue it cannot reach. In the state born capitated, gray is not a system \u2014 it is a remainder.';
+    } else {
+      var app=m.eligSpans[0].start;
+      p=first+' applied in '+mLabel(app)+' \u2014 and coverage begins in '+mLabel(app)+', full stop: Arizona\u2019s waiver restricts prior quarter coverage for most adults. Look at the timeline: no gray, not because the state is generous, but because there is nothing backward to pay. One clock, by subtraction \u2014 the child in the next record over got the months this record cannot.';
+    }
+  } else if(m.reg==='D'){
+    var switched=(m.delSpans.length>1);
+    if(!switched&&m.delTodayCode==='AIHP'){
+      p=first+' is a citizen of '+esc(m.tribe)+', enrolled in <b>AIHP</b> \u2014 the American Indian Health Program. Arizona did not leave the tribal managed-care exemption as an absence: it built a named program with an ID card, administering the FFS pathway through '+esc(IHS_FAC[m.tribe])+'. The purple span is a program, not a gap \u2014 and next month, if '+(m.sex==='F'?'she':'he')+' wanted, it could be a plan instead.';
+    } else if(!switched){
+      p=first+' is a citizen of '+esc(m.tribe)+' who chose an ACC plan \u2014 '+esc(sysLabel(m.delTodayCode))+' \u2014 over AIHP, with '+esc(IHS_FAC[m.tribe])+' protected in-network under the Indian health provisions. The choice runs both directions and never hardens: any month, either answer.';
+    } else {
+      var to=last.sys==='AIHP'?'back to AIHP':'from AIHP to '+sysLabel(last.sys);
+      p='In '+mLabel(last.start)+', '+first+' \u2014 '+esc(m.tribe)+' \u2014 switched '+esc(to)+'. AI/AN members can move between AIHP and an ACC plan <b>any month, in either direction</b>: the most fluid delivery choice in this series, exercised here '+(last.sys==='AIHP'?'in the return direction \u2014 proof the door swings both ways.':'toward the plan \u2014 with the tribal providers riding along in-network.');
+    }
+  } else if(m.reg==='E'){
+    if(m.delTodayCode==='DDD'){
+      p=first+' is in <b>ALTCS-DD</b> \u2014 and the managed care contractor on this capitated enrollment is <b>a division of state government</b>: DES/DDD holds the contract, takes the risk, and coordinates the services, exactly as a commercial plan would. Vermont made the whole state the plan; Arizona made one agency a plan among plans. Government and market, same column, same 834.';
+    } else {
+      p=first+' is '+m.age+' and in <b>ALTCS</b> \u2014 the Arizona Long Term Care System, fully capitated since <b>1989</b>, decades before the rest of this series\u2019 states dared. '+(m.flags[0].indexOf('served at home')>=0?'Served at home through HCBS, coordinated and paid by '+esc(sysLabel(m.delTodayCode))+'.':'A nursing facility resident whose per diem flows through '+esc(sysLabel(m.delTodayCode))+' \u2014 a nursing home that has never billed state FFS, because there has never been one to bill.');
+    }
+  } else {
+    var mi=m.medicareIdx, bi=m.buyinIdx, lag=bi-mi;
+    if(m.toAltcs){
+      p=(m.ssdi?'Medicare arrived for '+first+' in '+mLabel(mi)+' \u2014 with long-term care needs alongside it.':'In '+mLabel(mi)+', '+first+' turned 65, with long-term care needs arriving alongside Medicare.')+' And the record moved <b>plan to plan</b>: the ACC enrollment ended and an ALTCS contractor began the same month \u2014 no FFS wrap, no gray interlude, because in Arizona the color does not exist. The second capitated system was built in 1989 for exactly this hand-off. The buy-in accreted '+mLabel(bi)+' after its '+lag+'-month limbo \u2014 the one clock even Arizona cannot capitate. The eleventh Medicare answer in this series: <b>never gray</b>.';
+    } else {
+      p=(m.ssdi?'Medicare arrived for '+first+' in '+mLabel(mi)+'.':'In '+mLabel(mi)+', '+first+' turned 65 and Medicare arrived.')+' No long-term care needs \u2014 so '+esc(sysLabel(m.delTodayCode))+' simply continues for the Medicaid side, Medicare primary, with Arizona\u2019s aggressive D-SNP alignment putting both enrollments under one parent company. The buy-in accreted '+mLabel(bi)+' ('+lag+'-month limbo). The 834 was an 001 change \u2014 and the timeline, as everywhere in this file, shows no gray at all.';
+    }
+  }
+  return '<div class="plain"><span class="pe-label">In plain English</span>'+p+'</div>';
+}
+
+/* ---------- modal body ---------- */
+function modalBody(m){
+  var h='';
+  var et=eligToday(m);
+  h+='<div class="kv">'+
+    kv('Status today',statusHtml(m.status))+
+    kv('Coverage group',grpChip(m.grpToday)+' <span style="font-size:.8rem;color:var(--ink-soft)">'+esc(GROUPS[m.grpToday].name)+'</span>')+
+    kv('Delivery today',delChip(m.delTodayCode)+(m.delTodayCode!=='\u2014'?' <span style="font-size:.8rem;color:var(--ink-soft)">'+esc(sysLabel(m.delTodayCode))+'</span>':''))+
+    kv('Date of birth',dobLabel(m.dob)+' <span class="hint">(age '+m.age+')</span>')+
+    kv('Sex',m.sex)+
+    kv('Address',esc(m.street)+', '+esc(m.city)+', AZ '+m.zip)+
+    kv('County',esc(m.county))+
+    kv('Phone','<span class="mono">'+m.phone+'</span>')+
+    kv('Preferred language',esc(m.lang))+
+    (m.aian?kv('Tribal citizenship',esc(m.tribe)+' \u2014 '+esc(IHS_FAC[m.tribe])):'')+
+    '</div>';
+  function kv(k,v){return '<div class="k">'+k+'</div><div class="v">'+v+'</div>'}
+  h+='<h4>24-month picture</h4>'+timeline(m);
+  h+=plainFor(m);
+  h+='<h4>Eligibility spans</h4><div class="tblwrap"><table><thead><tr><th>Group</th><th>Begin</th><th>End</th><th>Reason</th></tr></thead><tbody>';
+  m.eligSpans.forEach(function(s){
+    h+='<tr><td>'+grpChip(s.grp)+'</td><td class="nowrap">'+startLabel(s.start)+'</td><td class="nowrap">'+(s.end===null?'<span class="st-act">open</span>':mLabel(s.end))+'</td><td>'+(s.reason?esc(s.reason):'\u2014')+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  h+='<h4>Delivery spans</h4><div class="tblwrap"><table><thead><tr><th>System</th><th>Begin</th><th>End</th><th>Note</th></tr></thead><tbody>';
+  m.delSpans.forEach(function(s){
+    h+='<tr><td>'+delChip(s.sys)+'</td><td class="nowrap">'+startLabel(s.start)+'</td><td class="nowrap">'+(s.end===null?'<span class="st-act">open</span>':mLabel(s.end))+'</td><td>'+(s.note?esc(s.note):'\u2014')+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  if(m.flags.length){
+    h+='<h4>Flags</h4><p>'+m.flags.map(function(f){return '<span class="flag">'+esc(f)+'</span>'}).join(' ')+'</p>';
+  }
+  h+='<h4>See the file</h4><p style="font-size:.84rem;color:var(--ink-soft)">Open <b>What the File Says</b> and choose '+esc(m.first+' '+m.last)+' to read the 834 the plan received for this member\u2019s most recent enrollment event.</p>';
+  return h;
+}
+
+/* ================= navigation & boot ================= */
+function showPage(pg){
+  document.querySelectorAll('nav button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-pg')===pg)});
+  document.querySelectorAll('.page').forEach(function(p){p.classList.toggle('on',p.id==='pg-'+pg)});
+  if(pg==='overview')renderOverview();
+}
+document.getElementById('nav').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b)return; showPage(b.getAttribute('data-pg'));
+});
+document.getElementById('mo-x').addEventListener('click',closeModal);
+document.getElementById('overlay').addEventListener('click',closeModal);
+document.getElementById('mo-prev').addEventListener('click',function(){stepModal(-1)});
+document.getElementById('mo-next').addEventListener('click',function(){stepModal(1)});
+document.addEventListener('keydown',function(e){
+  if(MODAL.ix===null)return;
+  if(e.key==='Escape')closeModal();
+  else if(e.key==='ArrowLeft')stepModal(-1);
+  else if(e.key==='ArrowRight')stepModal(1);
+});
+
+/* boot */
+renderOverview();
+initRosterControls(); renderRoster();
+initSpanControls();  renderSpans();
+initDelControls();   renderDel();
+renderRegisters();
+initFileTab();
+renderReference();
+</script>
+</body>
+</html>

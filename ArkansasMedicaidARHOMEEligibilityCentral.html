@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arkansas Medicaid & ARHOME Eligibility Central</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@1,8..60,400;1,8..60,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#1E5FCC;
+  --accent-soft:#E8EFFB;
+  --ink:#1b2430;
+  --ink-soft:#4a5568;
+  --ink-faint:#8a94a3;
+  --line:#dde3ea;
+  --line-soft:#eceff3;
+  --bg:#f7f8fa;
+  --card:#ffffff;
+  --serif:'Source Serif 4', Georgia, serif;
+  --sans:'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono:'IBM Plex Mono', 'Consolas', monospace;
+  --g-FC01:#2E7D5B; --g-PG02:#B0568C; --g-CH19:#C98A2B; --g-EA02:#1E5FCC;
+  --g-SI02:#6A4FB6; --g-MN98:#5B8AA6; --g-FF26:#C25B4A; --g-WD02:#3E9C9C; --g-LT01:#7A7A52;
+  --d-mco:#4a7fd6; --d-ffs:#9aa3ad; --d-harp:#8a5fc0; --d-mltc:#2e8f8f;
+  --ok:#2E7D5B; --warn:#C98A2B; --bad:#C0392B;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+
+/* ---------- header ---------- */
+header{background:var(--card);border-bottom:1px solid var(--line);padding:18px 28px 0}
+.brandrow{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.wordmark{font-family:var(--serif);font-style:italic;font-weight:600;font-size:1.65rem;color:var(--accent);letter-spacing:.01em}
+.wordmark .st{color:var(--ink)}
+.tagline{color:var(--ink-faint);font-size:.85rem}
+.credit{margin-left:auto;color:var(--ink-faint);font-size:.78rem}
+nav{display:flex;gap:2px;margin-top:14px;flex-wrap:wrap}
+nav button{appearance:none;border:none;background:none;font:inherit;font-size:.86rem;font-weight:500;color:var(--ink-soft);padding:9px 14px;cursor:pointer;border-bottom:3px solid transparent;border-radius:6px 6px 0 0}
+nav button:hover{background:var(--line-soft)}
+nav button.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+nav button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+/* ---------- layout ---------- */
+main{max-width:1280px;margin:0 auto;padding:24px 28px 80px}
+.page{display:none}
+.page.on{display:block}
+h2{font-size:1.22rem;font-weight:700;margin:4px 0 4px}
+h3{font-size:.98rem;font-weight:600;margin:22px 0 8px}
+.sub{color:var(--ink-soft);font-size:.88rem;margin-bottom:16px;max-width:70ch}
+
+/* ---------- plain english callout ---------- */
+.plain{font-family:var(--serif);font-style:italic;font-size:1.02rem;line-height:1.65;color:#2c3a4d;background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:14px 18px;margin:14px 0 20px;max-width:86ch}
+.plain b{font-style:italic;font-weight:600}
+.plain .pe-label{display:block;font-family:var(--sans);font-style:normal;font-weight:700;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:5px}
+
+/* ---------- cards / stats ---------- */
+.statrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.stat .n{font-family:var(--mono);font-size:1.55rem;font-weight:600;color:var(--ink)}
+.stat .l{font-size:.74rem;color:var(--ink-soft);margin-top:2px;line-height:1.35}
+.stat.acc .n{color:var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:14px 0}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:900px){.twocol{grid-template-columns:1fr}}
+
+/* ---------- legend / bars ---------- */
+.leg{display:flex;flex-direction:column;gap:7px}
+.legrow{display:grid;grid-template-columns:16px 64px 1fr 46px;gap:10px;align-items:center;font-size:.84rem}
+.legrow .swatch{width:14px;height:14px;border-radius:4px}
+.legrow .code{font-family:var(--mono);font-size:.8rem;font-weight:600}
+.legrow .cnt{font-family:var(--mono);text-align:right;color:var(--ink-soft)}
+.barlist{display:flex;flex-direction:column;gap:8px}
+.barrow{display:grid;grid-template-columns:210px 1fr 40px;gap:10px;align-items:center;font-size:.83rem}
+.barrow .track{background:var(--line-soft);border-radius:5px;height:14px;overflow:hidden}
+.barrow .fill{display:block;height:100%;background:var(--d-mco);border-radius:5px;transition:width .8s ease}
+.barrow .bn{font-family:var(--mono);text-align:right;color:var(--ink-soft)}
+@media(max-width:700px){.barrow{grid-template-columns:130px 1fr 36px}}
+
+/* ---------- controls ---------- */
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;align-items:center}
+.controls input[type=search],.controls select{font:inherit;font-size:.85rem;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
+.controls input[type=search]{min-width:220px}
+.controls select:focus,.controls input:focus{outline:2px solid var(--accent);outline-offset:0}
+.hint{font-size:.76rem;color:var(--ink-faint)}
+
+/* ---------- tables ---------- */
+.tblwrap{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:auto;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:.83rem}
+th{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);background:#fbfcfd;white-space:nowrap;position:sticky;top:0}
+th.sortable{cursor:pointer;user-select:none}
+th.sortable:hover{color:var(--accent)}
+th .arr{font-size:.72rem;color:var(--accent)}
+.pager{display:flex;align-items:center;justify-content:center;gap:14px;margin:12px 0 2px}
+.pager button.pg{appearance:none;font:inherit;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:5px 13px;cursor:pointer;font-size:.82rem;color:var(--ink-soft)}
+.pager button.pg:hover:not(:disabled){background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.pager button.pg:disabled{opacity:.35;cursor:default}
+.pager .pgpos{font-size:.78rem;color:var(--ink-faint)}
+td{padding:9px 12px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tbody tr.rowlink{cursor:pointer}
+tbody tr.rowlink:hover{background:var(--accent-soft)}
+tbody tr.hl{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+.mono{font-family:var(--mono);font-size:.8rem}
+.nowrap{white-space:nowrap}
+
+/* ---------- chips ---------- */
+.chip{display:inline-block;font-family:var(--mono);font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:20px;color:#fff;white-space:nowrap}
+.chip.outl{background:none;border:1.5px solid currentColor}
+.dchip{display:inline-block;font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:5px;white-space:nowrap}
+.d-mco{background:#e5edfa;color:#2456a8}
+.d-ffs{background:#eceff2;color:#5c6672}
+.d-harp{background:#efe7f8;color:#6a3fa0}
+.d-mltc{background:#e2f2f2;color:#1f6f6f}
+.st-act{color:var(--ok);font-weight:600}
+.st-gap{color:var(--warn);font-weight:600}
+.st-cls{color:var(--ink-faint);font-weight:600}
+.flag{display:inline-block;font-size:.7rem;font-weight:600;background:#fdf1e0;color:#96660f;border:1px solid #f0d9ae;border-radius:5px;padding:1px 7px;white-space:nowrap}
+
+/* ---------- registers ---------- */
+.reg{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin:12px 0}
+.reg h3{margin:0 0 4px;display:flex;align-items:center;gap:10px}
+.reg .rl{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;background:var(--accent);color:#fff;font-family:var(--mono);font-weight:600;font-size:.85rem;flex:none}
+.reg .q{font-family:var(--serif);font-style:italic;color:#2c3a4d;font-size:.95rem;margin:4px 0 10px}
+.reg .meta{font-size:.78rem;color:var(--ink-faint);margin-bottom:8px}
+
+/* ---------- 834 ---------- */
+.ediwrap{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:12px 0;overflow:hidden}
+.edihead{padding:12px 18px;border-bottom:1px solid var(--line);display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;background:#fbfcfd}
+.edihead .fn{font-family:var(--mono);font-size:.82rem;font-weight:600}
+.edirow{display:grid;grid-template-columns:minmax(300px,46%) 1fr;border-bottom:1px solid var(--line-soft)}
+.edirow:last-child{border-bottom:none}
+.edirow .seg{font-family:var(--mono);font-size:.78rem;padding:8px 16px;background:#f4f7fb;color:#1b3a66;overflow-wrap:anywhere;border-right:1px solid var(--line-soft)}
+.edirow .note{font-size:.8rem;padding:8px 16px;color:var(--ink-soft)}
+.edirow.loop .seg{background:#e8effb;font-weight:600}
+@media(max-width:780px){.edirow{grid-template-columns:1fr}.edirow .seg{border-right:none}}
+
+/* ---------- modal ---------- */
+.overlay{position:fixed;inset:0;background:rgba(20,28,40,.42);opacity:0;pointer-events:none;transition:opacity .22s;z-index:40}
+.overlay.on{opacity:1;pointer-events:auto}
+.slideover{position:fixed;top:0;right:0;bottom:0;width:640px;max-width:94vw;background:var(--card);box-shadow:-12px 0 40px rgba(15,25,45,.22);transform:translateX(102%);transition:transform .26s ease;z-index:50;display:flex;flex-direction:column}
+.slideover.on{transform:translateX(0)}
+.mo-head{padding:16px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+.mo-head .who{min-width:0}
+.mo-head .nm{font-weight:700;font-size:1.05rem}
+.mo-head .idz{font-family:var(--mono);font-size:.76rem;color:var(--ink-soft)}
+.mo-x{margin-left:auto;appearance:none;border:1px solid var(--line);background:none;border-radius:8px;width:32px;height:32px;font-size:1rem;cursor:pointer;color:var(--ink-soft);flex:none}
+.mo-x:hover{background:var(--line-soft)}
+.mo-body{overflow-y:auto;padding:18px 22px;flex:1}
+.mo-foot{border-top:1px solid var(--line);padding:10px 22px;display:flex;align-items:center;gap:12px}
+.mo-foot button{appearance:none;font:inherit;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:.9rem}
+.mo-foot button:hover:not(:disabled){background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.mo-foot button:disabled{opacity:.35;cursor:default}
+.mo-foot .pos{font-family:var(--mono);font-size:.78rem;color:var(--ink-faint);margin-left:auto}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:4px 12px;font-size:.85rem;margin:8px 0 14px}
+.kv .k{color:var(--ink-faint)}
+.kv .v{color:var(--ink)}
+.mo-body h4{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);margin:16px 0 8px}
+.mo-body .plain{font-size:.93rem;padding:12px 15px}
+
+/* ---------- mini timeline ---------- */
+.tl{margin:6px 0 4px}
+.tl .band{display:grid;grid-template-columns:78px 1fr;gap:8px;align-items:center;margin:5px 0}
+.tl .bl{font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-faint);text-align:right}
+.tl .lane{position:relative;height:18px;background:var(--line-soft);border-radius:4px}
+.tl .bar{position:absolute;top:0;bottom:0;border-radius:4px;min-width:3px}
+.tl .bar.striped{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.28) 0 5px,transparent 5px 10px)}
+.tl .axis{display:grid;grid-template-columns:78px 1fr;gap:8px;margin-top:3px}
+.tl .ax{position:relative;height:14px;font-size:.62rem;color:var(--ink-faint);font-family:var(--mono)}
+.tl .ax span{position:absolute;transform:translateX(-50%)}
+.tl .todayline{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--bad);opacity:.7}
+.tl-note{font-size:.7rem;color:var(--ink-faint);margin-top:6px}
+
+/* ---------- reference ---------- */
+.refgrid{display:grid;grid-template-columns:1fr;gap:4px}
+dl.gloss{display:grid;grid-template-columns:200px 1fr;gap:8px 16px;font-size:.85rem}
+dl.gloss dt{font-weight:600}
+dl.gloss dd{color:var(--ink-soft)}
+@media(max-width:700px){dl.gloss{grid-template-columns:1fr}dl.gloss dd{margin-bottom:8px}}
+footer{max-width:1280px;margin:0 auto;padding:0 28px 40px;color:var(--ink-faint);font-size:.75rem;line-height:1.6}
+@media(max-width:700px){header{padding:14px 16px 0}main{padding:18px 14px 60px}.kv{grid-template-columns:120px 1fr}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brandrow">
+    <div class="wordmark">Arkansas Medicaid Eligibility <span class="st">Central</span></div>
+    <div class="tagline">The private option, PASSEs, ARKids, and the 834 &mdash; a synthetic demonstration</div>
+    <div class="credit">Robert Thomas Keyes</div>
+  </div>
+  <nav id="nav" aria-label="Sections">
+    <button data-pg="overview" class="on">Overview</button>
+    <button data-pg="members">Members</button>
+    <button data-pg="spans">Eligibility Spans</button>
+    <button data-pg="delivery">QHPs & PASSEs</button>
+    <button data-pg="registers">Scenario Registers</button>
+    <button data-pg="file">What the File Says</button>
+    <button data-pg="reference">Reference Codes</button>
+  </nav>
+</header>
+<main>
+  <section class="page on" id="pg-overview">
+    <h2>Overview</h2>
+    <p class="sub">A synthetic Arkansas Medicaid population across a 24-month window (January 2025 &ndash; December 2026), viewed as of <b>July 2026</b>. Every value is deterministic &mdash; seeded PRNG, identical on every load.</p>
+    <div class="plain" id="ov-plain"></div>
+    <div class="statrow" id="ov-stats"></div>
+    <div class="twocol">
+      <div class="card">
+        <h3 style="margin-top:0">Coverage groups in the population</h3>
+        <div class="leg" id="ov-groups"></div>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Where members get their care today</h3>
+        <div class="barlist" id="ov-mcos"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="pg-members">
+    <h2>Members</h2>
+    <p class="sub">The full synthetic roster. Click any row for the member record; click a column header to sort.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>Every person here has a ten-digit ID that never changes — and the delivery column holds the strangest mix in the series. Arkansas never built ordinary Medicaid managed care. Its expansion adults are in <b>commercial marketplace QHPs</b> whose premiums Medicaid pays — the <b>private option</b>, the 2013 invention that let a deep-red legislature expand. Its most complex members are in <b>PASSEs</b> — provider-led entities holding global risk. And its kids and parents stayed in traditional <b>fee-for-service</b>. Three lanes, none of them a normal MCO. This is also the only state that ever <b>implemented</b> a Medicaid work requirement — register D holds what it left behind.</div>
+    <div class="controls">
+      <input type="search" id="m-search" placeholder="Search name, ID, city&hellip;" aria-label="Search members">
+      <select id="m-group" aria-label="Filter by coverage group"></select>
+      <select id="m-del" aria-label="Filter by delivery system"></select>
+      <select id="m-reg" aria-label="Filter by register"></select>
+      <select id="m-status" aria-label="Filter by status">
+        <option value="">Status today: all</option>
+        <option value="Active">Active</option>
+        <option value="Gap">In gap</option>
+        <option value="Closed">Closed</option>
+      </select>
+      <span class="hint" id="m-count"></span>
+    </div>
+    <div class="tblwrap"><table id="m-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">ID</th>
+        <th class="sortable" data-k="name">Name</th>
+        <th class="sortable" data-k="age">Age</th>
+        <th class="sortable" data-k="sex">Sex</th>
+        <th class="sortable" data-k="grp">Coverage Group</th>
+        <th class="sortable" data-k="del">Delivery Today</th>
+        <th class="sortable" data-k="county">County</th>
+        <th class="sortable" data-k="reg">Register</th>
+        <th class="sortable" data-k="status">Status Today</th>
+      </tr></thead>
+      <tbody id="m-body"></tbody>
+    </table></div>
+    <div class="pager" id="m-pager"></div>
+  </section>
+
+  <section class="page" id="pg-spans">
+    <h2>Eligibility Spans</h2>
+    <p class="sub">One row per coverage-group span &mdash; the state's answer to <i>&ldquo;from when to when, and under which door did this person enter?&rdquo;</i> Click a row to open the member.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>A span is a promise with dates on it — and Arkansas’s spans include two kinds found nowhere else. Register C’s COFA cohort all begin the <b>same month</b> — Dec 2020, the restoration wall, where Congress ended a 24-year exclusion and a community enrolled at once. And register D carries closure reasons that a federal court later declared <b>legally void</b>: the 2018 work-requirement terminations, vacated by <i>Gresham v. Azar</i> — gaps whose stated cause is unlawful but whose uninsured months were lived anyway. A span table can hold a fact and its repudiation side by side; that is what makes it a record.</div>
+    <div class="controls">
+      <select id="s-group" aria-label="Filter spans by coverage group"></select>
+      <select id="s-open" aria-label="Filter by open or closed">
+        <option value="">Open + closed</option><option value="open">Open only</option><option value="closed">Closed only</option>
+      </select>
+      <span class="hint" id="s-count"></span>
+    </div>
+    <div class="tblwrap"><table id="s-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">ID</th>
+        <th class="sortable" data-k="name">Member</th>
+        <th class="sortable" data-k="grp">Group</th>
+        <th class="sortable" data-k="start">Begin</th>
+        <th class="sortable" data-k="end">End</th>
+        <th class="sortable" data-k="months">Months</th>
+        <th>End Reason</th>
+      </tr></thead>
+      <tbody id="s-body"></tbody>
+    </table></div>
+    <div class="pager" id="s-pager"></div>
+  </section>
+
+  <section class="page" id="pg-delivery">
+    <h2>QHPs & PASSEs</h2>
+    <p class="sub">One row per delivery span: a marketplace <b>QHP</b> (blue — the private option), a provider-led <b>PASSE</b> (purple), or traditional fee-for-service (gray). Click a row to open the member.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>Arkansas answered "who delivers Medicaid?" three different ways for three different populations. Expansion adults: the <b>marketplace</b> — premium assistance into commercial QHPs at commercial rates, dearer than managed care but carrying commercial networks, and running on the marketplace’s own calendar (register B’s January plan switches inside unmoving eligibility — two clocks, one member). Complex members: <b>PASSEs</b> — provider-led entities, partly owned by the providers themselves, holding one global capitation for medical, behavioral, and developmental care, with tiers set by independent assessment. Everyone else: <b>traditional fee-for-service</b>, the lane the inventions never touched. No other state’s delivery column looks like this.</div>
+    <div class="controls">
+      <select id="d-sys" aria-label="Filter by delivery system"></select>
+      <span class="hint" id="d-count"></span>
+    </div>
+    <div class="tblwrap"><table id="d-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">ID</th>
+        <th class="sortable" data-k="name">Member</th>
+        <th class="sortable" data-k="sys">Delivery</th>
+        <th class="sortable" data-k="start">Begin</th>
+        <th class="sortable" data-k="end">End</th>
+        <th class="sortable" data-k="months">Months</th>
+        <th>Begin / End Reason</th>
+      </tr></thead>
+      <tbody id="d-body"></tbody>
+    </table></div>
+    <div class="pager" id="d-pager"></div>
+  </section>
+
+  <section class="page" id="pg-registers">
+    <h2>Scenario Registers</h2>
+    <p class="sub">Six business questions, each answered by a register of members whose data was planted to demonstrate exactly that scenario. Click any member to inspect the record behind the answer.</p>
+    <div id="reg-list"></div>
+  </section>
+
+  <section class="page" id="pg-file">
+    <h2>What the File Says</h2>
+    <p class="sub">Arkansas really does speak X12N 834 — to marketplace carriers and PASSEs alike. Pick a member and read the transaction, segment by segment, with a plain-language note on every line.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>An 834 is the state telling a health plan: <b>this person is yours now</b> — and in the private option the receiver is a <b>commercial exchange carrier</b>: the same Ambetter or Health Advantage that serves paying marketplace customers, receiving a Medicaid agency’s roster file. Register F’s exits are the series’ only 834s where the marketplace itself is the party being told goodbye. Fee-for-service members generate the state’s own record, shown in the same shape for teaching.</div>
+    <div class="controls">
+      <select id="f-member" aria-label="Choose member for 834"></select>
+      <span class="hint">Members are grouped by register; the transaction is rebuilt live from the member's actual spans.</span>
+    </div>
+    <div id="f-out"></div>
+  </section>
+
+  <section class="page" id="pg-reference">
+    <h2>Reference Codes</h2>
+    <p class="sub">The teaching code sets used throughout the app. Codes are patterned on Arkansas conventions; verify against current Arkansas DHS publications before any non-demonstration use.</p>
+    <div id="ref-out"></div>
+  </section>
+</main>
+
+<footer>
+  <p><b>Arkansas Medicaid & ARHOME Eligibility Central</b> &mdash; a single-file demonstration app in the Central series. All members, identifiers, addresses, phone numbers, and dates are synthetic and deterministic (seeded PRNG, seed 501001); any resemblance to real persons is coincidental. Program facts reflect public Arkansas Medicaid policy of the mid-2020s and change year to year — carrier lineups, PASSE mechanics, and historical details are teaching simplifications; verify against current Arkansas DHS and CMS publications before any non-demonstration use. The 834 rendering is a teaching aid, not an implementation guide. &copy; Robert Thomas Keyes.</p>
+</footer>
+
+<div class="overlay" id="overlay"></div>
+<aside class="slideover" id="modal" role="dialog" aria-modal="true" aria-labelledby="mo-nm">
+  <div class="mo-head">
+    <div class="who">
+      <div class="nm" id="mo-nm"></div>
+      <div class="idz" id="mo-id"></div>
+    </div>
+    <button class="mo-x" id="mo-x" aria-label="Close">&#10005;</button>
+  </div>
+  <div class="mo-body" id="mo-body"></div>
+  <div class="mo-foot">
+    <button id="mo-prev" aria-label="Previous member">&#9664;</button>
+    <button id="mo-next" aria-label="Next member">&#9654;</button>
+    <span class="pos" id="mo-pos"></span>
+  </div>
+</aside>
+<script>
+'use strict';
+/* ============ Arkansas Medicaid & ARHOME Eligibility Central ============
+   Central series -- Robert Thomas Keyes
+   Deterministic synthetic data. Seed 501001 (Little Rock's area code).
+   Window: Jan 2025 (idx 0) .. Dec 2026 (idx 23). "Today" = Jul 2026 (idx 18).
+================================================================= */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+var R = mulberry32(501001);
+function ri(lo,hi){return lo+Math.floor(R()*(hi-lo+1))}
+function pick(arr){return arr[Math.floor(R()*arr.length)]}
+function wpick(pairs){var tot=0,i;for(i=0;i<pairs.length;i++)tot+=pairs[i][1];var x=R()*tot;for(i=0;i<pairs.length;i++){x-=pairs[i][1];if(x<0)return pairs[i][0]}return pairs[pairs.length-1][0]}
+
+var WIN_START_Y=2025, WIN_MONTHS=24, TODAY_IDX=18; /* Jul 2026 */
+var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function mLabel(idx){ if(idx===null||idx===undefined)return '&mdash;';
+  var y=WIN_START_Y+Math.floor(idx/12), m=((idx%12)+12)%12;
+  return MONTHS[m]+' '+y }
+function mFirstD8(idx){var y=WIN_START_Y+Math.floor(idx/12),m=((idx%12)+12)%12;return ''+y+String(m+1).padStart(2,'0')+'01'}
+function mLastD8(idx){var y=WIN_START_Y+Math.floor(idx/12),m=((idx%12)+12)%12;var last=new Date(y,m+1,0).getDate();return ''+y+String(m+1).padStart(2,'0')+String(last).padStart(2,'0')}
+function spanMonths(s,e){var last=(e===null?TODAY_IDX:e);return Math.max(1,last-Math.max(s,-990)+1)}
+
+var GROUPS={
+ CH19:{name:'Children (ARKids First)',  magi:true, color:'--g-CH19', blurb:'Children through 18 \u2014 ARKids First: <b>A</b> (traditional Medicaid, no cost-sharing) or <b>B</b> (higher income, small premiums and copays) \u2014 register C\u2019s two-tier kids.'},
+ AEG:{name:'ARHOME Adults (private option)', magi:true, color:'--g-SI02', blurb:'Adults 19\u201364 to 138% FPL \u2014 the <b>private option</b>: Arkansas expanded in 2013 by buying its expansion adults commercial <b>QHPs on the marketplace</b> with Medicaid dollars. The invention that let a deep-red legislature say yes, copied nowhere at this scale, renamed twice (Arkansas Works, now ARHOME), and still the country\u2019s largest premium-assistance experiment.'},
+ PW02:{name:'Pregnant & Postpartum',    magi:true, color:'--g-EA02', blurb:'Pregnancy coverage plus twelve months postpartum.'},
+ FM01:{name:'Parents & Caretakers',     magi:true, color:'--g-FC01', blurb:'Very low-income parents \u2014 traditional Medicaid, fee-for-service.'},
+ AB03:{name:'Aged / Blind / Disabled',  magi:false, color:'--g-MN98', blurb:'SSI-related budgeting \u2014 and for members with significant behavioral health or developmental needs, the door into a <b>PASSE</b>.'},
+ FF26:{name:'Former Foster Care',       magi:true, color:'--g-FF26', blurb:'Young adults formerly in foster care, covered to 26.'}
+};
+var GROUP_KEYS=Object.keys(GROUPS);
+
+/* ---------- the shelf: commercial marketplace carriers + PASSEs + FFS ---------- */
+var QHPS=[
+ {code:'AMB', name:'Ambetter (Celtic/Centene) \u2014 marketplace QHP'},
+ {code:'BCBS',name:'Health Advantage (Arkansas BCBS) \u2014 marketplace QHP'},
+ {code:'QCA', name:'QualChoice \u2014 marketplace QHP'}
+];
+var PASSES=[
+ {code:'SUMM',name:'Summit Community Care \u2014 PASSE'},
+ {code:'ATC', name:'Arkansas Total Care \u2014 PASSE'},
+ {code:'EMP', name:'Empower Healthcare Solutions \u2014 PASSE'}
+];
+var PLANBY={}; QHPS.concat(PASSES).forEach(function(p){PLANBY[p.code]=p});
+var QHPSET={AMB:1,BCBS:1,QCA:1}, PASSESET={SUMM:1,ATC:1,EMP:1};
+function sysLabel(code){ return code==='FFS'?'Fee-for-Service (traditional Medicaid)':(PLANBY[code]?PLANBY[code].name:code) }
+function sysKind(code){ return code==='FFS'?'FFS':(QHPSET[code]?'QHP':'PASSE') }
+function sysClass(code){ return code==='FFS'?'d-ffs':(QHPSET[code]?'d-mco':'d-harp') }
+
+var COUNTIES=[
+ {name:'Pulaski',    w:5, zips:['72204','72206'], city:'Little Rock', streets:['W 12th St','Asher Ave','Geyer Springs Rd','Baseline Rd']},
+ {name:'Washington', w:3, zips:['72764'], city:'Springdale', streets:['S Thompson St','Huntsville Ave','Emma Ave']},
+ {name:'Benton',     w:2, zips:['72756'], city:'Rogers', streets:['W Walnut St','S 8th St','N 2nd St']},
+ {name:'Sebastian',  w:2, zips:['72901'], city:'Fort Smith', streets:['Grand Ave','Towson Ave','Rogers Ave']},
+ {name:'Jefferson',  w:1.5,zips:['71601'], city:'Pine Bluff', streets:['S Olive St','W 28th Ave','Dollarway Rd']},
+ {name:'Craighead',  w:1.5,zips:['72401'], city:'Jonesboro', streets:['E Johnson Ave','S Caraway Rd','W Huntington Ave']},
+ {name:'Garland',    w:1.2,zips:['71901'], city:'Hot Springs', streets:['Central Ave','Albert Pike Rd','Malvern Ave']},
+ {name:'Faulkner',   w:1.2,zips:['72032'], city:'Conway', streets:['Oak St','Prince St','Harkrider St']},
+ {name:'Crittenden', w:1, zips:['72301'], city:'West Memphis', streets:['E Broadway Ave','Missouri St','S Avalon St']},
+ {name:'Mississippi',w:0.8,zips:['72315'], city:'Blytheville', streets:['W Main St','N 6th St','E Moultrie Dr']},
+ {name:'Phillips',   w:0.8,zips:['72342'], city:'Helena-West Helena', streets:['Cherry St','Plaza St','N Sebastian St']},
+ {name:'Saline',     w:1, zips:['72015'], city:'Benton', streets:['Military Rd','W South St','Edison Ave']}
+];
+var COUNTYBY={}; COUNTIES.forEach(function(c){COUNTYBY[c.name]=c});
+function pickCounty(){return wpick(COUNTIES.map(function(c){return [c,c.w]}))}
+var AREA=['501','479','870'];
+
+var FIRST_F=['Emma','Olivia','Madison','Kaylee','Brittany','Amber','Dawn','Crystal','Karen','Linda','Darlene','Maria','Guadalupe','Rosa','Keisha','Latoya','Tamika','Shirley','Hazel','June','Twyla','Bernice','Peggy','Sharon','Loretta','Destiny','Renae','Brandy','Misty','Ruth','Pearl','Thuy'],
+    FIRST_M=['Gary','Dennis','Larry','Duane','Wayne','Dale','Travis','Hunter','Cody','Tyler','Jose','Luis','Miguel','Juan','Darius','Jamal','Terrence','Marcus','Vernon','Merle','Clifford','Emil','Delbert','Leland','Frank','Earl','Otis','Willie','Booker','Huy','Khamla','Junior'],
+    LAST=['Smith','Johnson','Williams','Jones','Brown','Davis','Miller','Wilson','Moore','Taylor','Washington','Jackson','Robinson','Harris','Walker','Green','Riklon','Jetnil','Kabua','Garcia','Hernandez','Martinez','Ramirez','Nguyen','Tran','Pham','Vongphachanh','Sisavath','Tackett','Whitlock','Duvall','Hollis','Rankin','Pruitt','Bagwell','Stroud','McElroy','Tucker','Gentry','Loyd'],
+    LANGS=[['English',88],['Spanish',6],['Marshallese',3],['Vietnamese',1.5],['Lao',1],['Arabic',0.5]];
+
+var ELIG_END={
+ REDET:'Renewal not completed \u2014 case closed at renewal',
+ INCOME:'Over income at renewal',
+ MOVED:'Moved out of state',
+ MEDI:'Medicare entitlement \u2014 redetermined under SSI-related rules',
+ REPORT:'Closed 2018 \u2014 work-reporting noncompliance (VACATED: Gresham v. Azar)'
+};
+</script>
+<script>
+'use strict';
+/* ================= population generator ================= */
+var MEMBERS=[];
+var usedIds={};
+function genId(){ var s; do{ s=String(ri(1000000000,8999999999)) }while(usedIds[s]); usedIds[s]=1; return s } /* 10-digit ID */
+function genPhone(){ return '('+pick(AREA)+') '+ri(200,989)+'-'+String(ri(0,9999)).padStart(4,'0') }
+function genAddr(c){ return {street:ri(100,9999)+' '+pick(c.streets), city:c.city, zip:pick(c.zips)} }
+function genName(sex){ return {first:(sex==='F'?pick(FIRST_F):pick(FIRST_M)), last:pick(LAST)} }
+function dobForAge(age){ var y=2026-age; var m=ri(0,11); if(m>6)y--; return {y:y,m:m,d:ri(1,28)} }
+function dobD8(d){return ''+d.y+String(d.m+1).padStart(2,'0')+String(d.d).padStart(2,'0')}
+function dobLabel(d){return MONTHS[d.m]+' '+d.d+', '+d.y}
+
+function baseMember(reg){
+  var sex=pick(['F','F','F','M','M']);
+  var nm=genName(sex), c=pickCounty(), a=genAddr(c);
+  return { id:genId(), first:nm.first, last:nm.last, sex:sex, county:c.name,
+    street:a.street, city:a.city, zip:a.zip, phone:genPhone(),
+    lang:wpick(LANGS), reg:reg, eligSpans:[], delSpans:[], flags:[],
+    cofa:false, arkids:null, vacated:false, scarred:false, wrExempt:null,
+    passeTier:null, reqYear:null, janSwitch:false, passeCross:false, cStory:null };
+}
+function addElig(m,grp,s,e,reason){m.eligSpans.push({grp:grp,start:s,end:e,reason:reason||null})}
+function addDel(m,sys,s,e,note){m.delSpans.push({sys:sys,start:s,end:e,note:note||null})}
+function delFor(grp){ return grp==='AEG'?pick(QHPS).code:'FFS' }
+
+/* ----- Register A: steady state -- three lanes (1100) ----- */
+(function(){
+  var grpsA=[['CH19',5.5],['AEG',5],['FM01',1],['PW02',1],['AB03',1.7],['FF26',0.8]];
+  for(var i=0;i<1100;i++){
+    var grp=wpick(grpsA);
+    var m=baseMember('A');
+    var age = grp==='CH19'?ri(0,18) : grp==='FF26'?ri(18,25) : grp==='AB03'?ri(28,62) : grp==='PW02'?ri(19,38) : ri(19,60);
+    m.age=age; m.dob=dobForAge(age); if(grp==='PW02')m.sex='F';
+    var s=ri(-20,2);
+    addElig(m,grp,s,null,null);
+    if(grp==='AB03'&&R()<0.35){
+      addDel(m,pick(PASSES).code,s,null,'PASSE \u2014 behavioral health / developmental needs');
+      if(R()<0.4)m.flags.push('An AB03 member attributed to a <b>PASSE</b> \u2014 Provider-led Arkansas Shared Savings Entity: provider organizations bearing global risk for the BH and I/DD populations, Arkansas\u2019s second invention after the private option');
+    } else {
+      var sys=delFor(grp);
+      addDel(m,sys,s,null,sys==='FFS'?'Traditional Medicaid \u2014 fee-for-service':'Private option \u2014 a marketplace QHP bought with Medicaid dollars');
+      if(grp==='AEG'&&R()<0.2){
+        m.flags.push('An ARHOME adult in <b>'+sysLabel(sys).split(' \u2014 ')[0]+'</b> \u2014 a commercial marketplace plan whose premium Medicaid pays: the same card a subsidized exchange customer carries, the private option\u2019s whole idea');
+      } else if(grp==='CH19'&&R()<0.1){
+        m.flags.push('An ARKids First child in traditional fee-for-service \u2014 the lane the private option never touched: kids and parents stayed in classic Medicaid while the expansion adults went to the marketplace');
+      }
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register B: churn -- with an open-enrollment rhythm (500) ----- */
+(function(){
+  for(var i=0;i<500;i++){
+    var m=baseMember('B');
+    var jan=(i>=125&&i<185); /* 60 January QHP switchers */
+    if(jan){
+      m.age=ri(21,60); m.dob=dobForAge(m.age);
+      var s=ri(-16,-4);
+      addElig(m,'AEG',s,null,null);
+      var a=pick(QHPS).code, b=pick(QHPS.filter(function(q){return q.code!==a})).code;
+      addDel(m,a,s,11,'QHP through plan year 2025');
+      addDel(m,b,12,null,'Switched at open enrollment \u2014 plan year 2026');
+      m.janSwitch=true;
+      m.flags.push('<b>The January rhythm</b> \u2014 eligibility never moved, but the QHP switched '+sysLabel(a).split(' \u2014 ')[0]+' \u2192 '+sysLabel(b).split(' \u2014 ')[0]+' at Jan 2026: private-option members ride the <b>marketplace\u2019s</b> calendar, with plan years and open enrollment, inside Medicaid\u2019s continuous eligibility. Two clocks, one member \u2014 the commercial chassis showing through.');
+    } else {
+      var grp=wpick([['AEG',5],['CH19',3],['FM01',1]]);
+      m.age = grp==='CH19'?ri(1,17):ri(19,60); m.dob=dobForAge(m.age);
+      var s2=ri(-18,-2);
+      var inGapNow=(i<125);
+      var term=inGapNow?ri(15,16):ri(4,12);
+      var gap=inGapNow?ri(3,4):ri(1,4);
+      var regain=term+gap+1;
+      addElig(m,grp,s2,term,ELIG_END.REDET);
+      addElig(m,grp,regain,null,null);
+      var sys=delFor(grp);
+      addDel(m,sys,s2,term); addDel(m,delFor(grp),regain,null);
+      m.flags.push('Gap '+mLabel(term+1)+'\u2013'+mLabel(regain-1)+' ('+gap+' mo) \u2014 procedural churn'+(grp==='AEG'?'; the QHP terminates with the eligibility, unlike a paying marketplace customer\u2019s':''));
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register C: the walls and the tiers (375) ----- */
+(function(){
+  for(var i=0;i<375;i++){
+    var m=baseMember('C');
+    var kind = i<140?'QHP' : (i<260?'COFA':'ARKIDS');
+    if(kind==='QHP'){
+      m.age=ri(21,60); m.dob=dobForAge(m.age);
+      var s=ri(-22,-4);
+      addElig(m,'AEG',s,null,null);
+      addDel(m,pick(QHPS).code,s,null,'Premium assistance \u2014 Medicaid pays the premium');
+      m.cStory='qhp';
+      m.flags.push('<b>Premium assistance, mechanically</b> \u2014 the state pays this member\u2019s QHP premium and cost-sharing directly to '+sysLabel(m.delSpans[0].sys).split(' \u2014 ')[0]+': commercial rates, commercial networks, a Medicaid wrap for anything the QHP doesn\u2019t cover. Dearer per member than managed care \u2014 the trade the legislature accepted to expand at all, defended ever since on access grounds: marketplace networks in a state where Medicaid rates struggle to buy them.');
+    } else if(kind==='COFA'){
+      m.age=ri(20,62); m.dob=dobForAge(m.age);
+      m.last=pick(['Riklon','Jetnil','Kabua','Loeak','Note','Milne']);
+      m.lang='Marshallese';
+      var c=COUNTYBY[pick(['Washington','Benton'])];
+      m.county=c.name; var a=genAddr(c); m.street=a.street; m.city=a.city; m.zip=a.zip;
+      addElig(m,wpick([['AEG',6],['FM01',2],['AB03',1]]),-49,null,null);
+      var grp=m.eligSpans[0].grp;
+      addDel(m,grp==='AEG'?pick(QHPS).code:'FFS',-49,null);
+      m.cofa=true;
+      m.flags.push('<b>The restoration wall</b> \u2014 eligibility begins exactly Dec 2020, and it is no coincidence: this member is a COFA migrant \u2014 Marshall Islands citizens living lawfully in the U.S. under the Compact of Free Association, whom the 1996 welfare law <b>excluded from Medicaid for 24 years</b>. Congress restored eligibility in December 2020, and Springdale \u2014 home of the largest Marshallese community in the continental U.S., drawn by poultry work and by the legacy of U.S. nuclear testing at Bikini and Enewetak \u2014 enrolled a generation in a season. Every eligibility span in this cohort starts the same month, because the law did.');
+    } else {
+      m.age=ri(1,17); m.dob=dobForAge(m.age);
+      var tier=(R()<0.55)?'A':'B';
+      var s3=ri(-20,-2);
+      addElig(m,'CH19',s3,null,null);
+      addDel(m,'FFS',s3,null,'ARKids First '+tier);
+      m.arkids=tier;
+      m.flags.push(tier==='A'
+        ?'<b>ARKids A</b> \u2014 traditional Medicaid for children: no premiums, no copays, the full EPSDT benefit. The lower tier by income, the deeper by benefit.'
+        :'<b>ARKids B</b> \u2014 the CHIP-funded upper tier: higher family income, small copays, a slightly thinner benefit. Two brands of the same promise, split by a line on a pay stub \u2014 Arkansas\u2019s 1997 answer, three years before most states built CHIP this way.');
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register D: the requirement that ran (375) ----- */
+(function(){
+  for(var i=0;i<375;i++){
+    var m=baseMember('D');
+    m.age=ri(25,60); m.dob=dobForAge(m.age);
+    var kind = i<150?'VACATED' : (i<265?'SCARRED':'EXEMPT');
+    if(kind==='VACATED'){
+      var e1=-ri(88,91); /* mid/late 2018 */
+      var s1=e1-ri(12,30);
+      var s2=e1+ri(4,8);
+      addElig(m,'AEG',s1,e1,ELIG_END.REPORT);
+      addElig(m,'AEG',s2,null,null);
+      addDel(m,pick(QHPS).code,s1,e1); addDel(m,pick(QHPS).code,s2,null);
+      m.vacated=true;
+      m.flags.push('<b>The gap that was vacated</b> \u2014 closed in 2018 for failing to report 80 hours of work activity: Arkansas was the <b>only state that ever implemented</b> a Medicaid work requirement, and it removed about 18,000 people in seven months. In March 2019 a federal court halted it; <i>Gresham v. Azar</i> later affirmed the approval was unlawful. The closure reason on this span is therefore <b>legally void</b> \u2014 but the gap it caused was lived: months uninsured are not vacated by an opinion. The record keeps both facts, which is exactly what records are for.');
+    } else if(kind==='SCARRED'){
+      var e2=-ri(88,91);
+      var s1b=e2-ri(12,30);
+      var s2b=-ri(40,60); /* returned 2021-22 */
+      addElig(m,'AEG',s1b,e2,ELIG_END.REPORT);
+      addElig(m,'AEG',s2b,null,null);
+      addDel(m,pick(QHPS).code,s1b,e2); addDel(m,pick(QHPS).code,s2b,null);
+      m.scarred=true;
+      m.flags.push('<b>The scar</b> \u2014 same vacated 2018 closure, but this member did not come back when the court ruled: the gap ran '+Math.round((s2b-e2)/12*10)/10+' years, into 2021\u201322. Research on the Arkansas experiment found most of those removed didn\u2019t know the rule existed or couldn\u2019t navigate the reporting portal \u2014 and that employment did not rise. The requirement is gone; the multi-year hole in this member\u2019s coverage history is the part no ruling could repair.');
+    } else {
+      var s3=ri(-100,-90);
+      addElig(m,'AEG',s3,null,null);
+      addDel(m,pick(QHPS).code,s3,null);
+      m.wrExempt=pick(['caretaker of a dependent','medically frail','already working 80+ hours \u2014 auto-verified','student status','SNAP work requirement deemed']);
+      m.flags.push('<b>Exempt, flagged, unbroken</b> \u2014 this span runs straight through 2018 because the member held an exemption ("'+m.wrExempt+'"). The flag outlived the rule, as archive fields do \u2014 Indiana\u2019s register E holds statuses for a requirement that never started; Arkansas\u2019s holds them for the one that did.');
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register E: the PASSEs (325) ----- */
+(function(){
+  for(var i=0;i<325;i++){
+    var kind = i<140?'TIER' : (i<235?'WAIT':'SWITCH');
+    var m=baseMember('E');
+    m.age=ri(8,60); m.dob=dobForAge(m.age);
+    var s=ri(-20,-4);
+    addElig(m,'AB03',s,null,null);
+    if(kind==='TIER'){
+      m.passeTier=pick([2,2,3]);
+      addDel(m,pick(PASSES).code,s,null,'PASSE \u2014 tier '+m.passeTier);
+      m.flags.push('<b>Attributed, tier '+m.passeTier+'</b> \u2014 an independent assessment placed this member in tier '+m.passeTier+(m.passeTier===3?' (institutional level of need)':' (significant community-based needs)')+', which routes them into a <b>PASSE</b>: a provider-led entity \u2014 owned partly by the very providers who serve the member \u2014 holding a global capitation for medical, behavioral, and developmental services together. Arkansas\u2019s second invention: where the private option outsourced its adults to the marketplace, the PASSE model handed its most complex members to organized providers.');
+    } else if(kind==='WAIT'){
+      m.reqYear=ri(2017,2022);
+      addDel(m,pick(PASSES).code,s,null,'PASSE \u2014 on the CES waiver waitlist');
+      m.flags.push('<b>Waiting since '+m.reqYear+'</b> \u2014 on the Community & Employment Supports waiver waitlist: the I/DD home-and-community services queue that has run to thousands of names and many years\u2019 wait. The PASSE covers what it covers meanwhile; the waiver slot \u2014 the thing that funds real daily support \u2014 is the thing the family is actually waiting for. A waitlist is an eligibility system saying yes and a budget saying not yet.');
+    } else {
+      var a=pick(PASSES).code, b=pick(PASSES.filter(function(p){return p.code!==a})).code;
+      var sw=ri(4,14);
+      addDel(m,a,s,sw-1,'PASSE'); addDel(m,b,sw,null,'PASSE \u2014 switched');
+      m.flags.push('A PASSE-to-PASSE switch at '+mLabel(sw)+' ('+sysLabel(a).split(' \u2014 ')[0]+' \u2192 '+sysLabel(b).split(' \u2014 ')[0]+') \u2014 members can move between the three entities; the assessment tier and the care plan follow. The eligibility span never blinks: attribution is plumbing, not eligibility.');
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register F: Medicare arrives -- the marketplace lets go (325) ----- */
+(function(){
+  for(var i=0;i<325;i++){
+    var m=baseMember('F');
+    var qhp=(i<195);
+    var medi=ri(6,16), lag=ri(1,3);
+    m.age=(medi<=TODAY_IDX)?65:64;
+    m.dob={y:WIN_START_Y+Math.floor(medi/12)-65, m:medi%12, d:ri(1,28)};
+    var s=ri(-28,-10);
+    if(qhp){
+      addElig(m,'AEG',s,medi-1,ELIG_END.MEDI);
+      addElig(m,'AB03',medi,null,null);
+      addDel(m,pick(QHPS).code,s,medi-1,'Private option QHP until Medicare');
+      addDel(m,'FFS',medi,null,'Traditional Medicaid wrap \u2014 Medicare primary');
+      m.flags.push('<b>The marketplace lets go</b> \u2014 the twenty-eighth answer. At Medicare, the private option ends twice over: ARHOME eligibility closes because Medicare disqualifies it, and the <b>commercial QHP</b> terminates because marketplace plans cannot hold Medicare enrollees \u2014 the 834 goes to an exchange carrier, the only register F in the series whose receiver is the commercial marketplace. The member lands in traditional Medicaid FFS as a dual: after years inside a commercial plan bought with public money, the exit is the most classically public arrangement Medicaid has.');
+    } else {
+      addElig(m,'AB03',s,null,null);
+      addDel(m,pick(PASSES).code,s,medi-1,'PASSE until Medicare');
+      addDel(m,'FFS',medi,null,'Duals leave the PASSE \u2014 FFS wrap');
+      m.passeCross=true;
+      m.flags.push('A PASSE member reaching Medicare '+mLabel(medi)+' \u2014 the PASSE\u2019s global capitation excludes duals, so attribution ends, the wrap goes fee-for-service, the buy-in accretes '+mLabel(medi+lag)+', and the eligibility span never blinks. The provider-led experiment hands its member to the oldest arrangement in the program.');
+    }
+    m.medicareIdx=medi; m.buyinIdx=medi+lag;
+    MEMBERS.push(m);
+  }
+})();
+
+/* ---------- derived member state ---------- */
+function eligToday(m){ for(var i=0;i<m.eligSpans.length;i++){var s=m.eligSpans[i]; if(s.start<=TODAY_IDX&&(s.end===null||s.end>=TODAY_IDX))return s} return null }
+function delToday(m){ for(var i=0;i<m.delSpans.length;i++){var s=m.delSpans[i]; if(s.start<=TODAY_IDX&&(s.end===null||s.end>=TODAY_IDX))return s} return null }
+function lastElig(m){ return m.eligSpans[m.eligSpans.length-1] }
+function statusToday(m){
+  if(eligToday(m))return 'Active';
+  var le=lastElig(m);
+  if(le.end!==null&&le.end<TODAY_IDX){
+    for(var i=0;i<m.eligSpans.length;i++){ if(m.eligSpans[i].start>TODAY_IDX)return 'Gap' }
+    return 'Closed';
+  }
+  return 'Gap';
+}
+MEMBERS.forEach(function(m,ix){
+  m.ix=ix;
+  if(m.sex==='F'&&FIRST_F.indexOf(m.first)<0)m.first=FIRST_F[(m.first.length*7+m.last.length)%FIRST_F.length];
+  if(m.sex==='M'&&FIRST_M.indexOf(m.first)<0)m.first=FIRST_M[(m.first.length*7+m.last.length)%FIRST_M.length];
+  m.name=m.last+', '+m.first;
+  var et=eligToday(m), le=lastElig(m);
+  m.grpToday = et?et.grp:le.grp;
+  var dt=delToday(m);
+  m.delTodayCode = dt?dt.sys:'\u2014';
+  m.status=statusToday(m);
+});
+</script>
+<script>
+'use strict';
+/* ================= shared render helpers ================= */
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function grpChip(g){ if(!GROUPS[g])return esc(g);
+  return '<span class="chip" style="background:var('+GROUPS[g].color+')" title="'+esc(GROUPS[g].name)+'">'+g+'</span>' }
+function delChip(code){ if(code==='\u2014')return '<span class="st-cls">\u2014</span>';
+  var cls=sysClass(code), lbl=code;
+  return '<span class="dchip '+cls+'" title="'+esc(sysLabel(code))+'">'+esc(lbl)+'</span>' }
+function statusHtml(st){ return st==='Active'?'<span class="st-act">Active</span>':(st==='Gap'?'<span class="st-gap">In gap</span>':'<span class="st-cls">Closed</span>') }
+function regBadge(r){return '<span class="mono" style="font-weight:600;color:var(--accent)">'+r+'</span>'}
+
+/* ================= overview ================= */
+function renderOverview(){
+  var n=MEMBERS.length, act=0, qhp=0, passe=0, cofa=0, vac=0, wait=0, gaps=0;
+  MEMBERS.forEach(function(m){
+    if(m.status==='Active')act++;
+    if(m.status==='Gap')gaps++;
+    var d=m.delTodayCode;
+    if(d!=='\u2014'){ var k=sysKind(d); if(k==='QHP')qhp++; else if(k==='PASSE')passe++; }
+    if(m.cofa)cofa++;
+    if(m.vacated||m.scarred)vac++;
+    if(m.reqYear)wait++;
+  });
+  var st=document.getElementById('ov-stats');
+  st.innerHTML =
+    stat(n,'Synthetic members',true)+
+    stat(act,'Eligible today (Jul 2026)')+
+    stat(qhp,'In a marketplace QHP today \u2014 the private option')+
+    stat(passe,'In a PASSE today \u2014 provider-led risk')+
+    stat(cofa,'COFA members \u2014 the Dec 2020 restoration wall')+
+    stat(vac,'Carry a vacated 2018 work-requirement closure')+
+    stat(wait,'On the CES waiver waitlist')+
+    stat(gaps,'In an eligibility gap today');
+  function stat(nv,l,acc){return '<div class="stat'+(acc?' acc':'')+'"><div class="n">'+(typeof nv==='number'?nv.toLocaleString():nv)+'</div><div class="l">'+l+'</div></div>'}
+
+  /* group legend with counts (by current/last group) */
+  var gc={}; MEMBERS.forEach(function(m){gc[m.grpToday]=(gc[m.grpToday]||0)+1});
+  var lg=document.getElementById('ov-groups'); lg.innerHTML='';
+  GROUP_KEYS.forEach(function(g){
+    var c=gc[g]||0;
+    lg.innerHTML+='<div class="legrow"><span class="swatch" style="background:var('+GROUPS[g].color+')"></span>'+
+      '<span class="code">'+g+'</span><span>'+esc(GROUPS[g].name)+'</span>'+
+      '<span class="cnt">'+c+'</span></div>';
+  });
+
+  /* delivery distribution today */
+  var dc={}; MEMBERS.forEach(function(m){ if(m.delTodayCode!=='\u2014') dc[m.delTodayCode]=(dc[m.delTodayCode]||0)+1 });
+  var rows=QHPS.map(function(p){return {label:p.name, code:p.code, n:dc[p.code]||0, cls:'var(--d-mco)'}});
+  PASSES.forEach(function(p){ rows.push({label:p.name, code:p.code, n:dc[p.code]||0, cls:'var(--d-harp)'}) });
+  rows.push({label:'Fee-for-Service \u2014 traditional Medicaid (incl. duals)', code:'FFS', n:dc.FFS||0, cls:'var(--d-ffs)'});
+  var mx=rows.reduce(function(a,r){return Math.max(a,r.n)},1);
+  var bl=document.getElementById('ov-mcos'); bl.innerHTML='';
+  rows.forEach(function(r){
+    bl.innerHTML+='<div class="barrow"><span title="'+esc(r.label)+'">'+esc(r.label)+'</span>'+
+      '<span class="track"><span class="fill" style="width:0;background:'+r.cls+'" data-w="'+(100*r.n/mx)+'"></span></span>'+
+      '<span class="bn">'+r.n+'</span></div>';
+  });
+  requestAnimationFrame(function(){ setTimeout(function(){
+    bl.querySelectorAll('.fill').forEach(function(f){f.style.width=f.getAttribute('data-w')+'%'}) },60) });
+
+  document.getElementById('ov-plain').innerHTML='<span class="pe-label">In plain English</span>'+
+    'Arkansas is the series\u2019 state of inventions \u2014 and of consequences. The <b>private option</b> (2013) bought commercial marketplace QHPs for its expansion adults with Medicaid dollars: the deal that let a deep-red legislature expand, the blue rows below \u2014 members riding the marketplace\u2019s calendar (register B\u2019s January switches) inside Medicaid\u2019s eligibility. The <b>PASSEs</b> (purple) hand global risk for the most complex members to provider-led entities. Register C holds the <b>restoration wall</b> \u2014 Springdale\u2019s Marshallese community, excluded from Medicaid for 24 years, restored by Congress in Dec 2020, every span starting the same month. And register D is unique in America: Arkansas is the <b>only state that ever implemented</b> a Medicaid work requirement \u2014 about 18,000 removed in 2018, the approval later vacated in court \u2014 so these spans carry closure reasons that are legally void attached to gaps that were nonetheless lived. Register F\u2019s twenty-eighth answer: <b>the marketplace lets go</b> \u2014 the only Medicare exit whose 834 goes to a commercial exchange carrier.';
+}
+
+/* ================= reference ================= */
+function renderReference(){
+  var h='';
+  h+='<div class="card"><h3 style="margin-top:0">Coverage groups (teaching set)</h3>'+
+     '<div class="tblwrap"><table><thead><tr><th>Code</th><th>Name</th><th>Determination</th><th>What it means</th></tr></thead><tbody>';
+  GROUP_KEYS.forEach(function(g){var G=GROUPS[g];
+    h+='<tr'+(g==='AEG'?' style="background:#f8f6f2"':'')+'><td>'+grpChip(g)+'</td><td>'+esc(G.name)+'</td><td>'+(G.magi?'MAGI (DHS)':'Non-MAGI')+'</td><td>'+G.blurb+'</td></tr>'});
+  h+='</tbody></table></div></div>';
+  h+='<div class="card"><h3 style="margin-top:0">The three lanes</h3>'+
+     '<div class="tblwrap"><table><thead><tr><th>Lane</th><th>Who</th><th>What it is</th></tr></thead><tbody>'+
+     '<tr style="background:#f8f6f2"><td class="mono">QHP</td><td>ARHOME expansion adults</td><td>The private option: Medicaid pays the premium and cost-sharing on a commercial marketplace plan \u2014 '+QHPS.map(function(p){return esc(p.name.split(' \u2014 ')[0])}).join(', ')+' \u2014 with a Medicaid wrap behind it. Commercial rates, commercial networks, the marketplace\u2019s plan-year calendar.</td></tr>'+
+     '<tr><td class="mono">PASSE</td><td>Significant BH / I-DD needs</td><td>Provider-led Arkansas Shared Savings Entities \u2014 '+PASSES.map(function(p){return esc(p.name.split(' \u2014 ')[0])}).join(', ')+' \u2014 global capitation held by organizations partly owned by the serving providers, with tiers set by independent assessment.</td></tr>'+
+     '<tr><td class="mono">FFS</td><td>Kids, parents, most ABD</td><td>Traditional fee-for-service \u2014 the lane the inventions never touched.</td></tr>'+
+     '</tbody></table></div></div>';
+  h+='<div class="card"><h3 style="margin-top:0">The work requirement, precisely</h3>'+
+     '<div class="tblwrap"><table><thead><tr><th>Date</th><th>What happened</th></tr></thead><tbody>'+
+     '<tr><td class="mono">Jun 2018</td><td>Reporting begins \u2014 80 hours/month of work activity, reported through an online portal, for Arkansas Works adults 30\u201349.</td></tr>'+
+     '<tr style="background:#f8f6f2"><td class="mono">Sep 2018 \u2013 Feb 2019</td><td>~18,164 people terminated for three months\u2019 noncompliance \u2014 the only mass work-requirement disenrollment ever carried out in Medicaid.</td></tr>'+
+     '<tr><td class="mono">Mar 2019</td><td>A federal district court halts the program.</td></tr>'+
+     '<tr><td class="mono">Feb 2020</td><td><i>Gresham v. Azar</i>: the D.C. Circuit affirms \u2014 the approval was arbitrary and capricious; coverage, not employment, is Medicaid\u2019s object.</td></tr>'+
+     '<tr><td class="mono">After</td><td>Research finds most of those removed were eligible or exempt and didn\u2019t know the rule; employment did not measurably rise. The closures stand vacated; the gaps stay lived. Register D keeps both.</td></tr>'+
+     '</tbody></table></div></div>';
+  h+='<div class="card"><h3 style="margin-top:0">834 maintenance codes used in this app</h3>'+
+     '<div class="tblwrap"><table><thead><tr><th>INS03</th><th>Meaning</th><th>Where you\u2019ll see it</th></tr></thead><tbody>'+
+     '<tr><td class="mono">021</td><td>Addition</td><td>Enrollments \u2014 including the COFA wall\u2019s Dec 2020 wave, a community\u2019s worth of additions in one season</td></tr>'+
+     '<tr><td class="mono">024</td><td>Cancellation / termination</td><td>Churn, and register F\u2019s exits \u2014 the only 024s in the series addressed to commercial exchange carriers</td></tr>'+
+     '<tr><td class="mono">001</td><td>Change</td><td>Register B\u2019s January QHP switches \u2014 the marketplace calendar ticking inside Medicaid eligibility</td></tr>'+
+     '</tbody></table></div></div>';
+  h+='<div class="card"><h3 style="margin-top:0">Glossary</h3><dl class="gloss">'+
+    gl('The private option','Expansion via premium assistance: Medicaid buys commercial QHPs for its expansion adults. Invented 2013, renamed Arkansas Works, then ARHOME. Dearer per member than managed care; defended on network access; politically load-bearing from the day it passed.')+
+    gl('PASSE','Provider-led Arkansas Shared Savings Entity \u2014 global risk for the BH/I-DD populations held by organizations the serving providers partly own. Attribution follows an independent assessment tier (1\u20133).')+
+    gl('The restoration wall','COFA migrants \u2014 lawfully present under the Compacts of Free Association \u2014 were excluded from Medicaid by the 1996 welfare law and restored by Congress in Dec 2020. In this file: a cohort whose every span begins the same month. Springdale\u2019s Marshallese community, the largest in the continental U.S., is why Arkansas felt it first.')+
+    gl('Gresham v. Azar','The D.C. Circuit decision affirming that approval of Arkansas\u2019s work requirement was unlawful \u2014 the ruling that vacated register D\u2019s closure reasons after the fact. The gap it could not vacate is the lesson.')+
+    gl('The scar','Members terminated in 2018 who did not return for years \u2014 most never knew the rule or couldn\u2019t work the portal. The requirement is gone; the hole in the history isn\u2019t.')+
+    gl('ARKids First','The 1997 two-tier children\u2019s program: A (traditional Medicaid, no cost-sharing) and B (CHIP-funded, small copays). Two brands of one promise, split by a pay stub.')+
+    gl('CES waitlist','The Community & Employment Supports waiver queue \u2014 I/DD home-and-community services, years deep. An eligibility system saying yes and a budget saying not yet.')+
+    gl('The marketplace lets go','The twenty-eighth Medicare answer: at 65 the QHP must release the member \u2014 marketplace plans cannot hold Medicare enrollees \u2014 and the private option\u2019s commercial experiment ends in the most classically public arrangement there is: traditional FFS as a dual.')+
+    gl('834','The X12N enrollment transaction \u2014 here addressed, uniquely, to exchange carriers.')+
+    '</dl></div>';
+  function gl(t,d){return '<dt>'+t+'</dt><dd>'+d+'</dd>'}
+  h+='<div class="card"><h3 style="margin-top:0">Counties in this population</h3><p style="font-size:.85rem">'+COUNTIES.map(function(c){return esc(c.name)}).join(' \u00b7 ')+'</p><p class="sub" style="margin-top:8px">The Riklons and Kabuas carry Springdale\u2019s Marshallese community; the Nguyens and Vongphachanhs, Fort Smith\u2019s Vietnamese and Lao communities; the Washingtons and Robinsons, Pine Bluff and the Delta; the Tacketts and Prewitts, the Ozarks.</p></div>';
+  document.getElementById('ref-out').innerHTML=h;
+}
+</script>
+<script>
+'use strict';
+/* ================= generic sortable table state ================= */
+var SORT={};
+function bindSort(tblId, renderFn){
+  document.querySelectorAll('#'+tblId+' th.sortable').forEach(function(th){
+    th.addEventListener('click',function(){
+      var k=th.getAttribute('data-k');
+      var cur=SORT[tblId]||{};
+      SORT[tblId]={k:k, dir:(cur.k===k&&cur.dir==='asc')?'desc':'asc'};
+      renderFn();
+    });
+  });
+}
+function sortRows(tblId, rows){
+  var s=SORT[tblId]; if(!s)return rows;
+  var dir=s.dir==='asc'?1:-1;
+  rows.sort(function(a,b){
+    var x=a[s.k],y=b[s.k];
+    if(x===null||x===undefined)x=-Infinity; if(y===null||y===undefined)y=-Infinity;
+    if(typeof x==='string'){x=x.toLowerCase();y=String(y).toLowerCase();return x<y?-dir:(x>y?dir:0)}
+    return (x-y)*dir;
+  });
+  return rows;
+}
+function sortMarks(tblId){
+  var s=SORT[tblId];
+  document.querySelectorAll('#'+tblId+' th.sortable').forEach(function(th){
+    var base=th.textContent.replace(/[\u25b2\u25bc]\s*$/,'').trim();
+    th.innerHTML=esc(base)+(s&&s.k===th.getAttribute('data-k')?' <span class="arr">'+(s.dir==='asc'?'\u25b2':'\u25bc')+'</span>':'');
+  });
+}
+
+/* ================= pagination ================= */
+var PAGE={}, PAGE_SIZE=50;
+function pager(tblId, total, renderFn, pagerId){
+  var pages=Math.max(1,Math.ceil(total/PAGE_SIZE));
+  var p=Math.min(PAGE[tblId]||1,pages); if(p<1)p=1; PAGE[tblId]=p;
+  var el=document.getElementById(pagerId);
+  if(el){
+    if(pages===1){ el.innerHTML=''; }
+    else{
+      el.innerHTML='<button class="pg"'+(p<=1?' disabled':'')+' data-d="-1">\u25c0 Prev</button>'+
+        '<span class="mono pgpos">page '+p+' of '+pages.toLocaleString()+'</span>'+
+        '<button class="pg"'+(p>=pages?' disabled':'')+' data-d="1">Next \u25b6</button>';
+      el.querySelectorAll('button.pg').forEach(function(b){
+        b.addEventListener('click',function(){ PAGE[tblId]=p+parseInt(b.getAttribute('data-d'),10); renderFn(); });
+      });
+    }
+  }
+  return {from:(p-1)*PAGE_SIZE, to:Math.min(total,p*PAGE_SIZE)};
+}
+function resetPage(tblId){ PAGE[tblId]=1 }
+
+/* ================= members roster ================= */
+var ROSTER_VIEW=[]; /* current filtered order (all pages), for modal nav */
+function fillSelect(id, opts, allLabel){
+  var el=document.getElementById(id);
+  el.innerHTML='<option value="">'+allLabel+'</option>'+opts.map(function(o){return '<option value="'+o[0]+'">'+o[1]+'</option>'}).join('');
+}
+function initRosterControls(){
+  fillSelect('m-group',GROUP_KEYS.map(function(g){return[g,g+' \u2014 '+GROUPS[g].name]}),'Coverage group: all');
+  var dopts=QHPS.map(function(m){return[m.code,m.name]})
+    .concat(PASSES.map(function(m){return[m.code,m.name]}));
+  dopts.push(['FFS','Fee-for-Service (traditional)']);
+  fillSelect('m-del',dopts,'Delivery today: all');
+  fillSelect('m-reg',['A','B','C','D','E','F'].map(function(r){return[r,'Register '+r]}),'Register: all');
+  ['m-search','m-group','m-del','m-reg','m-status'].forEach(function(id){
+    document.getElementById(id).addEventListener('input',function(){resetPage('m-tbl');renderRoster()});
+  });
+  bindSort('m-tbl',renderRoster);
+}
+function renderRoster(){
+  var q=document.getElementById('m-search').value.trim().toLowerCase();
+  var fg=document.getElementById('m-group').value, fd=document.getElementById('m-del').value,
+      fr=document.getElementById('m-reg').value, fs=document.getElementById('m-status').value;
+  var rows=MEMBERS.filter(function(m){
+    if(fg&&m.grpToday!==fg)return false;
+    if(fd&&m.delTodayCode!==fd)return false;
+    if(fr&&m.reg!==fr)return false;
+    if(fs&&m.status!==fs)return false;
+    if(q){ var hay=(m.name+' '+m.id+' '+m.city+' '+m.county).toLowerCase(); if(hay.indexOf(q)<0)return false }
+    return true;
+  }).map(function(m){return {ix:m.ix,id:m.id,name:m.name,age:m.age,sex:m.sex,grp:m.grpToday,del:m.delTodayCode,county:m.county,reg:m.reg,status:m.status}});
+  rows=sortRows('m-tbl',rows); sortMarks('m-tbl');
+  ROSTER_VIEW=rows.map(function(r){return r.ix});
+  var pg=pager('m-tbl',rows.length,renderRoster,'m-pager');
+  var tb=document.getElementById('m-body'); tb.innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+r.age+'</td><td>'+r.sex+'</td>'+
+    '<td>'+grpChip(r.grp)+'</td><td>'+delChip(r.del)+'</td><td class="nowrap">'+esc(r.county)+'</td><td>'+regBadge(r.reg)+'</td><td>'+statusHtml(r.status)+'</td></tr>'}).join('');
+  document.getElementById('m-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' matching (population '+MEMBERS.length.toLocaleString()+')';
+  tb.querySelectorAll('tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'roster')})});
+}
+
+/* ================= eligibility spans ================= */
+var SPAN_VIEW=[];
+function initSpanControls(){
+  fillSelect('s-group',GROUP_KEYS.map(function(g){return[g,g+' \u2014 '+GROUPS[g].name]}),'Coverage group: all');
+  ['s-group','s-open'].forEach(function(id){document.getElementById(id).addEventListener('input',function(){resetPage('s-tbl');renderSpans()})});
+  bindSort('s-tbl',renderSpans);
+}
+function renderSpans(){
+  var fg=document.getElementById('s-group').value, fo=document.getElementById('s-open').value;
+  var rows=[];
+  MEMBERS.forEach(function(m){ m.eligSpans.forEach(function(s){
+    if(fg&&s.grp!==fg)return;
+    if(fo==='open'&&s.end!==null)return;
+    if(fo==='closed'&&s.end===null)return;
+    rows.push({ix:m.ix,id:m.id,name:m.name,grp:s.grp,start:s.start,end:(s.end===null?9999:s.end),endRaw:s.end,
+      months:spanMonths(s.start,s.end),reason:s.reason});
+  })});
+  rows=sortRows('s-tbl',rows); sortMarks('s-tbl');
+  SPAN_VIEW=[]; var seenS={}; rows.forEach(function(r){ if(!seenS[r.ix]){seenS[r.ix]=1;SPAN_VIEW.push(r.ix)} });
+  var pg=pager('s-tbl',rows.length,renderSpans,'s-pager');
+  document.getElementById('s-body').innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+grpChip(r.grp)+'</td>'+
+    '<td class="nowrap">'+startLabel(r.start)+'</td><td class="nowrap">'+(r.endRaw===null?'<span class="st-act">open</span>':mLabel(r.endRaw))+'</td>'+
+    '<td class="mono">'+r.months+(r.start<0?'+':'')+'</td><td>'+(r.reason?esc(r.reason):'\u2014')+'</td></tr>'}).join('');
+  document.getElementById('s-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' spans';
+  document.querySelectorAll('#s-body tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'spans')})});
+}
+function startLabel(s){ return s<0 ? mLabel(s)+' <span class="hint">(pre-window)</span>' : mLabel(s) }
+
+/* ================= delivery spans ================= */
+var DEL_VIEW=[];
+function initDelControls(){
+  var dopts=QHPS.map(function(m){return[m.code,m.name]})
+    .concat(PASSES.map(function(m){return[m.code,m.name]}));
+  dopts.push(['FFS','Fee-for-Service (traditional)']);
+  fillSelect('d-sys',dopts,'Delivery system: all');
+  document.getElementById('d-sys').addEventListener('input',function(){resetPage('d-tbl');renderDel()});
+  bindSort('d-tbl',renderDel);
+}
+function renderDel(){
+  var fd=document.getElementById('d-sys').value;
+  var rows=[];
+  MEMBERS.forEach(function(m){ m.delSpans.forEach(function(s){
+    if(fd&&s.sys!==fd)return;
+    rows.push({ix:m.ix,id:m.id,name:m.name,sys:s.sys,start:s.start,end:(s.end===null?9999:s.end),endRaw:s.end,
+      months:spanMonths(s.start,s.end),note:s.note});
+  })});
+  rows=sortRows('d-tbl',rows); sortMarks('d-tbl');
+  DEL_VIEW=[]; var seenD={}; rows.forEach(function(r){ if(!seenD[r.ix]){seenD[r.ix]=1;DEL_VIEW.push(r.ix)} });
+  var pg=pager('d-tbl',rows.length,renderDel,'d-pager');
+  document.getElementById('d-body').innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+delChip(r.sys)+'</td>'+
+    '<td class="nowrap">'+startLabel(r.start)+'</td><td class="nowrap">'+(r.endRaw===null?'<span class="st-act">open</span>':mLabel(r.endRaw))+'</td>'+
+    '<td class="mono">'+r.months+(r.start<0?'+':'')+'</td><td>'+(r.note?esc(r.note):'\u2014')+'</td></tr>'}).join('');
+  document.getElementById('d-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' delivery spans';
+  document.querySelectorAll('#d-body tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'delivery')})});
+}
+</script>
+<script>
+'use strict';
+/* ================= scenario registers ================= */
+var REGDEFS={
+ A:{title:'Steady state \u2014 three lanes, none of them normal', q:'What does Arkansas Medicaid look like at rest?',
+    body:'The baseline shows the strangest delivery mix in the series: expansion adults in <b>commercial marketplace QHPs</b> (the private option), the most complex members in provider-led <b>PASSEs</b>, and kids, parents, and most ABD members in traditional <b>fee-for-service</b> \u2014 Arkansas never built ordinary Medicaid managed care at all. The Riklons and Kabuas carry Springdale\u2019s Marshallese community; the Nguyens, Fort Smith\u2019s Vietnamese community; the Washingtons and Robinsons, the Delta.'},
+ B:{title:'Churn \u2014 with an open-enrollment rhythm', q:'What happens when Medicaid members live on the marketplace\u2019s calendar?',
+    body:'125 members sit in ordinary procedural gaps. But 60 show the private option\u2019s signature texture: <b>January plan switches</b> \u2014 eligibility unmoved, QHP changed at open enrollment, because these members ride the commercial marketplace\u2019s plan-year clock inside Medicaid\u2019s continuous eligibility. Two calendars, one member: renewals on the state\u2019s anniversary cycle, plan years on the exchange\u2019s. Oregon\u2019s register B ran two eligibility clocks; Arkansas runs an eligibility clock and a <b>commercial</b> one.'},
+ C:{title:'The walls and the tiers', q:'What do a restoration and a two-tier promise look like in spans?',
+    body:'140 members show premium assistance mechanically \u2014 the state paying commercial premiums to Ambetter, Health Advantage, and QualChoice, with a Medicaid wrap behind. 120 are the <b>restoration wall</b>: COFA migrants \u2014 Marshall Islanders lawfully present under the Compact, excluded from Medicaid by the 1996 welfare law for <b>24 years</b>, restored by Congress in December 2020 \u2014 so every eligibility span in the cohort begins the same month. Springdale, home of the largest Marshallese community in the continental U.S. (drawn by poultry work, and by the legacy of nuclear testing at Bikini and Enewetak), enrolled a generation in a season. And 115 are ARKids First\u2019s two tiers: A and B, one promise split by a pay stub, since 1997.'},
+ D:{title:'The requirement that ran', q:'What does the only implemented Medicaid work requirement leave behind?',
+    body:'Indiana\u2019s register E holds statuses for a requirement that never operated; Arkansas\u2019s register D holds the one that <b>did</b>. 150 members carry <b>vacated gaps</b>: terminated in 2018 for unreported work hours \u2014 about 18,000 people in seven months, the only mass work-requirement disenrollment in Medicaid\u2019s history \u2014 with closure reasons a federal court later declared unlawful (<i>Gresham v. Azar</i>). The reason is legally void; the uninsured months were lived anyway. 115 carry the <b>scar</b>: the same closure, but no return for years. 110 were <b>exempt and flagged</b>, their spans running straight through 2018. A record can hold a fact and its repudiation at once; that is the whole reason to keep records.'},
+ E:{title:'The PASSEs \u2014 providers holding the risk', q:'What happens when the deliverers become the insurer?',
+    body:'140 members are attributed by <b>assessment tier</b> (2 or 3) to one of three PASSEs \u2014 provider-led entities, partly owned by the very organizations that serve the member, holding one global capitation for medical, behavioral, and developmental care together. 95 sit on the <b>CES waiver waitlist</b> \u2014 the I/DD home-and-community services queue, years deep: an eligibility system saying yes while a budget says not yet. And 90 switched PASSE-to-PASSE, the tier and care plan following. Where the private option outsourced adults to the marketplace, the PASSE model handed the hardest cases to organized providers \u2014 Arkansas\u2019s two inventions, pointed in opposite directions.'},
+ F:{title:'Medicare arrives \u2014 the marketplace lets go', q:'The twenty-eighth answer: what happens when the exchange must release you?',
+    body:'For 195 members, the birthday ended the private option <b>twice over</b>: ARHOME eligibility closed because Medicare disqualifies it, and the commercial QHP terminated because marketplace plans cannot hold Medicare enrollees \u2014 making these the only 834s in the series whose receiver is a <b>commercial exchange carrier</b>. The member lands in traditional fee-for-service as a dual: after years inside a commercial plan bought with public money, the exit is the most classically public arrangement Medicaid has. The other 130 are PASSE members crossing to FFS \u2014 the provider-led experiment handing its member to the program\u2019s oldest form. Both lanes end in the same gray.'}
+};
+function renderRegisters(){
+  var out=document.getElementById('reg-list'); var h='';
+  ['A','B','C','D','E','F'].forEach(function(r){
+    var d=REGDEFS[r], list=MEMBERS.filter(function(m){return m.reg===r});
+    var sample=list.slice(0,12);
+    h+='<div class="reg"><h3><span class="rl">'+r+'</span>'+esc(d.title)+'<span class="meta" style="margin-left:auto">'+list.length.toLocaleString()+' members</span></h3>'+
+       '<div class="q">'+d.q+'</div><p class="sub" style="margin-bottom:10px">'+d.body+'</p>'+
+       '<div class="tblwrap"><table><thead><tr><th>ID</th><th>Member</th><th>Group</th><th>Delivery today</th><th>The planted story</th></tr></thead><tbody>';
+    sample.forEach(function(m){
+      h+='<tr class="rowlink" data-ix="'+m.ix+'"><td class="mono">'+m.id+'</td><td class="nowrap">'+esc(m.name)+'</td><td>'+grpChip(m.grpToday)+'</td><td>'+delChip(m.delTodayCode)+'</td>'+
+         '<td>'+(m.flags.length?m.flags[0]:'Clean spans \u2014 the control group')+'</td></tr>';
+    });
+    h+='</tbody></table></div>';
+    if(list.length>sample.length){
+      h+='<div class="hint" style="margin-top:8px">Showing the first '+sample.length+' of '+list.length.toLocaleString()+'. Open any row \u2014 the \u25c0 \u25b6 arrows walk the entire register \u2014 or filter the Members tab by register for the full list.</div>';
+    }
+    h+='</div>';
+  });
+  out.innerHTML=h;
+  out.querySelectorAll('tr.rowlink').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'register')})});
+}
+
+/* ================= 834 builder ================= */
+function lastDelEvent(m){
+  var spans=m.delSpans.filter(function(s){return s.sys!=='FFS'});
+  var last=spans.length?spans[spans.length-1]:null;
+  if(m.reg==='F'&&!m.passeCross){
+    return {kind:'024',del:spans[0],why:'The marketplace lets go: this termination\u2019s receiver is a commercial exchange carrier \u2014 marketplace plans cannot hold Medicare enrollees, so the private option ends by federal design, and the member lands in traditional FFS as a dual. The twenty-eighth answer.'};
+  }
+  if(m.reg==='F'){
+    return {kind:'024',del:spans[0],why:'A PASSE releasing a new dual: the global capitation excludes Medicare members, so attribution ends and the FFS wrap begins \u2014 the provider-led experiment handing its member to the program\u2019s oldest form.'};
+  }
+  if(m.janSwitch){
+    return {kind:'001',del:last,why:'The January rhythm: a plan-year switch at open enrollment \u2014 the commercial calendar ticking inside unmoving Medicaid eligibility. Two clocks, one member.'};
+  }
+  if(m.vacated||m.scarred){
+    return {kind:'021',del:last,why:'The re-enrollment after the vacated closure \u2014 the 2018 termination\u2019s reason is legally void per Gresham v. Azar, but the reinstatement is an ordinary addition: the transaction set has no segment for \u201cthe court says the last one shouldn\u2019t have happened.\u201d'};
+  }
+  if(m.reg==='E'&&spans.length===2){
+    return {kind:'021',del:last,why:'A PASSE-to-PASSE switch \u2014 the assessment tier and care plan follow the member; the eligibility span never blinks.'};
+  }
+  if(last&&PASSESET[last.sys]){
+    return {kind:'021',del:last,why:'A PASSE attribution \u2014 the receiver is a provider-led entity, partly owned by the organizations that will serve this member: the deliverers holding the insurance risk.'};
+  }
+  if(!last){
+    return {kind:'021',state:true,why:'Traditional fee-for-service \u2014 no plan receives this record: the lane Arkansas\u2019s inventions never touched, shown in standard shape.'};
+  }
+  return {kind:'021',del:last,why:'A private-option addition: the receiver is a commercial marketplace carrier being told a Medicaid agency will pay this member\u2019s premium \u2014 the 2013 invention, in its ordinary monthly operation.'};
+}
+function ediRow(seg,note,loop){return '<div class="edirow'+(loop?' loop':'')+'"><div class="seg">'+esc(seg)+'</div><div class="note">'+note+'</div></div>'}
+function build834(m){
+  var ev=lastDelEvent(m);
+  var eligSpan=m.eligSpans[m.eligSpans.length-1];
+  var eligBegin=m.eligSpans[m.eligSpans.length-1].start;
+  var ctl=String(501000+m.ix*7);
+  var kindLabel={ '021':'Addition','001':'Change','024':'Termination' }[ev.kind];
+  var out='<div class="ediwrap"><div class="edihead"><span class="fn">834 \u2014 '+kindLabel+(ev.state?' (state record)':'')+'</span><span class="hint">'+ev.why+'</span></div>';
+  var recvName = (ev.state||!ev.del)?'AR DHS (STATE RECORD)':sysLabel(ev.del.sys).toUpperCase().split(' \u2014 ')[0];
+  var recvId = (ev.state||!ev.del)?'ARDHS':ev.del.sys;
+  var isQhp = ev.del&&QHPSET[ev.del.sys];
+  out+=ediRow('ISA*00*          *00*          *ZZ*ARMEDICAID     *ZZ*'+(recvId+'          ').slice(0,10)+'    *260701*0800*^*00501*'+ctl.padStart(9,'0')+'*0*P*:~','Interchange envelope: Arkansas DHS to <b>'+esc(recvName)+'</b>'+(isQhp?' \u2014 a commercial exchange carrier.':'.'));
+  out+=ediRow('GS*BE*ARMEDICAID*'+recvId+'*20260701*0800*'+ctl+'*X*005010X220A1~','Functional group: <b>BE</b> = benefit enrollment.');
+  out+=ediRow('ST*834*'+ctl.slice(-4)+'*005010X220A1~','Transaction set header.');
+  out+=ediRow('BGN*00*'+m.id.slice(-5)+'-'+ctl.slice(-3)+'*20260701*0800****4~','Beginning segment. Purpose 00 = original; action 4 = full audit.');
+  out+=ediRow('N1*P5*ARKANSAS DEPT OF HUMAN SERVICES*FI*716000101~','Loop 1000A \u2014 plan sponsor: a Medicaid agency, even when the receiver is a marketplace carrier.', true);
+  out+=ediRow('N1*IN*'+recvName+'*FI*'+String(710000000+m.ix*13)+'~','Loop 1000B \u2014 the receiver'+(isQhp?': the same carrier that serves paying exchange customers.':'.'), true);
+  out+=ediRow('INS*Y*18*'+ev.kind+'*'+(ev.kind==='024'?'07':(ev.kind==='001'?'43':'28'))+'*A***FT~','Loop 2000. Maintenance <b>'+ev.kind+'</b>.', true);
+  out+=ediRow('REF*0F*'+m.id+'~','The member ID \u2014 ten digits: the person, permanently, across lanes.');
+  out+=ediRow('DTP*356*D8*'+mFirstD8(Math.max(eligBegin,-24))+'~','<b>Eligibility</b> begin date'+(m.cofa?' \u2014 the wall: this cohort\u2019s true begin is Dec 2020, the month Congress restored COFA eligibility after 24 years; the window clamps the display, not the fact.':'.'));
+  out+=ediRow('NM1*IL*1*'+m.last.toUpperCase()+'*'+m.first.toUpperCase()+'****34*'+String(430000000+m.ix*311)+'~','Member name; SSN qualifier synthetic here.');
+  out+=ediRow('PER*IP**TE*'+m.phone.replace(/\D/g,'')+'~','Contact telephone.');
+  out+=ediRow('N3*'+m.street.toUpperCase()+'~','Street address.');
+  out+=ediRow('N4*'+m.city.toUpperCase()+'*AR*'+m.zip+'~','City/state/ZIP: '+esc(m.city)+', '+esc(m.county)+' County'+(m.cofa?' \u2014 Springdale: the largest Marshallese community in the continental U.S.':'.'));
+  out+=ediRow('DMG*D8*'+dobD8(m.dob)+'*'+m.sex+'~','Date of birth and sex.');
+  if(m.lang!=='English') out+=ediRow('LUI*LD*'+({'Spanish':'SPA','Marshallese':'MAH','Vietnamese':'VIE','Lao':'LAO','Arabic':'ARA'}[m.lang]||'ENG')+'**6~','Preferred language: '+esc(m.lang)+(m.lang==='Marshallese'?' \u2014 the language of the restoration wall.':'.'));
+  if(!ev.state&&ev.del){
+    out+=ediRow('HD*'+ev.kind+'**HLT*'+ev.del.sys+'~','Loop 2300 \u2014 coverage under <b>'+(isQhp?'a marketplace QHP (premium assistance)':'a PASSE (global provider-led capitation)')+'</b>.', true);
+    out+=ediRow('DTP*348*D8*'+mFirstD8(Math.max(ev.del.start,-24))+'~','Coverage begin date \u2014 first of the month, always prospective.');
+    if(ev.kind==='024'&&ev.del.end!==null) out+=ediRow('DTP*349*D8*'+mLastD8(ev.del.end)+'~','Coverage end date'+(m.reg==='F'&&isQhp?' \u2014 the marketplace\u2019s last day holding this member: federal rules do the rest.':'.'));
+  } else {
+    out+=ediRow('HD*021**HLT*FFS~','Loop 2300 \u2014 traditional fee-for-service.', true);
+    out+=ediRow('DTP*348*D8*'+mFirstD8(Math.max(eligBegin,-24))+'~','Coverage begin for the state-side record.');
+  }
+  out+=ediRow('LS*2700~','Open the member-reporting loop.', true);
+  out+=ediRow('LX*1~ N1*75*COVERAGE GROUP~ REF*ZZ*'+eligSpan.grp+'~','The coverage group ('+esc(GROUPS[eligSpan.grp].name)+').');
+  if(m.arkids) out+=ediRow('LX*2~ N1*75*ARKIDS TIER~ REF*ZZ*'+m.arkids+'~','ARKids First <b>'+m.arkids+'</b> \u2014 '+(m.arkids==='A'?'traditional Medicaid: no cost-sharing.':'the CHIP-funded tier: small premiums and copays. One promise, two brands, split by a pay stub.'));
+  if(m.cofa) out+=ediRow('LX*2~ N1*75*COFA STATUS~ REF*ZZ*COFA-RESTORED~','COFA citizen \u2014 lawfully present under the Compact of Free Association; Medicaid eligibility restored by Congress Dec 2020 after a 24-year statutory exclusion.');
+  if(m.vacated||m.scarred) out+=ediRow('LX*2~ N1*75*ARCHIVE~ REF*ZZ*WR-2018-VACATED~','The archive fact: a 2018 work-requirement closure whose legal basis was vacated by Gresham v. Azar. The reason is void; the gap was lived; the record keeps both.');
+  if(m.wrExempt) out+=ediRow('LX*2~ N1*75*ARCHIVE~ REF*ZZ*WR-EXEMPT~','Work-requirement exemption ('+esc(m.wrExempt)+') \u2014 the flag that kept this span unbroken through 2018, outliving the rule it answered.');
+  if(m.passeTier) out+=ediRow('LX*2~ N1*75*ASSESSMENT TIER~ REF*ZZ*TIER-'+m.passeTier+'~','Independent assessment tier '+m.passeTier+' \u2014 the routing fact that placed this member with a provider-led entity.');
+  if(m.reqYear) out+=ediRow('LX*3~ N1*75*CES WAITLIST~ REF*ZZ*REQ-'+m.reqYear+'~','On the Community & Employment Supports waiver waitlist since '+m.reqYear+' \u2014 eligibility says yes; the budget says not yet.');
+  if(m.reg==='F') out+=ediRow('LX*3~ N1*75*MEDICARE STATUS~ REF*ZZ*AB~','Medicare A+B from '+mLabel(m.medicareIdx)+' \u2014 buy-in accreted '+mLabel(m.buyinIdx)+'.');
+  out+=ediRow('LE*2700~','Close the reporting loop.', true);
+  out+=ediRow('SE*'+ri(15,21)+'*'+ctl.slice(-4)+'~ GE*1*'+ctl+'~ IEA*1*'+ctl.padStart(9,'0')+'~','Trailers \u2014 counts must reconcile or the file bounces.');
+  out+='</div>';
+  if(m.reg==='F'&&!m.passeCross){
+    out+='<div class="plain" style="margin-top:14px"><span class="pe-label">Worth noticing</span>Every other register F in this series sends its termination to a Medicaid managed-care plan \u2014 an organization whose whole business is this program. Arkansas\u2019s goes to a <b>commercial exchange carrier</b>, and the termination isn\u2019t the state\u2019s policy choice at all: marketplace rules simply cannot hold a Medicare enrollee, so the private option ends by the logic of the chassis it was built on. When you borrow a commercial vehicle, you inherit its rules \u2014 including the ones about when the ride ends.</div>';
+  }
+  return out;
+}
+function initFileTab(){
+  var sel=document.getElementById('f-member');
+  var h='';
+  ['A','B','C','D','E','F'].forEach(function(r){
+    h+='<optgroup label="Register '+r+' \u2014 '+esc(REGDEFS[r].title)+'">';
+    MEMBERS.filter(function(m){return m.reg===r}).slice().sort(function(a,b){return (a.name+' \u2014 '+a.id).localeCompare(b.name+' \u2014 '+b.id)}).forEach(function(m){
+      h+='<option value="'+m.ix+'">'+esc(m.name)+' \u2014 '+m.id+'</option>';
+    });
+    h+='</optgroup>';
+  });
+  sel.innerHTML=h;
+  sel.addEventListener('input',function(){renderFile(+sel.value)});
+  renderFile(+sel.value);
+}
+function renderFile(ix){
+  document.getElementById('f-out').innerHTML=build834(MEMBERS[ix]);
+}
+</script>
+<script>
+'use strict';
+/* ================= modal ================= */
+var MODAL={ix:null, ctx:'roster'};
+function navList(){
+  if(MODAL.ctx==='spans'&&SPAN_VIEW.length)return SPAN_VIEW;
+  if(MODAL.ctx==='delivery'&&DEL_VIEW.length)return DEL_VIEW;
+  if(MODAL.ctx==='register'&&MODAL.ix!==null){
+    var r=MEMBERS[MODAL.ix].reg;
+    return MEMBERS.filter(function(m){return m.reg===r}).map(function(m){return m.ix});
+  }
+  return ROSTER_VIEW.length?ROSTER_VIEW:MEMBERS.map(function(m){return m.ix});
+}
+function openModal(ix,ctx){
+  MODAL.ix=ix; if(ctx)MODAL.ctx=ctx;
+  var m=MEMBERS[ix];
+  document.getElementById('mo-nm').textContent=m.first+' '+m.last;
+  document.getElementById('mo-id').textContent='ID '+m.id+'  \u00b7  Register '+m.reg;
+  document.getElementById('mo-body').innerHTML=modalBody(m);
+  var list=navList(), pos=list.indexOf(ix);
+  document.getElementById('mo-pos').textContent=(pos+1)+' / '+list.length+' ('+MODAL.ctx+')';
+  document.getElementById('mo-prev').disabled=pos<=0;
+  document.getElementById('mo-next').disabled=pos<0||pos>=list.length-1;
+  document.getElementById('overlay').classList.add('on');
+  document.getElementById('modal').classList.add('on');
+  highlightRow(ix);
+  document.getElementById('mo-x').focus();
+}
+function closeModal(){
+  document.getElementById('overlay').classList.remove('on');
+  document.getElementById('modal').classList.remove('on');
+  highlightRow(null);
+  MODAL.ix=null;
+}
+function stepModal(d){
+  var list=navList(), pos=list.indexOf(MODAL.ix), np=pos+d;
+  if(np<0||np>=list.length)return;
+  openModal(list[np]);
+}
+function highlightRow(ix){
+  document.querySelectorAll('tr.hl').forEach(function(tr){tr.classList.remove('hl')});
+  if(ix===null)return;
+  document.querySelectorAll('tr.rowlink[data-ix="'+ix+'"]').forEach(function(tr){tr.classList.add('hl')});
+}
+
+/* ---------- mini two-band timeline ---------- */
+function tlBar(startIdx,endIdx,color,striped,title){
+  var s=Math.max(startIdx,0), e=(endIdx===null?WIN_MONTHS-1:Math.min(endIdx,WIN_MONTHS-1));
+  if(e<0||s>WIN_MONTHS-1)return '';
+  var l=100*s/WIN_MONTHS, w=100*(e-s+1)/WIN_MONTHS;
+  return '<span class="bar'+(striped?' striped':'')+'" style="left:'+l+'%;width:'+w+'%;background:'+color+'" title="'+esc(title)+'"></span>';
+}
+function timeline(m){
+  var h='<div class="tl">';
+  h+='<div class="band"><span class="bl">Eligibility</span><span class="lane">';
+  m.eligSpans.forEach(function(s){
+    h+=tlBar(s.start,s.end,'var('+GROUPS[s.grp].color+')',false,s.grp+' '+mLabel(s.start)+' \u2013 '+(s.end===null?'open':mLabel(s.end)));
+  });
+  h+='<span class="todayline" style="left:'+(100*(TODAY_IDX+0.5)/WIN_MONTHS)+'%"></span></span></div>';
+  h+='<div class="band"><span class="bl">Delivery</span><span class="lane">';
+  m.delSpans.forEach(function(s){
+    var k=sysKind(s.sys);
+    var col = k==='FFS'?'var(--d-ffs)':(k==='PASSE'?'var(--d-harp)':'var(--d-mco)');
+    h+=tlBar(s.start,s.end,col,k!=='FFS',sysLabel(s.sys)+' '+mLabel(s.start)+' \u2013 '+(s.end===null?'open':mLabel(s.end)));
+  });
+  h+='<span class="todayline" style="left:'+(100*(TODAY_IDX+0.5)/WIN_MONTHS)+'%"></span></span></div>';
+  h+='<div class="axis"><span></span><span class="ax">'+
+     '<span style="left:2%">Jan 25</span><span style="left:27%">Jul 25</span><span style="left:52%">Jan 26</span><span style="left:77%">Jul 26</span></span></div>';
+  h+='<div class="tl-note">Striped blue = a marketplace QHP (the private option) \u00b7 striped purple = a PASSE \u00b7 solid gray = traditional fee-for-service \u00b7 red line = today (Jul 2026). Register C\u2019s COFA members and register D\u2019s 2018 gaps begin far left of this window \u2014 the bars clamp; the span tables and facts above keep the true dates.</div></div>';
+  return h;
+}
+
+/* ---------- per-member plain english ---------- */
+function plainFor(m){
+  var p='';
+  var first=m.first;
+  var k=m.delTodayCode==='\u2014'?null:sysKind(m.delTodayCode);
+  if(m.reg==='A'){
+    if(k==='QHP'){
+      p=first+' carries a <b>commercial marketplace card</b> \u2014 '+esc(sysLabel(m.delTodayCode).split(' \u2014 ')[0])+' \u2014 whose premium Medicaid pays: the private option, the 2013 invention that let a deep-red legislature expand by routing its expansion adults through the exchange. Same card as a paying customer; different payer behind it.';
+    } else if(k==='PASSE'){
+      p=first+' is attributed to a <b>PASSE</b> \u2014 a provider-led entity holding one global capitation for medical, behavioral, and developmental care: the organizations that serve '+first+' partly own the thing that insures '+first+'. Arkansas\u2019s second invention, for its most complex members.';
+    } else {
+      p=first+' is in <b>traditional fee-for-service</b> \u2014 the lane Arkansas\u2019s inventions never touched: kids, parents, and most ABD members stayed in classic Medicaid while the expansion adults went to the marketplace and the hardest cases went to the PASSEs. Three lanes; this is the oldest one.';
+    }
+  } else if(m.reg==='B'){
+    if(m.janSwitch){
+      p=first+'\u2019s eligibility never moved \u2014 but the QHP flipped at <b>January 2026</b>, because private-option members live on the marketplace\u2019s calendar: plan years, open enrollment, carrier switches. Medicaid\u2019s clock and the exchange\u2019s clock run through the same member, and only one of them ticked. The commercial chassis, showing through.';
+    } else {
+      var t2=m.eligSpans[0].end, rg=m.eligSpans[1].start, gap=rg-t2-1;
+      if(rg>TODAY_IDX){
+        p=first+'\u2019s renewal did not come back and the case closed after '+mLabel(t2)+' \u2014 ordinary procedural churn. The case reopens '+mLabel(rg)+(k==='QHP'?'; unlike a paying marketplace customer, the QHP terminated the moment the eligibility did':'')+'.';
+      } else {
+        p=first+' churned: closed after '+mLabel(t2)+', '+gap+' month'+(gap>1?'s':'')+' in the gap, back '+mLabel(rg)+'. Paperwork, not income \u2014 the churn every state has, in the state whose other gaps (register D) made national law.';
+      }
+    }
+  } else if(m.reg==='C'){
+    if(m.cofa){
+      p=first+'\u2019s eligibility begins <b>December 2020</b> \u2014 the same month as every member of this cohort, because that is when Congress restored Medicaid to COFA citizens after the 1996 welfare law excluded them for <b>24 years</b>. '+first+' is Marshallese, in Springdale \u2014 the largest Marshallese community in the continental U.S., drawn by poultry work and by the long shadow of nuclear testing at Bikini and Enewetak. A wall of identical start dates is a statute, visible from orbit.';
+    } else if(m.arkids){
+      p=first+' is an <b>ARKids First '+m.arkids+'</b> child \u2014 '+(m.arkids==='A'?'the traditional-Medicaid tier: no premiums, no copays, full EPSDT.':'the CHIP-funded tier: higher family income, small copays, a slightly thinner benefit.')+' Two brands of one promise, split by a line on a pay stub \u2014 Arkansas\u2019s 1997 design, before most states built CHIP at all.';
+    } else {
+      p=first+' shows premium assistance mechanically: the state pays '+esc(sysLabel(m.delSpans[0].sys).split(' \u2014 ')[0])+' a commercial premium every month, plus cost-sharing, plus a Medicaid wrap for whatever the QHP doesn\u2019t cover. Dearer per member than managed care \u2014 the price of expanding at all in 2013, defended since on network access: commercial rates buy doctors that Medicaid rates struggle to.';
+    }
+  } else if(m.reg==='D'){
+    if(m.vacated){
+      p=first+' was terminated in 2018 for failing to report 80 hours of work activity \u2014 one of about 18,000, in the only state that ever implemented a Medicaid work requirement. A federal court halted it; <i>Gresham v. Azar</i> ruled the approval unlawful. So the closure reason on '+first+'\u2019s span is <b>legally void</b> \u2014 and the '+((m.eligSpans[1].start-m.eligSpans[0].end-1))+'-month gap was lived anyway. The record keeps both facts; that is what records are for.';
+    } else if(m.scarred){
+      p=first+'\u2019s 2018 termination carries the same vacated reason \u2014 but '+first+' didn\u2019t come back when the court ruled: the gap ran into '+mLabel(m.eligSpans[1].start).split(' ')[1]+'. The research found most people removed never knew the rule existed or couldn\u2019t navigate the portal \u2014 and employment didn\u2019t rise. The requirement is gone. The multi-year hole in this history is the part no opinion could repair.';
+    } else {
+      p=first+' held an exemption \u2014 "'+esc(m.wrExempt)+'" \u2014 so the span runs straight through 2018, unbroken. The flag outlived the rule, as archive fields do: Indiana keeps statuses for the requirement that never started; Arkansas keeps them for the one that did. Same fields, opposite histories.';
+    }
+  } else if(m.reg==='E'){
+    if(m.passeTier){
+      p='An independent assessment placed '+first+' in <b>tier '+m.passeTier+'</b>, routing them to '+esc(sysLabel(m.delTodayCode).split(' \u2014 ')[0])+' \u2014 a PASSE: providers organized into an entity that holds the full insurance risk for its own patients. The theory: whoever delivers the care should own the outcome. The test: whether owning both sides aligns them or just concentrates them.';
+    } else if(m.reqYear){
+      p=first+' has been on the <b>CES waiver waitlist since '+m.reqYear+'</b> \u2014 the I/DD home-and-community services queue that runs years deep. The PASSE covers medical and behavioral care meanwhile; the waiver slot \u2014 the daily supports a family actually needs \u2014 is the thing still pending. A waitlist is an eligibility system saying yes and a budget saying not yet.';
+    } else {
+      p=first+' switched PASSEs at '+mLabel(m.delSpans[1].start)+' \u2014 '+esc(sysLabel(m.delSpans[0].sys).split(' \u2014 ')[0])+' \u2192 '+esc(sysLabel(m.delSpans[1].sys).split(' \u2014 ')[0])+': the assessment tier and care plan follow the member, and the eligibility span never blinks. Attribution is plumbing, not eligibility.';
+    }
+  } else {
+    var mi=m.medicareIdx, bi=m.buyinIdx;
+    if(!m.passeCross){
+      p='In '+mLabel(mi)+', '+first+' turned 65 and the private option ended <b>twice</b>: ARHOME eligibility closed because Medicare disqualifies it, and '+esc(sysLabel(m.delSpans[0].sys).split(' \u2014 ')[0])+' terminated because a marketplace plan cannot hold a Medicare enrollee \u2014 the chassis\u2019s own rule, not the state\u2019s. The twenty-eighth answer \u2014 <b>the marketplace lets go</b>: after years in a commercial plan bought with public money, '+first+' lands in traditional fee-for-service as a dual, the most classically public arrangement Medicaid has. Buy-in accreted '+mLabel(bi)+'.';
+    } else {
+      p=first+' reached Medicare in '+mLabel(mi)+' from a <b>PASSE</b>: the global capitation excludes duals, so attribution ended, the wrap went fee-for-service, and the buy-in accreted '+mLabel(bi)+' \u2014 the eligibility span never blinked. The provider-led experiment hands its member to the program\u2019s oldest form: both of Arkansas\u2019s inventions end their members\u2019 stories in the same gray.';
+    }
+  }
+  return '<div class="plain"><span class="pe-label">In plain English</span>'+p+'</div>';
+}
+
+/* ---------- modal body ---------- */
+function modalBody(m){
+  var h='';
+  var et=eligToday(m);
+  h+='<div class="kv">'+
+    kv('Status today',statusHtml(m.status))+
+    kv('Coverage group',grpChip(m.grpToday)+' <span style="font-size:.8rem;color:var(--ink-soft)">'+esc(GROUPS[m.grpToday].name)+'</span>')+
+    kv('Delivery today',delChip(m.delTodayCode)+(m.delTodayCode!=='\u2014'?' <span style="font-size:.8rem;color:var(--ink-soft)">'+esc(sysLabel(m.delTodayCode))+'</span>':''))+
+    kv('Date of birth',dobLabel(m.dob)+' <span class="hint">(age '+m.age+')</span>')+
+    kv('Sex',m.sex)+
+    kv('Address',esc(m.street)+', '+esc(m.city)+', AR '+m.zip)+
+    kv('County',esc(m.county))+
+    kv('Phone','<span class="mono">'+m.phone+'</span>')+
+    kv('Preferred language',esc(m.lang))+
+    (m.cofa?kv('COFA','Restored Dec 2020 \u2014 after a 24-year statutory exclusion'):'')+(m.arkids?kv('ARKids tier',m.arkids+(m.arkids==='A'?' \u2014 no cost-sharing':' \u2014 CHIP-funded, small copays')):'')+(m.vacated?kv('Archive','2018 work-requirement closure \u2014 VACATED (Gresham v. Azar)'):'')+(m.scarred?kv('Archive','2018 closure (vacated) \u2014 did not return for years'):'')+(m.wrExempt?kv('Archive','Work-requirement exempt: '+esc(m.wrExempt)):'')+(m.passeTier?kv('Assessment tier','Tier '+m.passeTier+' \u2014 PASSE attribution'):'')+(m.reqYear?kv('CES waitlist','Since '+m.reqYear):'')+(m.janSwitch?kv('Plan year','Switched QHPs at Jan 2026 open enrollment'):'')+
+    '</div>';
+  function kv(k,v){return '<div class="k">'+k+'</div><div class="v">'+v+'</div>'}
+  h+='<h4>24-month picture</h4>'+timeline(m);
+  h+=plainFor(m);
+  h+='<h4>Eligibility spans</h4><div class="tblwrap"><table><thead><tr><th>Group</th><th>Begin</th><th>End</th><th>Reason</th></tr></thead><tbody>';
+  m.eligSpans.forEach(function(s){
+    h+='<tr><td>'+grpChip(s.grp)+'</td><td class="nowrap">'+startLabel(s.start)+'</td><td class="nowrap">'+(s.end===null?'<span class="st-act">open</span>':mLabel(s.end))+'</td><td>'+(s.reason?esc(s.reason):'\u2014')+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  h+='<h4>Delivery spans</h4><div class="tblwrap"><table><thead><tr><th>System</th><th>Begin</th><th>End</th><th>Note</th></tr></thead><tbody>';
+  m.delSpans.forEach(function(s){
+    h+='<tr><td>'+delChip(s.sys)+'</td><td class="nowrap">'+startLabel(s.start)+'</td><td class="nowrap">'+(s.end===null?'<span class="st-act">open</span>':mLabel(s.end))+'</td><td>'+(s.note?esc(s.note):'\u2014')+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  if(m.flags.length){
+    h+='<h4>Flags</h4><p>'+m.flags.map(function(f){return '<span class="flag">'+esc(f)+'</span>'}).join(' ')+'</p>';
+  }
+  h+='<h4>See the file</h4><p style="font-size:.84rem;color:var(--ink-soft)">Open <b>What the File Says</b> and choose '+esc(m.first+' '+m.last)+' to read the 834 the plan received for this member\u2019s most recent enrollment event.</p>';
+  return h;
+}
+
+/* ================= navigation & boot ================= */
+function showPage(pg){
+  document.querySelectorAll('nav button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-pg')===pg)});
+  document.querySelectorAll('.page').forEach(function(p){p.classList.toggle('on',p.id==='pg-'+pg)});
+  if(pg==='overview')renderOverview();
+}
+document.getElementById('nav').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b)return; showPage(b.getAttribute('data-pg'));
+});
+document.getElementById('mo-x').addEventListener('click',closeModal);
+document.getElementById('overlay').addEventListener('click',closeModal);
+document.getElementById('mo-prev').addEventListener('click',function(){stepModal(-1)});
+document.getElementById('mo-next').addEventListener('click',function(){stepModal(1)});
+document.addEventListener('keydown',function(e){
+  if(MODAL.ix===null)return;
+  if(e.key==='Escape')closeModal();
+  else if(e.key==='ArrowLeft')stepModal(-1);
+  else if(e.key==='ArrowRight')stepModal(1);
+});
+
+/* boot */
+renderOverview();
+initRosterControls(); renderRoster();
+initSpanControls();  renderSpans();
+initDelControls();   renderDel();
+renderRegisters();
+initFileTab();
+renderReference();
+</script>
+</body>
+</html>

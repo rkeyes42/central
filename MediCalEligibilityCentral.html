@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medi-Cal Eligibility Central</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@1,8..60,400;1,8..60,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#1E5FCC;
+  --accent-soft:#E8EFFB;
+  --ink:#1b2430;
+  --ink-soft:#4a5568;
+  --ink-faint:#8a94a3;
+  --line:#dde3ea;
+  --line-soft:#eceff3;
+  --bg:#f7f8fa;
+  --card:#ffffff;
+  --serif:'Source Serif 4', Georgia, serif;
+  --sans:'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono:'IBM Plex Mono', 'Consolas', monospace;
+  --g-FC01:#2E7D5B; --g-PG02:#B0568C; --g-CH19:#C98A2B; --g-EA02:#1E5FCC;
+  --g-SI02:#6A4FB6; --g-MN98:#5B8AA6; --g-FF26:#C25B4A; --g-WD02:#3E9C9C; --g-LT01:#7A7A52;
+  --d-mco:#4a7fd6; --d-ffs:#9aa3ad; --d-harp:#8a5fc0; --d-mltc:#2e8f8f;
+  --ok:#2E7D5B; --warn:#C98A2B; --bad:#C0392B;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+
+/* ---------- header ---------- */
+header{background:var(--card);border-bottom:1px solid var(--line);padding:18px 28px 0}
+.brandrow{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.wordmark{font-family:var(--serif);font-style:italic;font-weight:600;font-size:1.65rem;color:var(--accent);letter-spacing:.01em}
+.wordmark .st{color:var(--ink)}
+.tagline{color:var(--ink-faint);font-size:.85rem}
+.credit{margin-left:auto;color:var(--ink-faint);font-size:.78rem}
+nav{display:flex;gap:2px;margin-top:14px;flex-wrap:wrap}
+nav button{appearance:none;border:none;background:none;font:inherit;font-size:.86rem;font-weight:500;color:var(--ink-soft);padding:9px 14px;cursor:pointer;border-bottom:3px solid transparent;border-radius:6px 6px 0 0}
+nav button:hover{background:var(--line-soft)}
+nav button.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+nav button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+/* ---------- layout ---------- */
+main{max-width:1280px;margin:0 auto;padding:24px 28px 80px}
+.page{display:none}
+.page.on{display:block}
+h2{font-size:1.22rem;font-weight:700;margin:4px 0 4px}
+h3{font-size:.98rem;font-weight:600;margin:22px 0 8px}
+.sub{color:var(--ink-soft);font-size:.88rem;margin-bottom:16px;max-width:70ch}
+
+/* ---------- plain english callout ---------- */
+.plain{font-family:var(--serif);font-style:italic;font-size:1.02rem;line-height:1.65;color:#2c3a4d;background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:14px 18px;margin:14px 0 20px;max-width:86ch}
+.plain b{font-style:italic;font-weight:600}
+.plain .pe-label{display:block;font-family:var(--sans);font-style:normal;font-weight:700;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:5px}
+
+/* ---------- cards / stats ---------- */
+.statrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.stat .n{font-family:var(--mono);font-size:1.55rem;font-weight:600;color:var(--ink)}
+.stat .l{font-size:.74rem;color:var(--ink-soft);margin-top:2px;line-height:1.35}
+.stat.acc .n{color:var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:14px 0}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:900px){.twocol{grid-template-columns:1fr}}
+
+/* ---------- legend / bars ---------- */
+.leg{display:flex;flex-direction:column;gap:7px}
+.legrow{display:grid;grid-template-columns:16px 64px 1fr 46px;gap:10px;align-items:center;font-size:.84rem}
+.legrow .swatch{width:14px;height:14px;border-radius:4px}
+.legrow .code{font-family:var(--mono);font-size:.8rem;font-weight:600}
+.legrow .cnt{font-family:var(--mono);text-align:right;color:var(--ink-soft)}
+.barlist{display:flex;flex-direction:column;gap:8px}
+.barrow{display:grid;grid-template-columns:210px 1fr 40px;gap:10px;align-items:center;font-size:.83rem}
+.barrow .track{background:var(--line-soft);border-radius:5px;height:14px;overflow:hidden}
+.barrow .fill{display:block;height:100%;background:var(--d-mco);border-radius:5px;transition:width .8s ease}
+.barrow .bn{font-family:var(--mono);text-align:right;color:var(--ink-soft)}
+@media(max-width:700px){.barrow{grid-template-columns:130px 1fr 36px}}
+
+/* ---------- controls ---------- */
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;align-items:center}
+.controls input[type=search],.controls select{font:inherit;font-size:.85rem;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
+.controls input[type=search]{min-width:220px}
+.controls select:focus,.controls input:focus{outline:2px solid var(--accent);outline-offset:0}
+.hint{font-size:.76rem;color:var(--ink-faint)}
+
+/* ---------- tables ---------- */
+.tblwrap{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:auto;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:.83rem}
+th{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);background:#fbfcfd;white-space:nowrap;position:sticky;top:0}
+th.sortable{cursor:pointer;user-select:none}
+th.sortable:hover{color:var(--accent)}
+th .arr{font-size:.72rem;color:var(--accent)}
+.pager{display:flex;align-items:center;justify-content:center;gap:14px;margin:12px 0 2px}
+.pager button.pg{appearance:none;font:inherit;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:5px 13px;cursor:pointer;font-size:.82rem;color:var(--ink-soft)}
+.pager button.pg:hover:not(:disabled){background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.pager button.pg:disabled{opacity:.35;cursor:default}
+.pager .pgpos{font-size:.78rem;color:var(--ink-faint)}
+td{padding:9px 12px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tbody tr.rowlink{cursor:pointer}
+tbody tr.rowlink:hover{background:var(--accent-soft)}
+tbody tr.hl{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+.mono{font-family:var(--mono);font-size:.8rem}
+.nowrap{white-space:nowrap}
+
+/* ---------- chips ---------- */
+.chip{display:inline-block;font-family:var(--mono);font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:20px;color:#fff;white-space:nowrap}
+.chip.outl{background:none;border:1.5px solid currentColor}
+.dchip{display:inline-block;font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:5px;white-space:nowrap}
+.d-mco{background:#e5edfa;color:#2456a8}
+.d-ffs{background:#eceff2;color:#5c6672}
+.d-harp{background:#efe7f8;color:#6a3fa0}
+.d-mltc{background:#e2f2f2;color:#1f6f6f}
+.st-act{color:var(--ok);font-weight:600}
+.st-gap{color:var(--warn);font-weight:600}
+.st-cls{color:var(--ink-faint);font-weight:600}
+.flag{display:inline-block;font-size:.7rem;font-weight:600;background:#fdf1e0;color:#96660f;border:1px solid #f0d9ae;border-radius:5px;padding:1px 7px;white-space:nowrap}
+
+/* ---------- registers ---------- */
+.reg{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin:12px 0}
+.reg h3{margin:0 0 4px;display:flex;align-items:center;gap:10px}
+.reg .rl{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;background:var(--accent);color:#fff;font-family:var(--mono);font-weight:600;font-size:.85rem;flex:none}
+.reg .q{font-family:var(--serif);font-style:italic;color:#2c3a4d;font-size:.95rem;margin:4px 0 10px}
+.reg .meta{font-size:.78rem;color:var(--ink-faint);margin-bottom:8px}
+
+/* ---------- 834 ---------- */
+.ediwrap{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:12px 0;overflow:hidden}
+.edihead{padding:12px 18px;border-bottom:1px solid var(--line);display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;background:#fbfcfd}
+.edihead .fn{font-family:var(--mono);font-size:.82rem;font-weight:600}
+.edirow{display:grid;grid-template-columns:minmax(300px,46%) 1fr;border-bottom:1px solid var(--line-soft)}
+.edirow:last-child{border-bottom:none}
+.edirow .seg{font-family:var(--mono);font-size:.78rem;padding:8px 16px;background:#f4f7fb;color:#1b3a66;overflow-wrap:anywhere;border-right:1px solid var(--line-soft)}
+.edirow .note{font-size:.8rem;padding:8px 16px;color:var(--ink-soft)}
+.edirow.loop .seg{background:#e8effb;font-weight:600}
+@media(max-width:780px){.edirow{grid-template-columns:1fr}.edirow .seg{border-right:none}}
+
+/* ---------- modal ---------- */
+.overlay{position:fixed;inset:0;background:rgba(20,28,40,.42);opacity:0;pointer-events:none;transition:opacity .22s;z-index:40}
+.overlay.on{opacity:1;pointer-events:auto}
+.slideover{position:fixed;top:0;right:0;bottom:0;width:640px;max-width:94vw;background:var(--card);box-shadow:-12px 0 40px rgba(15,25,45,.22);transform:translateX(102%);transition:transform .26s ease;z-index:50;display:flex;flex-direction:column}
+.slideover.on{transform:translateX(0)}
+.mo-head{padding:16px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+.mo-head .who{min-width:0}
+.mo-head .nm{font-weight:700;font-size:1.05rem}
+.mo-head .idz{font-family:var(--mono);font-size:.76rem;color:var(--ink-soft)}
+.mo-x{margin-left:auto;appearance:none;border:1px solid var(--line);background:none;border-radius:8px;width:32px;height:32px;font-size:1rem;cursor:pointer;color:var(--ink-soft);flex:none}
+.mo-x:hover{background:var(--line-soft)}
+.mo-body{overflow-y:auto;padding:18px 22px;flex:1}
+.mo-foot{border-top:1px solid var(--line);padding:10px 22px;display:flex;align-items:center;gap:12px}
+.mo-foot button{appearance:none;font:inherit;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:.9rem}
+.mo-foot button:hover:not(:disabled){background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.mo-foot button:disabled{opacity:.35;cursor:default}
+.mo-foot .pos{font-family:var(--mono);font-size:.78rem;color:var(--ink-faint);margin-left:auto}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:4px 12px;font-size:.85rem;margin:8px 0 14px}
+.kv .k{color:var(--ink-faint)}
+.kv .v{color:var(--ink)}
+.mo-body h4{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);margin:16px 0 8px}
+.mo-body .plain{font-size:.93rem;padding:12px 15px}
+
+/* ---------- mini timeline ---------- */
+.tl{margin:6px 0 4px}
+.tl .band{display:grid;grid-template-columns:78px 1fr;gap:8px;align-items:center;margin:5px 0}
+.tl .bl{font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-faint);text-align:right}
+.tl .lane{position:relative;height:18px;background:var(--line-soft);border-radius:4px}
+.tl .bar{position:absolute;top:0;bottom:0;border-radius:4px;min-width:3px}
+.tl .bar.striped{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.28) 0 5px,transparent 5px 10px)}
+.tl .axis{display:grid;grid-template-columns:78px 1fr;gap:8px;margin-top:3px}
+.tl .ax{position:relative;height:14px;font-size:.62rem;color:var(--ink-faint);font-family:var(--mono)}
+.tl .ax span{position:absolute;transform:translateX(-50%)}
+.tl .todayline{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--bad);opacity:.7}
+.tl-note{font-size:.7rem;color:var(--ink-faint);margin-top:6px}
+
+/* ---------- reference ---------- */
+.refgrid{display:grid;grid-template-columns:1fr;gap:4px}
+dl.gloss{display:grid;grid-template-columns:200px 1fr;gap:8px 16px;font-size:.85rem}
+dl.gloss dt{font-weight:600}
+dl.gloss dd{color:var(--ink-soft)}
+@media(max-width:700px){dl.gloss{grid-template-columns:1fr}dl.gloss dd{margin-bottom:8px}}
+footer{max-width:1280px;margin:0 auto;padding:0 28px 40px;color:var(--ink-faint);font-size:.75rem;line-height:1.6}
+@media(max-width:700px){header{padding:14px 16px 0}main{padding:18px 14px 60px}.kv{grid-template-columns:120px 1fr}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brandrow">
+    <div class="wordmark">Medi-Cal Eligibility <span class="st">Central</span></div>
+    <div class="tagline">Three models, the aid code that opened, CalAIM, and the 834 &mdash; a synthetic demonstration</div>
+    <div class="credit">Robert Thomas Keyes</div>
+  </div>
+  <nav id="nav" aria-label="Sections">
+    <button data-pg="overview" class="on">Overview</button>
+    <button data-pg="members">Members</button>
+    <button data-pg="spans">Eligibility Spans</button>
+    <button data-pg="delivery">The Three Models</button>
+    <button data-pg="registers">Scenario Registers</button>
+    <button data-pg="file">What the File Says</button>
+    <button data-pg="reference">Reference Codes</button>
+  </nav>
+</header>
+<main>
+  <section class="page on" id="pg-overview">
+    <h2>Overview</h2>
+    <p class="sub">A synthetic Medi-Cal (California Medicaid) population across a 24-month window (January 2025 &ndash; December 2026), viewed as of <b>July 2026</b>. Every value is deterministic &mdash; seeded PRNG, identical on every load.</p>
+    <div class="plain" id="ov-plain"></div>
+    <div class="statrow" id="ov-stats"></div>
+    <div class="twocol">
+      <div class="card">
+        <h3 style="margin-top:0">Coverage groups in the population</h3>
+        <div class="leg" id="ov-groups"></div>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Where members get their care today</h3>
+        <div class="barlist" id="ov-mcos"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="pg-members">
+    <h2>Members</h2>
+    <p class="sub">The full synthetic roster. Click any row for the member record; click a column header to sort.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>Every person here has a <b>CIN</b> — and yes, California calls it that too: the Client Index Number, eight digits and a letter, permanent through everything. This is the largest Medicaid program on earth — roughly one in three Californians — and its two defining facts organize this file. First, <b>the county decides your kind of choice</b>: in a COHS county there is one plan and everyone is in it automatically; in a Two-Plan county you pick between a public Local Initiative and a commercial; in a GMC county there is a menu. Second, since <b>January 2024</b>, full-scope Medi-Cal covers all income-eligible adults <b>regardless of immigration status</b> — register C holds the records that converted, aid code by aid code, the day the door opened.</div>
+    <div class="controls">
+      <input type="search" id="m-search" placeholder="Search name, CIN, city&hellip;" aria-label="Search members">
+      <select id="m-group" aria-label="Filter by coverage group"></select>
+      <select id="m-del" aria-label="Filter by delivery system"></select>
+      <select id="m-reg" aria-label="Filter by register"></select>
+      <select id="m-status" aria-label="Filter by status">
+        <option value="">Status today: all</option>
+        <option value="Active">Active</option>
+        <option value="Gap">In gap</option>
+        <option value="Closed">Closed</option>
+      </select>
+      <span class="hint" id="m-count"></span>
+    </div>
+    <div class="tblwrap"><table id="m-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">CIN</th>
+        <th class="sortable" data-k="name">Name</th>
+        <th class="sortable" data-k="age">Age</th>
+        <th class="sortable" data-k="sex">Sex</th>
+        <th class="sortable" data-k="grp">Coverage Group</th>
+        <th class="sortable" data-k="del">Delivery Today</th>
+        <th class="sortable" data-k="county">County</th>
+        <th class="sortable" data-k="reg">Register</th>
+        <th class="sortable" data-k="status">Status Today</th>
+      </tr></thead>
+      <tbody id="m-body"></tbody>
+    </table></div>
+    <div class="pager" id="m-pager"></div>
+  </section>
+
+  <section class="page" id="pg-spans">
+    <h2>Eligibility Spans</h2>
+    <p class="sub">One row per coverage-group span &mdash; the state's answer to <i>&ldquo;from when to when, and under which door did this person enter?&rdquo;</i> Click a row to open the member.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>A span is a promise with dates on it — determined by one of 58 county welfare departments, all running on <b>CalSAWS</b> since the great three-system consolidation finished, and carried in California’s famous <b>aid codes</b>. Two eligibility facts here exist almost nowhere else: the <b>R5</b> restricted-scope spans in register C, which ended by operation of law on January 1, 2024, when California completed full-scope coverage regardless of immigration status — and the non-MAGI rows, where since 2024 there is <b>no asset test at all</b>: California retired one of Medicaid’s oldest gatekeeping instruments entirely.</div>
+    <div class="controls">
+      <select id="s-group" aria-label="Filter spans by coverage group"></select>
+      <select id="s-open" aria-label="Filter by open or closed">
+        <option value="">Open + closed</option><option value="open">Open only</option><option value="closed">Closed only</option>
+      </select>
+      <span class="hint" id="s-count"></span>
+    </div>
+    <div class="tblwrap"><table id="s-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">CIN</th>
+        <th class="sortable" data-k="name">Member</th>
+        <th class="sortable" data-k="grp">Group</th>
+        <th class="sortable" data-k="start">Begin</th>
+        <th class="sortable" data-k="end">End</th>
+        <th class="sortable" data-k="months">Months</th>
+        <th>End Reason</th>
+      </tr></thead>
+      <tbody id="s-body"></tbody>
+    </table></div>
+    <div class="pager" id="s-pager"></div>
+  </section>
+
+  <section class="page" id="pg-delivery">
+    <h2>The Three Models</h2>
+    <p class="sub">One row per delivery span — read the plan against its county’s model: teal rows are <b>COHS</b> plans (one plan, everyone, no choice), blue rows are the Two-Plan, GMC, and Regional counties (including L.A. Care and IEHP, the public Local Initiative giants), purple is <b>Kaiser</b> (the gated direct contract), gray is restricted-scope history and retro tails. Click a row to open the member.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>Medi-Cal never chose one managed care architecture — it chose <b>three, by county</b>, and kept them for decades. <b>COHS</b> (County Organized Health Systems, the oldest dating to 1983): one public plan, every member, automatic — zero choice by design. <b>Two-Plan</b>: a county-created public “Local Initiative” against one commercial — which is how L.A. Care became the largest publicly operated health plan in the nation. <b>GMC</b>: a genuine menu. The same program offers zero options in San Mateo, two in Los Angeles, and four in Sacramento — register D moves members across those lines and watches their <i>kind of choosing</i> change. Layered over all of it since 2024: <b>Kaiser’s gated direct contract</b> — the plan you cannot simply pick — and <b>CalAIM</b>, which moved the capitation’s boundary until it covered rent deposits and medically tailored meals.</div>
+    <div class="controls">
+      <select id="d-sys" aria-label="Filter by delivery system"></select>
+      <span class="hint" id="d-count"></span>
+    </div>
+    <div class="tblwrap"><table id="d-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">CIN</th>
+        <th class="sortable" data-k="name">Member</th>
+        <th class="sortable" data-k="sys">Delivery</th>
+        <th class="sortable" data-k="start">Begin</th>
+        <th class="sortable" data-k="end">End</th>
+        <th class="sortable" data-k="months">Months</th>
+        <th>Begin / End Reason</th>
+      </tr></thead>
+      <tbody id="d-body"></tbody>
+    </table></div>
+    <div class="pager" id="d-pager"></div>
+  </section>
+
+  <section class="page" id="pg-registers">
+    <h2>Scenario Registers</h2>
+    <p class="sub">Six business questions, each answered by a register of members whose data was planted to demonstrate exactly that scenario. Click any member to inspect the record behind the answer.</p>
+    <div id="reg-list"></div>
+  </section>
+
+  <section class="page" id="pg-file">
+    <h2>What the File Says</h2>
+    <p class="sub">California really does speak X12N 834 — DHCS’s roster files to the Medi-Cal plans, at the largest volumes in American Medicaid. Pick a member and read the transaction the plan would receive for that member's most recent enrollment event, segment by segment, with a plain-language note on every line.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>An 834 is the state telling a health plan: <b>this person is yours now</b> (or isn't anymore) — and California’s stream carries two events worth studying. January 2024’s <b>scope conversion</b> was an addition wave with a strange property: hundreds of thousands of members who were already known to the state — years of restricted-scope history behind each CIN — arriving at plans as “new” enrollees. Every receiving plan’s duplicate-matching logic met its stress test that month. And register F’s files carry the <b>matching rule</b> in their silence: nothing in the 834 says the D-SNP must share the plan’s parent company — the alignment lives in state policy, one layer above the wire.</div>
+    <div class="controls">
+      <select id="f-member" aria-label="Choose member for 834"></select>
+      <span class="hint">Members are grouped by register; the transaction is rebuilt live from the member's actual spans.</span>
+    </div>
+    <div id="f-out"></div>
+  </section>
+
+  <section class="page" id="pg-reference">
+    <h2>Reference Codes</h2>
+    <p class="sub">The teaching code sets used throughout the app. Codes are patterned on California's conventions (aid codes and county models simplified); verify against current Department of Health Care Services publications before any non-demonstration use.</p>
+    <div id="ref-out"></div>
+  </section>
+</main>
+
+<footer>
+  <p><b>Medi-Cal Eligibility Central</b> &mdash; a single-file demonstration app in the Central series. All members, identifiers, addresses, phone numbers, and dates are synthetic and deterministic (seeded PRNG, seed 213001); any resemblance to real persons is coincidental. Program facts reflect public California Department of Health Care Services policy of the mid-2020s and change year to year — the county model map, plan roster, and aid codes are teaching simplifications of the most complex program in American Medicaid; verify against current DHCS and CMS publications before any non-demonstration use. The 834 rendering is a teaching aid, not an implementation guide. &copy; Robert Thomas Keyes.</p>
+</footer>
+
+<div class="overlay" id="overlay"></div>
+<aside class="slideover" id="modal" role="dialog" aria-modal="true" aria-labelledby="mo-nm">
+  <div class="mo-head">
+    <div class="who">
+      <div class="nm" id="mo-nm"></div>
+      <div class="idz" id="mo-id"></div>
+    </div>
+    <button class="mo-x" id="mo-x" aria-label="Close">&#10005;</button>
+  </div>
+  <div class="mo-body" id="mo-body"></div>
+  <div class="mo-foot">
+    <button id="mo-prev" aria-label="Previous member">&#9664;</button>
+    <button id="mo-next" aria-label="Next member">&#9654;</button>
+    <span class="pos" id="mo-pos"></span>
+  </div>
+</aside>
+<script>
+'use strict';
+/* ============ Medi-Cal Eligibility Central (California) ============
+   Central series -- Robert Thomas Keyes
+   Deterministic synthetic data. Seed 213001 (Los Angeles's original area code).
+   Window: Jan 2025 (idx 0) .. Dec 2026 (idx 23). "Today" = Jul 2026 (idx 18).
+================================================================= */
+
+/* ---------- seeded PRNG (mulberry32) ---------- */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+var R = mulberry32(213001);
+function ri(lo,hi){return lo+Math.floor(R()*(hi-lo+1))}
+function pick(arr){return arr[Math.floor(R()*arr.length)]}
+function wpick(pairs){var tot=0,i;for(i=0;i<pairs.length;i++)tot+=pairs[i][1];var x=R()*tot;for(i=0;i<pairs.length;i++){x-=pairs[i][1];if(x<0)return pairs[i][0]}return pairs[pairs.length-1][0]}
+
+/* ---------- window ---------- */
+var WIN_START_Y=2025, WIN_MONTHS=24, TODAY_IDX=18; /* Jul 2026 */
+var SCOPE_IDX=-12; /* Jan 2024 -- full-scope Medi-Cal for adults 26-49 regardless of immigration status */
+var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function mLabel(idx){ if(idx===null||idx===undefined)return '&mdash;';
+  var y=WIN_START_Y+Math.floor(idx/12), m=((idx%12)+12)%12;
+  return MONTHS[m]+' '+y }
+function mFirstD8(idx){var y=WIN_START_Y+Math.floor(idx/12),m=((idx%12)+12)%12;return ''+y+String(m+1).padStart(2,'0')+'01'}
+function mLastD8(idx){var y=WIN_START_Y+Math.floor(idx/12),m=((idx%12)+12)%12;var last=new Date(y,m+1,0).getDate();return ''+y+String(m+1).padStart(2,'0')+String(last).padStart(2,'0')}
+function spanMonths(s,e){var last=(e===null?TODAY_IDX:e);return Math.max(1,last-Math.max(s,-990)+1)}
+
+/* ---------- coverage groups (aid-code flavored) ---------- */
+var GROUPS={
+ M5:{name:'Children (MAGI)',             magi:true,  color:'--g-CH19', blurb:'Children through 18 \u2014 California covered all income-eligible children regardless of immigration status starting in 2016, the first step of the ladder that register C completes.'},
+ M1:{name:'Adult Expansion (MAGI)',      magi:true,  color:'--g-SI02', blurb:'Adults 19\u201364 to 138% FPL \u2014 and since January 2024, <b>regardless of immigration status</b>: California completed, age band by age band (kids 2016, young adults 2020, 50+ 2022, 26\u201349 in 2024), the only full-scope program of its kind at this scale.'},
+ P5:{name:'Pregnancy & Postpartum',      magi:true,  color:'--g-EA02', blurb:'Pregnancy coverage plus twelve months postpartum.'},
+ CW:{name:'Parents & Caretakers (CalWORKs-linked)', magi:true, color:'--g-FC01', blurb:'Parents and caretaker relatives \u2014 historically linked to CalWORKs cash aid.'},
+ '1D':{name:'Aged & Disabled (non-MAGI)', magi:false, color:'--g-MN98', blurb:'Aged and disabled budgeting \u2014 and since 2024, with <b>no asset test at all</b>: California eliminated the non-MAGI asset limit entirely, retiring one of Medicaid\u2019s oldest gatekeeping instruments.'},
+ '4M':{name:'Former Foster Youth',        magi:true,  color:'--g-FF26', blurb:'Young adults formerly in foster care, covered to 26 regardless of income.'},
+ R5:{name:'Restricted Scope (historical)', magi:true, color:'--g-WD02', blurb:'Emergency and pregnancy services only \u2014 the scope many immigrant Californians lived in for decades. Register C\u2019s members carried this code until January 2024, when the aid code opened.'}
+};
+var GROUP_KEYS=Object.keys(GROUPS);
+
+/* ---------- delivery: plans and the three models ---------- */
+var CAPLANS=[
+ {code:'LACARE', name:'L.A. Care Health Plan',            kind:'LI',   note:'The Local Initiative of Los Angeles \u2014 the largest publicly operated health plan in the nation'},
+ {code:'IEHP',   name:'Inland Empire Health Plan',        kind:'LI',   note:'The Local Initiative of Riverside/San Bernardino \u2014 the other public giant'},
+ {code:'HNET',   name:'Health Net Community Solutions',   kind:'COM',  note:'The commercial side of the Two-Plan counties; also GMC and Regional'},
+ {code:'ANTHEM', name:'Anthem Blue Cross',                kind:'COM',  note:'GMC and Regional counties'},
+ {code:'MOLINA', name:'Molina Healthcare of California',  kind:'COM',  note:'GMC and Two-Plan counties'},
+ {code:'KAISER', name:'Kaiser Permanente (direct contract)', kind:'KP', note:'Statewide direct contract since 2024 \u2014 with <b>gated enrollment</b>: continuity linkage required. The plan you cannot simply pick.'},
+ {code:'HPSM',   name:'Health Plan of San Mateo',         kind:'COHS', note:'COHS \u2014 San Mateo County: one plan, everyone, no choice'},
+ {code:'CALOPT', name:'CalOptima Health',                 kind:'COHS', note:'COHS \u2014 Orange County: the largest single-county public plan'},
+ {code:'PHC',    name:'Partnership HealthPlan of California', kind:'COHS', note:'COHS \u2014 the great northern sweep: 24 counties after the 2024 expansion'},
+ {code:'GCHP',   name:'Gold Coast Health Plan',           kind:'COHS', note:'COHS \u2014 Ventura County'},
+ {code:'CENCAL', name:'CenCal Health',                    kind:'COHS', note:'COHS \u2014 Santa Barbara & San Luis Obispo: the original, 1983'},
+ {code:'CCAH',   name:'Central California Alliance for Health', kind:'COHS', note:'COHS \u2014 Santa Cruz, Monterey, Merced and neighbors'}
+];
+var PLANBY={}; CAPLANS.forEach(function(p){PLANBY[p.code]=p});
+function sysLabel(code){ return code==='FFS'?'Fee-for-Service (restricted scope, retro tails)':(PLANBY[code]?PLANBY[code].name:code) }
+function sysKind(code){
+  if(code==='FFS')return 'FFS';
+  var p=PLANBY[code]; if(!p)return 'COM';
+  return p.kind;
+}
+function sysClass(code){ var k=sysKind(code); return k==='FFS'?'d-ffs':(k==='COHS'?'d-mltc':(k==='KP'?'d-harp':'d-mco')) }
+
+/* ---------- counties and the model map ---------- */
+/* model: COHS (one plan, no choice) | TWOPLAN (Local Initiative + commercial) | GMC (menu) | REGIONAL (two commercials) */
+var COUNTIES=[
+ {name:'Los Angeles',   w:12, model:'TWOPLAN', plans:['LACARE','HNET'], zips:['90011','90022'], city:'Los Angeles',
+  streets:['S Central Ave','Whittier Blvd','E Cesar E Chavez Ave','S Vermont Ave','Compton Ave']},
+ {name:'San Bernardino',w:5,  model:'TWOPLAN', plans:['IEHP','MOLINA'], zips:['92405','92411'], city:'San Bernardino',
+  streets:['N Mount Vernon Ave','W Baseline St','N Sierra Way','W Highland Ave']},
+ {name:'Sacramento',    w:4,  model:'GMC', plans:['ANTHEM','HNET','MOLINA','KAISER'], zips:['95823','95838'], city:'Sacramento',
+  streets:['Mack Rd','Franklin Blvd','Marysville Blvd','Center Pkwy']},
+ {name:'Fresno',        w:4,  model:'REGIONAL', plans:['ANTHEM','HNET'], zips:['93702','93706'], city:'Fresno',
+  streets:['E Tulare Ave','S Cedar Ave','E Belmont Ave','S Elm Ave']},
+ {name:'Orange',        w:5,  model:'COHS', plans:['CALOPT'], zips:['92701','92703'], city:'Santa Ana',
+  streets:['E 1st St','S Bristol St','W McFadden Ave','S Harbor Blvd']},
+ {name:'San Mateo',     w:2,  model:'COHS', plans:['HPSM'], zips:['94063'], city:'Redwood City',
+  streets:['Middlefield Rd','5th Ave','Bay Rd','Broadway']},
+ {name:'Ventura',       w:2,  model:'COHS', plans:['GCHP'], zips:['93030','93033'], city:'Oxnard',
+  streets:['Saviers Rd','S Rose Ave','W Channel Islands Blvd','Cuesta Del Mar Dr']},
+ {name:'Santa Barbara', w:2,  model:'COHS', plans:['CENCAL'], zips:['93458'], city:'Santa Maria',
+  streets:['W Main St','N Broadway','S Blosser Rd']},
+ {name:'Solano',        w:2,  model:'COHS', plans:['PHC'], zips:['94590'], city:'Vallejo',
+  streets:['Sonoma Blvd','Tennessee St','Springs Rd']},
+ {name:'Merced',        w:2,  model:'COHS', plans:['CCAH'], zips:['95340'], city:'Merced',
+  streets:['W 16th St','B St','W Olive Ave']},
+ {name:'Kern',          w:2,  model:'REGIONAL', plans:['ANTHEM','HNET'], zips:['93307'], city:'Bakersfield',
+  streets:['Cottonwood Rd','E Brundage Ln','S Union Ave']},
+ {name:'Imperial',      w:1,  model:'REGIONAL', plans:['MOLINA','ANTHEM'], zips:['92243'], city:'El Centro',
+  streets:['S 4th St','W Adams Ave','N Imperial Ave']}
+];
+var COUNTYBY={}; COUNTIES.forEach(function(c){COUNTYBY[c.name]=c});
+function pickCounty(){return wpick(COUNTIES.map(function(c){return [c,c.w]}))}
+var MODELNAME={COHS:'COHS \u2014 one plan, everyone, no choice', TWOPLAN:'Two-Plan \u2014 a public Local Initiative vs. one commercial', GMC:'GMC \u2014 a menu of plans', REGIONAL:'Regional \u2014 two commercial plans'};
+var AREA=['213','323','909','916','559','714','650','805','707','661','760'];
+
+/* ---------- names & languages ---------- */
+var FIRST_F=['Maria','Guadalupe','Xochitl','Yesenia','Alejandra','Marisol','Araceli','Fernanda','Linh','Thuy','Mai','Jennifer','Grace','Soo-Jin','Mei','Wei','Angelica','Rosario','Kalia','Pa','Youa','Harpreet','Simran','Anahit','Lusine','Fatima','Ashley','Madison','Keisha','Dolores','June','Esperanza'],
+    FIRST_M=['Jose','Juan','Luis','Miguel','Carlos','Emiliano','Alejandro','Angel','Minh','Duc','Huy','Kevin','Daniel','Jin','Wei','Cheng','Marcos','Rogelio','Tou','Chue','Neng','Gurpreet','Manjit','Armen','Hovik','Omar','Tyler','Brandon','Darnell','Reyes','Ray','Ernesto'];
+var LAST=['Garcia','Hernandez','Lopez','Ramirez','Gonzalez','Flores','Cruz','Reyes','Mendoza','Jimenez','Nguyen','Tran','Le','Pham','Kim','Park','Chen','Wong','Li','Huang','Santos','Bautista','DelaCruz','Villanueva','Vang','Xiong','Her','Thao','Singh','Kaur','Grigoryan','Sarkissian','Washington','Jackson','Smith','Johnson','Martinez','Torres','Aguilar','Castillo'];
+var LANGS=[['English',40],['Spanish',38],['Vietnamese',3.5],['Cantonese',3],['Tagalog',3],['Korean',2.5],['Hmong',2.5],['Punjabi',2.5],['Armenian',2],['Farsi',1.5],['Mandarin',1.5]];
+
+/* ---------- end reasons ---------- */
+var ELIG_END={
+ REDET:'Renewal not completed \u2014 case closed at annual renewal',
+ INCOME:'Over income at renewal',
+ MOVED:'Moved out of state',
+ SCOPE:'Restricted scope ended \u2014 converted to full scope, January 2024',
+ MEDI:'Medicare entitlement \u2014 category redetermined; the plan continues, and the matching rule takes it from there'
+};
+</script>
+<script>
+'use strict';
+/* ================= population generator ================= */
+var MEMBERS=[];
+var usedIds={};
+function genId(){ var s; do{ s=String(ri(10000000,89999999))+pick(['A','C','D','E','H']) }while(usedIds[s]); usedIds[s]=1; return s }
+function genPhone(){ return '('+pick(AREA)+') '+ri(200,989)+'-'+String(ri(0,9999)).padStart(4,'0') }
+function genAddr(c){ var city=c.city||pick(c.cities); return {street:ri(100,9999)+' '+pick(c.streets), city:city, zip:pick(c.zips)} }
+function genName(sex){ return {first:(sex==='F'?pick(FIRST_F):pick(FIRST_M)), last:pick(LAST)} }
+function dobForAge(age){ var y=2026-age; var m=ri(0,11); if(m>6)y--; return {y:y,m:m,d:ri(1,28)} }
+function dobD8(d){return ''+d.y+String(d.m+1).padStart(2,'0')+String(d.d).padStart(2,'0')}
+function dobLabel(d){return MONTHS[d.m]+' '+d.d+', '+d.y}
+
+function baseMember(reg){
+  var sex=pick(['F','F','F','M','M']);
+  var nm=genName(sex), c=pickCounty(), a=genAddr(c);
+  return { id:genId(), first:nm.first, last:nm.last, sex:sex, county:c.name, model:c.model,
+    street:a.street, city:a.city, zip:a.zip, phone:genPhone(),
+    lang:wpick(LANGS), reg:reg, eligSpans:[], delSpans:[], flags:[],
+    cs:null, modelOld:null };
+}
+function addElig(m,grp,s,e,reason){m.eligSpans.push({grp:grp,start:s,end:e,reason:reason||null})}
+function addDel(m,sys,s,e,note){m.delSpans.push({sys:sys,start:s,end:e,note:note||null})}
+/* Enrollment obeying the county's model. In a COHS county there is no
+   choosing: one plan, everyone, automatically. */
+function enrollCA(m,s,e,note){
+  var c=COUNTYBY[m.county];
+  var plan = c.model==='COHS' ? c.plans[0] : pick(c.plans.filter(function(p){return p!=='KAISER'}));
+  addDel(m,plan,s,(e===undefined?null:e),note||(c.model==='COHS'?'COHS county \u2014 enrollment is automatic; there is one plan and everyone is in it':null));
+  return plan;
+}
+
+/* ----- Register A: steady state -- three answers to "how much choice?" (1100) ----- */
+(function(){
+  var grpsA=[['M5',7],['M1',6],['CW',1],['P5',1],['1D',2],['4M',1]];
+  for(var i=0;i<1100;i++){
+    var grp=wpick(grpsA);
+    var m=baseMember('A');
+    var age = grp==='M5'?ri(0,18) : grp==='4M'?ri(18,25) : grp==='1D'?ri(30,64) : grp==='P5'?ri(19,38) : ri(19,60);
+    m.age=age; m.dob=dobForAge(age); if(grp==='P5')m.sex='F';
+    var s=ri(-20,2);
+    addElig(m,grp,s,null,null);
+    var c=COUNTYBY[m.county];
+    if(c.model==='GMC'&&i%18===0){
+      /* the Kaiser gate: continuity members only */
+      addDel(m,'KAISER',s,null,'Kaiser direct contract \u2014 enrollment gated: this member had continuity linkage (prior Kaiser coverage in the family). You cannot simply pick Kaiser.');
+      m.flags.push('Enrolled with <b>Kaiser</b> under the 2024 direct contract \u2014 the plan with a gate: continuity linkage required. The one plan in this file that a new member cannot simply choose off the menu.');
+    } else {
+      var plan=enrollCA(m,s);
+      if(c.model==='COHS'&&R()<0.3){
+        m.flags.push(m.county+' is a <b>COHS county</b>: '+sysLabel(plan)+' is the plan, everyone\u2019s plan, automatically \u2014 no packet, no menu, no deadline. Zero choices, by design, since '+(plan==='CENCAL'?'1983':'the county joined')+'.');
+      } else if(plan==='LACARE'&&R()<0.35){
+        m.flags.push('Enrolled with <b>L.A. Care</b> \u2014 the Local Initiative of the Two-Plan model, and the largest publicly operated health plan in the United States: a county-created public option with millions of members.');
+      } else if(plan==='IEHP'&&R()<0.35){
+        m.flags.push('Enrolled with <b>IEHP</b> \u2014 the Inland Empire\u2019s Local Initiative: the Two-Plan model\u2019s other public giant.');
+      } else if(c.model==='GMC'&&R()<0.25){
+        m.flags.push('Sacramento is a <b>GMC county</b>: a menu of plans and an actual choice period \u2014 the same program that offers zero options in San Mateo offers four here. How much choice you have in Medi-Cal depends on your county line.');
+      }
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register B: renewal churn (500) ----- */
+(function(){
+  for(var i=0;i<500;i++){
+    var grp=wpick([['M5',3],['M1',5],['CW',1]]);
+    var m=baseMember('B');
+    m.age = grp==='M5'?ri(1,17):ri(19,60); m.dob=dobForAge(m.age);
+    var s=ri(-18,-2);
+    var inGapNow=(i<125);
+    var term=inGapNow?ri(15,16):ri(4,12);
+    var gap=inGapNow?ri(3,4):ri(1,4);
+    var regain=term+gap+1;
+    addElig(m,grp,s,term,ELIG_END.REDET);
+    addElig(m,grp,regain,null,null);
+    enrollCA(m,s,term);
+    enrollCA(m,regain,undefined,COUNTYBY[m.county].model==='COHS'?'Back into the county\u2019s one plan \u2014 automatically, as always':(R()<0.4?'Auto-assignment landed differently on return':null));
+    m.flags.push('Gap '+mLabel(term+1)+'\u2013'+mLabel(regain-1)+' ('+gap+' mo) \u2014 renewal through the county office on CalSAWS'+(COUNTYBY[m.county].model==='COHS'?'; the return involved no choice, because '+m.county+' offers none':''));
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register C: the aid code that opened -- restricted to full scope (375) ----- */
+(function(){
+  for(var i=0;i<375;i++){
+    var m=baseMember('C');
+    m.age=ri(28,49); /* the Jan 2024 band: 26-49 */
+    m.dob=dobForAge(m.age);
+    var yrs=ri(3,15);
+    var s=-12-yrs*12+ri(0,10); /* restricted scope for years */
+    addElig(m,'R5',s,SCOPE_IDX-1,ELIG_END.SCOPE);
+    addElig(m,'M1',SCOPE_IDX,null,null);
+    addDel(m,'FFS',s,SCOPE_IDX-1,'Restricted scope \u2014 emergency and pregnancy services only, fee-for-service: the shape of Medi-Cal for immigrant Californians for decades');
+    var lag=ri(0,2);
+    enrollCA(m,SCOPE_IDX+lag,undefined,'Full-scope enrollment following the January 2024 conversion \u2014 no application required; the aid code opened by operation of law');
+    if(lag>0)m.delSpans.splice(1,0,{sys:'FFS',start:SCOPE_IDX,end:SCOPE_IDX+lag-1,note:'Full-scope FFS \u2014 the processing months before plan enrollment landed'});
+    m.flags.push('<b>The aid code that opened</b> \u2014 after '+yrs+' years in restricted scope (emergency and pregnancy services only), this member was converted to <b>full-scope Medi-Cal on January 1, 2024</b>, when California completed coverage for all income-eligible adults regardless of immigration status. No application, no interview: the aid code changed by operation of law, and everything downstream \u2014 primary care, prescriptions, a plan card \u2014 existed for the first time. Hundreds of thousands of records turned over in one cycle.');
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register D: moving between models -- when a county line changes your kind of choice (375) ----- */
+(function(){
+  var toCohsPairs=[['Los Angeles','Orange'],['Los Angeles','Ventura'],['Sacramento','Solano'],['Fresno','Merced'],['San Bernardino','Orange'],['Kern','Santa Barbara']];
+  var toChoicePairs=[['Orange','Los Angeles'],['Ventura','Los Angeles'],['San Mateo','Sacramento'],['Merced','Fresno'],['Solano','Sacramento'],['Santa Barbara','Kern']];
+  var lateralPairs=[['Los Angeles','Sacramento'],['San Bernardino','Sacramento'],['Fresno','Kern'],['Los Angeles','San Bernardino'],['Sacramento','Fresno'],['Kern','Imperial']];
+  for(var i=0;i<375;i++){
+    var grp=wpick([['M1',5],['M5',3],['CW',1],['1D',1.5]]);
+    var m=baseMember('D');
+    m.age = grp==='M5'?ri(3,17) : grp==='1D'?ri(30,64) : ri(19,60);
+    m.dob=dobForAge(m.age);
+    var s=ri(-26,-6);
+    addElig(m,grp,s,null,null);
+    var kind = i<150?'TOCOHS' : (i<265?'TOCHOICE':'LATERAL');
+    var pair = kind==='TOCOHS'?pick(toCohsPairs):(kind==='TOCHOICE'?pick(toChoicePairs):pick(lateralPairs));
+    var fromC=COUNTYBY[pair[0]], toC=COUNTYBY[pair[1]];
+    var mv=ri(3,15);
+    /* set origin, enroll there, then move */
+    m.county=fromC.name; m.model=fromC.model;
+    var a1=genAddr(fromC); m.street=a1.street; m.city=a1.city; m.zip=a1.zip;
+    var plan1 = fromC.model==='COHS'?fromC.plans[0]:pick(fromC.plans.filter(function(p){return p!=='KAISER'}));
+    addDel(m,plan1,s,mv-1,MODELNAME[fromC.model]);
+    m.modelOld=fromC.model; m.countyOld=fromC.name; m.moveIdx=mv;
+    m.county=toC.name; m.model=toC.model;
+    var a2=genAddr(toC); m.street=a2.street; m.city=a2.city; m.zip=a2.zip;
+    var plan2 = toC.model==='COHS'?toC.plans[0]:pick(toC.plans.filter(function(p){return p!=='KAISER'}));
+    if(kind==='TOCOHS'){
+      addDel(m,plan2,mv,null,'COHS county \u2014 auto-enrolled the month of the move: one plan, no packet, no decision');
+      m.flags.push('Moved '+fromC.name+' \u2192 <b>'+toC.name+'</b> in '+mLabel(mv)+' \u2014 and the <b>choice evaporated</b>: '+toC.name+' is a COHS county, so '+sysLabel(plan2)+' enrolled this member automatically. No packet arrived because no decision exists. Same program, same card design, and the entire choice architecture changed at the county line.');
+    } else if(kind==='TOCHOICE'){
+      addDel(m,plan2,mv,null,(i%2===0?'Member chose from the menu \u2014 the first plan choice of this case\u2019s life':'The choice deadline passed; auto-assignment decided'));
+      m.flags.push('Moved '+fromC.name+' \u2192 <b>'+toC.name+'</b> in '+mLabel(mv)+' \u2014 and <b>a choice packet arrived for the first time in this case\u2019s history</b>: from a COHS county with one automatic plan to a county with a menu and a deadline. '+(i%2===0?'This member chose.':'This member did not respond, and the algorithm chose \u2014 the price of a right the member never had before.'));
+    } else {
+      addDel(m,plan2,mv,null,MODELNAME[toC.model]);
+      m.flags.push('Moved '+fromC.name+' ('+fromC.model+') \u2192 '+toC.name+' ('+toC.model+') in '+mLabel(mv)+' \u2014 a lateral move between choice models: the menu changed size ('+fromC.plans.length+' option'+(fromC.plans.length>1?'s':'')+' \u2192 '+toC.plans.length+'), the plan changed, and the deeper lesson held: <b>in Medi-Cal, geography decides not just which plan but what kind of choosing</b>.');
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register E: CalAIM Community Supports -- the capitation that pays rent deposits (325) ----- */
+(function(){
+  var CS=[
+   {n:100, code:'HOUSING', label:'Housing transition navigation + deposits', story:'a housing navigator, move-in deposits, and first month\u2019s utilities \u2014 paid by a Medicaid managed care plan as a Community Support'},
+   {n:85,  code:'MEALS',   label:'Medically tailored meals', story:'twelve weeks of medically tailored meals after discharge \u2014 food as a covered intervention'},
+   {n:70,  code:'RECUP',   label:'Recuperative care', story:'recuperative care \u2014 a bed, meals, and clinical oversight after a hospital stay, instead of a discharge to the sidewalk'},
+   {n:70,  code:'ASTHMA',  label:'Asthma remediation', story:'home asthma remediation \u2014 the plan paid to fix the apartment: ventilation, mold, carpet. The building became the treatment'}
+  ];
+  var idx=0;
+  CS.forEach(function(cs){
+    for(var j=0;j<cs.n;j++){
+      var grp=wpick([['M1',5],['1D',3],['M5',1]]);
+      var m=baseMember('E');
+      m.age = grp==='M5'?ri(4,17) : grp==='1D'?ri(35,64) : ri(21,62);
+      m.dob=dobForAge(m.age);
+      var s=ri(-26,-4);
+      addElig(m,grp,s,null,null);
+      var plan=enrollCA(m,s);
+      m.cs=cs.code;
+      var when=ri(2,16);
+      m.flags.push('<b>CalAIM Community Support</b> ('+mLabel(when)+'): '+cs.story+'. Under CalAIM\u2019s \u201cin lieu of services,\u201d the capitation\u2019s boundary moved: '+esc2(sysLabel(plan))+' paid for something no claim system a decade ago would have recognized as health care \u2014 and the data model had to learn a service category with no CPT ancestry.');
+      if(j<Math.floor(cs.n*0.4))m.flags.push('Also enrolled in <b>Enhanced Care Management</b> \u2014 a CalAIM population of focus: one lead care manager across medical, behavioral, and social systems');
+      MEMBERS.push(m); idx++;
+    }
+  });
+  function esc2(s){return s}
+})();
+
+/* ----- Register F: Medicare arrives -- aligned by law (325) ----- */
+(function(){
+  for(var i=0;i<325;i++){
+    var m=baseMember('F');
+    var ssdi=(R()<0.55);
+    var medi=ri(6,16), lag=ri(1,3);
+    if(ssdi){ m.age=ri(38,62); m.dob=dobForAge(m.age); }
+    else { m.age=(medi<=TODAY_IDX)?65:64; m.dob={y:WIN_START_Y+Math.floor(medi/12)-65, m:medi%12, d:ri(1,28)}; }
+    var inCohs=(i>=195); /* 130 COHS members: exclusively aligned */
+    if(inCohs){
+      var cohsC=pick(COUNTIES.filter(function(c){return c.model==='COHS'}));
+      m.county=cohsC.name; m.model='COHS';
+      var a=genAddr(cohsC); m.street=a.street; m.city=a.city; m.zip=a.zip;
+    } else {
+      var nc=pick(COUNTIES.filter(function(c){return c.model!=='COHS'}));
+      m.county=nc.name; m.model=nc.model;
+      var a2=genAddr(nc); m.street=a2.street; m.city=a2.city; m.zip=a2.zip;
+    }
+    var s=ri(-20,-8);
+    addElig(m,'M1',s,medi-1,ELIG_END.MEDI);
+    addElig(m,'1D',medi,null,null);
+    var c=COUNTYBY[m.county];
+    var plan=c.model==='COHS'?c.plans[0]:pick(c.plans.filter(function(p){return p!=='KAISER'}));
+    addDel(m,plan,s,medi-1,null);
+    addDel(m,plan,medi,null,'Medicare primary \u2014 the same Medi-Cal plan continues; the matching rule steers the D-SNP to the same parent');
+    m.medicareIdx=medi; m.buyinIdx=medi+lag; m.ssdi=ssdi; m.cohs=inCohs;
+    if(inCohs){
+      m.flags.push((ssdi?'Medicare via SSDI ':'Turned 65 ')+mLabel(medi)+' in a COHS county \u2014 <b>exclusively aligned</b>: '+sysLabel(plan)+' keeps the Medi-Cal side and operates the county\u2019s D-SNP itself. One organization, both programs, no seam \u2014 the matching rule\u2019s end state, arrived at by structure rather than steering.');
+    } else {
+      m.flags.push((ssdi?'Medicare via SSDI ':'Turned 65 ')+mLabel(medi)+' \u2014 the plan kept the member, and then California\u2019s <b>matching rule</b> did what no other state in this series does: state policy requires the D-SNP to belong to the <b>same parent company</b> as the Medi-Cal plan. Cal MediConnect ended in 2022; what replaced it was alignment by statute \u2014 the fourteenth Medicare answer: the state that legislates the marriage.');
+    }
+    m.flags.push('Buy-in effective '+mLabel(medi+lag)+' \u2014 the '+lag+'-month accretion limbo');
+    MEMBERS.push(m);
+  }
+})();
+
+/* ---------- derived member state ---------- */
+function eligToday(m){ for(var i=0;i<m.eligSpans.length;i++){var s=m.eligSpans[i]; if(s.start<=TODAY_IDX&&(s.end===null||s.end>=TODAY_IDX))return s} return null }
+function delToday(m){ for(var i=0;i<m.delSpans.length;i++){var s=m.delSpans[i]; if(s.start<=TODAY_IDX&&(s.end===null||s.end>=TODAY_IDX))return s} return null }
+function lastElig(m){ return m.eligSpans[m.eligSpans.length-1] }
+function statusToday(m){
+  if(eligToday(m))return 'Active';
+  var le=lastElig(m);
+  if(le.end!==null&&le.end<TODAY_IDX){
+    for(var i=0;i<m.eligSpans.length;i++){ if(m.eligSpans[i].start>TODAY_IDX)return 'Gap' }
+    return 'Closed';
+  }
+  return 'Gap';
+}
+MEMBERS.forEach(function(m,ix){
+  m.ix=ix;
+  /* name/sex coherence: deterministic, PRNG-free remap */
+  if(m.sex==='F'&&FIRST_F.indexOf(m.first)<0)m.first=FIRST_F[(m.first.length*7+m.last.length)%FIRST_F.length];
+  if(m.sex==='M'&&FIRST_M.indexOf(m.first)<0)m.first=FIRST_M[(m.first.length*7+m.last.length)%FIRST_M.length];
+  m.name=m.last+', '+m.first;
+  var et=eligToday(m), le=lastElig(m);
+  m.grpToday = et?et.grp:le.grp;
+  var dt=delToday(m);
+  m.delTodayCode = dt?dt.sys:'\u2014';
+  m.status=statusToday(m);
+});
+</script>
+<script>
+'use strict';
+/* ================= shared render helpers ================= */
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function grpChip(g){ if(!GROUPS[g])return esc(g);
+  return '<span class="chip" style="background:var('+GROUPS[g].color+')" title="'+esc(GROUPS[g].name)+'">'+g+'</span>' }
+function delChip(code){ if(code==='\u2014')return '<span class="st-cls">\u2014</span>';
+  var cls=sysClass(code), lbl=code;
+  return '<span class="dchip '+cls+'" title="'+esc(sysLabel(code))+'">'+esc(lbl)+'</span>' }
+function statusHtml(st){ return st==='Active'?'<span class="st-act">Active</span>':(st==='Gap'?'<span class="st-gap">In gap</span>':'<span class="st-cls">Closed</span>') }
+function regBadge(r){return '<span class="mono" style="font-weight:600;color:var(--accent)">'+r+'</span>'}
+
+/* ================= overview ================= */
+function renderOverview(){
+  var n=MEMBERS.length, act=0, cohs=0, li=0, kp=0, conv=0, cs=0, movers=0, gaps=0;
+  MEMBERS.forEach(function(m){
+    if(m.status==='Active')act++;
+    if(m.status==='Gap')gaps++;
+    var d=m.delTodayCode;
+    if(d!=='\u2014'){ var k=sysKind(d);
+      if(k==='COHS')cohs++; else if(k==='LI')li++; else if(k==='KP')kp++; }
+    if(m.reg==='C')conv++;
+    if(m.cs)cs++;
+    if(m.modelOld)movers++;
+  });
+  var st=document.getElementById('ov-stats');
+  st.innerHTML =
+    stat(n,'Synthetic members',true)+
+    stat(act,'Eligible today (Jul 2026)')+
+    stat(cohs,'In a COHS today \u2014 one plan, no choice')+
+    stat(li,'In a public Local Initiative (L.A. Care / IEHP)')+
+    stat(kp,'In Kaiser \u2014 the gated contract')+
+    stat(conv,'Scope conversions \u2014 the aid code that opened (Jan 2024)')+
+    stat(cs,'Receiving a CalAIM Community Support')+
+    stat(movers,'Moved between choice models mid-window')+
+    stat(gaps,'In an eligibility gap today');
+  function stat(nv,l,acc){return '<div class="stat'+(acc?' acc':'')+'"><div class="n">'+(typeof nv==='number'?nv.toLocaleString():nv)+'</div><div class="l">'+l+'</div></div>'}
+
+  /* group legend with counts (by current/last group) */
+  var gc={}; MEMBERS.forEach(function(m){gc[m.grpToday]=(gc[m.grpToday]||0)+1});
+  var lg=document.getElementById('ov-groups'); lg.innerHTML='';
+  GROUP_KEYS.forEach(function(g){
+    var c=gc[g]||0;
+    lg.innerHTML+='<div class="legrow"><span class="swatch" style="background:var('+GROUPS[g].color+')"></span>'+
+      '<span class="code">'+g+'</span><span>'+esc(GROUPS[g].name)+'</span>'+
+      '<span class="cnt">'+c+'</span></div>';
+  });
+
+  /* delivery distribution today */
+  var dc={}; MEMBERS.forEach(function(m){ if(m.delTodayCode!=='\u2014') dc[m.delTodayCode]=(dc[m.delTodayCode]||0)+1 });
+  var rows=CAPLANS.map(function(p){
+    var cls = p.kind==='COHS'?'var(--d-mltc)':(p.kind==='KP'?'var(--d-harp)':'var(--d-mco)');
+    var lbl = p.name+(p.kind==='COHS'?' \u2014 COHS':(p.kind==='LI'?' \u2014 public Local Initiative':(p.kind==='KP'?' \u2014 gated':'')));
+    return {label:lbl, code:p.code, n:dc[p.code]||0, cls:cls};
+  });
+  rows.push({label:'Fee-for-service (restricted-scope history, tails)', code:'FFS', n:dc.FFS||0, cls:'var(--d-ffs)'});
+  rows.sort(function(a,b){return b.n-a.n});
+  var mx=rows.reduce(function(a,r){return Math.max(a,r.n)},1);
+  var bl=document.getElementById('ov-mcos'); bl.innerHTML='';
+  rows.forEach(function(r){
+    bl.innerHTML+='<div class="barrow"><span title="'+esc(r.label)+'">'+esc(r.label)+'</span>'+
+      '<span class="track"><span class="fill" style="width:0;background:'+r.cls+'" data-w="'+(100*r.n/mx)+'"></span></span>'+
+      '<span class="bn">'+r.n+'</span></div>';
+  });
+  requestAnimationFrame(function(){ setTimeout(function(){
+    bl.querySelectorAll('.fill').forEach(function(f){f.style.width=f.getAttribute('data-w')+'%'}) },60) });
+
+  document.getElementById('ov-plain').innerHTML='<span class="pe-label">In plain English</span>'+
+    'Medi-Cal is the largest Medicaid program on earth \u2014 one in three Californians \u2014 and the series\u2019 richest single teaching set. The delivery axis holds <b>three architectures at once, assigned by county</b>: COHS counties with one automatic plan and zero choice (a design running since 1983), Two-Plan counties where county-created public Local Initiatives \u2014 L.A. Care, the largest publicly operated plan in the nation, and IEHP \u2014 face one commercial each, and GMC counties with an actual menu. Register D moves members across those county lines and watches their <b>kind of choosing</b> change: choice evaporating at the Orange County line, a first-ever choice packet arriving on the way out of San Mateo. '+
+    'Register C holds the aid code that opened: <b>January 1, 2024</b>, when California completed full-scope coverage for all income-eligible adults regardless of immigration status \u2014 members with years of emergency-only restricted scope converted overnight, by operation of law, no application required. Register E is <b>CalAIM</b> moving the capitation\u2019s boundary \u2014 rent deposits, medically tailored meals, asthma remediation as plan-paid services. And register F is the fourteenth Medicare answer: <b>alignment by law</b> \u2014 the plan keeps the member, and state policy requires the D-SNP to share the plan\u2019s parent, with COHS counties arriving at the same end state by pure structure.';
+}
+
+/* ================= reference ================= */
+function renderReference(){
+  var h='';
+  h+='<div class="card"><h3 style="margin-top:0">Coverage groups (aid-code flavored teaching set)</h3>'+
+     '<p class="sub" style="margin-bottom:8px">California budgets in <b>aid codes</b> \u2014 hundreds of three-character codes every Medi-Cal data professional lives inside. This set is patterned and radically simplified.</p>'+
+     '<div class="tblwrap"><table><thead><tr><th>Code</th><th>Name</th><th>Determination</th><th>What it means</th></tr></thead><tbody>';
+  GROUP_KEYS.forEach(function(g){var G=GROUPS[g];
+    h+='<tr'+(g==='R5'?' style="background:#f8f6f2"':'')+'><td>'+grpChip(g)+'</td><td>'+esc(G.name)+'</td><td>'+(G.magi?'MAGI (CalHEERS / county on CalSAWS)':'Non-MAGI \u2014 no asset test since 2024')+'</td><td>'+G.blurb+'</td></tr>'});
+  h+='</tbody></table></div></div>';
+
+  h+='<div class="card"><h3 style="margin-top:0">The three models \u2014 and the plans of this file</h3>'+
+     '<p class="sub" style="margin-bottom:8px">How much choice a Medi-Cal member has depends on the county: zero (COHS), two (Two-Plan), or a menu (GMC). The map here is a twelve-county simplification of fifty-eight.</p>'+
+     '<div class="tblwrap"><table><thead><tr><th>Code</th><th>Plan</th><th>Worth knowing</th></tr></thead><tbody>';
+  CAPLANS.forEach(function(p){
+    var bg = p.kind==='COHS'?' style="background:#eef6f6"':(p.kind==='KP'?' style="background:#f6f2fa"':'');
+    h+='<tr'+bg+'><td class="mono">'+p.code+'</td><td>'+esc(p.name)+'</td><td>'+p.note+'</td></tr>';
+  });
+  h+='<tr><td class="mono">FFS</td><td>Fee-for-service</td><td>Restricted-scope history (pre-2024), retro tails, and processing months</td></tr>'+
+     '</tbody></table></div></div>';
+
+  h+='<div class="card"><h3 style="margin-top:0">834 maintenance codes used in this app</h3>'+
+     '<div class="tblwrap"><table><thead><tr><th>INS03</th><th>Meaning</th><th>Where you\u2019ll see it</th></tr></thead><tbody>'+
+     '<tr><td class="mono">021</td><td>Addition</td><td>New enrollments \u2014 including the January 2024 conversion wave: \u201cnew\u201d enrollees with years of restricted-scope history behind each CIN, the great duplicate-matching stress test</td></tr>'+
+     '<tr><td class="mono">024</td><td>Cancellation / termination</td><td>Renewal churn (B) and the departing half of register D\u2019s county moves</td></tr>'+
+     '<tr><td class="mono">001</td><td>Change</td><td>Register F: Medicare arrives, the plan continues, the category moves \u2014 and the matching rule operates silently, one layer above the wire</td></tr>'+
+     '</tbody></table></div></div>';
+
+  h+='<div class="card"><h3 style="margin-top:0">Glossary</h3><dl class="gloss">'+
+    gl('Medi-Cal','California Medicaid \u2014 the largest Medicaid program in the world: roughly one in three Californians, administered by 58 county welfare departments under the Department of Health Care Services.')+
+    gl('CIN','The Client Index Number \u2014 eight digits and a letter, permanent. (New York\u2019s app in this series also stars a \u201cCIN\u201d; the acronym collision is a small gift to anyone who has mapped both states.)')+
+    gl('COHS','County Organized Health System \u2014 one public plan per county, every member enrolled automatically, no choice by design. The oldest (CenCal, 1983) predates almost everything else in this series; Partnership\u2019s 2024 expansion swept it across 24 northern counties.')+
+    gl('Two-Plan','A county-created public \u201cLocal Initiative\u201d competing against one commercial plan \u2014 the model that built L.A. Care (the largest publicly operated health plan in the nation) and IEHP.')+
+    gl('GMC','Geographic Managed Care \u2014 the menu counties (Sacramento, San Diego): multiple commercial plans and an actual choice period.')+
+    gl('The scope conversion','January 1, 2024: full-scope Medi-Cal for all income-eligible adults regardless of immigration status \u2014 the final band (26\u201349) of a ladder built over eight years. Register C\u2019s members converted from restricted scope (emergency and pregnancy only) by operation of law: no application, hundreds of thousands of aid codes turning over in one cycle.')+
+    gl('Aid codes','California\u2019s three-character eligibility taxonomy \u2014 hundreds of codes encoding group, scope, and funding stream. The working vocabulary of every Medi-Cal data team, radically simplified here.')+
+    gl('CalSAWS','The single statewide eligibility system \u2014 the consolidation that merged three legacy county systems (CalWIN, C-IV/LRS) into one, completed in 2023 after decades of triplicate everything.')+
+    gl('CalAIM','California Advancing and Innovating Medi-Cal \u2014 the reform that moved the capitation\u2019s boundary: Enhanced Care Management (one lead care manager across systems) and Community Supports \u201cin lieu of services\u201d \u2014 housing deposits, medically tailored meals, recuperative care, asthma remediation, paid by plans as covered interventions.')+
+    gl('The Kaiser gate','Kaiser Permanente\u2019s 2024 statewide direct contract carries gated enrollment: continuity linkage required. The one plan a new member cannot simply pick from the menu.')+
+    gl('The matching rule','California\u2019s dual-alignment policy after Cal MediConnect ended (2022): the D-SNP must belong to the same parent company as the member\u2019s Medi-Cal plan. Alignment by statute \u2014 and in COHS counties, by structure, since the COHS runs the D-SNP itself.')+
+    gl('No asset test','Since 2024, non-MAGI Medi-Cal has no asset limit at all \u2014 California retired the resource test entirely, alone at this scale.')+
+    gl('Buy-in','The state paying a dual member\u2019s Medicare Part B premium; accretion runs one to three months behind entitlement.')+
+    gl('834','The X12N enrollment and maintenance transaction \u2014 at Medi-Cal\u2019s volumes, the largest roster stream in American Medicaid.')+
+    '</dl></div>';
+  function gl(t,d){return '<dt>'+t+'</dt><dd>'+d+'</dd>'}
+
+  h+='<div class="card"><h3 style="margin-top:0">Counties in this population</h3><p class="sub" style="margin-bottom:8px">California has 58 counties; this roster draws from twelve, chosen to cover the model map \u2014 the model is noted for each. The languages of this file\u2019s LUI segments \u2014 Spanish, Vietnamese, Cantonese, Tagalog, Korean, Hmong, Punjabi, Armenian, Farsi \u2014 are Medi-Cal\u2019s daily working set: DHCS publishes in more threshold languages than any agency in the country.</p><p style="font-size:.85rem">'+COUNTIES.map(function(c){return esc(c.name)+' ('+c.model+')'}).join(' \u00b7 ')+'</p></div>';
+
+  document.getElementById('ref-out').innerHTML=h;
+}
+</script>
+<script>
+'use strict';
+/* ================= generic sortable table state ================= */
+var SORT={};
+function bindSort(tblId, renderFn){
+  document.querySelectorAll('#'+tblId+' th.sortable').forEach(function(th){
+    th.addEventListener('click',function(){
+      var k=th.getAttribute('data-k');
+      var cur=SORT[tblId]||{};
+      SORT[tblId]={k:k, dir:(cur.k===k&&cur.dir==='asc')?'desc':'asc'};
+      renderFn();
+    });
+  });
+}
+function sortRows(tblId, rows){
+  var s=SORT[tblId]; if(!s)return rows;
+  var dir=s.dir==='asc'?1:-1;
+  rows.sort(function(a,b){
+    var x=a[s.k],y=b[s.k];
+    if(x===null||x===undefined)x=-Infinity; if(y===null||y===undefined)y=-Infinity;
+    if(typeof x==='string'){x=x.toLowerCase();y=String(y).toLowerCase();return x<y?-dir:(x>y?dir:0)}
+    return (x-y)*dir;
+  });
+  return rows;
+}
+function sortMarks(tblId){
+  var s=SORT[tblId];
+  document.querySelectorAll('#'+tblId+' th.sortable').forEach(function(th){
+    var base=th.textContent.replace(/[\u25b2\u25bc]\s*$/,'').trim();
+    th.innerHTML=esc(base)+(s&&s.k===th.getAttribute('data-k')?' <span class="arr">'+(s.dir==='asc'?'\u25b2':'\u25bc')+'</span>':'');
+  });
+}
+
+/* ================= pagination ================= */
+var PAGE={}, PAGE_SIZE=50;
+function pager(tblId, total, renderFn, pagerId){
+  var pages=Math.max(1,Math.ceil(total/PAGE_SIZE));
+  var p=Math.min(PAGE[tblId]||1,pages); if(p<1)p=1; PAGE[tblId]=p;
+  var el=document.getElementById(pagerId);
+  if(el){
+    if(pages===1){ el.innerHTML=''; }
+    else{
+      el.innerHTML='<button class="pg"'+(p<=1?' disabled':'')+' data-d="-1">\u25c0 Prev</button>'+
+        '<span class="mono pgpos">page '+p+' of '+pages.toLocaleString()+'</span>'+
+        '<button class="pg"'+(p>=pages?' disabled':'')+' data-d="1">Next \u25b6</button>';
+      el.querySelectorAll('button.pg').forEach(function(b){
+        b.addEventListener('click',function(){ PAGE[tblId]=p+parseInt(b.getAttribute('data-d'),10); renderFn(); });
+      });
+    }
+  }
+  return {from:(p-1)*PAGE_SIZE, to:Math.min(total,p*PAGE_SIZE)};
+}
+function resetPage(tblId){ PAGE[tblId]=1 }
+
+/* ================= members roster ================= */
+var ROSTER_VIEW=[]; /* current filtered order (all pages), for modal nav */
+function fillSelect(id, opts, allLabel){
+  var el=document.getElementById(id);
+  el.innerHTML='<option value="">'+allLabel+'</option>'+opts.map(function(o){return '<option value="'+o[0]+'">'+o[1]+'</option>'}).join('');
+}
+function initRosterControls(){
+  fillSelect('m-group',GROUP_KEYS.map(function(g){return[g,g+' \u2014 '+GROUPS[g].name]}),'Coverage group: all');
+  var dopts=CAPLANS.map(function(m){return[m.code,m.name]});
+  dopts.push(['FFS','Fee-for-Service']);
+  fillSelect('m-del',dopts,'Delivery today: all');
+  fillSelect('m-reg',['A','B','C','D','E','F'].map(function(r){return[r,'Register '+r]}),'Register: all');
+  ['m-search','m-group','m-del','m-reg','m-status'].forEach(function(id){
+    document.getElementById(id).addEventListener('input',function(){resetPage('m-tbl');renderRoster()});
+  });
+  bindSort('m-tbl',renderRoster);
+}
+function renderRoster(){
+  var q=document.getElementById('m-search').value.trim().toLowerCase();
+  var fg=document.getElementById('m-group').value, fd=document.getElementById('m-del').value,
+      fr=document.getElementById('m-reg').value, fs=document.getElementById('m-status').value;
+  var rows=MEMBERS.filter(function(m){
+    if(fg&&m.grpToday!==fg)return false;
+    if(fd&&m.delTodayCode!==fd)return false;
+    if(fr&&m.reg!==fr)return false;
+    if(fs&&m.status!==fs)return false;
+    if(q){ var hay=(m.name+' '+m.id+' '+m.city+' '+m.county).toLowerCase(); if(hay.indexOf(q)<0)return false }
+    return true;
+  }).map(function(m){return {ix:m.ix,id:m.id,name:m.name,age:m.age,sex:m.sex,grp:m.grpToday,del:m.delTodayCode,county:m.county,reg:m.reg,status:m.status}});
+  rows=sortRows('m-tbl',rows); sortMarks('m-tbl');
+  ROSTER_VIEW=rows.map(function(r){return r.ix});
+  var pg=pager('m-tbl',rows.length,renderRoster,'m-pager');
+  var tb=document.getElementById('m-body'); tb.innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+r.age+'</td><td>'+r.sex+'</td>'+
+    '<td>'+grpChip(r.grp)+'</td><td>'+delChip(r.del)+'</td><td class="nowrap">'+esc(r.county)+'</td><td>'+regBadge(r.reg)+'</td><td>'+statusHtml(r.status)+'</td></tr>'}).join('');
+  document.getElementById('m-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' matching (population '+MEMBERS.length.toLocaleString()+')';
+  tb.querySelectorAll('tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'roster')})});
+}
+
+/* ================= eligibility spans ================= */
+var SPAN_VIEW=[];
+function initSpanControls(){
+  fillSelect('s-group',GROUP_KEYS.map(function(g){return[g,g+' \u2014 '+GROUPS[g].name]}),'Coverage group: all');
+  ['s-group','s-open'].forEach(function(id){document.getElementById(id).addEventListener('input',function(){resetPage('s-tbl');renderSpans()})});
+  bindSort('s-tbl',renderSpans);
+}
+function renderSpans(){
+  var fg=document.getElementById('s-group').value, fo=document.getElementById('s-open').value;
+  var rows=[];
+  MEMBERS.forEach(function(m){ m.eligSpans.forEach(function(s){
+    if(fg&&s.grp!==fg)return;
+    if(fo==='open'&&s.end!==null)return;
+    if(fo==='closed'&&s.end===null)return;
+    rows.push({ix:m.ix,id:m.id,name:m.name,grp:s.grp,start:s.start,end:(s.end===null?9999:s.end),endRaw:s.end,
+      months:spanMonths(s.start,s.end),reason:s.reason});
+  })});
+  rows=sortRows('s-tbl',rows); sortMarks('s-tbl');
+  SPAN_VIEW=[]; var seenS={}; rows.forEach(function(r){ if(!seenS[r.ix]){seenS[r.ix]=1;SPAN_VIEW.push(r.ix)} });
+  var pg=pager('s-tbl',rows.length,renderSpans,'s-pager');
+  document.getElementById('s-body').innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+grpChip(r.grp)+'</td>'+
+    '<td class="nowrap">'+startLabel(r.start)+'</td><td class="nowrap">'+(r.endRaw===null?'<span class="st-act">open</span>':mLabel(r.endRaw))+'</td>'+
+    '<td class="mono">'+r.months+(r.start<0?'+':'')+'</td><td>'+(r.reason?esc(r.reason):'\u2014')+'</td></tr>'}).join('');
+  document.getElementById('s-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' spans';
+  document.querySelectorAll('#s-body tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'spans')})});
+}
+function startLabel(s){ return s<0 ? mLabel(s)+' <span class="hint">(pre-window)</span>' : mLabel(s) }
+
+/* ================= delivery spans ================= */
+var DEL_VIEW=[];
+function initDelControls(){
+  var dopts=CAPLANS.map(function(m){return[m.code,m.name]});
+  dopts.push(['FFS','Fee-for-Service']);
+  fillSelect('d-sys',dopts,'Delivery system: all');
+  document.getElementById('d-sys').addEventListener('input',function(){resetPage('d-tbl');renderDel()});
+  bindSort('d-tbl',renderDel);
+}
+function renderDel(){
+  var fd=document.getElementById('d-sys').value;
+  var rows=[];
+  MEMBERS.forEach(function(m){ m.delSpans.forEach(function(s){
+    if(fd&&s.sys!==fd)return;
+    rows.push({ix:m.ix,id:m.id,name:m.name,sys:s.sys,start:s.start,end:(s.end===null?9999:s.end),endRaw:s.end,
+      months:spanMonths(s.start,s.end),note:s.note});
+  })});
+  rows=sortRows('d-tbl',rows); sortMarks('d-tbl');
+  DEL_VIEW=[]; var seenD={}; rows.forEach(function(r){ if(!seenD[r.ix]){seenD[r.ix]=1;DEL_VIEW.push(r.ix)} });
+  var pg=pager('d-tbl',rows.length,renderDel,'d-pager');
+  document.getElementById('d-body').innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+delChip(r.sys)+'</td>'+
+    '<td class="nowrap">'+startLabel(r.start)+'</td><td class="nowrap">'+(r.endRaw===null?'<span class="st-act">open</span>':mLabel(r.endRaw))+'</td>'+
+    '<td class="mono">'+r.months+(r.start<0?'+':'')+'</td><td>'+(r.note?esc(r.note):'\u2014')+'</td></tr>'}).join('');
+  document.getElementById('d-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' delivery spans';
+  document.querySelectorAll('#d-body tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'delivery')})});
+}
+</script>
+<script>
+'use strict';
+/* ================= scenario registers ================= */
+var REGDEFS={
+ A:{title:'Steady state \u2014 three answers to \u201chow much choice?\u201d', q:'The same program, three architectures: what does geography do to enrollment?',
+    body:'The baseline of the largest Medicaid program on earth \u2014 and the delivery texture is the county line. COHS members were enrolled <b>automatically</b> in their county\u2019s one plan (no packet, no menu, a design running since 1983); Two-Plan members picked between a public Local Initiative \u2014 <b>L.A. Care</b>, the largest publicly operated plan in the nation, or <b>IEHP</b> \u2014 and one commercial; GMC members chose from an actual menu. Sprinkled through Sacramento: <b>Kaiser</b> members who passed the gate \u2014 the direct contract requires continuity linkage, making Kaiser the one plan you cannot simply pick.'},
+ B:{title:'Renewal churn', q:'Who lost coverage at renewal \u2014 across 58 county offices on one system?',
+    body:'Cases close at renewal, sit in a gap, and reopen \u2014 125 members are in the gap right now, their renewals moving through county offices on <b>CalSAWS</b>, the single system that finally replaced three. The return trip depends on the model: COHS members slide back into the county\u2019s one plan automatically; menu-county members face the packet again.'},
+ C:{title:'The aid code that opened \u2014 restricted to full scope', q:'What does it look like when a door opens by operation of law?',
+    body:'For decades, immigrant Californians outside the eligible categories lived in <b>restricted scope</b> \u2014 aid codes covering emergency and pregnancy services only, fee-for-service, nothing else. California dismantled that wall band by band: children 2016, young adults 2020, 50+ 2022 \u2014 and on <b>January 1, 2024</b>, the final band: full-scope Medi-Cal for all income-eligible adults 26\u201349, <b>regardless of immigration status</b>. These 375 members converted that day \u2014 no application, no interview, the aid code changing by operation of law after three to fifteen years in the restricted code. Their timelines carry the seam one year left of this window\u2019s edge: gray restricted history ending, a plan card beginning \u2014 primary care, prescriptions, a member handbook, all of it existing for the first time. Nothing else in this series converted so many records with so little paperwork.'},
+ D:{title:'Moving between models \u2014 when a county line changes your kind of choice', q:'A member moves. Which is bigger news: the new plan, or the new choice architecture?',
+    body:'This series has shown moves that change plans, regions, and attributions. California\u2019s version changes something stranger: <b>the kind of choosing</b>. 150 members moved <b>into COHS counties</b> \u2014 and the choice evaporated: auto-enrolled in the county\u2019s one plan, no packet, because no decision exists. 115 moved <b>out</b> of COHS counties \u2014 and a choice packet arrived for the first time in the case\u2019s history, with a deadline and an auto-assignment penalty attached to a right the member never had before. 110 moved <b>laterally</b> between menu counties, the menu changing size en route. Same program, same CIN, same benefits \u2014 and the enrollment experience swings from zero options to four at a county line. No other state in this series carries three architectures at once; register D is what their borders look like in member data.'},
+ E:{title:'CalAIM \u2014 the capitation that pays rent deposits', q:'Where is the boundary of \u201chealth care,\u201d and who moved it?',
+    body:'325 members receiving <b>Community Supports</b> \u2014 CalAIM\u2019s \u201cin lieu of services\u201d: 100 with <b>housing transition navigation and deposits</b> (a Medicaid plan paying move-in costs), 85 with <b>medically tailored meals</b>, 70 in <b>recuperative care</b> (a bed after discharge instead of a sidewalk), 70 with <b>asthma remediation</b> \u2014 the plan paying to fix the apartment, because the building was the trigger. Many also carry <b>Enhanced Care Management</b>: one lead care manager across medical, behavioral, and social systems. The data lesson is the one every warehouse hits first: these are covered services with <b>no CPT ancestry</b> \u2014 service categories the claims model had to learn from scratch, because the capitation\u2019s boundary moved and the schema had to follow.'},
+ F:{title:'Medicare arrives \u2014 aligned by law', q:'The fourteenth answer: what if the state legislates the marriage?',
+    body:'California\u2019s dual demonstration \u2014 Cal MediConnect \u2014 ended in 2022, and what replaced it is this register\u2019s teaching: the <b>matching rule</b>. When Medicare arrives, the Medi-Cal plan keeps the member (195 records here, plan continuing straight across the entitlement) \u2014 and state policy requires the member\u2019s D-SNP to belong to the <b>same parent company</b> as that Medi-Cal plan. Other states in this series showed plans that keep you, programs built for duals, alignment by market push; California is the only one that wrote the alignment into policy. The 130 COHS members arrive at the same end state by pure structure: CalOptima and its siblings run the county D-SNP themselves \u2014 one organization, both programs, no seam to align. The buy-in accretes on its usual one-to-three-month limbo \u2014 the one clock no statute has managed to legislate.'}
+};
+function renderRegisters(){
+  var out=document.getElementById('reg-list'); var h='';
+  ['A','B','C','D','E','F'].forEach(function(r){
+    var d=REGDEFS[r], list=MEMBERS.filter(function(m){return m.reg===r});
+    var sample=list.slice(0,12);
+    h+='<div class="reg"><h3><span class="rl">'+r+'</span>'+esc(d.title)+'<span class="meta" style="margin-left:auto">'+list.length.toLocaleString()+' members</span></h3>'+
+       '<div class="q">'+d.q+'</div><p class="sub" style="margin-bottom:10px">'+d.body+'</p>'+
+       '<div class="tblwrap"><table><thead><tr><th>CIN</th><th>Member</th><th>Group</th><th>Delivery today</th><th>The planted story</th></tr></thead><tbody>';
+    sample.forEach(function(m){
+      h+='<tr class="rowlink" data-ix="'+m.ix+'"><td class="mono">'+m.id+'</td><td class="nowrap">'+esc(m.name)+'</td><td>'+grpChip(m.grpToday)+'</td><td>'+delChip(m.delTodayCode)+'</td>'+
+         '<td>'+(m.flags.length?m.flags[0]:'Clean spans \u2014 the control group')+'</td></tr>';
+    });
+    h+='</tbody></table></div>';
+    if(list.length>sample.length){
+      h+='<div class="hint" style="margin-top:8px">Showing the first '+sample.length+' of '+list.length.toLocaleString()+'. Open any row \u2014 the \u25c0 \u25b6 arrows walk the entire register \u2014 or filter the Members tab by register for the full list.</div>';
+    }
+    h+='</div>';
+  });
+  out.innerHTML=h;
+  out.querySelectorAll('tr.rowlink').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'register')})});
+}
+
+/* ================= 834 builder ================= */
+function lastDelEvent(m){
+  var spans=m.delSpans.filter(function(s){return s.sys!=='FFS'});
+  var last=spans[spans.length-1];
+  if(m.reg==='C'){
+    return {kind:'021',del:last,why:'A conversion-wave addition: this \u201cnew\u201d enrollee has years of restricted-scope history behind the CIN. January 2024 stress-tested every receiving plan\u2019s duplicate-matching logic \u2014 known people arriving as new members, hundreds of thousands at once.'};
+  }
+  if(m.reg==='D'){
+    var prev=spans[spans.length-2];
+    return {kind:'021',del:last,pair:prev,why:(sysKind(last.sys)==='COHS'?'The receiving half of a move into a COHS county \u2014 an addition no one chose: enrollment by geography. The paired termination went to the old county\u2019s plan.':'The receiving half of a county move \u2014 and in the new county, this addition came with something the old county never offered: a menu.')};
+  }
+  if(m.reg==='F'){
+    return {kind:'001',del:last,why:'Medicare arrived \u2014 the plan keeps the member, reported as a change. What the file cannot show: the matching rule now steers the D-SNP to this plan\u2019s parent company. The alignment lives one layer above the wire.'};
+  }
+  if(m.reg==='B'&&last.start>TODAY_IDX){
+    return {kind:'024',del:spans[0],why:'Eligibility closed at renewal; the plan received a clean termination. The member is in the gap today.'};
+  }
+  return {kind:'021',del:last,why:(m.reg==='B'?'Re-enrollment after the renewal gap.':(m.reg==='E'?'An enrollment whose capitation now covers things no claim system a decade ago would have recognized \u2014 CalAIM moved the boundary; the file format never noticed.':(sysKind(last.sys)==='COHS'?'A COHS enrollment \u2014 automatic, universal, choiceless by design. The quietest addition the standard carries.':(last.sys==='KAISER'?'A gated addition \u2014 this member passed the Kaiser continuity requirement. The one plan the menu cannot offer.':'Enrollment addition.'))))};
+}
+function ediRow(seg,note,loop){return '<div class="edirow'+(loop?' loop':'')+'"><div class="seg">'+esc(seg)+'</div><div class="note">'+note+'</div></div>'}
+function build834(m){
+  var ev=lastDelEvent(m);
+  var eligSpan=m.eligSpans[m.eligSpans.length-1];
+  var ctl=String(213000+m.ix*7);
+  var kindLabel={ '021':'Addition','001':'Change','024':'Termination' }[ev.kind];
+  var out='<div class="ediwrap"><div class="edihead"><span class="fn">834 \u2014 '+kindLabel+(ev.pair?' (half of a county-move pair)':'')+'</span><span class="hint">'+esc(ev.why)+'</span></div>';
+  var recvName = sysLabel(ev.del.sys).toUpperCase().replace(/\(.*\)/,'').trim();
+  var recvId = ev.del.sys;
+  out+=ediRow('ISA*00*          *00*          *ZZ*CADHCS         *ZZ*'+(recvId+'          ').slice(0,10)+'    *260701*0800*^*00501*'+ctl.padStart(9,'0')+'*0*P*:~','Interchange envelope: the Department of Health Care Services to <b>'+esc(recvName)+'</b> \u2014 one stream in the largest roster flow in American Medicaid.');
+  out+=ediRow('GS*BE*CADHCS*'+recvId+'*20260701*0800*'+ctl+'*X*005010X220A1~','Functional group: <b>BE</b> = benefit enrollment.');
+  out+=ediRow('ST*834*'+ctl.slice(-4)+'*005010X220A1~','Transaction set header. One ST/SE per batch; this rendering shows a single member for teaching.');
+  out+=ediRow('BGN*00*'+m.id.slice(0,6)+'-'+ctl.slice(-3)+'*20260701*0800****4~','Beginning segment. Purpose 00 = original. Action 4 = verify/full audit.');
+  out+=ediRow('N1*P5*CALIFORNIA DEPT OF HEALTH CARE SERVICES*FI*946001347~','Loop 1000A \u2014 plan sponsor: DHCS, over 58 county determinations.', true);
+  out+=ediRow('N1*IN*'+recvName+'*FI*'+String(940000000+m.ix*13)+'~','Loop 1000B \u2014 the receiver'+(sysKind(ev.del.sys)==='COHS'?' \u2014 a COHS: the county\u2019s one plan, everyone\u2019s plan.':(sysKind(ev.del.sys)==='LI'?' \u2014 a public Local Initiative: a county-created plan competing at scale.':(ev.del.sys==='KAISER'?' \u2014 the gated direct contract.':'.'))), true);
+  out+=ediRow('INS*Y*18*'+ev.kind+'*'+(ev.kind==='024'?'07':(ev.kind==='001'?'43':'28'))+'*A***FT~','Loop 2000. Subscriber (Y/18). Maintenance <b>'+ev.kind+'</b>'+(m.reg==='F'?' \u2014 reason 43: Medicare entitlement. The matching rule operates in silence above this segment.':'.'), true);
+  out+=ediRow('REF*0F*'+m.id+'~','The <b>CIN</b> \u2014 eight digits and a letter, permanent. Through restricted scope, conversions, county moves, and Medicare: the one constant.');
+  out+=ediRow('DTP*356*D8*'+mFirstD8(Math.max(eligSpan.start,-24))+'~','<b>Eligibility</b> begin date'+(m.reg==='C'?' \u2014 January 1, 2024: the day the aid code opened. Shared by every member of this register, because the conversion ran by operation of law.':'.'));
+  if(ev.kind==='024'&&ev.del.end!==null) out+=ediRow('DTP*357*D8*'+mLastD8(ev.del.end)+'~','End date \u2014 last day of the final capitated month.');
+  out+=ediRow('NM1*IL*1*'+m.last.toUpperCase()+'*'+m.first.toUpperCase()+'****34*'+String(547000000+m.ix*311)+'~','Member name. The 34 qualifier carries an SSN in real files; synthetic here \u2014 and for register C\u2019s members, often absent in the real ones: full scope does not require one.');
+  out+=ediRow('PER*IP**TE*'+m.phone.replace(/\D/g,'')+'~','Contact telephone.');
+  out+=ediRow('N3*'+m.street.toUpperCase()+'~','Street address.');
+  out+=ediRow('N4*'+m.city.toUpperCase()+'*CA*'+m.zip+'~','City/state/ZIP: '+esc(m.city)+', '+esc(m.county)+' County \u2014 model: '+m.model+'.');
+  out+=ediRow('DMG*D8*'+dobD8(m.dob)+'*'+m.sex+'~','Date of birth and sex.');
+  if(m.lang!=='English') out+=ediRow('LUI*LD*'+({'Spanish':'SPA','Vietnamese':'VIE','Cantonese':'YUE','Tagalog':'TGL','Korean':'KOR','Hmong':'HMN','Punjabi':'PAN','Armenian':'ARM','Farsi':'FAS','Mandarin':'CMN'}[m.lang]||'ENG')+'**6~','Preferred language: '+esc(m.lang)+'. Medi-Cal operates in more threshold languages than any program in the country \u2014 this segment is a daily production fact, not an edge case.');
+  out+=ediRow('HD*'+ev.kind+'**HLT*'+ev.del.sys+'~','Loop 2300 \u2014 '+(sysKind(ev.del.sys)==='COHS'?'coverage under the county\u2019s one plan.':'Medi-Cal managed care coverage.'), true);
+  out+=ediRow('DTP*348*D8*'+mFirstD8(Math.max(ev.del.start,-24))+'~','<b>Plan</b> begin date'+(m.reg==='C'?' \u2014 the first plan enrollment of this member\u2019s life, after years already known to the state.':' \u2014 first of the month, always prospective.'));
+  if(ev.del.end!==null&&ev.kind!=='024') out+=ediRow('DTP*349*D8*'+mLastD8(ev.del.end)+'~','Plan end date \u2014 last day of the final capitated month.');
+  out+=ediRow('LS*2700~','Open the member-reporting loop.', true);
+  out+=ediRow('LX*1~ N1*75*AID CODE~ REF*ZZ*'+eligSpan.grp+'~','The aid code ('+esc(GROUPS[eligSpan.grp].name)+') \u2014 California\u2019s three-character taxonomy, the working vocabulary of every Medi-Cal data team.'+(m.reg==='C'?' <b>Two years ago this segment said R5.</b>':''));
+  if(m.reg==='D') out+=ediRow('LX*2~ N1*75*COUNTY MODEL~ REF*ZZ*'+m.modelOld+'-'+m.model+'~','The move crossed a model boundary: '+m.modelOld+' \u2192 '+m.model+'. The plan changed; the <i>kind of choosing</i> changed more.');
+  if(m.cs) out+=ediRow('LX*2~ N1*75*COMMUNITY SUPPORT~ REF*ZZ*'+m.cs+'~','A CalAIM Community Support \u2014 a covered service with no CPT ancestry; the capitation\u2019s boundary, moved.');
+  if(m.reg==='F') out+=ediRow('LX*3~ N1*75*MEDICARE STATUS~ REF*ZZ*AB~','Medicare A+B from '+mLabel(m.medicareIdx)+' \u2014 the D-SNP steering to this plan\u2019s parent happens in policy, invisible here.');
+  out+=ediRow('LE*2700~','Close the reporting loop.', true);
+  out+=ediRow('SE*'+ri(16,22)+'*'+ctl.slice(-4)+'~ GE*1*'+ctl+'~ IEA*1*'+ctl.padStart(9,'0')+'~','Trailers: segment count, group close, interchange close. Counts must reconcile or the whole file bounces.');
+  out+='</div>';
+  if(m.reg==='C'){
+    out+='<div class="plain" style="margin-top:14px"><span class="pe-label">Worth noticing</span>The strangest property of the January 2024 wave: every \u201cnew\u201d member was already in the state\u2019s systems, some for fifteen years \u2014 same CIN, same address history, same county case. The plans received them as additions; the state knew them as continuations. Any pipeline that treats an 834 addition as \u201cfirst contact\u201d misread this entire cohort, and any duplicate-matching routine tuned for genuinely new people had its best and worst month simultaneously. Enrollment files describe relationships, not people \u2014 January 2024 is the proof.</div>';
+  }
+  return out;
+}
+function initFileTab(){
+  var sel=document.getElementById('f-member');
+  var h='';
+  ['A','B','C','D','E','F'].forEach(function(r){
+    h+='<optgroup label="Register '+r+' \u2014 '+esc(REGDEFS[r].title)+'">';
+    MEMBERS.filter(function(m){return m.reg===r}).slice().sort(function(a,b){return a.name.localeCompare(b.name)}).forEach(function(m){
+      h+='<option value="'+m.ix+'">'+esc(m.name)+' \u2014 '+m.id+'</option>';
+    });
+    h+='</optgroup>';
+  });
+  sel.innerHTML=h;
+  sel.addEventListener('input',function(){renderFile(+sel.value)});
+  renderFile(+sel.value);
+}
+function renderFile(ix){
+  document.getElementById('f-out').innerHTML=build834(MEMBERS[ix]);
+}
+</script>
+<script>
+'use strict';
+/* ================= modal ================= */
+var MODAL={ix:null, ctx:'roster'};
+function navList(){
+  if(MODAL.ctx==='spans'&&SPAN_VIEW.length)return SPAN_VIEW;
+  if(MODAL.ctx==='delivery'&&DEL_VIEW.length)return DEL_VIEW;
+  if(MODAL.ctx==='register'&&MODAL.ix!==null){
+    var r=MEMBERS[MODAL.ix].reg;
+    return MEMBERS.filter(function(m){return m.reg===r}).map(function(m){return m.ix});
+  }
+  return ROSTER_VIEW.length?ROSTER_VIEW:MEMBERS.map(function(m){return m.ix});
+}
+function openModal(ix,ctx){
+  MODAL.ix=ix; if(ctx)MODAL.ctx=ctx;
+  var m=MEMBERS[ix];
+  document.getElementById('mo-nm').textContent=m.first+' '+m.last;
+  document.getElementById('mo-id').textContent='CIN '+m.id+'  \u00b7  Register '+m.reg;
+  document.getElementById('mo-body').innerHTML=modalBody(m);
+  var list=navList(), pos=list.indexOf(ix);
+  document.getElementById('mo-pos').textContent=(pos+1)+' / '+list.length+' ('+MODAL.ctx+')';
+  document.getElementById('mo-prev').disabled=pos<=0;
+  document.getElementById('mo-next').disabled=pos<0||pos>=list.length-1;
+  document.getElementById('overlay').classList.add('on');
+  document.getElementById('modal').classList.add('on');
+  highlightRow(ix);
+  document.getElementById('mo-x').focus();
+}
+function closeModal(){
+  document.getElementById('overlay').classList.remove('on');
+  document.getElementById('modal').classList.remove('on');
+  highlightRow(null);
+  MODAL.ix=null;
+}
+function stepModal(d){
+  var list=navList(), pos=list.indexOf(MODAL.ix), np=pos+d;
+  if(np<0||np>=list.length)return;
+  openModal(list[np]);
+}
+function highlightRow(ix){
+  document.querySelectorAll('tr.hl').forEach(function(tr){tr.classList.remove('hl')});
+  if(ix===null)return;
+  document.querySelectorAll('tr.rowlink[data-ix="'+ix+'"]').forEach(function(tr){tr.classList.add('hl')});
+}
+
+/* ---------- mini two-band timeline ---------- */
+function tlBar(startIdx,endIdx,color,striped,title){
+  var s=Math.max(startIdx,0), e=(endIdx===null?WIN_MONTHS-1:Math.min(endIdx,WIN_MONTHS-1));
+  if(e<0||s>WIN_MONTHS-1)return '';
+  var l=100*s/WIN_MONTHS, w=100*(e-s+1)/WIN_MONTHS;
+  return '<span class="bar'+(striped?' striped':'')+'" style="left:'+l+'%;width:'+w+'%;background:'+color+'" title="'+esc(title)+'"></span>';
+}
+function timeline(m){
+  var h='<div class="tl">';
+  h+='<div class="band"><span class="bl">Eligibility</span><span class="lane">';
+  m.eligSpans.forEach(function(s){
+    h+=tlBar(s.start,s.end,'var('+GROUPS[s.grp].color+')',false,s.grp+' '+mLabel(s.start)+' \u2013 '+(s.end===null?'open':mLabel(s.end)));
+  });
+  h+='<span class="todayline" style="left:'+(100*(TODAY_IDX+0.5)/WIN_MONTHS)+'%"></span></span></div>';
+  h+='<div class="band"><span class="bl">Delivery</span><span class="lane">';
+  m.delSpans.forEach(function(s){
+    var k=sysKind(s.sys);
+    var col = k==='FFS'?'var(--d-ffs)':(k==='KP'?'var(--d-harp)':(k==='COHS'?'var(--d-mltc)':'var(--d-mco)'));
+    h+=tlBar(s.start,s.end,col,s.sys!=='FFS',sysLabel(s.sys)+' '+mLabel(s.start)+' \u2013 '+(s.end===null?'open':mLabel(s.end)));
+  });
+  h+='<span class="todayline" style="left:'+(100*(TODAY_IDX+0.5)/WIN_MONTHS)+'%"></span></span></div>';
+  h+='<div class="axis"><span></span><span class="ax">'+
+     '<span style="left:2%">Jan 25</span><span style="left:27%">Jul 25</span><span style="left:52%">Jan 26</span><span style="left:77%">Jul 26</span></span></div>';
+  h+='<div class="tl-note">Striped blue = Two-Plan / GMC / Regional plan \u00b7 striped teal = COHS (the county\u2019s one automatic plan) \u00b7 striped purple = Kaiser (gated) \u00b7 solid gray = fee-for-service, including register C\u2019s restricted-scope years \u2014 which end at January 2024, one year left of this window\u2019s edge \u00b7 red line = today (Jul 2026). Bars clamp to the 24-month window; pre-window starts are noted in the span tables.</div></div>';
+  return h;
+}
+
+/* ---------- per-member plain english ---------- */
+function plainFor(m){
+  var p='';
+  var first=m.first;
+  var last=m.delSpans[m.delSpans.length-1];
+  if(m.reg==='A'){
+    if(m.delTodayCode==='KAISER'){
+      p=first+' is a <b>Kaiser</b> member under the 2024 direct contract \u2014 which means '+(m.sex==='F'?'she':'he')+' passed the gate: continuity linkage with prior Kaiser coverage. Kaiser is the one plan in this file a new member cannot simply pick off the menu \u2014 enrollment as an inheritance, not a choice.';
+    } else if(sysKind(m.delTodayCode)==='COHS'){
+      p=first+' lives in '+esc(m.county)+' County \u2014 a <b>COHS county</b> \u2014 so enrollment in '+esc(sysLabel(m.delTodayCode))+' was automatic: one plan, everyone\u2019s plan, no packet, no deadline, no decision. Zero choices, by design, in the same program that offers Sacramento a menu. In Medi-Cal, the county line is the choice architecture.';
+    } else if(sysKind(m.delTodayCode)==='LI'){
+      p=first+' is enrolled with <b>'+esc(sysLabel(m.delTodayCode))+'</b> \u2014 a public Local Initiative of the Two-Plan model: a plan created by a county government to compete against a commercial. '+(m.delTodayCode==='LACARE'?'L.A. Care is the largest publicly operated health plan in the United States \u2014 a county public option with millions of members.':'IEHP is the Inland Empire\u2019s public giant, the model\u2019s other proof of concept.');
+    } else {
+      p=first+' is the modal record of the largest Medicaid program on earth: eligible under aid code <b>'+m.grpToday+' ('+esc(GROUPS[m.grpToday].name)+')</b>, enrolled with '+esc(sysLabel(m.delTodayCode))+' in '+esc(m.county)+' County ('+m.model+' model). One in three Californians carries a card like this one.';
+    }
+  } else if(m.reg==='B'){
+    var t2=m.eligSpans[0].end, rg=m.eligSpans[1].start, gap=rg-t2-1;
+    if(rg>TODAY_IDX){
+      p=first+'\u2019s renewal did not come back through the county office and the case closed after '+mLabel(t2)+'. As of today '+first+' is <b>in the gap</b>; the data shows the case reopening in '+mLabel(rg)+(m.model==='COHS'?' \u2014 straight back into the county\u2019s one plan, automatically.':'.');
+    } else {
+      p=first+' churned: closed at renewal after '+mLabel(t2)+', '+gap+' month'+(gap>1?'s':'')+' in the gap, back on in '+mLabel(rg)+' \u2014 one case among millions moving through 58 county offices on CalSAWS, the single system that finally replaced three.';
+    }
+  } else if(m.reg==='C'){
+    var yrs=Math.round((SCOPE_IDX-m.eligSpans[0].start)/12);
+    p='For '+yrs+' years, '+first+'\u2019s Medi-Cal was <b>restricted scope</b> \u2014 emergency room and pregnancy services only, fee-for-service, aid code R5: the shape of the program for immigrant Californians for decades. On <b>January 1, 2024</b>, the aid code opened: California completed full-scope coverage for all income-eligible adults regardless of immigration status, and '+first+'\u2019s record converted <b>by operation of law</b> \u2014 no application, no interview. A plan card, a primary care doctor, a prescription benefit: all of it existed for the first time, for a person the state had known for '+yrs+' years. Hundreds of thousands of records turned over the same day.';
+  } else if(m.reg==='D'){
+    var mv=m.moveIdx;
+    if(m.model==='COHS'){
+      p='In '+mLabel(mv)+', '+first+' moved from '+esc(m.countyOld)+' County to <b>'+esc(m.county)+'</b> \u2014 and the choice evaporated: '+esc(m.county)+' is a COHS county, so '+esc(sysLabel(last.sys))+' enrolled '+(m.sex==='F'?'her':'him')+' automatically. No packet arrived, because no decision exists. Same program, same CIN, same benefits \u2014 and the entire choice architecture changed at a county line. The most Californian data event in this file.';
+    } else if(m.modelOld==='COHS'){
+      p='In '+mLabel(mv)+', '+first+' moved out of '+esc(m.countyOld)+' County \u2014 a COHS county \u2014 and <b>a choice packet arrived for the first time in this case\u2019s history</b>: a menu, a deadline, and an auto-assignment penalty attached to a right '+first+' had never held before. '+(last.note&&last.note.indexOf('Member chose')===0?first+' chose.':'The deadline passed unanswered, and the algorithm exercised the new right on '+(m.sex==='F'?'her':'his')+' behalf.');
+    } else {
+      p='In '+mLabel(mv)+', '+first+' moved '+esc(m.countyOld)+' ('+m.modelOld+') \u2192 '+esc(m.county)+' ('+m.model+') \u2014 a lateral move between choice models: the plan changed, the menu changed size, and the deeper Medi-Cal lesson held: <b>geography decides not just which plan but what kind of choosing</b>. Three architectures, one program, and their borders run straight through register D.';
+    }
+  } else if(m.reg==='E'){
+    var story={HOUSING:'a housing navigator, move-in deposits, and first month\u2019s utilities \u2014 a Medicaid managed care plan paying the costs of getting housed, because housing was the health intervention',
+               MEALS:'twelve weeks of medically tailored meals after discharge \u2014 food, dosed like a prescription, paid as a covered service',
+               RECUP:'recuperative care after a hospital stay \u2014 a bed, meals, and clinical oversight instead of a discharge to the sidewalk',
+               ASTHMA:'home asthma remediation \u2014 the plan paid to fix the apartment itself: ventilation, mold, carpet. The building was the trigger, so the building became the treatment'}[m.cs];
+    p=first+' received a <b>CalAIM Community Support</b>: '+story+'. Under \u201cin lieu of services,\u201d '+esc(sysLabel(m.delTodayCode))+'\u2019s capitation covers it \u2014 and every claims warehouse met the same puzzle: a covered service category with <b>no CPT ancestry</b>. The boundary of \u201chealth care\u201d moved; the schema had to follow it.';
+  } else {
+    var mi=m.medicareIdx, bi=m.buyinIdx, lag=bi-mi;
+    if(m.cohs){
+      p=(m.ssdi?'Medicare arrived for '+first+' in '+mLabel(mi)+'.':'In '+mLabel(mi)+', '+first+' turned 65 and Medicare arrived.')+' And in '+esc(m.county)+' County the alignment needed no steering: '+esc(sysLabel(m.delTodayCode))+' keeps the Medi-Cal side <b>and operates the county\u2019s D-SNP itself</b>. One organization, both programs, no seam \u2014 the matching rule\u2019s end state, reached by structure instead of statute. The buy-in accreted '+mLabel(bi)+'.';
+    } else {
+      p=(m.ssdi?'Medicare arrived for '+first+' in '+mLabel(mi)+' \u2014 SSDI\u2019s 24-month waiting period ended.':'In '+mLabel(mi)+', '+first+' turned 65 and Medicare arrived.')+' '+esc(sysLabel(m.delTodayCode))+' kept the member \u2014 and then California did the thing no other state in this series does: the <b>matching rule</b> requires '+first+'\u2019s D-SNP to belong to the same parent company as the Medi-Cal plan. Other states align duals by market push or program design; California legislated the marriage after Cal MediConnect ended in 2022. The buy-in accreted '+mLabel(bi)+' ('+lag+'-month limbo) \u2014 the fourteenth answer: <b>aligned by law</b>.';
+    }
+  }
+  return '<div class="plain"><span class="pe-label">In plain English</span>'+p+'</div>';
+}
+
+/* ---------- modal body ---------- */
+function modalBody(m){
+  var h='';
+  var et=eligToday(m);
+  h+='<div class="kv">'+
+    kv('Status today',statusHtml(m.status))+
+    kv('Coverage group',grpChip(m.grpToday)+' <span style="font-size:.8rem;color:var(--ink-soft)">'+esc(GROUPS[m.grpToday].name)+'</span>')+
+    kv('Delivery today',delChip(m.delTodayCode)+(m.delTodayCode!=='\u2014'?' <span style="font-size:.8rem;color:var(--ink-soft)">'+esc(sysLabel(m.delTodayCode))+'</span>':''))+
+    kv('Date of birth',dobLabel(m.dob)+' <span class="hint">(age '+m.age+')</span>')+
+    kv('Sex',m.sex)+
+    kv('Address',esc(m.street)+', '+esc(m.city)+', CA '+m.zip)+
+    kv('County',esc(m.county)+' \u2014 '+m.model+' model')+
+    kv('Phone','<span class="mono">'+m.phone+'</span>')+
+    kv('Preferred language',esc(m.lang))+
+    (m.modelOld?kv('Model crossing',m.modelOld+' \u2192 '+m.model+' at the '+mLabel(m.moveIdx)+' move'):'')+(m.cs?kv('Community Support',{HOUSING:'Housing transition + deposits',MEALS:'Medically tailored meals',RECUP:'Recuperative care',ASTHMA:'Asthma remediation'}[m.cs]):'')+(m.reg==='C'?kv('Aid code history','R5 (restricted) \u2192 M1 (full scope), Jan 1 2024'):'')+
+    '</div>';
+  function kv(k,v){return '<div class="k">'+k+'</div><div class="v">'+v+'</div>'}
+  h+='<h4>24-month picture</h4>'+timeline(m);
+  h+=plainFor(m);
+  h+='<h4>Eligibility spans</h4><div class="tblwrap"><table><thead><tr><th>Group</th><th>Begin</th><th>End</th><th>Reason</th></tr></thead><tbody>';
+  m.eligSpans.forEach(function(s){
+    h+='<tr><td>'+grpChip(s.grp)+'</td><td class="nowrap">'+startLabel(s.start)+'</td><td class="nowrap">'+(s.end===null?'<span class="st-act">open</span>':mLabel(s.end))+'</td><td>'+(s.reason?esc(s.reason):'\u2014')+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  h+='<h4>Delivery spans</h4><div class="tblwrap"><table><thead><tr><th>System</th><th>Begin</th><th>End</th><th>Note</th></tr></thead><tbody>';
+  m.delSpans.forEach(function(s){
+    h+='<tr><td>'+delChip(s.sys)+'</td><td class="nowrap">'+startLabel(s.start)+'</td><td class="nowrap">'+(s.end===null?'<span class="st-act">open</span>':mLabel(s.end))+'</td><td>'+(s.note?esc(s.note):'\u2014')+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  if(m.flags.length){
+    h+='<h4>Flags</h4><p>'+m.flags.map(function(f){return '<span class="flag">'+esc(f)+'</span>'}).join(' ')+'</p>';
+  }
+  h+='<h4>See the file</h4><p style="font-size:.84rem;color:var(--ink-soft)">Open <b>What the File Says</b> and choose '+esc(m.first+' '+m.last)+' to read the 834 the plan received for this member\u2019s most recent enrollment event.</p>';
+  return h;
+}
+
+/* ================= navigation & boot ================= */
+function showPage(pg){
+  document.querySelectorAll('nav button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-pg')===pg)});
+  document.querySelectorAll('.page').forEach(function(p){p.classList.toggle('on',p.id==='pg-'+pg)});
+  if(pg==='overview')renderOverview();
+}
+document.getElementById('nav').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b)return; showPage(b.getAttribute('data-pg'));
+});
+document.getElementById('mo-x').addEventListener('click',closeModal);
+document.getElementById('overlay').addEventListener('click',closeModal);
+document.getElementById('mo-prev').addEventListener('click',function(){stepModal(-1)});
+document.getElementById('mo-next').addEventListener('click',function(){stepModal(1)});
+document.addEventListener('keydown',function(e){
+  if(MODAL.ix===null)return;
+  if(e.key==='Escape')closeModal();
+  else if(e.key==='ArrowLeft')stepModal(-1);
+  else if(e.key==='ArrowRight')stepModal(1);
+});
+
+/* boot */
+renderOverview();
+initRosterControls(); renderRoster();
+initSpanControls();  renderSpans();
+initDelControls();   renderDel();
+renderRegisters();
+initFileTab();
+renderReference();
+</script>
+</body>
+</html>

@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>South Carolina Medicaid Eligibility Central</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,600;1,400;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#1E5FCC; --accent-soft:#E8EFFA; --ink:#1A2233; --sub:#5A6478;
+  --line:#DDE3EC; --bg:#F7F9FC; --card:#FFFFFF; --warn:#B4540A; --ok:#1F7A3D;
+  --g-cfc:#4C7FB8; --g-hst:#B85C8A; --g-v8:#3D8F6E; --g-abd:#8A6FB8;
+  --g-mbw:#B08A3D; --g-dua:#B4540A; --g-wvr:#5C8A99; --g-rise:#7A5CB8; --g-ffs:#7A8299;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.55}
+.mono{font-family:'IBM Plex Mono',monospace;font-size:.85em}
+header{background:var(--card);border-bottom:1px solid var(--line);padding:22px 28px 0}
+.wordmark{font-size:1.55rem;font-weight:600}
+.wordmark .central{font-family:'Source Serif 4',serif;font-style:italic;color:var(--accent);font-weight:600}
+.tagline{color:var(--sub);font-size:.9rem;margin:4px 0 14px;max-width:70ch}
+nav{display:flex;gap:2px;flex-wrap:wrap}
+nav button{border:none;background:none;font:inherit;font-size:.88rem;font-weight:500;color:var(--sub);
+  padding:9px 14px;cursor:pointer;border-bottom:3px solid transparent}
+nav button:hover{color:var(--ink)}
+nav button.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+nav button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+main{max-width:1240px;margin:0 auto;padding:24px 28px 80px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px 20px;margin-bottom:16px}
+.card h3{font-size:1.02rem;margin-bottom:10px}
+.grid{display:grid;gap:14px}
+.grid.stats{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px}
+.stat .n{font-size:1.7rem;font-weight:700;letter-spacing:-.01em}
+.stat .l{color:var(--sub);font-size:.8rem;margin-top:2px}
+.plain{font-family:'Source Serif 4',serif;font-style:italic;font-size:1.02rem;line-height:1.6;
+  background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;
+  padding:14px 18px;margin:14px 0;color:#22304a}
+.plain.small{font-size:.94rem;padding:11px 14px}
+.plain b{font-style:normal}
+.tblwrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.86rem}
+th{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--sub);text-align:left;
+  padding:8px 10px;border-bottom:2px solid var(--line);white-space:nowrap;cursor:pointer;user-select:none}
+th.nosort{cursor:default}
+th .arr{color:var(--accent)}
+td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+tbody tr.rowbtn{cursor:pointer}
+tbody tr.rowbtn:hover{background:var(--accent-soft)}
+tbody tr.hl{background:var(--accent-soft);box-shadow:inset 4px 0 0 var(--accent)}
+.pill{display:inline-block;font-size:.72rem;font-weight:600;padding:2px 9px;border-radius:99px;
+  color:#fff;white-space:nowrap}
+.pill.outline{background:none;border:1.5px solid var(--line);color:var(--sub)}
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.controls input[type=search],.controls select{font:inherit;font-size:.86rem;padding:7px 10px;
+  border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink)}
+.controls input[type=search]{min-width:230px}
+.pager{display:flex;gap:8px;align-items:center;margin-top:12px;font-size:.84rem;color:var(--sub)}
+.pager button{font:inherit;font-size:.82rem;border:1px solid var(--line);background:var(--card);
+  border-radius:6px;padding:5px 12px;cursor:pointer}
+.pager button:disabled{opacity:.4;cursor:default}
+button.linkish{border:none;background:none;color:var(--accent);font:inherit;font-size:.85rem;
+  cursor:pointer;text-decoration:underline;padding:0}
+.regcard{border:1px solid var(--line);border-radius:8px;background:var(--card);padding:18px 20px;margin-bottom:18px}
+.regcard .regletter{font-family:'Source Serif 4',serif;font-style:italic;color:var(--accent);
+  font-size:1.5rem;font-weight:600;margin-right:8px}
+.regcard .q{font-weight:600;font-size:1rem;margin-bottom:8px}
+.regcard .body{color:#2a3448;font-size:.92rem;max-width:88ch}
+.answerno{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:.78rem;
+  background:var(--ink);color:#fff;border-radius:4px;padding:2px 8px;margin-left:8px;vertical-align:2px}
+/* slide-over modal */
+.overlay{position:fixed;inset:0;background:rgba(20,28,45,.35);opacity:0;pointer-events:none;transition:opacity .18s;z-index:40}
+.overlay.open{opacity:1;pointer-events:auto}
+.slide{position:fixed;top:0;right:0;bottom:0;width:min(560px,94vw);background:var(--card);
+  border-left:1px solid var(--line);box-shadow:-12px 0 32px rgba(20,28,45,.14);
+  transform:translateX(102%);transition:transform .2s ease;z-index:50;overflow-y:auto;padding:20px 24px 40px}
+.slide.open{transform:none}
+.slide .close{position:absolute;top:14px;right:16px;border:none;background:none;font-size:1.3rem;
+  cursor:pointer;color:var(--sub)}
+.slide .navrow{display:flex;align-items:center;gap:10px;margin:2px 0 14px}
+.slide .navrow button{border:1px solid var(--line);background:var(--card);border-radius:6px;
+  font-size:1rem;padding:3px 12px;cursor:pointer}
+.slide .navrow button:disabled{opacity:.35;cursor:default}
+.slide .pos{font-family:'IBM Plex Mono',monospace;font-size:.76rem;color:var(--sub)}
+.slide h2{font-size:1.25rem;margin-bottom:2px}
+.slide .sub,p.sub{color:var(--sub);font-size:.85rem}
+.slide dl.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;font-size:.86rem;margin:12px 0}
+.slide dl.kv dt{color:var(--sub)}
+.slide dl.kv dd{font-weight:500}
+.slide h4{font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;color:var(--sub);margin:16px 0 6px}
+/* 834 viewer */
+.x12{display:grid;grid-template-columns:minmax(280px,44%) 1fr;font-size:.8rem;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.x12 .seg{font-family:'IBM Plex Mono',monospace;padding:6px 10px;border-bottom:1px solid var(--line);white-space:pre-wrap;word-break:break-all}
+.x12 .exp{padding:6px 10px;border-bottom:1px solid var(--line);color:#2a3448}
+.x12 .loop .seg,.x12 .loop .exp{background:var(--accent-soft);font-weight:600}
+.x12 .teach .exp{border-left:3px solid var(--warn)}
+dl.gloss dt{font-weight:600;margin-top:10px}
+dl.gloss dd{color:#2a3448;font-size:.9rem;max-width:90ch}
+.chron td:first-child{white-space:nowrap;font-weight:600}
+footer{border-top:1px solid var(--line);color:var(--sub);font-size:.8rem;padding:18px 28px;max-width:1240px;margin:0 auto}
+.testpass{color:var(--ok);font-weight:600}.testfail{color:#B00020;font-weight:600}
+@media (prefers-reduced-motion:reduce){.slide,.overlay{transition:none}}
+@media (max-width:720px){.x12{grid-template-columns:1fr}.x12 .seg{border-bottom:none;padding-bottom:0}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wordmark">South Carolina Medicaid Eligibility <span class="central">Central</span></div>
+  <p class="tagline">Eligibility, enrollment, and the files that carry both — 3,000 synthetic members of South Carolina Medicaid: a child assessed as a household of one, parents whose coverage ends on someone else’s birthday, and a Medicare register where the door opens partway — onto a premium ladder whose enrollment rides a file older than X12. All data is seeded and deterministic; nothing here is real.</p>
+  <nav id="tabs" role="tablist"></nav>
+</header>
+<main id="main"></main>
+<footer>
+  <b>South Carolina Medicaid Eligibility Central</b> — a single-file demonstration by <b>Robert Thomas Keyes</b>.
+  All members, identifiers, spans, and files are synthetic, generated in the browser from a fixed seed (803001);
+  no PHI, no network calls, no storage. Policy landscape described as of early 2026; verify currency before relying on any detail.
+</footer>
+<div class="overlay" id="overlay"></div>
+<aside class="slide" id="slide" role="dialog" aria-modal="true" aria-label="Member record"></aside>
+</file_text><script>
+'use strict';
+/* ================= seeded PRNG ================= */
+var SEED=803001; /* Columbia area code + 001, house convention */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);
+  t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+var rng=mulberry32(SEED);
+function ri(n){return Math.floor(rng()*n)}
+function pick(a){return a[ri(a.length)]}
+function chance(p){return rng()<p}
+
+/* ================= time model =================
+   Month index 0 = January 2014. NOW = June 2026 = 149. */
+var EPOCH_Y=2014, NOW=149;
+var MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+function mLabel(i){return MONTHS[((i%12)+12)%12]+' '+(EPOCH_Y+Math.floor(i/12))}
+function mYYYYMMDD(i,last){var y=EPOCH_Y+Math.floor(i/12),m=i%12+1,d=last?new Date(y,m,0).getDate():1;
+  return ''+y+String(m).padStart(2,'0')+String(d).padStart(2,'0')}
+var PRIME0=13;      /* Feb 2015 - Healthy Connections Prime: the nation's only 65-plus-only alignment demo */
+var PRIME_END=143;  /* Dec 2025 - the national sunset reaches it */
+var DSNP0=144;      /* Jan 2026 - D-SNP successors */
+var UNWIND=112;     /* May 2023 - first unwinding terminations */
+
+/* ================= coverage groups ================= */
+var GROUPS={
+ LIF:{name:'Low Income Families (parents)',color:'var(--g-cfc)',blurb:'Parents and caretakers \u2014 a category that exists only while there is a dependent child in the household. Register E\u2019s subject.'},
+ PHC:{name:'Partners for Healthy Children',color:'var(--g-mbw)',blurb:'South Carolina\u2019s children\u2019s coverage \u2014 CHIP folded inside, one program, one card.'},
+ PW:{name:'Pregnant women',color:'var(--g-hst)',blurb:'Pregnancy coverage with 12-month postpartum continuation.'},
+ TEF:{name:'TEFRA (Katie Beckett)',color:'var(--g-rise)',blurb:'Children with disabilities, eligible on their own \u2014 parental income deliberately ignored. Register D\u2019s subject.'},
+ ABD:{name:'Aged, Blind, or Disabled',color:'var(--g-abd)',blurb:'SSI-linked eligibility \u2014 and the income limit sits near 74% of poverty, which is why register F\u2019s door opens partway.'},
+ MSP:{name:'Medicare Savings Programs',color:'var(--g-v8)',blurb:'QMB and SLMB \u2014 partial-benefit duals: Medicaid pays Medicare\u2019s premiums and cost-sharing but issues no card. Register F\u2019s majority.'},
+ DUA:{name:'Dual \u2014 full benefit',color:'var(--g-dua)',blurb:'Full Medicare + Medicaid \u2014 Healthy Connections Prime territory until the sunset; D-SNPs since.'},
+ WVR:{name:'Community Long Term Care',color:'var(--g-wvr)',blurb:'South Carolina\u2019s HCBS waivers \u2014 home- and community-based long-term services.'}
+};
+/* ================= delivery systems ================= */
+var PLANS=[
+ {code:'ATC',name:'Absolute Total Care'},
+ {code:'BCH',name:'BlueChoice HealthPlan Medicaid'},
+ {code:'FCH',name:'First Choice by Select Health'},
+ {code:'HUM',name:'Humana Healthy Horizons in South Carolina'},
+ {code:'MOL',name:'Molina Healthcare of South Carolina'}
+];
+var DSNPS=['Absolute Total Care D-SNP','Humana D-SNP','Molina D-SNP','BlueCross D-SNP'];
+function planName(code){var p=PLANS.find(function(x){return x.code===code});return p?p.name:code}
+
+/* ================= geography & communities =================
+   Roster texture: the Lowcountry\u2019s Gullah Geechee Sea Islands \u2014 St. Helena, the Smallses
+   and Gadsons and Middletons; Columbia; the Pee Dee\u2019s rural Black Belt; Greenville and
+   Saluda County\u2019s Spanish-speaking Upstate; Rock Hill beside the Catawba Nation. */
+var COUNTIES=[
+ {name:'Richland',   city:'Columbia',      zip:'29203',ac:'803',w:16},
+ {name:'Charleston', city:'North Charleston',zip:'29405',ac:'843',w:12},
+ {name:'Beaufort',   city:'St. Helena Island',zip:'29920',ac:'843',w:8},
+ {name:'Greenville', city:'Greenville',    zip:'29605',ac:'864',w:12},
+ {name:'Spartanburg',city:'Spartanburg',   zip:'29306',ac:'864',w:9},
+ {name:'Florence',   city:'Florence',      zip:'29506',ac:'843',w:9},
+ {name:'Marion',     city:'Marion',        zip:'29571',ac:'843',w:7},
+ {name:'York',       city:'Rock Hill',     zip:'29730',ac:'803',w:9},
+ {name:'Saluda',     city:'Saluda',        zip:'29138',ac:'864',w:6},
+ {name:'Horry',      city:'Conway',        zip:'29526',ac:'843',w:8}
+];
+var CPOOL=[];COUNTIES.forEach(function(c){for(var i=0;i<c.w;i++)CPOOL.push(c)});
+var NAMES={
+ general:{f:['James','Mary','Robert','Patricia','John','Jennifer','Michael','Linda','David','Elizabeth','William','Barbara','Richard','Susan','Joseph','Jessica','Thomas','Sarah','Christopher','Karen','Daniel','Lisa','Matthew','Nancy','Anthony','Betty','Mark','Margaret','Donald','Sandra','Steven','Ashley','Paul','Kimberly','Andrew','Emily','Joshua','Donna','Kenneth','Michelle','Kevin','Carol','Brian','Amanda','Marcus','Keisha','Darnell','Latoya','Jamal','Tamika','Tyrone','Shanice'],
+  l:['Smith','Johnson','Williams','Brown','Jones','Miller','Davis','Wilson','Anderson','Taylor','Moore','Jackson','Martin','Lee','Thompson','White','Harris','Clark','Lewis','Walker','Hall','Young','Allen','King','Wright','Scott','Green','Baker','Adams','Nelson','Carter','Mitchell','Bellamy','Gregg','Lide','Godbold']},
+ gullah:{f:['Josephine','Samuel','Viola','Isaiah','Henrietta','Moses','Rosetta','Elijah','Beulah','Ezekiel','Corrie','Abraham','Queen','Solomon','Emmaline','Cuffee'],
+  l:['Smalls','Gadson','Middleton','Simmons','Pinckney','Jenkins','Fields','Grant','Greene','Rivers','Singleton','Brisbane','Chisolm','Fripp']},
+ latino:{f:['Jos\u00e9','Mar\u00eda','Juan','Guadalupe','Miguel','Rosa','Francisco','Carmen','Luis','Alejandra','Ram\u00f3n','Leticia','Jes\u00fas','Araceli'],
+  l:['Garc\u00eda','Hern\u00e1ndez','Mart\u00ednez','L\u00f3pez','Gonz\u00e1lez','P\u00e9rez','Ram\u00edrez','Torres','Flores','Reyes','Zavala','Salinas']},
+ catawba:{f:['George','Sallie','Samuel','Nola','Gilbert','Edith','Fred','Arzada','Landrum','Doris'],
+  l:['Blue','Harris','Sanders','Ayers','Canty','George','Beck','Gordon','Wade','Plyler']}
+};
+var STREETS=['Two Notch Rd','Farrow Rd','Rivers Ave','Sea Island Pkwy','Land\u2019s End Rd','White Horse Rd','Pine St','E Palmetto St','S Main St','Dave Lyle Blvd','US-378','Church St','Cherry Rd','Highway 501','Bluff Rd','Wade Hampton Blvd'];
+
+function namePoolFor(county){
+  if(county.name==='Beaufort')return['gullah',null,null];
+  if(county.name==='Charleston'){if(chance(.45))return['gullah',null,null];return['general',null,null]}
+  if(county.name==='Saluda'){if(chance(.55))return['latino','SPA','Spanish'];return['general',null,null]}
+  if(county.name==='Greenville'||county.name==='Spartanburg'){if(chance(.2))return['latino','SPA','Spanish'];return['general',null,null]}
+  if(county.name==='York'){if(chance(.15))return['catawba',null,null];return['general',null,null]}
+  return['general',null,null];
+}
+
+/* ================= registers ================= */
+var REGCOUNT={A:1500,B:500,C:250,D:250,E:350,F:150};
+
+/* ================= member generation ================= */
+var MEMBERS=[];
+function pad(n,w){return String(n).padStart(w,'0')}
+function newMedicaidId(i){ /* 10-digit Healthy Connections member ID, synthetic */
+  return pad(8030000000+i*2+ri(2),10)}
+function mkSpan(cat,b,e,notes,extra){var s={cat:cat,b:b,e:e,notes:notes||''};
+  if(extra)Object.keys(extra).forEach(function(k){s[k]=extra[k]});return s}
+function mcoFor(m){return PLANS[m._planIdx%PLANS.length].code}
+
+function genMember(i,reg){
+  var county=pick(CPOOL);
+  var np=namePoolFor(county), pool=NAMES[np[0]];
+  var m={
+    id:'M'+pad(i+1,4), mid:newMedicaidId(i), reg:reg,
+    first:pick(pool.f), last:pick(pool.l),
+    sex:chance(.52)?'F':'M',
+    county:county.name, city:county.city, zip:county.zip,
+    addr:(100+ri(8900))+' '+pick(STREETS),
+    phone:'('+county.ac+') 555-'+pad(ri(10000),4),
+    lang:np[1], langName:np[2],
+    _planIdx:ri(PLANS.length),
+    spans:[], dspans:[]
+  };
+  var b,e,g;
+  if(reg==='A'){
+    g=pick(['PHC','PHC','PHC','LIF','PW','ABD','WVR']);
+    b=60+ri(70); m.dob=dobFor(g);
+    m.spans.push(mkSpan(g,b,null,'Ongoing; renewal passed '+mLabel(NOW-ri(10))));
+    addDelivery(m,b,null,g);
+  }else if(reg==='B'){
+    g=pick(['PHC','LIF','PW','PHC']); m.dob=dobFor(g);
+    b=80+ri(28); var gap=1+ri(3), closed=UNWIND+ri(16);
+    m.spans.push(mkSpan(g,b,closed,'Terminated \u2014 procedural (annual review not completed)'));
+    m.spans.push(mkSpan(g,closed+gap+1,null,'Reapplied and approved; coverage restored after '+gap+'-month gap'));
+    m.gap=gap; m.closedAt=closed;
+    addDelivery(m,b,closed,g); addDelivery(m,closed+gap+1,null,g);
+  }else if(reg==='C'){
+    g=pick(['PHC','PW','LIF']); m.dob=dobFor(g);
+    var app=120+ri(26), retro=1+ri(3);
+    m.spans.push(mkSpan(g,app-retro,null,'Application '+mLabel(app)+'; granted '+retro+' retroactive month'+(retro>1?'s':''),{retro:true,app:app,retroN:retro}));
+    addDelivery(m,app,null,g);
+    m.ffsLead={b:app-retro,e:app-1};
+  }else if(reg==='D'){ /* TEFRA \u2014 the household the rules ignore */
+    g='TEF'; m.dob=dobKid();
+    b=70+ri(50);
+    m.spans.push(mkSpan(g,b,null,'TEFRA (Katie Beckett) \u2014 eligibility determined on the child alone; parental income deliberately disregarded',{tefra:true}));
+    addDelivery(m,b,null,g);
+    m.householdNote='Household income is well above every family limit \u2014 a sibling at the same address is not eligible. Same roof, two answers, both correct.';
+  }else if(reg==='E'){ /* the coverage borrowed from a child */
+    g='LIF'; m.dob=dobAdult();
+    b=40+ri(60);
+    var ended=chance(.6);
+    if(ended){
+      var endAt=b+18+ri(70); if(endAt>=NOW-1)endAt=NOW-2-ri(10); if(endAt<=b)endAt=b+12;
+      m.spans.push(mkSpan(g,b,endAt,'Terminated \u2014 youngest child turned 18. The parent category requires a dependent child; the trigger was someone else\u2019s birthday',{borrowed:true}));
+      addDelivery(m,b,endAt,g);
+      m.endedByChild=true; m.childBday=endAt;
+    }else{
+      m.spans.push(mkSpan(g,b,null,'Ongoing \u2014 while the youngest child remains a minor. The category is borrowed; the lease has a date',{borrowed:true}));
+      addDelivery(m,b,null,g);
+      m.endedByChild=false;
+    }
+  }else{ /* F: Medicare arrives \u2014 answer #37 */
+    var partial=chance(.55);
+    var t65=130+ri(19); m.t65=t65; m.dob=dob65();
+    if(partial){
+      var qmb=chance(.6);
+      m.msp=qmb?'QMB':'SLMB';
+      m.group='MSP';
+      m.spans.push(mkSpan('MSP',t65,null,(qmb?'QMB \u2014 Medicaid pays Medicare\u2019s premiums and cost-sharing':'SLMB \u2014 Medicaid pays the Part B premium only')+'; no Medicaid card follows. The door opened partway',{partial:true}));
+      /* deliberately: no delivery spans \u2014 an MSP is not a plan enrollment */
+      m.partial=true;
+      return m;
+    }else{
+      g=pick(['ABD','ABD','WVR']);
+      b=20+ri(60);
+      m.spans.push(mkSpan(g,b,t65-1,'Group closed at Medicare entitlement \u2014 redetermined, not terminated'));
+      m.spans.push(mkSpan('DUA',t65,null,'Full dual eligibility; Part B buy-in accreted '+mLabel(t65+1)));
+      addDelivery(m,b,t65-1,g);
+      if(t65<PRIME_END&&chance(.5)){
+        m.dspans.push({sys:'PRM',plan:'Healthy Connections Prime (demonstration)',b:t65,e:PRIME_END,
+          why:'The nation\u2019s only 65-plus-only alignment demonstration \u2014 in its final months'});
+        m.dspans.push({sys:'PRM',plan:DSNPS[m._planIdx%4],b:DSNP0,e:null,
+          why:'The national sunset \u2014 transitioned to the D-SNP successor'});
+      }else if(chance(.6)){
+        m.dspans.push({sys:'PRM',plan:DSNPS[m._planIdx%4],b:t65,e:null,
+          why:'D-SNP \u2014 the successor architecture the sunset left behind'});
+      }else{
+        m.dspans.push({sys:'FFS',plan:'Fee-for-service (dual)',b:t65,e:null,
+          why:'FFS Medicaid wrap around Medicare'});
+      }
+      m.group='DUA'; m.partial=false;
+      return m;
+    }
+  }
+  m.group=m.group||g;
+  return m;
+}
+function dobFor(g){return g==='PHC'?dobKid():g==='LIF'?dobAdult():g==='PW'?dobAdultYoung():g==='ABD'||g==='WVR'?dobOlder():dobAdult()}
+function dobKid(){return (2009+ri(15))+'-'+pad(1+ri(12),2)+'-'+pad(1+ri(28),2)}
+function dobAdultYoung(){return (1990+ri(15))+'-'+pad(1+ri(12),2)+'-'+pad(1+ri(28),2)}
+function dobAdult(){return (1975+ri(28))+'-'+pad(1+ri(12),2)+'-'+pad(1+ri(28),2)}
+function dobOlder(){return (1950+ri(25))+'-'+pad(1+ri(12),2)+'-'+pad(1+ri(28),2)}
+function dob65(){return (1959+ri(3))+'-'+pad(1+ri(12),2)+'-'+pad(1+ri(28),2)}
+
+function addDelivery(m,b,e,g){
+  b=Math.max(b,0);
+  if((g==='ABD'||g==='WVR')&&chance(.35)){m.dspans.push({sys:'FFS',plan:'Fee-for-service',b:b,e:e,why:'Non-MAGI FFS \u2014 outside managed care'});return}
+  var code=mcoFor(m);
+  m.dspans.push({sys:'MCO',plan:planName(code),b:b,e:e,
+    why:'Healthy Connections Choices enrollment \u2014 five statewide plans'});
+}
+
+/* build the population */
+(function(){
+  var i=0;
+  ['A','B','C','D','E','F'].forEach(function(reg){
+    for(var k=0;k<REGCOUNT[reg];k++){MEMBERS.push(genMember(i,reg));i++}
+  });
+})();
+/* derived tables */
+var SPANS=[],DSPANS=[];
+MEMBERS.forEach(function(m){
+  m.spans.forEach(function(s){SPANS.push({m:m,s:s})});
+  m.dspans.forEach(function(d){DSPANS.push({m:m,d:d})});
+});
+function eligNow(m){return m.spans.some(function(s){return s.b<=NOW&&(s.e===null||s.e>=NOW)})}
+function inGapNow(m){return !eligNow(m)&&m.spans.length>1}
+function sysNow(m){var d=m.dspans.filter(function(x){return x.b<=NOW&&(x.e===null||x.e>=NOW)});return d}
+</script>
+<script>
+'use strict';
+/* ================= tab framework ================= */
+var TABS=[
+ {id:'overview',label:'Overview'},
+ {id:'members',label:'Members'},
+ {id:'spans',label:'Eligibility Spans'},
+ {id:'delivery',label:'MCO Enrollment'},
+ {id:'registers',label:'Scenario Registers'},
+ {id:'file',label:'What the File Says'},
+ {id:'reference',label:'Reference'}
+];
+var activeTab='overview';
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function renderTabs(){
+  var n=document.getElementById('tabs');n.innerHTML='';
+  TABS.forEach(function(t){
+    var b=document.createElement('button');b.textContent=t.label;b.setAttribute('role','tab');
+    if(t.id===activeTab)b.className='active';
+    b.onclick=function(){activeTab=t.id;renderTabs();renderMain()};n.appendChild(b)});
+}
+function renderMain(){
+  var el=document.getElementById('main');
+  ({overview:rOverview,members:rMembers,spans:rSpans,delivery:rDelivery,
+    registers:rRegisters,file:rFile,reference:rReference})[activeTab](el);
+  window.scrollTo(0,0);
+}
+function pillFor(g){return '<span class="pill" style="background:'+GROUPS[g].color+'">'+g+'</span>'}
+function sortable(rows,cols,state,onchange){
+  /* returns thead html + attaches click sort via delegation key */
+  return cols.map(function(c,i){
+    var arr=state.col===i?(state.dir>0?' <span class="arr">\u25B2</span>':' <span class="arr">\u25BC</span>'):'';
+    return '<th data-si="'+i+'"'+(c.nosort?' class="nosort"':'')+'>'+c.h+arr+'</th>'}).join('');
+}
+function bindSort(theadEl,state,rerender){
+  theadEl.querySelectorAll('th[data-si]').forEach(function(th){
+    if(th.classList.contains('nosort'))return;
+    th.onclick=function(){var i=+th.dataset.si;
+      if(state.col===i)state.dir=-state.dir;else{state.col=i;state.dir=1}
+      state.page=0;rerender()}});
+}
+
+/* ================= Overview ================= */
+function rOverview(el){
+  var elig=0,mco=0,duals=0,gap=0,partial=0,tefra=0,borrowed=0;
+  MEMBERS.forEach(function(m){
+    if(eligNow(m))elig++; else if(inGapNow(m))gap++;
+    if(m.group==='DUA')duals++;
+    if(m.reg==='F'&&m.partial)partial++;
+    if(m.reg==='D')tefra++;
+    if(m.reg==='E'&&m.endedByChild)borrowed++;
+    sysNow(m).forEach(function(d){if(d.sys==='MCO')mco++});
+  });
+  var h='<div class="grid stats">'+
+    stat(MEMBERS.length.toLocaleString(),'members in population')+
+    stat(elig.toLocaleString(),'eligible today')+
+    stat(mco.toLocaleString(),'in a Healthy Connections plan today')+
+    stat(tefra.toLocaleString(),'TEFRA \u2014 households of one')+
+    stat(borrowed.toLocaleString(),'ended by someone else\u2019s birthday')+
+    stat(partial.toLocaleString(),'partial duals (QMB / SLMB)')+
+    stat(duals.toLocaleString(),'full duals')+
+    stat(gap.toLocaleString(),'in a churn gap')+
+    '</div>';
+  h+='<div class="plain">South Carolina\u2019s registers keep asking whose event the record belongs to: a child eligible '+
+   'because the rules ignore her household, parents terminated by a birthday in a different row, and \u2014 answer #37 \u2014 '+
+   'a Medicare register where most arrivals land not in Medicaid but on the premium ladder above it, their enrollment '+
+   'riding the state buy-in file instead of an 834. The door opens at 65 here too. Partway. Everything is synthetic and '+
+   'seeded: reload it anywhere and you get exactly these people, exactly these dates.</div>';
+  h+='<div class="card"><h3>Coverage groups in this population</h3><div class="tblwrap"><table><tbody>';
+  Object.keys(GROUPS).forEach(function(g){
+    var n=MEMBERS.filter(function(m){return m.group===g}).length;
+    h+='<tr><td>'+pillFor(g)+'</td><td><b>'+esc(GROUPS[g].name)+'</b></td><td>'+GROUPS[g].blurb+'</td><td class="mono" style="text-align:right">'+n.toLocaleString()+'</td></tr>'});
+  h+='</tbody></table></div></div>';
+  h+='<div class="card"><h3>The plans</h3><div class="tblwrap"><table><thead><tr><th class="nosort">Plan / entity</th><th class="nosort">Note</th></tr></thead><tbody>'+
+   PLANS.map(function(p){return '<tr><td><b>'+esc(p.name)+'</b></td><td>Healthy Connections Choices MCO \u2014 statewide</td></tr>'}).join('')+
+   '<tr><td><b>Healthy Connections Prime</b> <span class="pill outline">sunset</span></td><td>The nation\u2019s only 65-plus-only alignment demonstration, 2015\u20132025 \u2014 full duals only; register F\u2019s partial majority watched from the hallway</td></tr>'+
+   '<tr><td><b>The buy-in exchange</b> <span class="pill" style="background:var(--g-v8)">not a plan</span></td><td>The fixed-width file to CMS that pays Medicare premiums for QMB and SLMB members \u2014 rendered in the file viewer, because it is those members\u2019 honest file</td></tr>'+
+   '</tbody></table></div></div>';
+  el.innerHTML=h;
+  function stat(n,l){return '<div class="stat"><div class="n">'+n+'</div><div class="l">'+l+'</div></div>'}
+}
+
+/* ================= Members ================= */
+var mState={q:'',grp:'',reg:'',st:'',page:0,col:0,dir:1};
+function memberRows(){
+  var q=mState.q.toLowerCase();
+  var rows=MEMBERS.filter(function(m){
+    if(mState.grp&&m.group!==mState.grp)return false;
+    if(mState.reg&&m.reg!==mState.reg)return false;
+    if(mState.st){var s=eligNow(m)?'A':(inGapNow(m)?'G':'C');if(s!==mState.st)return false}
+    if(q){var hay=(m.first+' '+m.last+' '+m.mid+' '+m.city+' '+m.county).toLowerCase();
+      if(hay.indexOf(q)<0)return false}
+    return true});
+  var key=[function(m){return m.last+m.first},function(m){return m.mid},function(m){return m.group},
+           function(m){return m.county},function(m){return m.reg},function(m){return eligNow(m)?0:inGapNow(m)?1:2}][mState.col];
+  rows.sort(function(a,b){var x=key(a),y=key(b);return (x<y?-1:x>y?1:0)*mState.dir});
+  return rows;
+}
+function rMembers(el){
+  var rows=memberRows(), per=50, pages=Math.max(1,Math.ceil(rows.length/per));
+  mState.page=Math.min(mState.page,pages-1);
+  var slice=rows.slice(mState.page*per,mState.page*per+per);
+  var h='<div class="plain small">Every column sorts; search covers name, Medicaid ID, city, and county. Click any row for the member record \u2014 the \u25C0 \u25B6 arrows there walk this exact filtered order.</div>';
+  h+='<div class="controls">'+
+   '<input type="search" id="mq" placeholder="Search 3,000 members\u2026" value="'+esc(mState.q)+'">'+
+   sel('mgrp','All coverage groups',Object.keys(GROUPS).map(function(g){return[g,GROUPS[g].name]}),mState.grp)+
+   sel('mreg','All registers',['A','B','C','D','E','F'].map(function(r){return[r,'Register '+r]}),mState.reg)+
+   sel('mst','Any status',[['A','Active'],['G','In gap'],['C','Closed']],mState.st)+
+   '</div>';
+  var cols=[{h:'Member'},{h:'Medicaid ID'},{h:'Group'},{h:'County'},{h:'Reg'},{h:'Status'}];
+  h+='<div class="card"><div class="tblwrap"><table><thead id="mth"><tr>'+sortable(rows,cols,mState)+'</tr></thead><tbody>';
+  slice.forEach(function(m){
+    var st=eligNow(m)?'<span class="pill" style="background:var(--ok)">Active</span>':
+      inGapNow(m)?'<span class="pill" style="background:var(--warn)">In gap</span>':
+      '<span class="pill outline">Closed</span>';
+    h+='<tr class="rowbtn" data-mid="'+m.id+'"><td><b>'+esc(m.last)+', '+esc(m.first)+'</b><br><span class="sub">'+esc(m.city)+'</span></td>'+
+      '<td class="mono">'+m.mid+'</td><td>'+pillFor(m.group)+'</td><td>'+esc(m.county)+'</td>'+
+      '<td class="mono">'+m.reg+'</td><td>'+st+'</td></tr>'});
+  h+='</tbody></table></div>'+pager(rows.length,per,mState)+'</div>';
+  el.innerHTML=h;
+  bindSort(document.getElementById('mth'),mState,function(){rMembers(el)});
+  document.getElementById('mq').oninput=function(){mState.q=this.value;mState.page=0;
+    var y=this.selectionStart;rMembers(el);var q=document.getElementById('mq');q.focus();q.setSelectionRange(y,y)};
+  ['mgrp','mreg','mst'].forEach(function(id,ix){document.getElementById(id).onchange=function(){
+    mState[['grp','reg','st'][ix]]=this.value;mState.page=0;rMembers(el)}});
+  bindPager(el,mState,function(){rMembers(el)});
+  bindRows(el,rows.map(function(m){return{m:m}}),'roster');
+}
+function sel(id,none,opts,cur){return '<select id="'+id+'"><option value="">'+none+'</option>'+
+  opts.map(function(o){return '<option value="'+o[0]+'"'+(cur===o[0]?' selected':'')+'>'+esc(o[1])+'</option>'}).join('')+'</select>'}
+function pager(total,per,state){
+  var a=state.page*per+1,b=Math.min(total,a+per-1);
+  if(!total)return '<p class="sub" style="margin-top:10px">No rows match \u2014 clear a filter to widen the view.</p>';
+  return '<div class="pager"><button data-pg="-1"'+(state.page===0?' disabled':'')+'>\u25C0 Prev</button>'+
+   '<span>showing '+a.toLocaleString()+'\u2013'+b.toLocaleString()+' of '+total.toLocaleString()+' matching (population '+MEMBERS.length.toLocaleString()+')</span>'+
+   '<button data-pg="1"'+(b>=total?' disabled':'')+'>Next \u25B6</button></div>'}
+function bindPager(el,state,rerender){el.querySelectorAll('[data-pg]').forEach(function(b){
+  b.onclick=function(){state.page+=+b.dataset.pg;rerender()}})}
+function bindRows(el,navList,ctx){el.querySelectorAll('tr[data-mid]').forEach(function(tr){
+  tr.onclick=function(){openMember(tr.dataset.mid,navList.map(function(x){return x.m.id}),ctx)}})}
+
+/* ================= Eligibility Spans ================= */
+var sState={grp:'',open:'',page:0,col:1,dir:1};
+function rSpans(el){
+  var rows=SPANS.filter(function(r){
+    if(sState.grp&&r.s.cat!==sState.grp)return false;
+    if(sState.open==='O'&&r.s.e!==null)return false;
+    if(sState.open==='C'&&r.s.e===null)return false;return true});
+  var key=[function(r){return r.m.last+r.m.first},function(r){return r.s.b},
+    function(r){return r.s.e===null?9999:r.s.e},function(r){return (r.s.e===null?NOW:r.s.e)-r.s.b},
+    function(r){return r.s.cat}][sState.col];
+  rows.sort(function(a,b){var x=key(a),y=key(b);return (x<y?-1:x>y?1:0)*sState.dir});
+  var per=50,pages=Math.max(1,Math.ceil(rows.length/per));sState.page=Math.min(sState.page,pages-1);
+  var slice=rows.slice(sState.page*per,sState.page*per+per);
+  var h='<div class="plain small">'+SPANS.length.toLocaleString()+' eligibility spans across the population \u2014 each row one continuous stretch in one coverage group. The end-reason column is where the registers live: procedural closures, Medicare redeterminations, retro grants whose begin dates precede their applications.</div>';
+  h+='<div class="controls">'+sel('sgrp','All coverage groups',Object.keys(GROUPS).map(function(g){return[g,GROUPS[g].name]}),sState.grp)+
+    sel('sopen','Open + closed',[['O','Open only'],['C','Closed only']],sState.open)+'</div>';
+  var cols=[{h:'Member'},{h:'Begin'},{h:'End'},{h:'Months'},{h:'Group'},{h:'Note',nosort:true}];
+  h+='<div class="card"><div class="tblwrap"><table><thead id="sth"><tr>'+sortable(rows,cols,sState)+'</tr></thead><tbody>';
+  slice.forEach(function(r){
+    h+='<tr class="rowbtn" data-mid="'+r.m.id+'"><td><b>'+esc(r.m.last)+', '+esc(r.m.first)+'</b></td>'+
+     '<td class="mono">'+mLabel(r.s.b)+'</td><td class="mono">'+(r.s.e===null?'\u2014 open \u2014':mLabel(r.s.e))+'</td>'+
+     '<td class="mono">'+((r.s.e===null?NOW:r.s.e)-r.s.b+1)+'</td><td>'+pillFor(r.s.cat)+'</td>'+
+     '<td style="max-width:340px">'+esc(r.s.notes)+'</td></tr>'});
+  h+='</tbody></table></div>'+pager(rows.length,per,sState)+'</div>';
+  el.innerHTML=h;
+  bindSort(document.getElementById('sth'),sState,function(){rSpans(el)});
+  ['sgrp','sopen'].forEach(function(id,ix){document.getElementById(id).onchange=function(){
+    sState[['grp','open'][ix]]=this.value;sState.page=0;rSpans(el)}});
+  bindPager(el,sState,function(){rSpans(el)});
+  bindRows(el,dedupeByMember(rows),'spans');
+}
+function dedupeByMember(rows){var seen={},out=[];rows.forEach(function(r){if(!seen[r.m.id]){seen[r.m.id]=1;out.push(r)}});return out}
+
+/* ================= Next Gen Enrollment (delivery spans) ================= */
+var dState={sys:'',plan:'',page:0,col:1,dir:1};
+function rDelivery(el){
+  var plans={};DSPANS.forEach(function(r){plans[r.d.plan]=1});
+  var rows=DSPANS.filter(function(r){
+    if(dState.sys&&r.d.sys!==dState.sys)return false;
+    if(dState.plan&&r.d.plan!==dState.plan)return false;return true});
+  var key=[function(r){return r.m.last+r.m.first},function(r){return r.d.b},
+    function(r){return r.d.e===null?9999:r.d.e},function(r){return r.d.plan},function(r){return r.d.sys}][dState.col];
+  rows.sort(function(a,b){var x=key(a),y=key(b);return (x<y?-1:x>y?1:0)*dState.dir});
+  var per=50,pages=Math.max(1,Math.ceil(rows.length/per));dState.page=Math.min(dState.page,pages-1);
+  var slice=rows.slice(dState.page*per,dState.page*per+per);
+  var h='<div class="plain small">The second clock, as a first-class table: '+DSPANS.length.toLocaleString()+' delivery spans \u2014 who carries the member, distinct from whether they are eligible. Register F\u2019s partial duals appear nowhere below: an MSP is a payment arrangement, not a plan enrollment, so the majority of that register has no row in this table at all \u2014 their record lives on the buy-in exchange, and the absence here is accurate.</div>';
+  h+='<div class="controls">'+
+    sel('dsys','All systems',[['MCO','Healthy Connections MCO'],['PRM','Prime / D-SNP'],['FFS','Fee-for-service']],dState.sys)+
+    sel('dplan','All plans',Object.keys(plans).sort().map(function(p){return[p,p]}),dState.plan)+'</div>';
+  var cols=[{h:'Member'},{h:'Begin'},{h:'End'},{h:'Plan'},{h:'System'},{h:'Why',nosort:true}];
+  h+='<div class="card"><div class="tblwrap"><table><thead id="dth"><tr>'+sortable(rows,cols,dState)+'</tr></thead><tbody>';
+  slice.forEach(function(r){
+    var sysPill={MCO:'var(--g-cfc)',PRM:'var(--g-dua)',FFS:'var(--g-ffs)'}[r.d.sys];
+    h+='<tr class="rowbtn" data-mid="'+r.m.id+'"><td><b>'+esc(r.m.last)+', '+esc(r.m.first)+'</b></td>'+
+     '<td class="mono">'+mLabel(r.d.b)+'</td><td class="mono">'+(r.d.e===null?'\u2014 open \u2014':mLabel(r.d.e))+'</td>'+
+     '<td>'+esc(r.d.plan)+'</td><td><span class="pill" style="background:'+sysPill+'">'+r.d.sys+'</span></td>'+
+     '<td style="max-width:330px">'+esc(r.d.why)+'</td></tr>'});
+  h+='</tbody></table></div>'+pager(rows.length,per,dState)+'</div>';
+  el.innerHTML=h;
+  bindSort(document.getElementById('dth'),dState,function(){rDelivery(el)});
+  ['dsys','dplan'].forEach(function(id,ix){document.getElementById(id).onchange=function(){
+    dState[['sys','plan'][ix]]=this.value;dState.page=0;rDelivery(el)}});
+  bindPager(el,dState,function(){rDelivery(el)});
+  bindRows(el,dedupeByMember(rows),'delivery');
+}
+</script>
+<script>
+'use strict';
+/* ================= scenario registers ================= */
+var REGDEFS={
+ A:{title:'Steady state \u2014 Healthy Connections',
+    q:'What does South Carolina managed care look like at rest?',
+    body:`1,500 members simply covered: five statewide plans under Healthy Connections Choices, Partners for Healthy Children carrying the kids with CHIP folded inside, and the Lowcountry\u2019s Sea Island rosters carrying the Gullah Geechee surnames \u2014 the Smallses and Gadsons of St. Helena \u2014 that this population wears with intention. In York County, some rosters sit beside the Catawba Nation, South Carolina\u2019s only federally recognized tribe. A non-expansion state\u2019s steady state is quieter than most, because an entire adult category that hums in thirty-nine other states simply is not here.`},
+ B:{title:'Churn \u2014 the annual review',
+    q:'What does unwinding-era churn look like in a span table?',
+    body:`500 members closed procedurally at annual review, sat uncovered one to three months, reapplied, and returned. In a non-expansion state the stakes tilt: a parent who slips out of the family category has nowhere else to land, so a procedural gap here is closer to the edge than the same gap in an expansion state. Every reopened span is a new span, not a correction: the gap stays in the history because it happened.`},
+ C:{title:'Retroactive grant \u2014 the begin date that precedes the application',
+    q:'How does a span honestly show coverage that was granted backwards?',
+    body:`250 members applied and received up to three retroactive months. The eligibility span begins before the application date; the plan enrollment does not \u2014 retro months run fee-for-service because you cannot retroactively capitate. In the 834, this is the DTP*356 versus DTP*348 gap: member-level eligibility opens earlier than the health-coverage loop. Two dates, both true, doing different jobs.`},
+ D:{title:'TEFRA \u2014 the household the rules ignore',
+    q:'Can two children under one roof correctly get two different answers?',
+    body:`250 children eligible through TEFRA \u2014 the Katie Beckett pathway \u2014 where a child with significant disabilities is assessed <b>as a household of one</b>: parental income, which would disqualify the family ten times over, is deliberately disregarded. The data lesson is scope: MAGI eligibility is a household computation; TEFRA is an individual one; and both can be true at the same address on the same day. A sibling in the same house, same income, same roof, is not eligible \u2014 and no reconciliation should \u201cfix\u201d that discrepancy, because it is not one. Eligibility logic that assumes one answer per household just failed this register.`},
+ E:{title:'The coverage borrowed from a child',
+    q:'Whose event terminates a parent\u2019s span?',
+    body:`350 parents covered under Low Income Families \u2014 a category that exists only while a dependent child does. When the youngest child turns 18, the parent\u2019s eligibility ends: <b>the termination trigger is someone else\u2019s birthday.</b> In an expansion state, that parent would slide into the adult group; here there is nowhere to land, and the closed spans in this register end at a date that belongs to another person entirely. Cross-member causality is the lesson: a data model that stores termination reasons only as facts about the member cannot represent this honestly \u2014 the reason lives in a different row. The open spans in this register are the same story on a countdown.`},
+ F:{title:'Medicare arrives \u2014 the door that opens partway',
+    q:'What happens to these 150 members the month they turn 65?',
+    body:`Answer #37 in the series, and it splits a word every prior answer used whole. Georgia\u2019s answer #33 found the door that opens at 65; South Carolina asks <b>how far.</b> The aged category here is SSI-linked, its income limit near 74% of poverty \u2014 so most gap adults arriving at 65 clear not the Medicaid threshold but the Medicare Savings Program ladder above it: QMB to 100% of poverty, SLMB to 120%. What they receive is real and life-changing \u2014 Medicaid pays Medicare\u2019s premiums and, for QMB, its cost-sharing \u2014 but it is <b>payment, not coverage</b>: no card, no plan, no 834. Their enrollment travels a different file entirely \u2014 the state buy-in exchange with CMS, a fixed-width batch format older than X12 itself \u2014 and the file viewer here renders it, because answers #30\u2013#32\u2019s entire commencement story applied only to full duals. South Carolina even ran the nation\u2019s only 65-plus-only alignment demonstration, and the partial duals watched it from the hallway. The door opens at 65 here too. Partway.`}
+};
+function rRegisters(el){
+  var h='<div class="plain">Six planted business questions \u2014 the registers are the population\u2019s table of contents. Each shows a 12-member sample; open any row and the \u25C0 \u25B6 arrows walk the <i>entire</i> register in order. For the complete list, filter the Members tab by register.</div>';
+  ['A','B','C','D','E','F'].forEach(function(r){
+    var d=REGDEFS[r], members=MEMBERS.filter(function(m){return m.reg===r});
+    h+='<div class="regcard"><div class="q"><span class="regletter">'+r+'</span>'+esc(d.title)+
+      (r==='F'?'<span class="answerno">answer #37</span>':'')+
+      ' <span class="sub" style="font-weight:400">\u2014 '+members.length.toLocaleString()+' members</span></div>'+
+      '<p class="body" style="margin-bottom:6px"><b>'+esc(d.q)+'</b></p>'+
+      '<p class="body">'+d.body+'</p>'+
+      '<div class="tblwrap" style="margin-top:12px"><table><thead><tr><th class="nosort">Member</th><th class="nosort">Group</th><th class="nosort">County</th><th class="nosort">Story in one line</th></tr></thead><tbody>';
+    members.slice(0,12).forEach(function(m){
+      h+='<tr class="rowbtn" data-mid="'+m.id+'" data-reg="'+r+'"><td><b>'+esc(m.last)+', '+esc(m.first)+'</b></td>'+
+        '<td>'+pillFor(m.group)+'</td><td>'+esc(m.county)+'</td><td>'+esc(oneLiner(m))+'</td></tr>'});
+    h+='</tbody></table></div></div>';
+  });
+  el.innerHTML=h;
+  el.querySelectorAll('tr[data-mid]').forEach(function(tr){
+    tr.onclick=function(){var r=tr.dataset.reg;
+      openMember(tr.dataset.mid,MEMBERS.filter(function(m){return m.reg===r}).map(function(m){return m.id}),'register')}});
+}
+function oneLiner(m){
+  switch(m.reg){
+   case 'A':return 'Covered since '+mLabel(m.spans[0].b)+', no story \u2014 which is the story.';
+   case 'B':return 'Closed '+mLabel(m.closedAt)+' for paperwork; back after '+m.gap+' month'+(m.gap>1?'s':'')+'.';
+   case 'C':return 'Applied '+mLabel(m.spans[0].app)+'; coverage reaches back to '+mLabel(m.spans[0].b)+'.';
+   case 'D':return 'Eligible alone since '+mLabel(m.spans[0].b)+' \u2014 the household never asked.';
+   case 'E':return m.endedByChild?'Ended '+mLabel(m.childBday)+' \u2014 someone else\u2019s birthday.':'Open \u2014 borrowed while the youngest is a minor.';
+   default:return m.partial?(m.msp+' at 65 \u2014 payment, not coverage; the door opened partway.'):'Full dual at 65 \u2014 through Prime\u2019s old door.'}
+}
+
+/* ================= What the File Says (annotated 834 / buy-in) ================= */
+var fileSel=null;
+function rFile(el){
+  if(!fileSel)fileSel=MEMBERS.filter(function(m){return m.reg==='F'&&m.partial})[0].id;
+  var opts='';['A','B','C','D','E','F'].forEach(function(r){
+    opts+='<optgroup label="Register '+r+' \u2014 '+esc(REGDEFS[r].title)+'">'+
+     MEMBERS.filter(function(m){return m.reg===r}).slice(0,40).map(function(m){
+       return '<option value="'+m.id+'"'+(m.id===fileSel?' selected':'')+'>'+esc(m.last)+', '+esc(m.first)+' \u2014 '+m.mid+'</option>'}).join('')+'</optgroup>'});
+  var m=MEMBERS.find(function(x){return x.id===fileSel});
+  var h='<div class="plain small">Pick a member and the app builds their most recent enrollment file with every field explained. For most members that is an X12N 834. For register F\u2019s partial duals it is honestly something else: <b>the state buy-in file</b> \u2014 the fixed-width exchange with CMS through which Medicaid pays Medicare\u2019s premiums \u2014 rendered here in an illustrative layout, because an MSP enrollment never rides an 834 at all.</div>'+
+   '<div class="controls"><select id="fsel" style="max-width:480px">'+opts+'</select></div>'+
+   '<div class="card"><div class="x12">'+build834(m).map(function(row){
+     return '<div class="seg'+(row.loop?' loop':'')+'">'+esc(row.seg)+'</div>'+
+            '<div class="exp'+(row.loop?' loop':'')+(row.teach?' teach':'')+'">'+row.exp+'</div>'}).join('')+
+   '</div></div>';
+  el.innerHTML=h;
+  document.getElementById('fsel').onchange=function(){fileSel=this.value;rFile(el)};
+}
+function build834(m){
+  var rows=[];
+  function seg(s,e,o){rows.push({seg:s,exp:e,loop:o&&o.loop,teach:o&&o.teach})}
+  if(m.reg==='F'&&m.partial){
+    /* the state buy-in record \u2014 illustrative fixed-width layout */
+    seg('STATE BUY-IN EXCHANGE \u2014 accretion record','<b>This member\u2019s file is not an 834.</b> MSP enrollment travels the state buy-in data exchange with CMS \u2014 a fixed-width batch format that predates X12, still doing quiet essential work. Layout below is illustrative and simplified.',{loop:true,teach:true});
+    seg('AGENCY-CODE      (pos 001-005): 42SCX','The state agency identifier \u2014 South Carolina\u2019s buy-in account with CMS.');
+    seg('MBI              (pos 006-016): '+m.id.slice(1)+'A23BC45','The Medicare Beneficiary Identifier \u2014 the record\u2019s key on the federal side. Synthetic here.');
+    seg('MEMBER-ID        (pos 017-026): '+m.mid,'The state\u2019s member ID \u2014 the key on the Medicaid side. Two systems, two natural keys, one person: the crosswalk is the work.');
+    seg('TRANS-CODE       (pos 027-028): 61','Accretion \u2014 the buy-in vocabulary\u2019s word for \u201cadd.\u201d Deletions are \u201cdeletions\u201d; the 834\u2019s 021/024 pair has older cousins.',{teach:true});
+    seg('BUY-IN-CODE      (pos 029-029): B','Part B \u2014 the premium Medicaid now pays on this member\u2019s behalf'+(m.msp==='QMB'?', with Part A cost-sharing protection riding on the QMB status':'')+'.');
+    seg('ELIG-CODE        (pos 030-031): '+(m.msp==='QMB'?'P \u2014 QMB':'L \u2014 SLMB'),'The MSP rung: '+(m.msp==='QMB'?'QMB \u2014 premiums and cost-sharing; providers may not balance-bill':'SLMB \u2014 Part B premium only')+'. The ladder is the whole benefit.',{teach:true});
+    seg('START-DATE       (pos 032-037): '+mYYYYMMDD(m.t65).slice(0,6),'Buy-in effective month \u2014 '+mLabel(m.t65)+', the month Medicare arrived. The first and only \u201cspan\u201d this member has.');
+    seg('THE LESSON','No HD loop, no plan, no card \u2014 <b>payment, not coverage.</b> Answer #37: the commencement answers (#30\u2013#32) were a story about full duals; the partial duals\u2019 story is this record \u2014 a premium quietly paid, on a file format older than the standards that carry everyone else. The door opened at 65. Partway.',{loop:true,teach:true});
+    return rows;
+  }
+  var evt={A:'021',B:'021',C:'021',D:'021',E:m.endedByChild?'024':'021',F:'024'}[m.reg];
+  seg('ISA*00*          *00*          *ZZ*SCDHHSSENDER   *ZZ*PLANRCVR       *260601*0800*^*00501*000080300*0*P*:~',
+    'Interchange envelope \u2014 sender is the state, receiver is the plan. Synthetic control number.');
+  seg('GS*BE*SCDHHSSENDER*PLANRCVR*20260601*0800*803*X*005010X220A1~','Functional group: BE = benefit enrollment, the 834\u2019s family name.');
+  seg('ST*834*0001*005010X220A1~','Transaction set header.');
+  seg('BGN*00*'+m.id+'FILE*20260601*0800****4~','Original transaction (BGN01=00), reference keyed to the member for this demo.');
+  seg('INS*Y*18*'+evt+'*XN*A***FT~','Loop 2000 \u2014 member level. INS03='+evt+' ('+({'021':'addition','024':'termination'})[evt]+'): '+insStory(m),{loop:true});
+  seg('REF*0F*'+m.mid+'~','Subscriber identifier \u2014 the ten-digit Healthy Connections member ID.');
+  seg('REF*3H*'+m.reg+m.id.slice(1)+'~','Case/agency reference \u2014 synthetic, keyed to the register.');
+  if(m.reg==='C'){
+    seg('DTP*356*D8*'+mYYYYMMDD(m.spans[0].b)+'~','Member-level eligibility begin \u2014 <b>the retroactive date</b>: '+mLabel(m.spans[0].b)+'.',{teach:true});
+  }else{
+    seg('DTP*356*D8*'+mYYYYMMDD(m.spans[m.spans.length-1].b)+'~','Member-level eligibility begin: '+mLabel(m.spans[m.spans.length-1].b)+'.');
+  }
+  if(m.reg==='F'&&!m.partial)seg('DTP*357*D8*'+mYYYYMMDD(m.t65-1,true)+'~','Member-level eligibility end for the <i>pre-Medicare group</i> \u2014 the category closed; the person\u2019s Medicaid did not.',{teach:true});
+  if(m.reg==='E'&&m.endedByChild)seg('DTP*357*D8*'+mYYYYMMDD(m.childBday,true)+'~','Eligibility end \u2014 <b>this date belongs to another person.</b> It is the youngest child\u2019s eighteenth birthday month, and the parent category cannot outlive it. The reason for this termination lives in a different row of the household.',{teach:true});
+  seg('NM1*IL*1*'+m.last.toUpperCase()+'*'+m.first.toUpperCase()+'~','Member name.');
+  seg('PER*IP**TE*'+m.phone.replace(/\D/g,'')+'~','Contact telephone.');
+  seg('N3*'+m.addr.toUpperCase()+'~','Street address \u2014 '+esc(m.city)+' texture from the seeded roster.'+(m.reg==='D'?' The household at this address is over every family income limit; read the reporting category below for why that does not matter.':''));
+  seg('N4*'+m.city.toUpperCase()+'*SC*'+m.zip+'~','City / state / ZIP.');
+  seg('DMG*D8*'+m.dob.replace(/-/g,'')+'*'+m.sex+'~','Demographics: date of birth and sex.');
+  if(m.lang)seg('LUI*LE*'+m.lang+'**7~','Preferred language: '+m.langName+' \u2014 Saluda County and the Upstate\u2019s Spanish-speaking communities, in the file where the interpreter line begins.');
+  /* health coverage loops */
+  var openD=m.dspans.filter(function(d){return d.e===null});
+  var mainD=openD[0]||m.dspans[m.dspans.length-1];
+  if(m.reg==='F'){
+    var closed=m.dspans.find(function(d){return d.e===m.t65-1})||m.dspans[0];
+    seg('HD*024**HLT*'+esc(closed.plan.toUpperCase())+'~','Loop 2300 \u2014 the pre-Medicare coverage <b>terminates</b> at entitlement\u2026',{loop:true,teach:true});
+    seg('DTP*349*D8*'+mYYYYMMDD(m.t65-1,true)+'~','\u2026coverage-end '+mLabel(m.t65-1)+'.');
+    var next=m.dspans.find(function(d){return d.e===null});
+    seg('HD*021**HLT*'+esc(next.plan.toUpperCase())+'~','\u2026and the successor opens in the same file: '+esc(next.why)+'. Answer #37\u2019s full-benefit minority \u2014 the door that opens the whole way.',{loop:true,teach:true});
+    seg('DTP*348*D8*'+mYYYYMMDD(m.t65)+'~','Successor coverage begins '+mLabel(m.t65)+' \u2014 zero-day gap.');
+    seg('COB*P*'+m.mid+'*1~','Coordination of benefits: Medicare primary; Medicaid wraps.');
+  }else{
+    seg('HD*'+evt+'**HLT*'+esc((mainD?mainD.plan:'FEE-FOR-SERVICE').toUpperCase())+'~','Loop 2300 \u2014 health coverage: the delivery span, distinct from eligibility.',{loop:true});
+    var covB=m.reg==='C'?m.spans[0].app:Math.max(m.spans[m.spans.length-1].b,0);
+    if(m.reg==='C'){
+      seg('DTP*348*D8*'+mYYYYMMDD(covB)+'~','Coverage-level begin \u2014 <b>the application month</b>, '+mLabel(covB)+'. The '+m.spans[0].retroN+'-month gap back to DTP*356 is the retro grant: eligibility reaches back; capitation does not.',{teach:true});
+    }else{
+      seg('DTP*348*D8*'+mYYYYMMDD(covB)+'~','Coverage begin '+mLabel(covB)+'.');
+    }
+    if(m.reg==='E'&&m.endedByChild)seg('DTP*349*D8*'+mYYYYMMDD(m.childBday,true)+'~','Coverage end \u2014 same borrowed date as the eligibility end above. When the category is borrowed, both clocks stop on the lender\u2019s schedule.',{teach:true});
+  }
+  if(m.reg==='D'){
+    seg('REF*CE*TEF~','Reporting category \u2014 <b>TEFRA</b>: a household of one, by design. The address above holds a family over every income limit and a sibling who is not eligible; this code is why both facts are correct at once.',{teach:true});
+  }else{
+    seg('REF*CE*'+m.group+'~','Reporting category \u2014 the coverage group riding with the enrollment ('+esc(GROUPS[m.group]?GROUPS[m.group].name:m.group)+').');
+  }
+  seg('SE*'+(rows.length+2)+'*0001~','Transaction trailer with segment count.');
+  seg('GE*1*803~','Functional group trailer.');
+  seg('IEA*1*000080300~','Interchange trailer.');
+  return rows;
+}
+function insStory(m){
+  return {A:'routine enrollment maintenance.',B:'the reapproval after the review gap \u2014 a brand-new addition, not a correction.',
+   C:'an addition whose dates teach the retro lesson below.',
+   D:'a TEFRA addition \u2014 a household of one; read the address and the reporting category together.',
+   E:m.endedByChild?'a termination whose trigger date belongs to another person \u2014 read the DTP*357.':'an addition in a borrowed category \u2014 the lease has a date.',
+   F:'the Medicare-arrival pair, full-benefit edition \u2014 the partial majority\u2019s file is not an 834 at all.'}[m.reg];
+}
+
+/* ================= Reference ================= */
+function rReference(el){
+  var h='<div class="card"><h3>The partial door \u2014 the ladder above the threshold</h3>'+
+   '<div class="tblwrap"><table class="chron"><tbody>'+
+   '<tr><td class="mono">~74% FPL</td><td>The SSI-linked aged/disabled limit \u2014 full Medicaid\u2019s door. In a non-expansion state, most gap adults arriving at 65 are above it.</td></tr>'+
+   '<tr><td class="mono">100% FPL</td><td>QMB \u2014 Medicaid pays Medicare\u2019s premiums <i>and</i> cost-sharing; providers may not balance-bill. Payment and protection, but no card.</td></tr>'+
+   '<tr><td class="mono">120% FPL</td><td>SLMB \u2014 the Part B premium only. The narrowest rung that still changes a monthly budget.</td></tr>'+
+   '<tr><td class="mono">2015\u20132025</td><td>Healthy Connections Prime \u2014 the nation\u2019s only 65-plus-only financial-alignment demonstration \u2014 runs and ends with the national sunset. Full duals only; the MSP ladder watched from the hallway, which is answer #37\u2019s point.</td></tr>'+
+   '<tr><td class="mono">The file</td><td>MSP enrollment never touches an 834. It travels the state buy-in exchange with CMS \u2014 fixed-width, batch, older than X12 \u2014 and the file viewer renders it. Verify currency; limits shift annually.</td></tr>'+
+   '</tbody></table></div></div>';
+  h+='<div class="card"><h3>834 maintenance codes used in this app</h3><div class="tblwrap"><table><thead><tr><th class="nosort">Code</th><th class="nosort">Meaning</th><th class="nosort">Where you\u2019ll see it</th></tr></thead><tbody>'+
+   '<tr><td class="mono">021</td><td>Addition</td><td>New enrollments, register B\u2019s returns, register D\u2019s households of one</td></tr>'+
+   '<tr><td class="mono">024</td><td>Cancellation / termination</td><td>Register E \u2014 terminations dated to someone else\u2019s birthday \u2014 and the first half of register F\u2019s full-dual pair</td></tr>'+
+   '<tr><td class="mono">61 / accretion</td><td>The buy-in file\u2019s \u201cadd\u201d</td><td>Register F\u2019s partial majority \u2014 a different vocabulary on a different file, doing the 021\u2019s job for a premium instead of a plan</td></tr>'+
+   '</tbody></table></div></div>';
+  h+='<div class="card"><h3>Glossary</h3><dl class="gloss">'+
+   gl('Healthy Connections','South Carolina Medicaid\u2019s brand \u2014 five Choices plans statewide; Partners for Healthy Children carrying the kids.')+
+   gl('TEFRA (Katie Beckett)','The pathway where a child with significant disabilities is assessed as a household of one \u2014 parental income disregarded by design. Register D, and the reason two children under one roof can correctly get two answers.')+
+   gl('The borrowed category','Low Income Families exists only while a dependent child does; register E\u2019s terminations are dated to the youngest child\u2019s eighteenth birthday. Cross-member causality: the reason lives in a different row.')+
+   gl('QMB / SLMB','The Medicare Savings Program ladder \u2014 Qualified Medicare Beneficiary (premiums plus cost-sharing, no balance billing) and Specified Low-Income Medicare Beneficiary (Part B premium only). Payment, not coverage. Register F\u2019s majority.')+
+   gl('The buy-in file','The state\u2019s fixed-width data exchange with CMS through which Medicaid pays Medicare premiums \u2014 accretions and deletions, a vocabulary older than the 834\u2019s. The honest file for an MSP member.')+
+   gl('Healthy Connections Prime','2015\u20132025 \u2014 the only financial-alignment demonstration in the nation restricted to duals 65 and over; ended by the national sunset. Full duals only, always.')+
+   gl('Gullah Geechee','The Sea Islands\u2019 African-American communities \u2014 St. Helena\u2019s Smallses, Gadsons, and Frippses carry this roster\u2019s Lowcountry, deliberately.')+
+   gl('Catawba Nation','South Carolina\u2019s only federally recognized tribe, beside Rock Hill \u2014 the Blues and Cantys in the York County rows.')+
+   gl('The door that opens partway','The thirty-seventh Medicare answer: Georgia\u2019s door opened at 65; South Carolina\u2019s opens to a ladder \u2014 most arrivals clear QMB or SLMB, not full Medicaid, and their enrollment rides a file the 834 has never met.')+
+   gl('834','The X12N benefit enrollment transaction \u2014 this app\u2019s native tongue, except in register F\u2019s partial majority, where the native tongue is older and fixed-width.')+
+   '</dl></div>';
+  h+='<div class="card"><h3>Counties in this population</h3><p style="font-size:.85rem">'+
+   Array.from(new Set(COUNTIES.map(function(c){return c.name}))).join(' \u00b7 ')+'</p>'+
+   '<p class="sub" style="margin-top:8px">The Smallses, Gadsons, and Middletons carry St. Helena Island and the Gullah Geechee Lowcountry; the Garc\u00edas and Zavalas, Saluda County \u2014 proportionally the state\u2019s most Spanish-speaking \u2014 and the Upstate; the Blues and Cantys sit beside the Catawba Nation in York County; the Pee Dee\u2019s Florence and Marion carry the rural Black Belt registers.</p></div>';
+  el.innerHTML=h;
+  function gl(t,d){return '<dt>'+t+'</dt><dd>'+d+'</dd>'}
+}
+</script>
+<script>
+'use strict';
+/* ================= slide-over member record ================= */
+var nav={list:[],ix:-1,ctx:''};
+function openMember(id,list,ctx){
+  nav.list=list||[id];nav.ix=nav.list.indexOf(id);nav.ctx=ctx||'';
+  paintMember();document.getElementById('overlay').classList.add('open');
+  var s=document.getElementById('slide');s.classList.add('open');
+  highlightRow(id);s.focus&&s.focus();
+}
+function closeMember(){
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('slide').classList.remove('open');
+  highlightRow(null);
+}
+function stepMember(d){var n=nav.ix+d;if(n<0||n>=nav.list.length)return;nav.ix=n;paintMember();highlightRow(nav.list[n])}
+function highlightRow(id){document.querySelectorAll('tr.hl').forEach(function(t){t.classList.remove('hl')});
+  if(id){var tr=document.querySelector('tr[data-mid="'+id+'"]');if(tr)tr.classList.add('hl')}}
+function paintMember(){
+  var m=MEMBERS.find(function(x){return x.id===nav.list[nav.ix]});
+  var s=document.getElementById('slide');
+  var ctxLabel={roster:'filtered roster',spans:'spans view',delivery:'enrollment view',register:'register'}[nav.ctx]||'list';
+  var h='<button class="close" aria-label="Close">\u00d7</button>'+
+   '<div class="navrow"><button id="mprev"'+(nav.ix===0?' disabled':'')+' aria-label="Previous member">\u25C0</button>'+
+   '<button id="mnext"'+(nav.ix>=nav.list.length-1?' disabled':'')+' aria-label="Next member">\u25B6</button>'+
+   '<span class="pos">'+(nav.ix+1)+' / '+nav.list.length+' ('+ctxLabel+')</span></div>'+
+   '<h2>'+esc(m.last)+', '+esc(m.first)+'</h2>'+
+   '<p class="sub">'+pillFor(m.group)+' &nbsp; Register '+m.reg+' \u2014 '+esc(REGDEFS[m.reg].title)+'</p>'+
+   '<dl class="kv">'+
+   kv('Medicaid ID','<span class="mono">'+m.mid+'</span>')+
+   kv('Born',esc(m.dob)+' ('+m.sex+')')+
+   kv('Address',esc(m.addr)+', '+esc(m.city)+', OH '+m.zip+' \u2014 '+esc(m.county)+' County')+
+   kv('Phone','<span class="mono">'+esc(m.phone)+'</span>')+
+   (m.lang?kv('Language',esc(m.langName)+' <span class="mono">('+m.lang+')</span>'):'')+
+   '</dl>'+
+   '<div class="plain small">'+plainEnglish(m)+'</div>'+
+   '<h4>Eligibility spans</h4><div class="tblwrap"><table><thead><tr><th class="nosort">Group</th><th class="nosort">Begin</th><th class="nosort">End</th><th class="nosort">Note</th></tr></thead><tbody>'+
+   (m.spans.length===0?'<tr><td colspan="4" class="sub">No eligibility spans \u2014 this member has never been eligible. The empty table is the record.</td></tr>':'')+
+   m.spans.map(function(x){return '<tr><td>'+pillFor(x.cat)+'</td><td class="mono">'+mLabel(x.b)+'</td>'+
+     '<td class="mono">'+(x.e===null?'\u2014 open \u2014':mLabel(x.e))+'</td><td>'+esc(x.notes)+'</td></tr>'}).join('')+
+   '</tbody></table></div>'+
+   '<h4>Delivery spans</h4><div class="tblwrap"><table><thead><tr><th class="nosort">Plan</th><th class="nosort">Begin</th><th class="nosort">End</th><th class="nosort">Why</th></tr></thead><tbody>'+
+   (m.dspans.length===0?'<tr><td colspan="4" class="sub">No delivery spans \u2014 no plan was ever asked to carry this member.</td></tr>':'')+
+   (m.dspans.length===0?'<tr><td colspan="4" class="sub">No delivery spans \u2014 an MSP is a payment arrangement, not a plan enrollment. The record lives on the buy-in exchange; this emptiness is accurate.</td></tr>':'')+
+   m.dspans.map(function(x){return '<tr><td><b>'+esc(x.plan)+'</b></td><td class="mono">'+mLabel(x.b)+'</td>'+
+     '<td class="mono">'+(x.e===null?'\u2014 open \u2014':mLabel(x.e))+'</td><td>'+esc(x.why)+'</td></tr>'}).join('')+
+   '</tbody></table></div>'+
+   '<p style="margin-top:14px"><button class="linkish" id="see834">Read this member\u2019s 834 \u2192</button></p>';
+  s.innerHTML=h;
+  s.querySelector('.close').onclick=closeMember;
+  document.getElementById('mprev').onclick=function(){stepMember(-1)};
+  document.getElementById('mnext').onclick=function(){stepMember(1)};
+  document.getElementById('see834').onclick=function(){fileSel=m.id;closeMember();activeTab='file';renderTabs();renderMain()};
+  function kv(k,v){return '<dt>'+k+'</dt><dd>'+v+'</dd>'}
+}
+function plainEnglish(m){
+  var first=m.spans[0];
+  switch(m.reg){
+   case 'A':return esc(m.first)+' has been covered under '+esc(GROUPS[m.group].name)+' since '+mLabel(first.b)+
+     ' \u2014 '+(NOW-first.b+1)+' straight months \u2014 and is carried today by '+esc(currentPlan(m))+'.'+
+     ' The most recent renewal passed without incident. In a program this size, uneventful is an achievement.';
+   case 'B':return esc(m.first)+'\u2019s annual review was never completed, so coverage closed at the end of '+mLabel(m.closedAt)+
+     ' \u2014 not because anything about '+(m.sex==='F'?'her':'him')+' changed, but because paperwork lapsed. After '+m.gap+
+     ' uncovered month'+(m.gap>1?'s':'')+', a new application was approved and a new span opened '+mLabel(m.closedAt+m.gap+1)+
+     '. In a non-expansion state that gap runs closer to the edge than it looks.';
+   case 'C':return esc(m.first)+' applied in '+mLabel(first.app)+' and was granted '+first.retroN+' retroactive month'+
+     (first.retroN>1?'s':'')+', so eligibility begins '+mLabel(first.b)+' \u2014 before the application existed. Those retro months ran '+
+     'fee-for-service; the plan enrollment starts at '+mLabel(first.app)+'. Two begin dates, both true, doing different jobs.';
+   case 'D':return esc(m.first)+' is eligible through TEFRA \u2014 assessed as a household of one, parental income deliberately ignored. '+
+     m.householdNote+' Any eligibility logic that assumes one answer per address, or any reconciliation that flags this household as a '+
+     'discrepancy, has misunderstood the rule rather than found an error.';
+   case 'E':
+    if(m.endedByChild)return esc(m.first)+'\u2019s coverage ended '+mLabel(m.childBday)+' \u2014 not because '+(m.sex==='F'?'her':'his')+' income, '+
+     'address, or health changed, but because the youngest child turned 18 and the parent category cannot outlive the child it was borrowed from. '+
+     'In an expansion state there would be somewhere to land; here there is not. The termination date in this record belongs to another person.';
+    return esc(m.first)+' is covered under Low Income Families \u2014 a category borrowed from the youngest child in the household, and on a '+
+     'countdown to that child\u2019s eighteenth birthday. The span is open; the lease has a date already written in another row.';
+   default:
+     if(m.partial)return esc(m.first)+' turned 65 in '+mLabel(m.t65)+', and the door opened partway: income above the aged limit but on the '+
+     'MSP ladder, so '+(m.sex==='F'?'she':'he')+' received '+m.msp+' \u2014 '+(m.msp==='QMB'?'Medicaid pays the Medicare premiums and the cost-sharing, '+
+     'and providers may not balance-bill':'Medicaid pays the Part B premium')+' \u2014 but no card, no plan, no 834. The enrollment rides the state '+
+     'buy-in file to CMS. Answer #37: the commencement answers were a full-dual story; this is the partial majority\u2019s, and it is most of what '+
+     'turning 65 means in a non-expansion state.';
+     var next=m.dspans.find(function(d){return d.e===null});
+     return esc(m.first)+' turned 65 and Medicare arrived '+mLabel(m.t65)+' \u2014 and, income under the aged limit, the door opened the whole way: '+
+     'full dual status, the buy-in accreted, and '+esc(next.plan)+' carrying the wrap'+(next.plan.indexOf('Prime')>=0?' through the nation\u2019s only '+
+     '65-plus-only demonstration in its final months':'')+'.'+' Answer #37 notes that '+esc(m.first)+' is this register\u2019s minority: most of the '+
+     'neighbors got the ladder, not the card.';
+  }
+}
+function currentPlan(m){var d=sysNow(m).find(function(x){return x.sys==='MCO'||x.sys==='MYC'});
+  return d?d.plan:'fee-for-service'}
+
+/* ================= internal invariant suite (headless harness calls runTests) ================= */
+function runTests(){
+  var out=[],pass=0;
+  function t(name,fn){try{var r=fn();out.push([!!r,name+(typeof r==='string'?' \u2014 '+r:'')]);if(r)pass++}
+    catch(e){out.push([false,name+' \u2014 threw: '+e.message])}}
+  t('Population is exactly 3,000 members',function(){return MEMBERS.length===3000});
+  t('Register counts are exactly as planted (1500/500/250/250/350/150)',function(){
+    return ['A','B','C','D','E','F'].every(function(r){
+      return MEMBERS.filter(function(m){return m.reg===r}).length===REGCOUNT[r]})});
+  t('No span ends before it begins',function(){
+    return SPANS.every(function(r){return r.s.e===null||r.s.e>=r.s.b})&&
+           DSPANS.every(function(r){return r.d.e===null||r.d.e>=r.d.b})});
+  t('Register D: every TEFRA member is a child with one continuous span',function(){
+    return MEMBERS.filter(function(m){return m.reg==='D'}).every(function(m){
+      return m.spans.length===1&&m.spans[0].e===null&&m.spans[0].cat==='TEF'&&(+m.dob.slice(0,4))>=2009})});
+  t('Register E: every closed span ends on the borrowed date; every open span carries the countdown note',function(){
+    return MEMBERS.filter(function(m){return m.reg==='E'}).every(function(m){
+      return m.endedByChild?(m.spans[0].e===m.childBday&&m.spans[0].e<NOW):(m.spans[0].e===null)})});
+  t('Register F: partial duals have one MSP span at 65 and zero delivery spans; full duals seam exactly',function(){
+    return MEMBERS.filter(function(m){return m.reg==='F'}).every(function(m){
+      if(m.partial)return m.spans.length===1&&m.spans[0].cat==='MSP'&&m.spans[0].b===m.t65&&m.dspans.length===0;
+      return m.spans.length===2&&m.spans[0].e===m.spans[1].b-1&&m.spans[1].cat==='DUA'&&m.dspans.length>=2})});
+  t('Every retro grant begins before its application month',function(){
+    return MEMBERS.filter(function(m){return m.reg==='C'}).every(function(m){
+      return m.spans[0].b<m.spans[0].app})});
+  
+  t('Every member renders an 834 without error',function(){
+    var n=0;MEMBERS.forEach(function(m){n+=build834(m).length});return n>0?String(n)+' segments built':false});
+  t('Dataset checksum (FNV-1a over the serialized population)',function(){
+    var s='';MEMBERS.forEach(function(m){s+=m.mid+m.last+m.first+m.reg+m.group+
+      m.spans.map(function(x){return x.cat+x.b+'/'+x.e}).join('|')+
+      m.dspans.map(function(x){return x.sys+x.b+'/'+x.e}).join('|')});
+    var hv=0x811c9dc5;
+    for(var i=0;i<s.length;i++){hv^=s.charCodeAt(i);hv=Math.imul(hv,0x01000193)}
+    return 'FNV 0x'+(hv>>>0).toString(16).toUpperCase()});
+  var h='<table><tbody>'+out.map(function(r){
+    return '<tr><td class="'+(r[0]?'testpass':'testfail')+'">'+(r[0]?'PASS':'FAIL')+'</td><td>'+esc(r[1])+'</td></tr>'}).join('')+
+    '</tbody></table><p class="sub" style="margin-top:10px">'+pass+' / '+out.length+' checks passed.</p>';
+  var out_el=document.getElementById('testout');if(out_el)out_el.innerHTML=h;
+  return pass===out.length;
+}
+
+/* ================= keyboard & overlay ================= */
+document.getElementById('overlay').onclick=closeMember;
+document.addEventListener('keydown',function(e){
+  var open=document.getElementById('slide').classList.contains('open');
+  if(!open)return;
+  if(e.key==='Escape')closeMember();
+  if(e.key==='ArrowLeft')stepMember(-1);
+  if(e.key==='ArrowRight')stepMember(1);
+});
+
+/* ================= boot ================= */
+renderTabs();renderMain();
+</script>
+</body>
+</html>

@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Colorado Health First Colorado Eligibility Central</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@1,8..60,400;1,8..60,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#1E5FCC;
+  --accent-soft:#E8EFFB;
+  --ink:#1b2430;
+  --ink-soft:#4a5568;
+  --ink-faint:#8a94a3;
+  --line:#dde3ea;
+  --line-soft:#eceff3;
+  --bg:#f7f8fa;
+  --card:#ffffff;
+  --serif:'Source Serif 4', Georgia, serif;
+  --sans:'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono:'IBM Plex Mono', 'Consolas', monospace;
+  --g-FC01:#2E7D5B; --g-PG02:#B0568C; --g-CH19:#C98A2B; --g-EA02:#1E5FCC;
+  --g-SI02:#6A4FB6; --g-MN98:#5B8AA6; --g-FF26:#C25B4A; --g-WD02:#3E9C9C; --g-LT01:#7A7A52;
+  --d-mco:#4a7fd6; --d-ffs:#9aa3ad; --d-harp:#8a5fc0; --d-mltc:#2e8f8f;
+  --ok:#2E7D5B; --warn:#C98A2B; --bad:#C0392B;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+
+/* ---------- header ---------- */
+header{background:var(--card);border-bottom:1px solid var(--line);padding:18px 28px 0}
+.brandrow{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.wordmark{font-family:var(--serif);font-style:italic;font-weight:600;font-size:1.65rem;color:var(--accent);letter-spacing:.01em}
+.wordmark .st{color:var(--ink)}
+.tagline{color:var(--ink-faint);font-size:.85rem}
+.credit{margin-left:auto;color:var(--ink-faint);font-size:.78rem}
+nav{display:flex;gap:2px;margin-top:14px;flex-wrap:wrap}
+nav button{appearance:none;border:none;background:none;font:inherit;font-size:.86rem;font-weight:500;color:var(--ink-soft);padding:9px 14px;cursor:pointer;border-bottom:3px solid transparent;border-radius:6px 6px 0 0}
+nav button:hover{background:var(--line-soft)}
+nav button.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+nav button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+/* ---------- layout ---------- */
+main{max-width:1280px;margin:0 auto;padding:24px 28px 80px}
+.page{display:none}
+.page.on{display:block}
+h2{font-size:1.22rem;font-weight:700;margin:4px 0 4px}
+h3{font-size:.98rem;font-weight:600;margin:22px 0 8px}
+.sub{color:var(--ink-soft);font-size:.88rem;margin-bottom:16px;max-width:70ch}
+
+/* ---------- plain english callout ---------- */
+.plain{font-family:var(--serif);font-style:italic;font-size:1.02rem;line-height:1.65;color:#2c3a4d;background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:14px 18px;margin:14px 0 20px;max-width:86ch}
+.plain b{font-style:italic;font-weight:600}
+.plain .pe-label{display:block;font-family:var(--sans);font-style:normal;font-weight:700;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:5px}
+
+/* ---------- cards / stats ---------- */
+.statrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.stat .n{font-family:var(--mono);font-size:1.55rem;font-weight:600;color:var(--ink)}
+.stat .l{font-size:.74rem;color:var(--ink-soft);margin-top:2px;line-height:1.35}
+.stat.acc .n{color:var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:14px 0}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:900px){.twocol{grid-template-columns:1fr}}
+
+/* ---------- legend / bars ---------- */
+.leg{display:flex;flex-direction:column;gap:7px}
+.legrow{display:grid;grid-template-columns:16px 64px 1fr 46px;gap:10px;align-items:center;font-size:.84rem}
+.legrow .swatch{width:14px;height:14px;border-radius:4px}
+.legrow .code{font-family:var(--mono);font-size:.8rem;font-weight:600}
+.legrow .cnt{font-family:var(--mono);text-align:right;color:var(--ink-soft)}
+.barlist{display:flex;flex-direction:column;gap:8px}
+.barrow{display:grid;grid-template-columns:210px 1fr 40px;gap:10px;align-items:center;font-size:.83rem}
+.barrow .track{background:var(--line-soft);border-radius:5px;height:14px;overflow:hidden}
+.barrow .fill{display:block;height:100%;background:var(--d-mco);border-radius:5px;transition:width .8s ease}
+.barrow .bn{font-family:var(--mono);text-align:right;color:var(--ink-soft)}
+@media(max-width:700px){.barrow{grid-template-columns:130px 1fr 36px}}
+
+/* ---------- controls ---------- */
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;align-items:center}
+.controls input[type=search],.controls select{font:inherit;font-size:.85rem;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
+.controls input[type=search]{min-width:220px}
+.controls select:focus,.controls input:focus{outline:2px solid var(--accent);outline-offset:0}
+.hint{font-size:.76rem;color:var(--ink-faint)}
+
+/* ---------- tables ---------- */
+.tblwrap{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:auto;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:.83rem}
+th{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);background:#fbfcfd;white-space:nowrap;position:sticky;top:0}
+th.sortable{cursor:pointer;user-select:none}
+th.sortable:hover{color:var(--accent)}
+th .arr{font-size:.72rem;color:var(--accent)}
+.pager{display:flex;align-items:center;justify-content:center;gap:14px;margin:12px 0 2px}
+.pager button.pg{appearance:none;font:inherit;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:5px 13px;cursor:pointer;font-size:.82rem;color:var(--ink-soft)}
+.pager button.pg:hover:not(:disabled){background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.pager button.pg:disabled{opacity:.35;cursor:default}
+.pager .pgpos{font-size:.78rem;color:var(--ink-faint)}
+td{padding:9px 12px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tbody tr.rowlink{cursor:pointer}
+tbody tr.rowlink:hover{background:var(--accent-soft)}
+tbody tr.hl{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+.mono{font-family:var(--mono);font-size:.8rem}
+.nowrap{white-space:nowrap}
+
+/* ---------- chips ---------- */
+.chip{display:inline-block;font-family:var(--mono);font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:20px;color:#fff;white-space:nowrap}
+.chip.outl{background:none;border:1.5px solid currentColor}
+.dchip{display:inline-block;font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:5px;white-space:nowrap}
+.d-mco{background:#e5edfa;color:#2456a8}
+.d-ffs{background:#eceff2;color:#5c6672}
+.d-harp{background:#efe7f8;color:#6a3fa0}
+.d-mltc{background:#e2f2f2;color:#1f6f6f}
+.st-act{color:var(--ok);font-weight:600}
+.st-gap{color:var(--warn);font-weight:600}
+.st-cls{color:var(--ink-faint);font-weight:600}
+.flag{display:inline-block;font-size:.7rem;font-weight:600;background:#fdf1e0;color:#96660f;border:1px solid #f0d9ae;border-radius:5px;padding:1px 7px;white-space:nowrap}
+
+/* ---------- registers ---------- */
+.reg{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin:12px 0}
+.reg h3{margin:0 0 4px;display:flex;align-items:center;gap:10px}
+.reg .rl{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;background:var(--accent);color:#fff;font-family:var(--mono);font-weight:600;font-size:.85rem;flex:none}
+.reg .q{font-family:var(--serif);font-style:italic;color:#2c3a4d;font-size:.95rem;margin:4px 0 10px}
+.reg .meta{font-size:.78rem;color:var(--ink-faint);margin-bottom:8px}
+
+/* ---------- 834 ---------- */
+.ediwrap{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:12px 0;overflow:hidden}
+.edihead{padding:12px 18px;border-bottom:1px solid var(--line);display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;background:#fbfcfd}
+.edihead .fn{font-family:var(--mono);font-size:.82rem;font-weight:600}
+.edirow{display:grid;grid-template-columns:minmax(300px,46%) 1fr;border-bottom:1px solid var(--line-soft)}
+.edirow:last-child{border-bottom:none}
+.edirow .seg{font-family:var(--mono);font-size:.78rem;padding:8px 16px;background:#f4f7fb;color:#1b3a66;overflow-wrap:anywhere;border-right:1px solid var(--line-soft)}
+.edirow .note{font-size:.8rem;padding:8px 16px;color:var(--ink-soft)}
+.edirow.loop .seg{background:#e8effb;font-weight:600}
+@media(max-width:780px){.edirow{grid-template-columns:1fr}.edirow .seg{border-right:none}}
+
+/* ---------- modal ---------- */
+.overlay{position:fixed;inset:0;background:rgba(20,28,40,.42);opacity:0;pointer-events:none;transition:opacity .22s;z-index:40}
+.overlay.on{opacity:1;pointer-events:auto}
+.slideover{position:fixed;top:0;right:0;bottom:0;width:640px;max-width:94vw;background:var(--card);box-shadow:-12px 0 40px rgba(15,25,45,.22);transform:translateX(102%);transition:transform .26s ease;z-index:50;display:flex;flex-direction:column}
+.slideover.on{transform:translateX(0)}
+.mo-head{padding:16px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+.mo-head .who{min-width:0}
+.mo-head .nm{font-weight:700;font-size:1.05rem}
+.mo-head .idz{font-family:var(--mono);font-size:.76rem;color:var(--ink-soft)}
+.mo-x{margin-left:auto;appearance:none;border:1px solid var(--line);background:none;border-radius:8px;width:32px;height:32px;font-size:1rem;cursor:pointer;color:var(--ink-soft);flex:none}
+.mo-x:hover{background:var(--line-soft)}
+.mo-body{overflow-y:auto;padding:18px 22px;flex:1}
+.mo-foot{border-top:1px solid var(--line);padding:10px 22px;display:flex;align-items:center;gap:12px}
+.mo-foot button{appearance:none;font:inherit;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:.9rem}
+.mo-foot button:hover:not(:disabled){background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.mo-foot button:disabled{opacity:.35;cursor:default}
+.mo-foot .pos{font-family:var(--mono);font-size:.78rem;color:var(--ink-faint);margin-left:auto}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:4px 12px;font-size:.85rem;margin:8px 0 14px}
+.kv .k{color:var(--ink-faint)}
+.kv .v{color:var(--ink)}
+.mo-body h4{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);margin:16px 0 8px}
+.mo-body .plain{font-size:.93rem;padding:12px 15px}
+
+/* ---------- mini timeline ---------- */
+.tl{margin:6px 0 4px}
+.tl .band{display:grid;grid-template-columns:78px 1fr;gap:8px;align-items:center;margin:5px 0}
+.tl .bl{font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-faint);text-align:right}
+.tl .lane{position:relative;height:18px;background:var(--line-soft);border-radius:4px}
+.tl .bar{position:absolute;top:0;bottom:0;border-radius:4px;min-width:3px}
+.tl .bar.striped{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.28) 0 5px,transparent 5px 10px)}
+.tl .axis{display:grid;grid-template-columns:78px 1fr;gap:8px;margin-top:3px}
+.tl .ax{position:relative;height:14px;font-size:.62rem;color:var(--ink-faint);font-family:var(--mono)}
+.tl .ax span{position:absolute;transform:translateX(-50%)}
+.tl .todayline{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--bad);opacity:.7}
+.tl-note{font-size:.7rem;color:var(--ink-faint);margin-top:6px}
+
+/* ---------- reference ---------- */
+.refgrid{display:grid;grid-template-columns:1fr;gap:4px}
+dl.gloss{display:grid;grid-template-columns:200px 1fr;gap:8px 16px;font-size:.85rem}
+dl.gloss dt{font-weight:600}
+dl.gloss dd{color:var(--ink-soft)}
+@media(max-width:700px){dl.gloss{grid-template-columns:1fr}dl.gloss dd{margin-bottom:8px}}
+footer{max-width:1280px;margin:0 auto;padding:0 28px 40px;color:var(--ink-faint);font-size:.75rem;line-height:1.6}
+@media(max-width:700px){header{padding:14px 16px 0}main{padding:18px 14px 60px}.kv{grid-template-columns:120px 1fr}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brandrow">
+    <div class="wordmark">Health First Colorado Eligibility <span class="st">Central</span></div>
+    <div class="tagline">Attribution, the RAEs, the Phase III seam, and the 834 &mdash; a synthetic demonstration</div>
+    <div class="credit">Robert Thomas Keyes</div>
+  </div>
+  <nav id="nav" aria-label="Sections">
+    <button data-pg="overview" class="on">Overview</button>
+    <button data-pg="members">Members</button>
+    <button data-pg="spans">Eligibility Spans</button>
+    <button data-pg="delivery">RAE Attribution</button>
+    <button data-pg="registers">Scenario Registers</button>
+    <button data-pg="file">What the File Says</button>
+    <button data-pg="reference">Reference Codes</button>
+  </nav>
+</header>
+<main>
+  <section class="page on" id="pg-overview">
+    <h2>Overview</h2>
+    <p class="sub">A synthetic Health First Colorado (Colorado Medicaid) population across a 24-month window (January 2025 &ndash; December 2026), viewed as of <b>July 2026</b>. Every value is deterministic &mdash; seeded PRNG, identical on every load.</p>
+    <div class="plain" id="ov-plain"></div>
+    <div class="statrow" id="ov-stats"></div>
+    <div class="twocol">
+      <div class="card">
+        <h3 style="margin-top:0">Coverage groups in the population</h3>
+        <div class="leg" id="ov-groups"></div>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Where members get their care today</h3>
+        <div class="barlist" id="ov-mcos"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="pg-members">
+    <h2>Members</h2>
+    <p class="sub">The full synthetic roster. Click any row for the member record; click a column header to sort.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>Every person here has a seven-character <b>State ID</b> — one letter, six digits — that never changes. The roster’s delivery column looks like other states’ at a glance, but it means something different: in Colorado nobody <i>enrolled</i> with those entities. They were <b>attributed</b> — assigned to a Regional Accountable Entity by their address, automatically, with no packet and no choice period. Change the address and the delivery answer changes with it. The only exceptions are the two purple-chip enclaves: Denver Health Medicaid Choice and RMHP Prime, real capitated MCOs that members actually join.</div>
+    <div class="controls">
+      <input type="search" id="m-search" placeholder="Search name, State ID, city&hellip;" aria-label="Search members">
+      <select id="m-group" aria-label="Filter by coverage group"></select>
+      <select id="m-del" aria-label="Filter by delivery system"></select>
+      <select id="m-reg" aria-label="Filter by register"></select>
+      <select id="m-status" aria-label="Filter by status">
+        <option value="">Status today: all</option>
+        <option value="Active">Active</option>
+        <option value="Gap">In gap</option>
+        <option value="Closed">Closed</option>
+      </select>
+      <span class="hint" id="m-count"></span>
+    </div>
+    <div class="tblwrap"><table id="m-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">State ID</th>
+        <th class="sortable" data-k="name">Name</th>
+        <th class="sortable" data-k="age">Age</th>
+        <th class="sortable" data-k="sex">Sex</th>
+        <th class="sortable" data-k="grp">Coverage Group</th>
+        <th class="sortable" data-k="del">Delivery Today</th>
+        <th class="sortable" data-k="county">County</th>
+        <th class="sortable" data-k="reg">Register</th>
+        <th class="sortable" data-k="status">Status Today</th>
+      </tr></thead>
+      <tbody id="m-body"></tbody>
+    </table></div>
+    <div class="pager" id="m-pager"></div>
+  </section>
+
+  <section class="page" id="pg-spans">
+    <h2>Eligibility Spans</h2>
+    <p class="sub">One row per coverage-group span &mdash; the state's answer to <i>&ldquo;from when to when, and under which door did this person enter?&rdquo;</i> Click a row to open the member.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>A span is a promise with dates on it — determined in <b>CBMS</b>, applied for through <b>PEAK</b>, and closed for a reason. Colorado expanded in 2013 by statute, among the first states in, so the churn here has soft edges: an adult who loses a category usually lands in another one. What the eligibility side quietly powers is the delivery side — every open span below feeds the attribution engine that assigns the member’s RAE. Eligibility says <i>yes</i>; the address says <i>where</i>.</div>
+    <div class="controls">
+      <select id="s-group" aria-label="Filter spans by coverage group"></select>
+      <select id="s-open" aria-label="Filter by open or closed">
+        <option value="">Open + closed</option><option value="open">Open only</option><option value="closed">Closed only</option>
+      </select>
+      <span class="hint" id="s-count"></span>
+    </div>
+    <div class="tblwrap"><table id="s-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">State ID</th>
+        <th class="sortable" data-k="name">Member</th>
+        <th class="sortable" data-k="grp">Group</th>
+        <th class="sortable" data-k="start">Begin</th>
+        <th class="sortable" data-k="end">End</th>
+        <th class="sortable" data-k="months">Months</th>
+        <th>End Reason</th>
+      </tr></thead>
+      <tbody id="s-body"></tbody>
+    </table></div>
+    <div class="pager" id="s-pager"></div>
+  </section>
+
+  <section class="page" id="pg-delivery">
+    <h2>RAE Attribution</h2>
+    <p class="sub">One row per attribution span: which Regional Accountable Entity held the member — assigned by residence — or one of the two enclave MCOs (Denver Health Medicaid Choice, RMHP Prime), or fee-for-service retro tails. Watch the June/July 2025 boundary: it runs through nearly every row. Click a row to open the member.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>Colorado runs the country’s clearest counterexample to plan enrollment. Under the <b>Accountable Care Collaborative</b>, every member is attributed to a <b>Regional Accountable Entity</b> by residence — and the RAE is two things at once: a <i>care coordinator</i> sitting on top of fee-for-service physical health, and a <i>capitated payer</i> for the behavioral health benefit. One entity, two payment systems, same member. Then, on <b>July 1, 2025</b>, the ACC’s Phase III re-procurement went live and the whole state was re-attributed on a single day — the seam runs through nearly every timeline in this file, and for Weld, Larimer, and Boulder counties it changed the entity itself. Nobody chose anything; that is the point. The exceptions prove the rule: Denver Health Medicaid Choice and RMHP Prime, two true capitated MCOs living inside the attribution model, whose members’ spans sail across the seam untouched.</div>
+    <div class="controls">
+      <select id="d-sys" aria-label="Filter by delivery system"></select>
+      <span class="hint" id="d-count"></span>
+    </div>
+    <div class="tblwrap"><table id="d-tbl">
+      <thead><tr>
+        <th class="sortable" data-k="id">State ID</th>
+        <th class="sortable" data-k="name">Member</th>
+        <th class="sortable" data-k="sys">Delivery</th>
+        <th class="sortable" data-k="start">Begin</th>
+        <th class="sortable" data-k="end">End</th>
+        <th class="sortable" data-k="months">Months</th>
+        <th>Begin / End Reason</th>
+      </tr></thead>
+      <tbody id="d-body"></tbody>
+    </table></div>
+    <div class="pager" id="d-pager"></div>
+  </section>
+
+  <section class="page" id="pg-registers">
+    <h2>Scenario Registers</h2>
+    <p class="sub">Six business questions, each answered by a register of members whose data was planted to demonstrate exactly that scenario. Click any member to inspect the record behind the answer.</p>
+    <div id="reg-list"></div>
+  </section>
+
+  <section class="page" id="pg-file">
+    <h2>What the File Says</h2>
+    <p class="sub">Colorado really does speak X12N 834 — HCPF’s attribution rosters to the RAEs ride the same standard every enrollment state uses, which is itself a teaching: the 834 doesn’t know whether the member chose. Pick a member and read the transaction, segment by segment, with a plain-language note on every line.</p>
+    <div class="plain"><span class="pe-label">In plain English</span>An 834 is the state telling an entity: <b>this person is yours now</b> (or isn't anymore) — and in Colorado “yours” means <i>yours to coordinate, and yours to capitate for behavioral health</i>, while physical health keeps paying FFS underneath. Two transactions here deserve a long look. The <b>July 1, 2025 wave</b>: the Phase III re-procurement re-attributed the entire state in one cycle — the largest single-day file this program ever cut, and every segment of it says 021 as if each member were new. And register D’s <b>address-triggered pairs</b>: a CBMS change-of-address that re-runs attribution and produces a 024/021 pair no member asked for. In most states an 834 records a decision. In Colorado it records geography.</div>
+    <div class="controls">
+      <select id="f-member" aria-label="Choose member for 834"></select>
+      <span class="hint">Members are grouped by register; the transaction is rebuilt live from the member's actual spans.</span>
+    </div>
+    <div id="f-out"></div>
+  </section>
+
+  <section class="page" id="pg-reference">
+    <h2>Reference Codes</h2>
+    <p class="sub">The teaching code sets used throughout the app. Codes are patterned on Colorado's conventions; verify against current Colorado Department of Health Care Policy & Financing publications before any non-demonstration use.</p>
+    <div id="ref-out"></div>
+  </section>
+</main>
+
+<footer>
+  <p><b>Health First Colorado Eligibility Central</b> &mdash; a single-file demonstration app in the Central series. All members, identifiers, addresses, phone numbers, and dates are synthetic and deterministic (seeded PRNG, seed 303001); any resemblance to real persons is coincidental. Program facts reflect public Colorado Department of Health Care Policy & Financing policy of the mid-2020s and change year to year — ACC phases, regions, and entity rosters shift with procurement, and the Phase III details here are a patterned teaching simplification; verify against current HCPF and CMS publications before any non-demonstration use. The 834 rendering is a teaching aid, not an implementation guide. &copy; Robert Thomas Keyes.</p>
+</footer>
+
+<div class="overlay" id="overlay"></div>
+<aside class="slideover" id="modal" role="dialog" aria-modal="true" aria-labelledby="mo-nm">
+  <div class="mo-head">
+    <div class="who">
+      <div class="nm" id="mo-nm"></div>
+      <div class="idz" id="mo-id"></div>
+    </div>
+    <button class="mo-x" id="mo-x" aria-label="Close">&#10005;</button>
+  </div>
+  <div class="mo-body" id="mo-body"></div>
+  <div class="mo-foot">
+    <button id="mo-prev" aria-label="Previous member">&#9664;</button>
+    <button id="mo-next" aria-label="Next member">&#9654;</button>
+    <span class="pos" id="mo-pos"></span>
+  </div>
+</aside>
+<script>
+'use strict';
+/* ============ Health First Colorado Eligibility Central ============
+   Central series -- Robert Thomas Keyes
+   Deterministic synthetic data. Seed 303001 (Denver's area code).
+   Window: Jan 2025 (idx 0) .. Dec 2026 (idx 23). "Today" = Jul 2026 (idx 18).
+================================================================= */
+
+/* ---------- seeded PRNG (mulberry32) ---------- */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+var R = mulberry32(303001);
+function ri(lo,hi){return lo+Math.floor(R()*(hi-lo+1))}
+function pick(arr){return arr[Math.floor(R()*arr.length)]}
+function wpick(pairs){var tot=0,i;for(i=0;i<pairs.length;i++)tot+=pairs[i][1];var x=R()*tot;for(i=0;i<pairs.length;i++){x-=pairs[i][1];if(x<0)return pairs[i][0]}return pairs[pairs.length-1][0]}
+
+/* ---------- window ---------- */
+var WIN_START_Y=2025, WIN_MONTHS=24, TODAY_IDX=18; /* Jul 2026 */
+var PHASE3_IDX=6; /* July 1, 2025 -- ACC Phase III re-procurement: statewide re-attribution day */
+var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function mLabel(idx){ if(idx===null||idx===undefined)return '&mdash;';
+  var y=WIN_START_Y+Math.floor(idx/12), m=((idx%12)+12)%12;
+  return MONTHS[m]+' '+y }
+function mFirstD8(idx){var y=WIN_START_Y+Math.floor(idx/12),m=((idx%12)+12)%12;return ''+y+String(m+1).padStart(2,'0')+'01'}
+function mLastD8(idx){var y=WIN_START_Y+Math.floor(idx/12),m=((idx%12)+12)%12;var last=new Date(y,m+1,0).getDate();return ''+y+String(m+1).padStart(2,'0')+String(last).padStart(2,'0')}
+function spanMonths(s,e){var last=(e===null?TODAY_IDX:e);return Math.max(1,last-Math.max(s,-990)+1)}
+
+/* ---------- coverage groups ---------- */
+var GROUPS={
+ CH19:{name:'Children',                  magi:true,  color:'--g-CH19', blurb:'Children through 18 \u2014 with continuous eligibility to age 3 for the youngest (see register E\u2019s cousin story in the glossary).'},
+ CP06:{name:'CHP+ (separate CHIP)',      magi:true,  color:'--g-PG02', blurb:'Child Health Plan Plus \u2014 Colorado\u2019s separate CHIP for children and pregnant members above the Medicaid line.'},
+ AE02:{name:'Adult Expansion',           magi:true,  color:'--g-SI02', blurb:'Adults 19\u201364 to 138% FPL \u2014 Colorado expanded by statute in 2013, among the first states in.'},
+ PW02:{name:'Pregnant & Postpartum',     magi:true,  color:'--g-EA02', blurb:'Pregnancy coverage plus twelve months postpartum.'},
+ FM01:{name:'Parents & Caretakers',      magi:true,  color:'--g-FC01', blurb:'Parents and caretaker relatives \u2014 in an expansion state, mostly a routing distinction rather than a cliff.'},
+ AB03:{name:'Aged / Blind / Disabled',   magi:false, color:'--g-MN98', blurb:'SSI recipients and SSI-related budgeting \u2014 attributed to a RAE like everyone else.'},
+ FF26:{name:'Former Foster Care',        magi:true,  color:'--g-FF26', blurb:'Young adults formerly in foster care, covered to 26 regardless of income.'},
+ LT01:{name:'Long-Term Services & Supports', magi:false, color:'--g-LT01', blurb:'Nursing facility and HCBS waiver members \u2014 LTSS itself pays fee-for-service; the RAE still coordinates.'}
+};
+var GROUP_KEYS=Object.keys(GROUPS);
+
+/* ---------- the ACC: entities, and attribution by address ---------- */
+var ENTITIES={
+ ACCESS:{code:'ACCESS', name:'Colorado Access',                    kind:'RAE'},
+ CCHA:  {code:'CCHA',   name:'Colorado Community Health Alliance',kind:'RAE'},
+ RMHP:  {code:'RMHP',   name:'Rocky Mountain Health Plans',       kind:'RAE'},
+ HCO:   {code:'HCO',    name:'Health Colorado',                   kind:'RAE'},
+ NHP:   {code:'NHP',    name:'Northeast Health Partners',         kind:'RAE'},   /* Phase II only */
+ DHMC:  {code:'DHMC',   name:'Denver Health Medicaid Choice',     kind:'MCO'},
+ PRIME: {code:'PRIME',  name:'RMHP Prime',                        kind:'MCO'}
+};
+function sysLabel(code){ return code==='FFS'?'Fee-for-Service':(ENTITIES[code]?ENTITIES[code].name:code) }
+function sysKind(code){ return code==='FFS'?'FFS':ENTITIES[code].kind }
+function sysClass(code){ var k=sysKind(code); return k==='FFS'?'d-ffs':(k==='MCO'?'d-harp':'d-mco') }
+
+/* ---------- jurisdictions, with their attribution answers ---------- */
+/* ph2: the seven-region Phase II answer (through June 2025).
+   ph3: the consolidated Phase III answer (July 1, 2025 on).            */
+var COUNTIES=[
+ {name:'Denver',   w:12, zips:['80219','80204'], city:'Denver',
+  streets:['Federal Blvd','W Alameda Ave','Morrison Rd','W Colfax Ave','S Sheridan Blvd'],
+  ph2:{sys:'ACCESS',reg:'Region 5'}, ph3:{sys:'ACCESS',reg:'Metro/North'}},
+ {name:'El Paso',  w:9,  zips:['80910','80916'], city:'Colorado Springs',
+  streets:['S Academy Blvd','E Fountain Blvd','Airport Rd','S Circle Dr'],
+  ph2:{sys:'CCHA',reg:'Region 7'}, ph3:{sys:'CCHA',reg:'Front Range'}},
+ {name:'Arapahoe', w:7,  zips:['80010','80012'], city:'Aurora',
+  streets:['E Colfax Ave','Peoria St','S Havana St','E Mississippi Ave'],
+  ph2:{sys:'ACCESS',reg:'Region 3'}, ph3:{sys:'ACCESS',reg:'Metro/North'}},
+ {name:'Adams',    w:5,  zips:['80022','80229'], city:null, cities:['Commerce City','Thornton'],
+  streets:['E 72nd Ave','Monaco St','Washington St','E 88th Ave'],
+  ph2:{sys:'ACCESS',reg:'Region 3'}, ph3:{sys:'ACCESS',reg:'Metro/North'}},
+ {name:'Jefferson',w:4,  zips:['80214','80226'], city:'Lakewood',
+  streets:['W Colfax Ave','Wadsworth Blvd','W 6th Ave','Kipling St'],
+  ph2:{sys:'CCHA',reg:'Region 6'}, ph3:{sys:'CCHA',reg:'Front Range'}},
+ {name:'Pueblo',   w:4,  zips:['81001','81003'], city:'Pueblo',
+  streets:['E 4th St','Northern Ave','W Abriendo Ave','E Evans Ave'],
+  ph2:{sys:'HCO',reg:'Region 4'}, ph3:{sys:'HCO',reg:'South'}},
+ {name:'Weld',     w:3,  zips:['80631'], city:'Greeley',
+  streets:['10th St','8th Ave','N 11th Ave','E 18th St'],
+  ph2:{sys:'NHP',reg:'Region 2'}, ph3:{sys:'ACCESS',reg:'Metro/North'}},
+ {name:'Larimer',  w:3,  zips:['80524'], city:'Fort Collins',
+  streets:['N College Ave','Riverside Ave','Lemay Ave','Mulberry St'],
+  ph2:{sys:'NHP',reg:'Region 2'}, ph3:{sys:'ACCESS',reg:'Metro/North'}},
+ {name:'Mesa',     w:3,  zips:['81501'], city:'Grand Junction',
+  streets:['North Ave','Orchard Ave','Patterson Rd','28 Road'],
+  ph2:{sys:'RMHP',reg:'Region 1'}, ph3:{sys:'RMHP',reg:'West'}},
+ {name:'Boulder',  w:2,  zips:['80501'], city:'Longmont',
+  streets:['Main St','Ken Pratt Blvd','Hover St','9th Ave'],
+  ph2:{sys:'CCHA',reg:'Region 6'}, ph3:{sys:'ACCESS',reg:'Metro/North'}},
+ {name:'Alamosa',  w:2,  zips:['81101'], city:'Alamosa',
+  streets:['Main St','State Ave','Clark St','4th St'],
+  ph2:{sys:'HCO',reg:'Region 4'}, ph3:{sys:'HCO',reg:'South'}},
+ {name:'Montrose', w:2,  zips:['81401'], city:'Montrose',
+  streets:['E Main St','Townsend Ave','S 12th St','Niagara Rd'],
+  ph2:{sys:'RMHP',reg:'Region 1'}, ph3:{sys:'RMHP',reg:'West'}}
+];
+var COUNTYBY={}; COUNTIES.forEach(function(c){COUNTYBY[c.name]=c});
+function pickCounty(){return wpick(COUNTIES.map(function(c){return [c,c.w]}))}
+var AREA=['303','720','719','970'];
+
+/* ---------- names & languages ---------- */
+var FIRST_F=['Maria','Guadalupe','Alejandra','Yesenia','Xiomara','Lucia','Esperanza','Consuelo','Ashley','Brittany','Madison','Emily','Hannah','Sierra','Autumn','Cheyenne','Dawn','Crystal','Amber','Fadumo','Halima','Ayan','Linh','Thao','Olena','Oksana','Svetlana','Rosa','Dolores','Estrella','Marisol','Brenda'],
+    FIRST_M=['Jose','Juan','Miguel','Luis','Carlos','Angel','Ramon','Esteban','Tyler','Hunter','Austin','Cody','Dakota','Wyatt','Levi','Travis','Mohamed','Abdi','Ahmed','Minh','Tuan','Dmitri','Andriy','Sergei','Robert','Billy','Ray','Orlando','Emiliano','Santiago','Leandro','Diego'];
+var LAST=['Martinez','Garcia','Trujillo','Archuleta','Vigil','Maestas','Salazar','Valdez','Romero','Lopez','Chavez','Sandoval','Montoya','Gallegos','Medina','Quintana','Smith','Johnson','Williams','Brown','Miller','Davis','Anderson','Wilson','Mohamed','Abdi','Hassan','Farah','Nguyen','Tran','Pham','Petrov','Kovalenko','Bondarenko','Ivanov','Duran','Cordova','Pacheco','Tafoya','Espinoza'];
+var LANGS=[['English',70],['Spanish',23],['Somali',1.5],['Vietnamese',1.5],['Russian',1.5],['Ukrainian',1],['Amharic',1],['Arabic',0.5]];
+
+/* ---------- end reasons ---------- */
+var ELIG_END={
+ REDET:'Renewal not completed \u2014 case closed at annual renewal',
+ INCOME:'Over income at renewal',
+ MOVED:'Moved out of state',
+ MEDI:'Medicare entitlement \u2014 redetermined under SSI-related rules'
+};
+</script>
+<script>
+'use strict';
+/* ================= population generator ================= */
+var MEMBERS=[];
+var usedIds={};
+function genId(){ var s; do{ s=String.fromCharCode(65+ri(0,7))+String(ri(100000,999999)) }while(usedIds[s]); usedIds[s]=1; return s }
+function genPhone(){ return '('+pick(AREA)+') '+ri(200,989)+'-'+String(ri(0,9999)).padStart(4,'0') }
+function genAddr(c){ var city=c.city||pick(c.cities); return {street:ri(100,9999)+' '+pick(c.streets), city:city, zip:pick(c.zips)} }
+function genName(sex){ return {first:(sex==='F'?pick(FIRST_F):pick(FIRST_M)), last:pick(LAST)} }
+function dobForAge(age){ var y=2026-age; var m=ri(0,11); if(m>6)y--; return {y:y,m:m,d:ri(1,28)} }
+function dobD8(d){return ''+d.y+String(d.m+1).padStart(2,'0')+String(d.d).padStart(2,'0')}
+function dobLabel(d){return MONTHS[d.m]+' '+d.d+', '+d.y}
+
+function baseMember(reg){
+  var sex=pick(['F','F','F','M','M']);
+  var nm=genName(sex), c=pickCounty(), a=genAddr(c);
+  return { id:genId(), first:nm.first, last:nm.last, sex:sex, county:c.name,
+    street:a.street, city:a.city, zip:a.zip, phone:genPhone(),
+    lang:wpick(LANGS), reg:reg, eligSpans:[], delSpans:[], flags:[], bhCap:false };
+}
+function addElig(m,grp,s,e,reason){m.eligSpans.push({grp:grp,start:s,end:e,reason:reason||null})}
+function addDel(m,sys,s,e,note){m.delSpans.push({sys:sys,start:s,end:e,note:note||null})}
+/* Attribution: no packet, no choice, no broker. Address in, entity out --
+   and everyone alive across July 1, 2025 crosses the Phase III seam. */
+function attribute(m,eligStart,eligEnd){
+  var c=COUNTYBY[m.county];
+  var s=eligStart, e=(eligEnd===undefined?null:eligEnd);
+  if(s<=PHASE3_IDX-1&&(e===null||e>=PHASE3_IDX)){
+    var changed=(c.ph2.sys!==c.ph3.sys);
+    addDel(m,c.ph2.sys,s,PHASE3_IDX-1,'ACC Phase II attribution \u2014 '+c.ph2.reg+', by residence in '+m.county+' County');
+    addDel(m,c.ph3.sys,PHASE3_IDX,e,changed
+      ? 'ACC Phase III, July 1 2025 \u2014 the re-procurement moved '+m.county+' County to a different entity. Nobody chose anything.'
+      : 'ACC Phase III, July 1 2025 \u2014 same entity, new contract, new region ('+c.ph3.reg+')');
+    if(changed)m.flags.push('Phase III re-attribution: '+sysLabel(c.ph2.sys)+' \u2192 '+sysLabel(c.ph3.sys)+' on July 1, 2025 \u2014 a procurement outcome, not a member decision');
+    return true;
+  }
+  if(s>=PHASE3_IDX){ addDel(m,c.ph3.sys,s,e,'ACC Phase III attribution \u2014 '+c.ph3.reg+', by residence'); return false; }
+  addDel(m,c.ph2.sys,s,e,'ACC Phase II attribution \u2014 '+c.ph2.reg+', by residence'); return false;
+}
+
+/* ----- Register A: steady state -- attributed, not enrolled (1100) ----- */
+(function(){
+  var grpsA=[['CH19',7],['AE02',6],['CP06',1.5],['FM01',1],['PW02',1],['AB03',1.5],['FF26',1]];
+  for(var i=0;i<1100;i++){
+    var grp=wpick(grpsA);
+    var m=baseMember('A');
+    var age = (grp==='CH19'||grp==='CP06')?ri(0,18) : grp==='FF26'?ri(18,25) : grp==='AB03'?ri(28,62) : grp==='PW02'?ri(19,38) : ri(19,60);
+    m.age=age; m.dob=dobForAge(age); if(grp==='PW02')m.sex='F';
+    var s=ri(-20,2);
+    addElig(m,grp,s,null,null);
+    /* the enclaves: real capitated MCOs inside the attribution state */
+    if(m.county==='Denver'&&R()<0.15){
+      addDel(m,'DHMC',s,null,'Denver Health Medicaid Choice \u2014 a true capitated MCO, the safety-net system insuring its own patients; enrollment survives the Phase III seam untouched');
+      m.flags.push('Enclave: enrolled (chosen, not attributed) in Denver Health Medicaid Choice \u2014 one of the two real MCOs inside Colorado\u2019s attribution model');
+    } else if(m.county==='Mesa'&&R()<0.3){
+      addDel(m,'PRIME',s,null,'RMHP Prime \u2014 the western-slope capitated MCO; enrollment, not attribution');
+      m.flags.push('Enclave: RMHP Prime on the western slope \u2014 full capitation in a state that mostly doesn\u2019t do that');
+    } else {
+      attribute(m,s);
+    }
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register B: renewal churn (500) ----- */
+(function(){
+  for(var i=0;i<500;i++){
+    var grp=wpick([['CH19',4],['AE02',5],['FM01',1]]);
+    var m=baseMember('B');
+    m.age = grp==='CH19'?ri(1,17):ri(19,60); m.dob=dobForAge(m.age);
+    var s=ri(-18,-2);
+    var inGapNow=(i<125);
+    var term=inGapNow?ri(15,16):ri(4,12);
+    var gap=inGapNow?ri(3,4):ri(1,4);
+    var regain=term+gap+1;
+    addElig(m,grp,s,term,ELIG_END.REDET);
+    addElig(m,grp,regain,null,null);
+    attribute(m,s,term);
+    attribute(m,regain);
+    m.flags.push('Gap '+mLabel(term+1)+'\u2013'+mLabel(regain-1)+' ('+gap+' mo) \u2014 note the return: no plan packet, no choice period. The address was still there; the attribution just resumed.');
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register C: retroactive grant (375) ----- */
+(function(){
+  for(var i=0;i<375;i++){
+    var grp=wpick([['CH19',4],['AE02',4],['PW02',2]]);
+    var m=baseMember('C');
+    if(grp==='PW02')m.sex='F';
+    m.age = grp==='CH19'?ri(0,16) : grp==='PW02'?ri(19,36) : ri(19,55);
+    m.dob=dobForAge(m.age);
+    var app=ri(6,15), retro=ri(1,3), retroS=app-retro;
+    addElig(m,grp,retroS,null,null);
+    addDel(m,'FFS',retroS,app,'The retro months and the processing month \u2014 fee-for-service, before attribution catches up');
+    attribute(m,app+1);
+    m.flags.push('Retro grant: '+retro+' month'+(retro>1?'s':'')+' back to '+mLabel(retroS)+' \u2014 physical health would have paid FFS anyway; what the retro months lack is the RAE\u2019s coordination and the capitated behavioral health benefit');
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register D: the movers -- attribution follows the address (375) ----- */
+(function(){
+  var MOVES=[
+    ['Denver','Mesa'],['Arapahoe','Mesa'],['Denver','El Paso'],['Adams','Pueblo'],
+    ['El Paso','Denver'],['Weld','El Paso'],['Larimer','Mesa'],['Pueblo','Arapahoe'],
+    ['Jefferson','Alamosa'],['Boulder','Montrose'],['Mesa','Denver'],['Alamosa','Adams'],
+    ['Denver','Arapahoe'],['Adams','Denver'],['Pueblo','Alamosa'],['Mesa','Montrose']
+  ];
+  for(var i=0;i<375;i++){
+    var grp=wpick([['CH19',4],['AE02',5],['PW02',1]]);
+    var m=baseMember('D');
+    if(grp==='PW02')m.sex='F';
+    m.age = grp==='CH19'?ri(2,17):ri(19,55); m.dob=dobForAge(m.age);
+    var mv=pick(MOVES);
+    /* start in mv[0], end in mv[1]; the roster shows today's address */
+    var moveIdx=ri(8,16); /* after the Phase III seam, so the story is clean */
+    m.county=mv[0];
+    var s=ri(-18,-2);
+    addElig(m,grp,s,null,null);
+    attribute(m,s,moveIdx-1);
+    /* re-point member to the new county, then attribute forward */
+    m.county=mv[1];
+    var c2=COUNTYBY[mv[1]], a2=genAddr(c2);
+    m.street=a2.street; m.city=a2.city; m.zip=a2.zip;
+    var oldSys=COUNTYBY[mv[0]].ph3.sys, newSys=c2.ph3.sys;
+    addDel(m,newSys,moveIdx,null,(oldSys===newSys
+      ?'Address change '+mLabel(moveIdx)+' \u2014 new county, same entity: the attribution re-ran and landed in the same place'
+      :'Address change '+mLabel(moveIdx)+' \u2014 the CBMS address update re-ran attribution: '+sysLabel(oldSys)+' \u2192 '+sysLabel(newSys)+'. No packet, no choice period, no broker'));
+    m.flags.push('Moved '+mv[0]+' \u2192 '+mv[1]+' County in '+mLabel(moveIdx)+' \u2014 in Colorado, a change-of-address form is an enrollment transaction'+(oldSys!==newSys?'':' (this one happened to land on the same entity)'));
+    m.moveIdx=moveIdx; m.fromCounty=mv[0];
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register E: the carve -- one entity, two payment systems (325) ----- */
+(function(){
+  var CONDS=['Major depressive disorder','Generalized anxiety disorder','PTSD','Bipolar disorder','Opioid use disorder \u2014 MAT','Alcohol use disorder','Schizophrenia \u2014 clinic-based care'];
+  for(var i=0;i<325;i++){
+    var grp=wpick([['AE02',5],['CH19',2],['AB03',2],['FF26',1]]);
+    var m=baseMember('E');
+    m.age = grp==='CH19'?ri(10,17) : grp==='FF26'?ri(18,25) : grp==='AB03'?ri(25,62) : ri(19,60);
+    m.dob=dobForAge(m.age);
+    var s=ri(-20,-2);
+    addElig(m,grp,s,null,null);
+    attribute(m,s);
+    m.bhCap=true; m.bhCond=pick(CONDS);
+    m.flags.push('Behavioral health in active use \u2014 and here Colorado\u2019s design shows: the therapy and the MAT visits pay through the RAE\u2019s <b>capitation</b>, while the same member\u2019s primary care pays <b>fee-for-service</b> with RAE coordination. One member, one entity, two payment systems.');
+    MEMBERS.push(m);
+  }
+})();
+
+/* ----- Register F: Medicare arrives -- and attribution doesn't care (325) ----- */
+(function(){
+  for(var i=0;i<325;i++){
+    var m=baseMember('F');
+    var ssdi=(R()<0.6);
+    var medi=ri(8,16), lag=ri(1,3); /* after the seam, for clean three-part reads */
+    if(ssdi){ m.age=ri(38,62); m.dob=dobForAge(m.age); }
+    else { m.age=(medi<=TODAY_IDX)?65:64; m.dob={y:WIN_START_Y+Math.floor(medi/12)-65, m:medi%12, d:ri(1,28)}; }
+    var s=ri(-20,-8);
+    addElig(m,'AE02',s,medi-1,ELIG_END.MEDI);
+    addElig(m,'AB03',medi,null,null);
+    attribute(m,s);   /* one attribution history, seam included, NO boundary at medicare */
+    m.medicareIdx=medi; m.buyinIdx=medi+lag; m.ssdi=ssdi;
+    if(i<120)m.flags.push('HCBS waiver assessment underway \u2014 the LTSS would pay FFS; the RAE keeps coordinating');
+    m.flags.push((ssdi?'Medicare via SSDI (24-month clock) ':'Turned 65 ')+mLabel(medi)+' \u2014 and the delivery record shows <b>nothing</b>: attribution was never enrollment, so there is no plan span to end. The eligibility category moved, the buy-in accreted '+mLabel(medi+lag)+', Medicare became primary for physical health \u2014 and the RAE\u2019s coordination and behavioral health capitation carried on as if nothing happened.');
+    MEMBERS.push(m);
+  }
+})();
+
+/* ---------- derived member state ---------- */
+function eligToday(m){ for(var i=0;i<m.eligSpans.length;i++){var s=m.eligSpans[i]; if(s.start<=TODAY_IDX&&(s.end===null||s.end>=TODAY_IDX))return s} return null }
+function delToday(m){ for(var i=0;i<m.delSpans.length;i++){var s=m.delSpans[i]; if(s.start<=TODAY_IDX&&(s.end===null||s.end>=TODAY_IDX))return s} return null }
+function lastElig(m){ return m.eligSpans[m.eligSpans.length-1] }
+function statusToday(m){
+  if(eligToday(m))return 'Active';
+  var le=lastElig(m);
+  if(le.end!==null&&le.end<TODAY_IDX){
+    for(var i=0;i<m.eligSpans.length;i++){ if(m.eligSpans[i].start>TODAY_IDX)return 'Gap' }
+    return 'Closed';
+  }
+  return 'Gap';
+}
+MEMBERS.forEach(function(m,ix){
+  m.ix=ix;
+  /* name/sex coherence: deterministic, PRNG-free remap */
+  if(m.sex==='F'&&FIRST_F.indexOf(m.first)<0)m.first=FIRST_F[(m.first.length*7+m.last.length)%FIRST_F.length];
+  if(m.sex==='M'&&FIRST_M.indexOf(m.first)<0)m.first=FIRST_M[(m.first.length*7+m.last.length)%FIRST_M.length];
+  m.name=m.last+', '+m.first;
+  var et=eligToday(m), le=lastElig(m);
+  m.grpToday = et?et.grp:le.grp;
+  var dt=delToday(m);
+  m.delTodayCode = dt?dt.sys:'\u2014';
+  m.status=statusToday(m);
+});
+</script>
+<script>
+'use strict';
+/* ================= shared render helpers ================= */
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function grpChip(g){ if(!GROUPS[g])return esc(g);
+  return '<span class="chip" style="background:var('+GROUPS[g].color+')" title="'+esc(GROUPS[g].name)+'">'+g+'</span>' }
+function delChip(code){ if(code==='\u2014')return '<span class="st-cls">\u2014</span>';
+  var cls=sysClass(code), lbl=code;
+  return '<span class="dchip '+cls+'" title="'+esc(sysLabel(code))+'">'+esc(lbl)+'</span>' }
+function statusHtml(st){ return st==='Active'?'<span class="st-act">Active</span>':(st==='Gap'?'<span class="st-gap">In gap</span>':'<span class="st-cls">Closed</span>') }
+function regBadge(r){return '<span class="mono" style="font-weight:600;color:var(--accent)">'+r+'</span>'}
+
+/* ================= overview ================= */
+function renderOverview(){
+  var n=MEMBERS.length, act=0, rae=0, mco=0, seam=0, entityChanged=0, bh=0, gaps=0;
+  MEMBERS.forEach(function(m){
+    if(m.status==='Active')act++;
+    if(m.status==='Gap')gaps++;
+    var d=m.delTodayCode;
+    if(d!=='\u2014'&&d!=='FFS'){ if(sysKind(d)==='RAE')rae++; else mco++; }
+    var crossed=false, changed=false;
+    for(var i=1;i<m.delSpans.length;i++){
+      if(m.delSpans[i].start===PHASE3_IDX&&m.delSpans[i-1].end===PHASE3_IDX-1){crossed=true; if(m.delSpans[i].sys!==m.delSpans[i-1].sys)changed=true;}
+    }
+    if(crossed)seam++; if(changed)entityChanged++;
+    if(m.bhCap)bh++;
+  });
+  var st=document.getElementById('ov-stats');
+  st.innerHTML =
+    stat(n,'Synthetic members',true)+
+    stat(act,'Eligible today (Jul 2026)')+
+    stat(rae,'Attributed to a RAE today')+
+    stat(mco,'In an enclave MCO <span class="mono">(chosen)</span>')+
+    stat(seam,'Crossed the Phase III seam (Jul 1, 2025)')+
+    stat(entityChanged,'\u2026 and changed entity at the seam')+
+    stat(bh,'Behavioral health via RAE capitation (reg. E)')+
+    stat(gaps,'In an eligibility gap today');
+  function stat(nv,l,acc){return '<div class="stat'+(acc?' acc':'')+'"><div class="n">'+(typeof nv==='number'?nv.toLocaleString():nv)+'</div><div class="l">'+l+'</div></div>'}
+
+  /* group legend with counts (by current/last group) */
+  var gc={}; MEMBERS.forEach(function(m){gc[m.grpToday]=(gc[m.grpToday]||0)+1});
+  var lg=document.getElementById('ov-groups'); lg.innerHTML='';
+  GROUP_KEYS.forEach(function(g){
+    var c=gc[g]||0;
+    lg.innerHTML+='<div class="legrow"><span class="swatch" style="background:var('+GROUPS[g].color+')"></span>'+
+      '<span class="code">'+g+'</span><span>'+esc(GROUPS[g].name)+'</span>'+
+      '<span class="cnt">'+c+'</span></div>';
+  });
+
+  /* delivery distribution today */
+  var dc={}; MEMBERS.forEach(function(m){ if(m.delTodayCode!=='\u2014') dc[m.delTodayCode]=(dc[m.delTodayCode]||0)+1 });
+  var rows=['ACCESS','CCHA','RMHP','HCO'].map(function(c){return {label:ENTITIES[c].name+' (RAE \u2014 attributed)', code:c, n:dc[c]||0, cls:'var(--d-mco)'}});
+  rows.push({label:ENTITIES.DHMC.name+' (enclave MCO)', code:'DHMC', n:dc.DHMC||0, cls:'var(--d-harp)'});
+  rows.push({label:ENTITIES.PRIME.name+' (enclave MCO)', code:'PRIME', n:dc.PRIME||0, cls:'var(--d-harp)'});
+  rows.push({label:'Fee-for-service (retro tails)', code:'FFS', n:dc.FFS||0, cls:'var(--d-ffs)'});
+  rows.sort(function(a,b){return b.n-a.n});
+  var mx=rows.reduce(function(a,r){return Math.max(a,r.n)},1);
+  var bl=document.getElementById('ov-mcos'); bl.innerHTML='';
+  rows.forEach(function(r){
+    bl.innerHTML+='<div class="barrow"><span title="'+esc(r.label)+'">'+esc(r.label)+'</span>'+
+      '<span class="track"><span class="fill" style="width:0;background:'+r.cls+'" data-w="'+(100*r.n/mx)+'"></span></span>'+
+      '<span class="bn">'+r.n+'</span></div>';
+  });
+  requestAnimationFrame(function(){ setTimeout(function(){
+    bl.querySelectorAll('.fill').forEach(function(f){f.style.width=f.getAttribute('data-w')+'%'}) },60) });
+
+  document.getElementById('ov-plain').innerHTML='<span class="pe-label">In plain English</span>'+
+    'Colorado is the counterexample state. Where the rest of this series enrolls members into capitated plans, the <b>Accountable Care Collaborative</b> <i>attributes</i> them: an address goes in, a <b>Regional Accountable Entity</b> comes out, and nobody mails a choice packet. The RAE wears two hats \u2014 care coordinator over fee-for-service physical health, capitated payer for behavioral health \u2014 so a single member\u2019s therapy and primary care flow through two different payment systems under one entity. '+
+    'Two designed events organize the file. <b>July 1, 2025</b>: the ACC\u2019s Phase III re-procurement re-attributed the entire state on one day \u2014 the seam crosses nearly every timeline, and in Weld, Larimer, and Boulder counties the entity itself changed, by procurement, not preference. And register D\u2019s <b>movers</b>: in an attribution state, a change-of-address form is an enrollment transaction. Around them: the two enclave MCOs members actually choose (Denver Health Medicaid Choice, RMHP Prime), and register F\u2019s quiet seventh answer to Medicare \u2014 attribution isn\u2019t enrollment, so when Medicare arrives, the delivery record does precisely nothing.';
+}
+
+/* ================= reference ================= */
+function renderReference(){
+  var h='';
+  h+='<div class="card"><h3 style="margin-top:0">Coverage groups (teaching set)</h3>'+
+     '<p class="sub" style="margin-bottom:8px">Patterned on Health First Colorado categories. Colorado expanded in 2013 by statute \u2014 the AE02 row is present, full, and unremarkable, which after Mississippi and Texas is itself worth noticing.</p>'+
+     '<div class="tblwrap"><table><thead><tr><th>Code</th><th>Name</th><th>Determination</th><th>What it means</th></tr></thead><tbody>';
+  GROUP_KEYS.forEach(function(g){var G=GROUPS[g];
+    h+='<tr><td>'+grpChip(g)+'</td><td>'+esc(G.name)+'</td><td>'+(G.magi?'MAGI (CBMS)':'Non-MAGI')+'</td><td>'+esc(G.blurb)+'</td></tr>'});
+  h+='</tbody></table></div></div>';
+
+  h+='<div class="card"><h3 style="margin-top:0">The ACC \u2014 entities of the attribution model</h3>'+
+     '<p class="sub" style="margin-bottom:8px">Members are attributed to a Regional Accountable Entity by residence. Phase II ran seven numbered regions; the Phase III re-procurement (July 1, 2025) consolidated the map \u2014 rendered here as a four-region teaching simplification.</p>'+
+     '<div class="tblwrap"><table><thead><tr><th>Code</th><th>Entity</th><th>Role</th><th>Worth knowing</th></tr></thead><tbody>'+
+     '<tr><td class="mono">ACCESS</td><td>Colorado Access</td><td>RAE \u2014 Metro/North</td><td>The metro giant; gained Weld, Larimer, and Boulder counties at the seam</td></tr>'+
+     '<tr><td class="mono">CCHA</td><td>Colorado Community Health Alliance</td><td>RAE \u2014 Front Range</td><td>Jefferson and El Paso counties in this population</td></tr>'+
+     '<tr><td class="mono">RMHP</td><td>Rocky Mountain Health Plans</td><td>RAE \u2014 West</td><td>The western slope, both phases</td></tr>'+
+     '<tr><td class="mono">HCO</td><td>Health Colorado</td><td>RAE \u2014 South</td><td>Pueblo and the San Luis Valley</td></tr>'+
+     '<tr><td class="mono">NHP</td><td>Northeast Health Partners</td><td>RAE \u2014 Phase II only</td><td>Held Weld and Larimer through June 2025; appears only on the left side of the seam \u2014 an entity that exists in history</td></tr>'+
+     '<tr><td class="mono">DHMC</td><td>Denver Health Medicaid Choice</td><td><b>Enclave MCO</b></td><td>A true capitated plan \u2014 the safety-net system insuring its own patients; members enroll, and the seam doesn\u2019t touch them</td></tr>'+
+     '<tr><td class="mono">PRIME</td><td>RMHP Prime</td><td><b>Enclave MCO</b></td><td>Full capitation on the western slope \u2014 the other exception that proves the rule</td></tr>'+
+     '</tbody></table></div></div>';
+
+  h+='<div class="card"><h3 style="margin-top:0">834 maintenance codes used in this app</h3>'+
+     '<div class="tblwrap"><table><thead><tr><th>INS03</th><th>Meaning</th><th>Where you\u2019ll see it</th></tr></thead><tbody>'+
+     '<tr><td class="mono">021</td><td>Addition</td><td>New attributions \u2014 including the entire state on July 1, 2025: the Phase III wave, the largest single-day file this program ever cut</td></tr>'+
+     '<tr><td class="mono">024</td><td>Cancellation / termination</td><td>Renewal churn (B), the left half of every address-move pair (D), and the left half of the seam</td></tr>'+
+     '<tr><td class="mono">001</td><td>Change</td><td>Register F would be the candidate \u2014 but attribution isn\u2019t enrollment, so Medicare\u2019s arrival generates no delivery transaction at all. The absence is the lesson</td></tr>'+
+     '</tbody></table></div></div>';
+
+  h+='<div class="card"><h3 style="margin-top:0">Glossary</h3><dl class="gloss">'+
+    gl('Health First Colorado','The brand name of Colorado Medicaid, run by HCPF \u2014 the Department of Health Care Policy & Financing (not the health department; the split surprises newcomers).')+
+    gl('ACC','The Accountable Care Collaborative \u2014 Colorado\u2019s delivery model since 2011: regional entities coordinating largely fee-for-service physical care, with the behavioral health benefit capitated to them. Phase II ran 2018\u20132025; Phase III began July 1, 2025.')+
+    gl('RAE','Regional Accountable Entity \u2014 the region-holder. Care coordinator for FFS physical health; capitated payer for behavioral health. One entity, two payment systems.')+
+    gl('Attribution','Assignment by residence \u2014 no packet, no choice period, no enrollment broker. The address is the input; the entity is the output. A change-of-address form is, functionally, an enrollment transaction.')+
+    gl('The Phase III seam','July 1, 2025: the re-procurement re-attributed the whole state at once. Every member active across the boundary shows a span break there \u2014 and Weld, Larimer, and Boulder members show an entity change decided by procurement.')+
+    gl('Enclave MCOs','Denver Health Medicaid Choice and RMHP Prime \u2014 true capitated plans inside the attribution state. Their members chose; their spans ignore the seam. The exceptions that prove the rule.')+
+    gl('The carve','Behavioral health pays through the RAE\u2019s capitation while physical health pays FFS underneath \u2014 the exact inverse of Washington\u2019s integrated model, and the reason a single member\u2019s claims land in two different payment systems.')+
+    gl('CBMS / PEAK','The Colorado Benefits Management System (determinations) and the PEAK portal (applications) \u2014 the front door of every span in this file.')+
+    gl('Continuous eligibility to 3','Colorado holds continuous eligibility for its youngest children \u2014 income changes do not close the span. (Washington\u2019s cousin program runs to age 6; see the companion app.)')+
+    gl('Buy-in','The state paying a dual member\u2019s Medicare Part B premium; accretion runs one to three months behind entitlement \u2014 register F\u2019s only visible delivery-side event, and it isn\u2019t even delivery.')+
+    gl('834','The X12N enrollment and maintenance transaction \u2014 which, notably, does not know whether the member chose. Colorado sends attribution rosters in the same grammar every enrollment state uses.')+
+    '</dl></div>';
+  function gl(t,d){return '<dt>'+t+'</dt><dd>'+d+'</dd>'}
+
+  h+='<div class="card"><h3 style="margin-top:0">Counties in this population</h3><p class="sub" style="margin-bottom:8px">Colorado has 64 counties; this roster draws from twelve \u2014 the Front Range metros, the western slope (Mesa, Montrose), the south (Pueblo, and Alamosa in the San Luis Valley, where the Spanish surnames predate the state by two centuries), and the northern counties whose entity changed at the seam.</p><p style="font-size:.85rem">'+COUNTIES.map(function(c){return esc(c.name)}).join(' \u00b7 ')+'</p></div>';
+
+  document.getElementById('ref-out').innerHTML=h;
+}
+</script>
+<script>
+'use strict';
+/* ================= generic sortable table state ================= */
+var SORT={};
+function bindSort(tblId, renderFn){
+  document.querySelectorAll('#'+tblId+' th.sortable').forEach(function(th){
+    th.addEventListener('click',function(){
+      var k=th.getAttribute('data-k');
+      var cur=SORT[tblId]||{};
+      SORT[tblId]={k:k, dir:(cur.k===k&&cur.dir==='asc')?'desc':'asc'};
+      renderFn();
+    });
+  });
+}
+function sortRows(tblId, rows){
+  var s=SORT[tblId]; if(!s)return rows;
+  var dir=s.dir==='asc'?1:-1;
+  rows.sort(function(a,b){
+    var x=a[s.k],y=b[s.k];
+    if(x===null||x===undefined)x=-Infinity; if(y===null||y===undefined)y=-Infinity;
+    if(typeof x==='string'){x=x.toLowerCase();y=String(y).toLowerCase();return x<y?-dir:(x>y?dir:0)}
+    return (x-y)*dir;
+  });
+  return rows;
+}
+function sortMarks(tblId){
+  var s=SORT[tblId];
+  document.querySelectorAll('#'+tblId+' th.sortable').forEach(function(th){
+    var base=th.textContent.replace(/[\u25b2\u25bc]\s*$/,'').trim();
+    th.innerHTML=esc(base)+(s&&s.k===th.getAttribute('data-k')?' <span class="arr">'+(s.dir==='asc'?'\u25b2':'\u25bc')+'</span>':'');
+  });
+}
+
+/* ================= pagination ================= */
+var PAGE={}, PAGE_SIZE=50;
+function pager(tblId, total, renderFn, pagerId){
+  var pages=Math.max(1,Math.ceil(total/PAGE_SIZE));
+  var p=Math.min(PAGE[tblId]||1,pages); if(p<1)p=1; PAGE[tblId]=p;
+  var el=document.getElementById(pagerId);
+  if(el){
+    if(pages===1){ el.innerHTML=''; }
+    else{
+      el.innerHTML='<button class="pg"'+(p<=1?' disabled':'')+' data-d="-1">\u25c0 Prev</button>'+
+        '<span class="mono pgpos">page '+p+' of '+pages.toLocaleString()+'</span>'+
+        '<button class="pg"'+(p>=pages?' disabled':'')+' data-d="1">Next \u25b6</button>';
+      el.querySelectorAll('button.pg').forEach(function(b){
+        b.addEventListener('click',function(){ PAGE[tblId]=p+parseInt(b.getAttribute('data-d'),10); renderFn(); });
+      });
+    }
+  }
+  return {from:(p-1)*PAGE_SIZE, to:Math.min(total,p*PAGE_SIZE)};
+}
+function resetPage(tblId){ PAGE[tblId]=1 }
+
+/* ================= members roster ================= */
+var ROSTER_VIEW=[]; /* current filtered order (all pages), for modal nav */
+function fillSelect(id, opts, allLabel){
+  var el=document.getElementById(id);
+  el.innerHTML='<option value="">'+allLabel+'</option>'+opts.map(function(o){return '<option value="'+o[0]+'">'+o[1]+'</option>'}).join('');
+}
+function initRosterControls(){
+  fillSelect('m-group',GROUP_KEYS.map(function(g){return[g,g+' \u2014 '+GROUPS[g].name]}),'Coverage group: all');
+  var dopts=['ACCESS','CCHA','RMHP','HCO','NHP','DHMC','PRIME'].map(function(c){return[c,ENTITIES[c].name]});
+  dopts.push(['FFS','Fee-for-Service']);
+  fillSelect('m-del',dopts,'Attribution today: all');
+  fillSelect('m-reg',['A','B','C','D','E','F'].map(function(r){return[r,'Register '+r]}),'Register: all');
+  ['m-search','m-group','m-del','m-reg','m-status'].forEach(function(id){
+    document.getElementById(id).addEventListener('input',function(){resetPage('m-tbl');renderRoster()});
+  });
+  bindSort('m-tbl',renderRoster);
+}
+function renderRoster(){
+  var q=document.getElementById('m-search').value.trim().toLowerCase();
+  var fg=document.getElementById('m-group').value, fd=document.getElementById('m-del').value,
+      fr=document.getElementById('m-reg').value, fs=document.getElementById('m-status').value;
+  var rows=MEMBERS.filter(function(m){
+    if(fg&&m.grpToday!==fg)return false;
+    if(fd&&m.delTodayCode!==fd)return false;
+    if(fr&&m.reg!==fr)return false;
+    if(fs&&m.status!==fs)return false;
+    if(q){ var hay=(m.name+' '+m.id+' '+m.city+' '+m.county).toLowerCase(); if(hay.indexOf(q)<0)return false }
+    return true;
+  }).map(function(m){return {ix:m.ix,id:m.id,name:m.name,age:m.age,sex:m.sex,grp:m.grpToday,del:m.delTodayCode,county:m.county,reg:m.reg,status:m.status}});
+  rows=sortRows('m-tbl',rows); sortMarks('m-tbl');
+  ROSTER_VIEW=rows.map(function(r){return r.ix});
+  var pg=pager('m-tbl',rows.length,renderRoster,'m-pager');
+  var tb=document.getElementById('m-body'); tb.innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+r.age+'</td><td>'+r.sex+'</td>'+
+    '<td>'+grpChip(r.grp)+'</td><td>'+delChip(r.del)+'</td><td class="nowrap">'+esc(r.county)+'</td><td>'+regBadge(r.reg)+'</td><td>'+statusHtml(r.status)+'</td></tr>'}).join('');
+  document.getElementById('m-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' matching (population '+MEMBERS.length.toLocaleString()+')';
+  tb.querySelectorAll('tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'roster')})});
+}
+
+/* ================= eligibility spans ================= */
+var SPAN_VIEW=[];
+function initSpanControls(){
+  fillSelect('s-group',GROUP_KEYS.map(function(g){return[g,g+' \u2014 '+GROUPS[g].name]}),'Coverage group: all');
+  ['s-group','s-open'].forEach(function(id){document.getElementById(id).addEventListener('input',function(){resetPage('s-tbl');renderSpans()})});
+  bindSort('s-tbl',renderSpans);
+}
+function renderSpans(){
+  var fg=document.getElementById('s-group').value, fo=document.getElementById('s-open').value;
+  var rows=[];
+  MEMBERS.forEach(function(m){ m.eligSpans.forEach(function(s){
+    if(fg&&s.grp!==fg)return;
+    if(fo==='open'&&s.end!==null)return;
+    if(fo==='closed'&&s.end===null)return;
+    rows.push({ix:m.ix,id:m.id,name:m.name,grp:s.grp,start:s.start,end:(s.end===null?9999:s.end),endRaw:s.end,
+      months:spanMonths(s.start,s.end),reason:s.reason});
+  })});
+  rows=sortRows('s-tbl',rows); sortMarks('s-tbl');
+  SPAN_VIEW=[]; var seenS={}; rows.forEach(function(r){ if(!seenS[r.ix]){seenS[r.ix]=1;SPAN_VIEW.push(r.ix)} });
+  var pg=pager('s-tbl',rows.length,renderSpans,'s-pager');
+  document.getElementById('s-body').innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+grpChip(r.grp)+'</td>'+
+    '<td class="nowrap">'+startLabel(r.start)+'</td><td class="nowrap">'+(r.endRaw===null?'<span class="st-act">open</span>':mLabel(r.endRaw))+'</td>'+
+    '<td class="mono">'+r.months+(r.start<0?'+':'')+'</td><td>'+(r.reason?esc(r.reason):'\u2014')+'</td></tr>'}).join('');
+  document.getElementById('s-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' spans';
+  document.querySelectorAll('#s-body tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'spans')})});
+}
+function startLabel(s){ return s<0 ? mLabel(s)+' <span class="hint">(pre-window)</span>' : mLabel(s) }
+
+/* ================= delivery spans ================= */
+var DEL_VIEW=[];
+function initDelControls(){
+  var dopts=['ACCESS','CCHA','RMHP','HCO','NHP','DHMC','PRIME'].map(function(c){return[c,ENTITIES[c].name]});
+  dopts.push(['FFS','Fee-for-Service']);
+  fillSelect('d-sys',dopts,'Entity: all');
+  document.getElementById('d-sys').addEventListener('input',function(){resetPage('d-tbl');renderDel()});
+  bindSort('d-tbl',renderDel);
+}
+function renderDel(){
+  var fd=document.getElementById('d-sys').value;
+  var rows=[];
+  MEMBERS.forEach(function(m){ m.delSpans.forEach(function(s){
+    if(fd&&s.sys!==fd)return;
+    rows.push({ix:m.ix,id:m.id,name:m.name,sys:s.sys,start:s.start,end:(s.end===null?9999:s.end),endRaw:s.end,
+      months:spanMonths(s.start,s.end),note:s.note});
+  })});
+  rows=sortRows('d-tbl',rows); sortMarks('d-tbl');
+  DEL_VIEW=[]; var seenD={}; rows.forEach(function(r){ if(!seenD[r.ix]){seenD[r.ix]=1;DEL_VIEW.push(r.ix)} });
+  var pg=pager('d-tbl',rows.length,renderDel,'d-pager');
+  document.getElementById('d-body').innerHTML=rows.slice(pg.from,pg.to).map(function(r){
+    return '<tr class="rowlink" data-ix="'+r.ix+'"><td class="mono">'+r.id+'</td><td class="nowrap">'+esc(r.name)+'</td><td>'+delChip(r.sys)+'</td>'+
+    '<td class="nowrap">'+startLabel(r.start)+'</td><td class="nowrap">'+(r.endRaw===null?'<span class="st-act">open</span>':mLabel(r.endRaw))+'</td>'+
+    '<td class="mono">'+r.months+(r.start<0?'+':'')+'</td><td>'+(r.note?esc(r.note):'\u2014')+'</td></tr>'}).join('');
+  document.getElementById('d-count').textContent=(rows.length?'showing '+(pg.from+1)+'\u2013'+pg.to+' of ':'')+rows.length.toLocaleString()+' delivery spans';
+  document.querySelectorAll('#d-body tr').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'delivery')})});
+}
+</script>
+<script>
+'use strict';
+/* ================= scenario registers ================= */
+var REGDEFS={
+ A:{title:'Steady state \u2014 attributed, not enrolled', q:'Who is simply covered \u2014 and why does nearly every timeline break at the same July?',
+    body:'The baseline population, attributed to their RAEs by address \u2014 and nearly all of them carrying the <b>Phase III seam</b>: a span boundary on July 1, 2025, when the re-procurement re-attributed the whole state at once. For most counties the entity stayed and only the contract changed; for Weld, Larimer, and Boulder, the entity itself flipped. Threaded through Denver and Mesa counties: the <b>enclave MCO</b> members \u2014 Denver Health Medicaid Choice and RMHP Prime \u2014 whose purple spans cross the seam without a ripple, because they enrolled and the procurement wasn\u2019t about them.'},
+ B:{title:'Renewal churn', q:'Who lost coverage at renewal \u2014 and what does coming back look like when there\u2019s nothing to choose?',
+    body:'Cases close at renewal, sit in a gap, and reopen \u2014 125 members are in the gap right now. The Colorado texture is on the return: no plan packet, no choice period, no auto-assignment lottery. The address was still there, so the attribution simply resumed \u2014 usually to the same entity, making the gap look almost surgical in the delivery record.'},
+ C:{title:'Retroactive grant', q:'Whose eligibility begins before their application \u2014 and what did the retro months actually lack?',
+    body:'The classic three-month reach-back, with a Colorado twist on what it means. Physical health pays fee-for-service here <i>anyway</i>, so the retro months look almost normal on the claims side. What they lack is the RAE: no care coordination, and no capitated behavioral health benefit, until attribution catches up prospectively. The gray tail is thinner than it looks \u2014 and thicker than it looks, depending on which half of the carve you needed.'},
+ D:{title:'The movers \u2014 attribution follows the address', q:'What does an enrollment transaction look like when nobody enrolled in anything?',
+    body:'375 members who moved counties mid-window. In an enrollment state, a move triggers a choice packet and a deadline. Here, the CBMS address update <b>re-runs attribution</b>, and the delivery record changes the first of the following month \u2014 a 024/021 pair in the 834 stream that no member requested, signed, or in some cases noticed. A few movers landed on the same entity (Denver to Aurora is still Colorado Access) and their \u201cmove\u201d is invisible in delivery \u2014 which is its own lesson: the transaction fires on the <i>region</i>, not the address.'},
+ E:{title:'The carve \u2014 one entity, two payment systems', q:'Where does a single member\u2019s care split into capitation and fee-for-service?',
+    body:'325 members in active behavioral health care \u2014 therapy, MAT, clinic-based psychiatric care. Colorado\u2019s design puts their behavioral health claims through the RAE\u2019s <b>capitation</b> while their primary care pays <b>fee-for-service</b> with RAE coordination on top. Same member, same entity, same month \u2014 two payment systems. Anyone reconciling encounter data against FFS claims for this population learns the carve\u2019s exact edges the hard way; this register is where to practice. It is also the precise inverse of Washington\u2019s integrated model \u2014 the two apps are designed to be read together.'},
+ F:{title:'Medicare arrives \u2014 and attribution doesn\u2019t care', q:'The seventh Medicare answer in this series: what if the delivery record does nothing at all?',
+    body:'Across this series Medicare\u2019s arrival has ended enrollments, continued them, and paired them with D-SNPs. Colorado\u2019s answer is the quietest: <b>nothing happens</b>. Attribution was never enrollment \u2014 there is no plan span to terminate. The eligibility category moves to ABD, the buy-in accretes after its one-to-three-month limbo, Medicare becomes primary for physical health \u2014 and the RAE\u2019s coordination and behavioral health capitation continue as if no one had a birthday. The delivery timeline shows an unbroken bar straight through the entitlement date. For 120 members, an HCBS waiver assessment is opening the LTSS chapter \u2014 also FFS, also coordinated, also no new span.'}
+};
+function renderRegisters(){
+  var out=document.getElementById('reg-list'); var h='';
+  ['A','B','C','D','E','F'].forEach(function(r){
+    var d=REGDEFS[r], list=MEMBERS.filter(function(m){return m.reg===r});
+    var sample=list.slice(0,12);
+    h+='<div class="reg"><h3><span class="rl">'+r+'</span>'+esc(d.title)+'<span class="meta" style="margin-left:auto">'+list.length.toLocaleString()+' members</span></h3>'+
+       '<div class="q">'+d.q+'</div><p class="sub" style="margin-bottom:10px">'+d.body+'</p>'+
+       '<div class="tblwrap"><table><thead><tr><th>State ID</th><th>Member</th><th>Group</th><th>Attribution today</th><th>The planted story</th></tr></thead><tbody>';
+    sample.forEach(function(m){
+      h+='<tr class="rowlink" data-ix="'+m.ix+'"><td class="mono">'+m.id+'</td><td class="nowrap">'+esc(m.name)+'</td><td>'+grpChip(m.grpToday)+'</td><td>'+delChip(m.delTodayCode)+'</td>'+
+         '<td>'+(m.flags.length?m.flags[0]:'Clean spans \u2014 the control group')+'</td></tr>';
+    });
+    h+='</tbody></table></div>';
+    if(list.length>sample.length){
+      h+='<div class="hint" style="margin-top:8px">Showing the first '+sample.length+' of '+list.length.toLocaleString()+'. Open any row \u2014 the \u25c0 \u25b6 arrows walk the entire register \u2014 or filter the Members tab by register for the full list.</div>';
+    }
+    h+='</div>';
+  });
+  out.innerHTML=h;
+  out.querySelectorAll('tr.rowlink').forEach(function(tr){tr.addEventListener('click',function(){openModal(+tr.getAttribute('data-ix'),'register')})});
+}
+
+/* ================= 834 builder ================= */
+function lastDelEvent(m){
+  var spans=m.delSpans.filter(function(s){return s.sys!=='FFS'});
+  if(!spans.length)return null;
+  var last=spans[spans.length-1];
+  if(m.reg==='D'&&last.start===m.moveIdx){
+    var prev=spans[spans.length-2];
+    return {kind:'021',del:last,pair:prev,why:(prev.sys===last.sys
+      ?'The move that wasn\u2019t: the address changed counties, attribution re-ran \u2014 and landed on the same entity. The pair below is same-entity 024/021: pure procedure.'
+      :'The right half of an address-triggered pair: the CBMS address update re-ran attribution and produced a 024 to '+sysLabel(prev.sys)+' and this 021 to '+sysLabel(last.sys)+'. Nobody chose anything; the transaction records geography.')};
+  }
+  if(last.start===PHASE3_IDX){
+    return {kind:'021',del:last,why:'One of the July 1, 2025 wave \u2014 the Phase III re-procurement re-attributed the entire state in a single cycle. Every segment says 021 as if the member were new; the member noticed nothing.'};
+  }
+  if(m.reg==='B'&&last.start>TODAY_IDX){
+    var first=spans[0];
+    return {kind:'024',del:first,why:'Eligibility closed at renewal; the entity received a clean termination. The member is in the gap today \u2014 the return, when it comes, will be attribution resuming, not a choice being made.'};
+  }
+  if(m.reg==='F'){
+    return {kind:'021',del:last,why:'The most recent attribution transaction on file \u2014 which predates Medicare, because Medicare\u2019s arrival generated no delivery transaction at all. Attribution isn\u2019t enrollment; there was nothing to send.'};
+  }
+  return {kind:'021',del:last,why:(m.reg==='C'?'Attribution following a retroactive grant \u2014 note the two begin dates below.'
+    :(sysKind(last.sys)==='MCO'?'An enclave enrollment \u2014 the member chose this MCO, one of two true capitated plans inside the attribution state.':'Attribution roster addition.'))};
+}
+function ediRow(seg,note,loop){return '<div class="edirow'+(loop?' loop':'')+'"><div class="seg">'+esc(seg)+'</div><div class="note">'+note+'</div></div>'}
+function build834(m){
+  var ev=lastDelEvent(m);
+  var eligSpan=m.eligSpans[m.eligSpans.length-1];
+  var eligBegin=m.eligSpans[0].start;
+  var ctl=String(500000+m.ix*7);
+  var out='';
+  if(!ev){
+    out+='<div class="ediwrap"><div class="edihead"><span class="fn">834 \u2014 State record</span><span class="hint">No entity receives this member today. This is the state\u2019s own record in the standard shape, for teaching.</span></div>';
+  } else {
+    var kindLabel={ '021':'Addition','001':'Change','024':'Termination' }[ev.kind];
+    out+='<div class="ediwrap"><div class="edihead"><span class="fn">834 \u2014 '+kindLabel+(ev.pair?' (half of a pair)':'')+'</span><span class="hint">'+esc(ev.why)+'</span></div>';
+  }
+  var recvName = ev?sysLabel(ev.del.sys).toUpperCase():'HCPF (STATE RECORD)';
+  var recvId = ev?ev.del.sys:'COHCPF';
+  out+=ediRow('ISA*00*          *00*          *ZZ*COHCPF         *ZZ*'+(recvId+'          ').slice(0,10)+'    *260701*0800*^*00501*'+ctl.padStart(9,'0')+'*0*P*:~','Interchange envelope: the Department of Health Care Policy & Financing to <b>'+esc(recvName)+'</b>. The 834 grammar doesn\u2019t know this is attribution rather than enrollment \u2014 that\u2019s the lesson.');
+  out+=ediRow('GS*BE*COHCPF*'+recvId+'*20260701*0800*'+ctl+'*X*005010X220A1~','Functional group: <b>BE</b> = benefit enrollment.');
+  out+=ediRow('ST*834*'+ctl.slice(-4)+'*005010X220A1~','Transaction set header. One ST/SE per batch; the July 2025 wave batched the whole state.');
+  out+=ediRow('BGN*00*'+m.id+'-'+ctl.slice(-3)+'*20260701*0800****4~','Beginning segment. Purpose 00 = original. Action 4 = verify/full audit.');
+  out+=ediRow('N1*P5*COLORADO DEPT OF HEALTH CARE POLICY AND FINANCING*FI*840644739~','Loop 1000A \u2014 plan sponsor: the state.', true);
+  out+=ediRow('N1*IN*'+recvName+'*FI*'+String(840000000+m.ix*13)+'~','Loop 1000B \u2014 the receiver'+(ev&&sysKind(ev.del.sys)==='MCO'?' \u2014 one of the two <b>enclave MCOs</b>: for once in this file, the member actually chose.':(ev?' \u2014 a Regional Accountable Entity: coordinator of FFS physical health, capitated payer of behavioral health.':'.')), true);
+  var insKind=ev?ev.kind:'021';
+  out+=ediRow('INS*Y*18*'+insKind+'*'+(insKind==='024'?'07':'28')+'*A***FT~','Loop 2000. Subscriber (Y/18). Maintenance <b>'+insKind+'</b>'+(ev&&ev.pair?' \u2014 half of an address-triggered pair.':'.'), true);
+  out+=ediRow('REF*0F*'+m.id+'~','The <b>State ID</b> \u2014 one letter, six digits. The person, permanently, on both sides of every seam.');
+  out+=ediRow('DTP*356*D8*'+mFirstD8(Math.max(eligBegin,-24))+'~','<b>Eligibility</b> begin date'+(m.reg==='C'?' \u2014 note it precedes the attribution begin below by the retroactive months. Two clocks.':'.'));
+  if(ev&&ev.kind==='024'&&ev.del.end!==null) out+=ediRow('DTP*357*D8*'+mLastD8(ev.del.end)+'~','End date \u2014 last day of the terminated attribution.');
+  out+=ediRow('NM1*IL*1*'+m.last.toUpperCase()+'*'+m.first.toUpperCase()+'****34*'+String(521000000+m.ix*311)+'~','Member name. The 34 qualifier carries an SSN in real files; synthetic here.');
+  out+=ediRow('PER*IP**TE*'+m.phone.replace(/\D/g,'')+'~','Contact telephone.');
+  out+=ediRow('N3*'+m.street.toUpperCase()+'~','Street address \u2014 in this state, <b>the</b> operative field: attribution is a function of this line.');
+  out+=ediRow('N4*'+m.city.toUpperCase()+'*CO*'+m.zip+'~','City/state/ZIP: '+esc(m.city)+', '+esc(m.county)+' County'+(m.reg==='D'?' \u2014 the new address; the previous one lives in the terminated half of the pair.':'.'));
+  out+=ediRow('DMG*D8*'+dobD8(m.dob)+'*'+m.sex+'~','Date of birth and sex.');
+  if(m.lang!=='English') out+=ediRow('LUI*LD*'+({'Spanish':'SPA','Somali':'SOM','Vietnamese':'VIE','Russian':'RUS','Ukrainian':'UKR','Amharic':'AMH','Arabic':'ARA'}[m.lang]||'ENG')+'**6~','Preferred language: '+esc(m.lang)+'.'+(m.lang==='Spanish'&&m.county==='Alamosa'?' In the San Luis Valley, the Spanish predates the state by two centuries.':''));
+  if(ev){
+    out+=ediRow('HD*'+ev.kind+'**HLT*'+ev.del.sys+'~','Loop 2300 \u2014 '+(sysKind(ev.del.sys)==='MCO'?'the enclave MCO enrollment.':'the RAE attribution: coordination plus the capitated behavioral health benefit.'), true);
+    out+=ediRow('DTP*348*D8*'+mFirstD8(Math.max(ev.del.start,-24))+'~','<b>Attribution</b> begin date'+(ev.del.start===PHASE3_IDX?' \u2014 July 1, 2025: the same date, statewide, hundreds of thousands of times. The Phase III wave.':' \u2014 first of the month, always prospective.'));
+    if(ev.del.end!==null&&ev.kind!=='024') out+=ediRow('DTP*349*D8*'+mLastD8(ev.del.end)+'~','Attribution end date.');
+  } else {
+    out+=ediRow('HD*021**HLT*COFFS~','Loop 2300 \u2014 the \u201cplan code\u201d names fee-for-service itself.', true);
+    out+=ediRow('DTP*348*D8*'+mFirstD8(Math.max(eligBegin,-24))+'~','Coverage begin for the FFS record.');
+  }
+  out+=ediRow('LS*2700~','Open the member-reporting loop.', true);
+  out+=ediRow('LX*1~ N1*75*COVERAGE GROUP~ REF*ZZ*'+eligSpan.grp+'~','The coverage group ('+esc(GROUPS[eligSpan.grp].name)+').');
+  out+=ediRow('LX*2~ N1*75*ATTRIBUTION BASIS~ REF*ZZ*'+(ev&&sysKind(ev.del.sys)==='MCO'?'ELECT':'GEO')+'~',(ev&&sysKind(ev.del.sys)==='MCO'?'Basis: <b>member election</b> \u2014 the enclave exception.':'Basis: <b>geography</b>. The segment that separates Colorado from every enrollment state in this series.'));
+  if(m.bhCap) out+=ediRow('LX*3~ N1*75*BH CAPITATION~ REF*ZZ*ACTIVE~','Behavioral health services in active use \u2014 paying through the RAE\u2019s capitation while physical health pays FFS underneath. The carve, in one segment.');
+  if(m.reg==='F') out+=ediRow('LX*3~ N1*75*MEDICARE STATUS~ REF*ZZ*AB~','Medicare A+B from '+mLabel(m.medicareIdx)+' \u2014 present in the reporting loop, invisible in the delivery spans. Attribution doesn\u2019t care.');
+  out+=ediRow('LE*2700~','Close the reporting loop.', true);
+  out+=ediRow('SE*'+ri(16,22)+'*'+ctl.slice(-4)+'~ GE*1*'+ctl+'~ IEA*1*'+ctl.padStart(9,'0')+'~','Trailers: segment count, group close, interchange close. Counts must reconcile or the whole file bounces.');
+  out+='</div>';
+  if(m.reg==='D'){
+    out+='<div class="plain" style="margin-top:14px"><span class="pe-label">Worth noticing</span>No member signed anything to cause this transaction. A change-of-address form went into CBMS; attribution re-ran; a 024/021 pair came out. Downstream systems built for enrollment states look for the member action behind every 834 \u2014 the consent, the election, the auto-assignment rule \u2014 and in Colorado there often isn\u2019t one. The operative fact is the N3 segment. Design your reconciliation around the address, not the choice.</div>';
+  }
+  return out;
+}
+function initFileTab(){
+  var sel=document.getElementById('f-member');
+  var h='';
+  ['A','B','C','D','E','F'].forEach(function(r){
+    h+='<optgroup label="Register '+r+' \u2014 '+esc(REGDEFS[r].title)+'">';
+    MEMBERS.filter(function(m){return m.reg===r}).slice().sort(function(a,b){return a.name.localeCompare(b.name)}).forEach(function(m){
+      h+='<option value="'+m.ix+'">'+esc(m.name)+' \u2014 '+m.id+'</option>';
+    });
+    h+='</optgroup>';
+  });
+  sel.innerHTML=h;
+  sel.addEventListener('input',function(){renderFile(+sel.value)});
+  renderFile(+sel.value);
+}
+function renderFile(ix){
+  document.getElementById('f-out').innerHTML=build834(MEMBERS[ix]);
+}
+</script>
+<script>
+'use strict';
+/* ================= modal ================= */
+var MODAL={ix:null, ctx:'roster'};
+function navList(){
+  if(MODAL.ctx==='spans'&&SPAN_VIEW.length)return SPAN_VIEW;
+  if(MODAL.ctx==='delivery'&&DEL_VIEW.length)return DEL_VIEW;
+  if(MODAL.ctx==='register'&&MODAL.ix!==null){
+    var r=MEMBERS[MODAL.ix].reg;
+    return MEMBERS.filter(function(m){return m.reg===r}).map(function(m){return m.ix});
+  }
+  return ROSTER_VIEW.length?ROSTER_VIEW:MEMBERS.map(function(m){return m.ix});
+}
+function openModal(ix,ctx){
+  MODAL.ix=ix; if(ctx)MODAL.ctx=ctx;
+  var m=MEMBERS[ix];
+  document.getElementById('mo-nm').textContent=m.first+' '+m.last;
+  document.getElementById('mo-id').textContent='State ID '+m.id+'  \u00b7  Register '+m.reg;
+  document.getElementById('mo-body').innerHTML=modalBody(m);
+  var list=navList(), pos=list.indexOf(ix);
+  document.getElementById('mo-pos').textContent=(pos+1)+' / '+list.length+' ('+MODAL.ctx+')';
+  document.getElementById('mo-prev').disabled=pos<=0;
+  document.getElementById('mo-next').disabled=pos<0||pos>=list.length-1;
+  document.getElementById('overlay').classList.add('on');
+  document.getElementById('modal').classList.add('on');
+  highlightRow(ix);
+  document.getElementById('mo-x').focus();
+}
+function closeModal(){
+  document.getElementById('overlay').classList.remove('on');
+  document.getElementById('modal').classList.remove('on');
+  highlightRow(null);
+  MODAL.ix=null;
+}
+function stepModal(d){
+  var list=navList(), pos=list.indexOf(MODAL.ix), np=pos+d;
+  if(np<0||np>=list.length)return;
+  openModal(list[np]);
+}
+function highlightRow(ix){
+  document.querySelectorAll('tr.hl').forEach(function(tr){tr.classList.remove('hl')});
+  if(ix===null)return;
+  document.querySelectorAll('tr.rowlink[data-ix="'+ix+'"]').forEach(function(tr){tr.classList.add('hl')});
+}
+
+/* ---------- mini two-band timeline ---------- */
+function tlBar(startIdx,endIdx,color,striped,title){
+  var s=Math.max(startIdx,0), e=(endIdx===null?WIN_MONTHS-1:Math.min(endIdx,WIN_MONTHS-1));
+  if(e<0||s>WIN_MONTHS-1)return '';
+  var l=100*s/WIN_MONTHS, w=100*(e-s+1)/WIN_MONTHS;
+  return '<span class="bar'+(striped?' striped':'')+'" style="left:'+l+'%;width:'+w+'%;background:'+color+'" title="'+esc(title)+'"></span>';
+}
+function timeline(m){
+  var h='<div class="tl">';
+  h+='<div class="band"><span class="bl">Eligibility</span><span class="lane">';
+  m.eligSpans.forEach(function(s){
+    h+=tlBar(s.start,s.end,'var('+GROUPS[s.grp].color+')',false,s.grp+' '+mLabel(s.start)+' \u2013 '+(s.end===null?'open':mLabel(s.end)));
+  });
+  h+='<span class="todayline" style="left:'+(100*(TODAY_IDX+0.5)/WIN_MONTHS)+'%"></span></span></div>';
+  h+='<div class="band"><span class="bl">Delivery</span><span class="lane">';
+  m.delSpans.forEach(function(s){
+    var k=sysKind(s.sys);
+    var col = k==='FFS'?'var(--d-ffs)':(k==='MCO'?'var(--d-harp)':'var(--d-mco)');
+    h+=tlBar(s.start,s.end,col,k!=='FFS',sysLabel(s.sys)+' '+mLabel(s.start)+' \u2013 '+(s.end===null?'open':mLabel(s.end)));
+  });
+  h+='<span class="todayline" style="left:'+(100*(TODAY_IDX+0.5)/WIN_MONTHS)+'%"></span></span></div>';
+  h+='<div class="axis"><span></span><span class="ax">'+
+     '<span style="left:2%">Jan 25</span><span style="left:27%">Jul 25</span><span style="left:52%">Jan 26</span><span style="left:77%">Jul 26</span></span></div>';
+  h+='<div class="tl-note">Striped blue = RAE attribution \u00b7 striped purple = enclave MCO (chosen) \u00b7 solid gray = fee-for-service \u00b7 red line = today (Jul 2026). Look for the <b>seam</b>: a boundary at June/July 2025 on nearly every attributed timeline \u2014 and its absence on the enclave ones. Bars clamp to the 24-month window; pre-window starts are noted in the span tables.</div></div>';
+  return h;
+}
+
+/* ---------- per-member plain english ---------- */
+function plainFor(m){
+  var p='';
+  var first=m.first;
+  var last=m.delSpans[m.delSpans.length-1];
+  if(m.reg==='A'){
+    if(m.delTodayCode==='DHMC'||m.delTodayCode==='PRIME'){
+      p=first+' is the exception: enrolled \u2014 actually enrolled, by choice \u2014 in '+esc(sysLabel(m.delTodayCode))+', one of the two true capitated MCOs living inside Colorado\u2019s attribution model. Notice the timeline: no break at July 2025. The Phase III re-procurement re-attributed the whole state, but enclave enrollments weren\u2019t attribution, so the seam passed underneath without touching the span.';
+    } else if(m.flags[0]&&m.flags[0].indexOf('Phase III re-attribution')===0){
+      p=first+' lives in '+esc(m.county)+' County \u2014 one of the counties whose <b>entity changed at the seam</b>. On July 1, 2025, the Phase III re-procurement moved the county\u2019s attribution to '+esc(sysLabel(m.delTodayCode))+'. '+first+' filled out nothing, chose nothing, and possibly noticed nothing. The delivery record changed because a procurement concluded. That is what attribution means.';
+    } else {
+      p=first+' is the modal Colorado record: eligible under <b>'+m.grpToday+' ('+esc(GROUPS[m.grpToday].name)+')</b>, attributed to '+esc(sysLabel(m.delTodayCode))+' by residence in '+esc(m.county)+' County, with the Phase III seam visible at July 2025 \u2014 same entity, new contract. The RAE coordinates the FFS physical care and holds the behavioral health capitation, whether or not '+first+' ever uses it.';
+    }
+  } else if(m.reg==='B'){
+    var t2=m.eligSpans[0].end, rg=m.eligSpans[1].start, gap=rg-t2-1;
+    if(rg>TODAY_IDX){
+      p=first+'\u2019s renewal did not come back and the case closed after '+mLabel(t2)+'. As of today '+first+' is <b>in the gap</b>; the data shows the case reopening in '+mLabel(rg)+' \u2014 and when it does, there will be no packet and no choice period. The address is still in '+esc(m.county)+' County; the attribution will simply resume.';
+    } else {
+      p=first+' churned: closed at renewal after '+mLabel(t2)+', '+gap+' month'+(gap>1?'s':'')+' in the gap, back on in '+mLabel(rg)+'. Look at the delivery record on the return \u2014 attribution resumed to the same entity, automatically. In an enrollment state the gap scrambles plan assignment; in Colorado it barely leaves a mark.';
+    }
+  } else if(m.reg==='C'){
+    var s=m.eligSpans[0].start;
+    p=first+' applied and the grant reached backward to '+mLabel(s)+'. Here is the subtle Colorado version of the retro lesson: physical health pays fee-for-service in this state <i>anyway</i>, so the backward months look almost ordinary on the claims side. What they lacked was the RAE \u2014 no care coordination, and no capitated behavioral health benefit \u2014 until attribution caught up in '+mLabel(m.delSpans[1].start)+'. The gray tail is about the carve, not the claims.';
+  } else if(m.reg==='D'){
+    var prev=m.delSpans[m.delSpans.length-2];
+    if(prev.sys===last.sys){
+      p='In '+mLabel(m.moveIdx)+', '+first+' moved from '+esc(m.fromCounty)+' to '+esc(m.county)+' County \u2014 and the delivery record shows a pair of transactions that changed nothing: attribution re-ran and landed on the same entity, '+esc(sysLabel(last.sys))+'. The move that wasn\u2019t. The transaction fires on the region, not the address \u2014 and both counties answer the same.';
+    } else {
+      p='In '+mLabel(m.moveIdx)+', '+first+' moved from '+esc(m.fromCounty)+' to '+esc(m.county)+' County \u2014 and the CBMS address update <b>was</b> the enrollment transaction: attribution re-ran and the record moved from '+esc(sysLabel(prev.sys))+' to '+esc(sysLabel(last.sys))+' the first of the month. No packet, no signature, no broker. In Colorado, geography is destiny \u2014 or at least, geography is delivery.';
+    }
+  } else if(m.reg==='E'){
+    p=first+' is in active behavioral health care \u2014 '+esc(m.bhCond)+' \u2014 and '+(m.sex==='F'?'her':'his')+' record splits down Colorado\u2019s central design decision: the therapy and clinic visits pay through '+esc(sysLabel(m.delTodayCode))+'\u2019s <b>capitation</b>, while the same month\u2019s primary care pays <b>fee-for-service</b> with the RAE coordinating on top. One member, one entity, two payment systems. (Washington\u2019s app in this series runs the exact inverse \u2014 everything integrated into one plan payment. Read them together.)';
+  } else {
+    var mi=m.medicareIdx, bi=m.buyinIdx, lag=bi-mi;
+    p=(m.ssdi?'Medicare arrived for '+first+' in '+mLabel(mi)+' \u2014 SSDI\u2019s 24-month waiting period ended.':'In '+mLabel(mi)+', '+first+' turned 65 and Medicare arrived.')+' And the delivery record did <b>nothing</b> \u2014 look at the timeline: one unbroken attribution bar straight through the entitlement date. Attribution was never enrollment, so there was no span to end. The eligibility category moved to ABD, the buy-in accreted '+mLabel(bi)+' after its '+lag+'-month limbo, Medicare took over as primary payer for physical health \u2014 and '+esc(sysLabel(m.delTodayCode))+' kept coordinating and kept the behavioral health capitation as if nothing had happened. The seventh Medicare answer in this series, and the quietest: indifference by design.'+(m.flags[0].indexOf('HCBS')===0?' An HCBS waiver assessment is opening the LTSS chapter \u2014 also FFS, also coordinated, also no new span.':'');
+  }
+  return '<div class="plain"><span class="pe-label">In plain English</span>'+p+'</div>';
+}
+
+/* ---------- modal body ---------- */
+function modalBody(m){
+  var h='';
+  var et=eligToday(m);
+  h+='<div class="kv">'+
+    kv('Status today',statusHtml(m.status))+
+    kv('Coverage group',grpChip(m.grpToday)+' <span style="font-size:.8rem;color:var(--ink-soft)">'+esc(GROUPS[m.grpToday].name)+'</span>')+
+    kv('Delivery today',delChip(m.delTodayCode)+(m.delTodayCode!=='\u2014'?' <span style="font-size:.8rem;color:var(--ink-soft)">'+esc(sysLabel(m.delTodayCode))+'</span>':''))+
+    kv('Date of birth',dobLabel(m.dob)+' <span class="hint">(age '+m.age+')</span>')+
+    kv('Sex',m.sex)+
+    kv('Address',esc(m.street)+', '+esc(m.city)+', CO '+m.zip)+
+    kv('County',esc(m.county)+' \u2014 attribution input')+
+    kv('Phone','<span class="mono">'+m.phone+'</span>')+
+    kv('Preferred language',esc(m.lang))+
+    (m.bhCap?kv('Behavioral health',esc(m.bhCond)+' \u2014 paid via RAE capitation'):'')+
+    '</div>';
+  function kv(k,v){return '<div class="k">'+k+'</div><div class="v">'+v+'</div>'}
+  h+='<h4>24-month picture</h4>'+timeline(m);
+  h+=plainFor(m);
+  h+='<h4>Eligibility spans</h4><div class="tblwrap"><table><thead><tr><th>Group</th><th>Begin</th><th>End</th><th>Reason</th></tr></thead><tbody>';
+  m.eligSpans.forEach(function(s){
+    h+='<tr><td>'+grpChip(s.grp)+'</td><td class="nowrap">'+startLabel(s.start)+'</td><td class="nowrap">'+(s.end===null?'<span class="st-act">open</span>':mLabel(s.end))+'</td><td>'+(s.reason?esc(s.reason):'\u2014')+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  h+='<h4>Delivery spans</h4><div class="tblwrap"><table><thead><tr><th>System</th><th>Begin</th><th>End</th><th>Note</th></tr></thead><tbody>';
+  m.delSpans.forEach(function(s){
+    h+='<tr><td>'+delChip(s.sys)+'</td><td class="nowrap">'+startLabel(s.start)+'</td><td class="nowrap">'+(s.end===null?'<span class="st-act">open</span>':mLabel(s.end))+'</td><td>'+(s.note?esc(s.note):'\u2014')+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  if(m.flags.length){
+    h+='<h4>Flags</h4><p>'+m.flags.map(function(f){return '<span class="flag">'+esc(f)+'</span>'}).join(' ')+'</p>';
+  }
+  h+='<h4>See the file</h4><p style="font-size:.84rem;color:var(--ink-soft)">Open <b>What the File Says</b> and choose '+esc(m.first+' '+m.last)+' to read the 834 the plan received for this member\u2019s most recent enrollment event.</p>';
+  return h;
+}
+
+/* ================= navigation & boot ================= */
+function showPage(pg){
+  document.querySelectorAll('nav button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-pg')===pg)});
+  document.querySelectorAll('.page').forEach(function(p){p.classList.toggle('on',p.id==='pg-'+pg)});
+  if(pg==='overview')renderOverview();
+}
+document.getElementById('nav').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b)return; showPage(b.getAttribute('data-pg'));
+});
+document.getElementById('mo-x').addEventListener('click',closeModal);
+document.getElementById('overlay').addEventListener('click',closeModal);
+document.getElementById('mo-prev').addEventListener('click',function(){stepModal(-1)});
+document.getElementById('mo-next').addEventListener('click',function(){stepModal(1)});
+document.addEventListener('keydown',function(e){
+  if(MODAL.ix===null)return;
+  if(e.key==='Escape')closeModal();
+  else if(e.key==='ArrowLeft')stepModal(-1);
+  else if(e.key==='ArrowRight')stepModal(1);
+});
+
+/* boot */
+renderOverview();
+initRosterControls(); renderRoster();
+initSpanControls();  renderSpans();
+initDelControls();   renderDel();
+renderRegisters();
+initFileTab();
+renderReference();
+</script>
+</body>
+</html>
